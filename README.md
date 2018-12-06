@@ -1,8 +1,6 @@
 # Description
 
-This is a simple wrapper around python's simple http server. It can add custom headers including Access-Control-Allow-Origin: `<request origin>`. It can serve over SSL too.
-
-For testing purposes, it requires a cookie `auth=1` to be set, otherwise it replies with `401 Unauthorized`. Obviously this isn't meant to be secure, only for CORS testing purposes.
+This is a simple wrapper around python's simple http server for CORS testing purposes. It can add custom headers including Access-Control-Allow-Origin: `<request origin>`. It can serve over SSL too.
 
 # Usage
 

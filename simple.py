@@ -31,7 +31,14 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
     
     def do_GET(self):
         self.show()
-        if self.headers.get('Cookie') == AUTH_COOKIE:
+        if self.path == '/login':
+            self.send_response(301)
+            self.send_header('Location', '/index.html')
+            self.send_header('Content-type', 'text/html')
+            self.send_header('Content-Length', '0')
+            self.send_header('Set-Cookie', AUTH_COOKIE)
+            self.end_headers()
+        elif self.headers.get('Cookie') == AUTH_COOKIE or self.path != '/secret.txt':
             super().do_GET()
         else:
             super().send_error(401)
@@ -56,7 +63,7 @@ def new_server(clsname, origins, creds, headers):
                 allowed_origins)
             if creds:
                 self.send_header('Access-Control-Allow-Credentials',
-                    'True')
+                    'true')
     
     return type(clsname, (CORSHttpsServer,), {
         'send_custom_headers': send_custom_headers})
