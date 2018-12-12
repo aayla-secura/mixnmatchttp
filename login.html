@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title></title>
+		<script src="allfuncs.js" charset="utf-8"></script>
+	</head>
+	<body>
+		<script charset="utf-8">
+			document.cookie = "auth=1; path=/"
+			url = getPar(document.location, "goto");
+			if (url) {
+				url = decodeURIComponent(url);
+			}
+			else {
+				url = "/index.html";
+			}
+			document.location.replace(url);
+		</script>
+	</body>
+</html>

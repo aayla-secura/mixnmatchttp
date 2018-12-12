@@ -31,14 +31,14 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
     
     def do_GET(self):
         self.show()
-        if self.path == '/login':
-            self.send_response(301)
-            self.send_header('Location', '/index.html')
-            self.send_header('Content-type', 'text/html')
-            self.send_header('Content-Length', '0')
-            self.send_header('Set-Cookie', AUTH_COOKIE)
-            self.end_headers()
-        elif self.headers.get('Cookie') == AUTH_COOKIE or self.path != '/secret.txt':
+        #  if self.path == '/login':
+        #      self.send_response(301)
+        #      self.send_header('Location', '/index.html')
+        #      self.send_header('Content-type', 'text/html')
+        #      self.send_header('Content-Length', '0')
+        #      self.send_header('Set-Cookie', AUTH_COOKIE)
+        #      self.end_headers()
+        if self.headers.get('Cookie') == AUTH_COOKIE or self.path != '/secret.txt':
             super().do_GET()
         else:
             super().send_error(401)
@@ -52,8 +52,17 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
 
 def new_server(clsname, origins, creds, headers):
     def send_custom_headers(self):
+        # Disable Cache
+        if not re.search('/jquery-[0-9\.]+(\.min)?\.js$', self.path):
+            self.send_header('Cache-Control',
+                'no-cache, no-store, must-revalidate')
+            self.send_header('Pragma', 'no-cache')
+            self.send_header('Expires', '0')
+        
         for h in headers:
             self.send_header(*re.split(': *', h, maxsplit=1))
+        
+        # CORS
         if origins:
             allowed_origins = origins
             if allowed_origins == '%%ECHO%%':

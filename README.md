@@ -34,3 +34,23 @@ optional arguments:
                         certificate. (default: ./key.pem)
   -S, --no-ssl          Don't use SSL. (default: True)
 ```
+
+# CORS test
+
+The html pages should work with older browser (not tested all yet).
+
+  * login.html: sets the auth cookie and redirects to a URL given as the goto GET parameter or index.html
+  * secret.txt: a dummy secret
+  * getSecret.html: fetches secret.txt with withCredentials set to True from the hostname given as the host GET parameter
+
+Start the server on all interfaces (default) and then visit
+
+```
+http://<ip 1>:58081/login.html?goto=http%3A%2F%2F<ip 2>%3A58081%2FgetSecret.html%3Fhost%3D<ip 1>
+```
+
+replacing `<ip 1>` and `<ip 2>` with two different interfaces, e.g. `127.0.0.1` and `192.168.0.1`.
+
+Alternatively, start it only on one interface and use a DNS name which resolves to the interface's IP address.
+
+You can omit the host parameter the goto URL if listening on `localhost` and `localhost` has the `127.0.0.1` address. `getSecret.html` will detect that and use `localhost` and `127.0.0.1` as `<ip 1>` and `<ip 2>` or the other way around.
