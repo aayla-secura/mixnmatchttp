@@ -33,15 +33,24 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         self.show()
         super().do_HEAD()
     
+    def get_param(self, parname):
+        try:
+            query = re.split('\?([^/]+)$', self.path)[1]
+        except IndexError:
+            return None
+        try:
+            params = dict(filter(lambda x: len(x) == 2,
+                [p.split('=') for p in query.split('&')]))
+        except ValueError:
+            params = {}
+        try:
+            value = params[parname]
+        except KeyError:
+            return None
+        return value
+    
     def do_GET(self):
         self.show()
-        #  if self.path == '/login':
-        #      self.send_response(301)
-        #      self.send_header('Location', '/index.html')
-        #      self.send_header('Content-type', 'text/html')
-        #      self.send_header('Content-Length', '0')
-        #      self.send_header('Set-Cookie', AUTH_COOKIE)
-        #      self.end_headers()
         if self.headers.get('Cookie') == AUTH_COOKIE or self.path != '/secret.txt':
             super().do_GET()
         else:
@@ -54,7 +63,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         self.send_custom_headers()
         super().end_headers()
 
-def new_server(clsname, origins, creds, headers):
+def new_server(clsname, origins, use_creds, headers):
     def send_custom_headers(self):
         # Disable Cache
         if not re.search('/jquery-[0-9\.]+(\.min)?\.js$', self.path):
@@ -66,9 +75,21 @@ def new_server(clsname, origins, creds, headers):
         for h in headers:
             self.send_header(*re.split(': *', h, maxsplit=1))
         
-        # CORS
-        if origins:
+        # CORS, request path takes precedence
+        # use origins=&creds=0 to disable CORS for this request
+        allowed_origins = self.get_param('origin')
+        if allowed_origins is None:
             allowed_origins = origins
+        creds = self.get_param('creds')
+        try:
+            creds = bool(int(creds))
+        except (ValueError,TypeError):
+            # invalid or missing param
+            creds = None
+        if creds is None:
+            creds = use_creds
+        
+        if allowed_origins:
             if allowed_origins == '%%ECHO%%':
                 allowed_origins = self.headers.get('Origin')
                 if not allowed_origins: allowed_origins = '*'
@@ -100,7 +121,7 @@ if __name__ == "__main__":
             action='store_const', const='%%ECHO%%',
             help='''Allow all origins, i.e. echo the Origin in the
             request.''')
-    parser.add_argument('-c', '--cors-credentials', dest='creds',
+    parser.add_argument('-c', '--cors-credentials', dest='use_creds',
             default=False, action='store_true',
             help='''Allow sending credentials with CORS requests,
             i.e. add Access-Control-Allow-Credentials. Using this only
@@ -124,7 +145,7 @@ if __name__ == "__main__":
     httpd = ThreadingCORSHttpsServer((args.address, args.port),
             new_server('CORSHttpsServer',
                 args.origins,
-                args.creds,
+                args.use_creds,
                 args.headers))
     if args.ssl:
         httpd.socket = ssl.wrap_socket(
