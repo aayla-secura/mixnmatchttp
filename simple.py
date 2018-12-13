@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
+import socketserver
 import http.server, http.server
 import ssl
 import re
 import argparse
 
 AUTH_COOKIE = 'auth=1'
+
+class ThreadingCORSHttpsServer(socketserver.ThreadingMixIn, http.server.HTTPServer):
+    pass
 
 class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
     def send_custom_headers(self):
@@ -117,7 +121,7 @@ if __name__ == "__main__":
             help='''Don't use SSL.''')
     args = parser.parse_args()
     
-    httpd = http.server.HTTPServer((args.address, args.port),
+    httpd = ThreadingCORSHttpsServer((args.address, args.port),
             new_server('CORSHttpsServer',
                 args.origins,
                 args.creds,
