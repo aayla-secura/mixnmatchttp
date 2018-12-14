@@ -8,23 +8,23 @@ CORS headers (Allow-Origins and Allow-Credentials) can also be controlled per re
 
 The html pages should work with older browser (not tested all yet).
 
-  * login.html: sets the auth cookie and redirects to a URL given as the goto GET parameter or index.html
-  * secret.txt: a dummy secret
-  * getSecret.html: fetches secret.txt with withCredentials set to True from the hostname given as the host GET parameter
+  * `login.html`: sets the auth cookie and redirects to a URL given as the goto GET parameter or index.html
+  * `secret.txt`: a dummy secret
+  * `getSecret.html`: fetches secret.txt with withCredentials set to True from the hostname given as the host GET parameter
 
 Start the server on all interfaces (default) and then visit
 
 ```
-https://<IP 1>:58081/getSecret.html?host=<IP 2>
+https://<IP_1>:58081/getSecret.html?host=<IP_2>
 ```
 
-replacing `<ip 1>` and `<ip 2>` with two different interfaces, e.g. `127.0.0.1` and `192.168.0.1`.
+replacing `<IP_1>` and `<IP_2>` with two different interfaces, e.g. `127.0.0.1` and `192.168.0.1`.
 
 Alternatively, start it only on one interface and use a DNS name which resolves to the interface's IP address.
 
-You can omit the host parameter the goto URL if listening on `localhost` and `localhost` has the `127.0.0.1` address. `getSecret.html` will detect that and use `localhost` and `127.0.0.1` as `<ip 1>` and `<ip 2>` or the other way around.
+You can omit the host parameter the goto URL if listening on `localhost` and `localhost` has the `127.0.0.1` address. `getSecret.html` will detect that and use `localhost` and `127.0.0.1` as `<IP_1>` and `<IP_2>` or the other way around.
 
-`getSecret.html` will log in to the target (`<IP 2>`) and load 5 iframes, each of which will fetch `https://<IP 2>/secret.txt?origin=...&creds=...` with one of these 5 CORS combinations:
+`getSecret.html` will log in to the target (`<IP_2>`) and load 5 iframes, each of which will fetch `https://<IP_2>/secret.txt?origin=...&creds=...` with one of these 5 CORS combinations:
   * Origin: `*` , Credentials: true
   * Origin: `*` , Credentials: false
   * Origin: `<as requested>` , Credentials: true
