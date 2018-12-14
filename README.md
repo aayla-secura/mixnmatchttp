@@ -4,10 +4,6 @@ This is a simple multi-threaded wrapper around python's simple http server for C
 
 CORS headers (Allow-Origins and Allow-Credentials) can also be controlled per request with the `origin` and `creds` URL parameters. If origin is `%%ECHO%%` it is taken from the Origin header in the request.
 
-# TO DO/FIX
-  * Logging of requests is messed up, because of multi-threading
-  * How to catch the SOP errors from the browser and show them on the page, `window.onerror` doesn't catch those...
-
 # CORS test
 
 The html pages should work with older browser (not tested all yet).

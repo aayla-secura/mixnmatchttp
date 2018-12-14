@@ -15,16 +15,17 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         pass
     
     def show(self):
-        print("\n----- Request Start ----->\n")
-        print(self.requestline)
-        print(self.headers)
+        msg = "\n----- Request Start ----->\n\n{}\n{}".format(
+            self.requestline, self.headers)
         try:
             length = int(self.headers.get('Content-Length'))
         except TypeError:
             pass
         else:
-            print(self.rfile.read(length).decode('utf-8'))
-        print("<----- Request End -----\n")
+            msg += "\n{}".format(
+                self.rfile.read(length).decode('utf-8'))
+        msg += "<----- Request End -----\n"
+        print(msg)
     
     def do_OPTIONS(self):
         self.do_HEAD()

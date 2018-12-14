@@ -8,10 +8,13 @@
 		<!-- <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script> -->
 		<script src="jquery-1.12.0.min.js"></script>
 		<script charset="utf-8">
+			DEBUG = true;
+
+			doPost = Boolean(Number(getPar(document.location, "post")));
 			url = getPar(document.location, "goto");
 			if (url) {
 				url = decodeURIComponent(url);
-				getData(url);
+				getData(url, doPost);
 			}
 		</script>
 	</head>
