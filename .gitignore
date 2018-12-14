@@ -1,10 +1,7 @@
 *
-!simple.py
-!index.html
-!README.md
 !.gitignore
-!getSecret.html
+!README.md
+!simple.py
+!*.html
+!*.js
 !secret.txt
-!allfuncs.js
-!login.html
-!jquery-*
