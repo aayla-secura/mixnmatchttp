@@ -1,8 +1,12 @@
 # Description
 
-This is a simple wrapper around python's simple http server for CORS testing purposes. It can add custom headers including Access-Control-Allow-Origin: `<request origin>`. It can serve over SSL too.
+This is a simple multi-threaded wrapper around python's simple http server for CORS testing purposes. It can add custom headers including Access-Control-Allow-Origin: `<request origin>`. It can serve over SSL too.
 
 CORS headers (Allow-Origins and Allow-Credentials) can also be controlled per request with the `origin` and `creds` URL parameters. If origin is `%%ECHO%%` it is taken from the Origin header in the request.
+
+# TO DO/FIX
+  * Logging of requests is messed up, because of multi-threading
+  * How to catch the SOP errors from the browser and show them on the page, `window.onerror` doesn't catch those...
 
 # CORS test
 
