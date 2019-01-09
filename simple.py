@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 import socketserver
+import logging
 import http.server, http.server
 import ssl
 import re
+import sys
 import argparse
 
 AUTH_COOKIE = 'auth=1'
+logger = logging.getLogger('CORS Http Server')
+logger.setLevel(logging.INFO)
 
 class ThreadingCORSHttpsServer(socketserver.ThreadingMixIn, http.server.HTTPServer):
     pass
@@ -25,7 +29,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
             msg += "\n{}".format(
                 self.rfile.read(length).decode('utf-8'))
         msg += "<----- Request End -----\n"
-        print(msg)
+        logger.info(msg)
     
     def do_OPTIONS(self):
         self.do_HEAD()
@@ -147,7 +151,16 @@ if __name__ == "__main__":
     parser.add_argument('-S', '--no-ssl', dest='ssl',
             default=True, action='store_false',
             help='''Don't use SSL.''')
+    parser.add_argument('-l', '--logfile', dest='logfile',
+            metavar='FILE',
+            help='''File to write requests to. Will write to stdout if
+            not given.''')
     args = parser.parse_args()
+    
+    if args.logfile is None:
+        logger.addHandler(logging.StreamHandler(sys.stdout))
+    else:
+        logger.addHandler(logging.FileHandler(args.logfile))
     
     httpd = ThreadingCORSHttpsServer((args.address, args.port),
             new_server('CORSHttpsServer',

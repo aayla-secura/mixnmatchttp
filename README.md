@@ -37,9 +37,9 @@ Results will be logged to the page, check the JS console for CORS security error
 # Usage
 
 ```
-simple.py [-h] [-a IP] [-p PORT] [-o "Allowed origins" | -O] [-c]
-          [-H [Header: Value [Header: Value ...]]] [-C FILE] [-K FILE]
-          [-S]
+usage: simple.py [-h] [-a IP] [-p PORT] [-o "Allowed origins" | -O] [-c]
+                 [-H [Header: Value [Header: Value ...]]] [-C FILE] [-K FILE]
+                 [-S] [-l FILE]
 
 Serve the current working directory over HTTPS and with custom headers.
 
@@ -65,4 +65,7 @@ optional arguments:
   -K FILE, --key FILE   PEM file containing the private key for the server
                         certificate. (default: ./key.pem)
   -S, --no-ssl          Don't use SSL. (default: True)
+  -l FILE, --logfile FILE
+                        File to write requests to. Will write to stdout if not
+                        given. (default: None)
 ```

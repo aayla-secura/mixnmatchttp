@@ -17,12 +17,10 @@ function registerOnReady(func) {
 function getData(reqURL, doPOST, sendURL, force_preflight) {
 	var req = new XMLHttpRequest();
 	if (doPOST) {
-		logToConsole('POSTing to ' + reqURL);
 		logToPage('POSTing to ' + reqURL);
 		req.open('POST',reqURL);
 		req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
 	} else {
-		logToConsole('GETting ' + reqURL);
 		logToPage('GETting ' + reqURL);
 		req.open('GET', reqURL);
 	}
