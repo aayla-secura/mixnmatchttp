@@ -32,7 +32,8 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
     
     def do_HEAD(self):
         self.show()
-        super().do_HEAD()
+        self.do_GET()
+        #  super().do_HEAD()
     
     def get_param(self, parname):
         try:
@@ -91,6 +92,11 @@ def new_server(clsname, origins, use_creds, headers):
             creds = use_creds
         
         if allowed_origins:
+            #TODO accept AC allowed methods and headers from cmdline
+            self.send_header('Access-Control-Allow-Headers',
+                'Accept, Accept-Language, Content-Language, Content-Type, Authorization')
+            self.send_header('Access-Control-Allow-Methods',
+                'POST, GET, OPTIONS, HEAD')
             if allowed_origins == '%%ECHO%%':
                 allowed_origins = self.headers.get('Origin')
                 if not allowed_origins: allowed_origins = '*'

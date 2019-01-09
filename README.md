@@ -10,7 +10,8 @@ The html pages should work with older browser (not tested all yet).
 
   * `login.html`: sets the auth cookie and redirects to a URL given as the goto GET parameter or index.html
   * `secret.txt`: a dummy secret
-  * `getSecret.html`: fetches secret.txt with withCredentials set to True from the hostname given as the host GET parameter
+  * `getData.html`: fetches the requested resource (given in the `goto` URL parameter) with `withCredentials` set to True; it does GET unless the `post` URL parameter is true
+  * `getSecret.html`: fetches `secret.txt` by loading `getData.html` in multiple iframes (see below for description)
 
 Start the server on all interfaces (default) and then visit
 
@@ -24,12 +25,14 @@ Alternatively, start it only on one interface and use a DNS name which resolves 
 
 You can omit the host parameter the goto URL if listening on `localhost` and `localhost` has the `127.0.0.1` address. `getSecret.html` will detect that and use `localhost` and `127.0.0.1` as `<IP_1>` and `<IP_2>` or the other way around.
 
-`getSecret.html` will log in to the target (`<IP_2>`) and load 5 iframes, each of which will fetch `https://<IP_2>/secret.txt?origin=...&creds=...` with one of these 5 CORS combinations:
+`getSecret.html` will log in to the target (`<IP_2>`) and load 10 iframes, each of which will fetch `https://<IP_2>/secret.txt?origin=...&creds=...` with one of these 5 CORS combinations, once using GET and once using POST methods:
   * Origin: `*` , Credentials: true
   * Origin: `*` , Credentials: false
   * Origin: `<as requested>` , Credentials: true
   * Origin: `<as requested>` , Credentials: false
   * no CORS headers
+
+Results will be logged to the page, check the JS console for CORS security errors.
 
 # Usage
 

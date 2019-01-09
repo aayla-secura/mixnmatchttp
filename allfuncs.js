@@ -1,11 +1,29 @@
+function registerOnReady(func) {
+	// Not working in Opera 11.52 and maybe other old browsers
+	// $(document).ready(function () { logToConsole('ready') });
+
+	// Not working in Opera 11.52 and maybe other old browsers
+	// document.addEventListener("DOMContentLoaded", function (event) { logToConsole('DOM loaded') });
+
+	document.onreadystatechange = function () {
+		logToConsole('Doc state is ' + document.readyState);
+		// interactive not triggering in Opera 11.52 and maybe other old browsers
+		if (document.readyState === 'complete') {
+			func();
+		}
+	};
+};
+
 function getData(reqURL, doPOST, sendURL, force_preflight) {
 	var req = new XMLHttpRequest();
 	if (doPOST) {
 		logToConsole('POSTing to ' + reqURL);
+		logToPage('POSTing to ' + reqURL);
 		req.open('POST',reqURL);
 		req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
 	} else {
 		logToConsole('GETting ' + reqURL);
+		logToPage('GETting ' + reqURL);
 		req.open('GET', reqURL);
 	}
 	req.withCredentials = true;
@@ -14,7 +32,7 @@ function getData(reqURL, doPOST, sendURL, force_preflight) {
 	}
 	req.onreadystatechange = function reqListener(){
 		if (this.readyState != 4) { return; }
-		logToPage(this.responseText);
+		logToPage(this.responseText, 'color: red; font-weight: bold');
 		if (sendURL) {
 			// not tested with old browsers
 			var exf = new XMLHttpRequest();
@@ -29,7 +47,10 @@ function getData(reqURL, doPOST, sendURL, force_preflight) {
 	}
 };
 
-function logToPage(msg) {
+function logToPage(msg, msgStyle) {
+	if (typeof msgStyle === 'undefined') {
+		msgStyle = 'font-family: monospace';
+	}
 	var log = $('#log');
 	if (log.length === 0) {
 		log = $('<div></div>', {id: 'log'}).appendTo('body');
@@ -39,9 +60,9 @@ function logToPage(msg) {
 		logToConsole('Using old log div');
 	}
 	logToConsole(msg);
-	err = $('<p>');
-	err.text(msg);
-	log.append(err)
+	newlog = $('<p>', {style: msgStyle});
+	newlog.text(msg);
+	log.append(newlog)
 };
 
 function logToConsole(msg) {
