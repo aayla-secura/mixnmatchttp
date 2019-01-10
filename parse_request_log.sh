@@ -13,7 +13,7 @@ ${AWK} '
 BEGIN {
     IGNORECASE=1
     printf "| %-20s | %-20s | %-20s | %-20s |\n", "BROWSER", "METHOD", "ORIGIN", "CREDENTIALS"
-    print "| -------------------- | -------------------- | -------------------- | -------------------- |"
+    print "| :------------------: | :------------------: | :------------------: | :------------------: |"
 }
 /[^ ]/ {
     # look for first non-blank line after start
@@ -80,7 +80,7 @@ BEGIN {
 # Sort the table
 IFS=$'\n' read -d '' -a browsers < <(tail -n+3 "${TMPFILE}" | cut -d\| -f2 | sort -u)
 IFS=$'\n' read -d '' -a methods < <(tail -n+3 "${TMPFILE}" | cut -d\| -f3 | sort -u)
-sep=$(sed -n '2p' "${TMPFILE}")
+sep=$(sed -n '2p' "${TMPFILE}" | tr ':-' '~')
 
 head -n2 "${TMPFILE}" > "${OUTFILE}"
 for browser in "${browsers[@]}" ; do
