@@ -87,62 +87,62 @@ Opera 12.10:
 
 ====================
 Opera 17.0:
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. Credentials flag is true, but Access-Control-Allow-Credentials is not "true".
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=0. Cannot use wildcard in Access-Control-Allow-Origin when credentials flag is true.
-OPTIONS http://192.168.0.16:58081/secret.txt?origin=*&creds=0 Cannot use wildcard in Access-Control-Allow-Origin when credentials flag is true.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=0. Cannot use wildcard in Access-Control-Allow-Origin when credentials flag is true.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=&creds=0. Origin http://192.168.21.1:58081 is not allowed by Access-Control-Allow-Origin.
-OPTIONS http://192.168.0.16:58081/secret.txt?origin=&creds=0 Origin http://192.168.21.1:58081 is not allowed by Access-Control-Allow-Origin.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=&creds=0. Origin http://192.168.21.1:58081 is not allowed by Access-Control-Allow-Origin.
-OPTIONS http://192.168.0.16:58081/secret.txt?origin=*&creds=1 Cannot use wildcard in Access-Control-Allow-Origin when credentials flag is true.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=1. Cannot use wildcard in Access-Control-Allow-Origin when credentials flag is true.
 OPTIONS http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0 Credentials flag is true, but Access-Control-Allow-Credentials is not "true".
+OPTIONS http://192.168.0.16:58081/secret.txt?origin=&creds=0 Origin http://192.168.21.1:58081 is not allowed by Access-Control-Allow-Origin.
+OPTIONS http://192.168.0.16:58081/secret.txt?origin=*&creds=0 Cannot use wildcard in Access-Control-Allow-Origin when credentials flag is true.
+OPTIONS http://192.168.0.16:58081/secret.txt?origin=*&creds=1 Cannot use wildcard in Access-Control-Allow-Origin when credentials flag is true.
 XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. Credentials flag is true, but Access-Control-Allow-Credentials is not "true".
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. Credentials flag is true, but Access-Control-Allow-Credentials is not "true".
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=&creds=0. Origin http://192.168.21.1:58081 is not allowed by Access-Control-Allow-Origin.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=&creds=0. Origin http://192.168.21.1:58081 is not allowed by Access-Control-Allow-Origin.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=0. Cannot use wildcard in Access-Control-Allow-Origin when credentials flag is true.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=0. Cannot use wildcard in Access-Control-Allow-Origin when credentials flag is true.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=1. Cannot use wildcard in Access-Control-Allow-Origin when credentials flag is true.
 XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=1. Cannot use wildcard in Access-Control-Allow-Origin when credentials flag is true.
 
 ====================
 Opera 24.0:
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. Credentials flag is 'true', but the 'Access-Control-Allow-Credentials' header is ''. It must be 'true' to allow credentials.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. Credentials flag is 'true', but the 'Access-Control-Allow-Credentials' header is ''. It must be 'true' to allow credentials.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=&creds=0. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=&creds=0. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=0. A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=0. A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
 XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=1. A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=&creds=0. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=&creds=0. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. Credentials flag is 'true', but the 'Access-Control-Allow-Credentials' header is ''. It must be 'true' to allow credentials.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=0. A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. Credentials flag is 'true', but the 'Access-Control-Allow-Credentials' header is ''. It must be 'true' to allow credentials.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=0. A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
 XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=1. A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
 
 ====================
 Opera 32.0:
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=1. A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=1. A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=0. A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. Credentials flag is 'true', but the 'Access-Control-Allow-Credentials' header is ''. It must be 'true' to allow credentials. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. Credentials flag is 'true', but the 'Access-Control-Allow-Credentials' header is ''. It must be 'true' to allow credentials. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
 XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=&creds=0. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
 XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=&creds=0. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. Credentials flag is 'true', but the 'Access-Control-Allow-Credentials' header is ''. It must be 'true' to allow credentials. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
 XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=0. A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. Credentials flag is 'true', but the 'Access-Control-Allow-Credentials' header is ''. It must be 'true' to allow credentials. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=0. A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=1. A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=1. A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
 
 ====================
 Opera 40.0:
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=1. Response to preflight request doesn't pass access control check: A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of an XMLHttpRequest is controlled by the withCredentials attribute.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=&creds=0. Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=&creds=0. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
 XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. Credentials flag is 'true', but the 'Access-Control-Allow-Credentials' header is ''. It must be 'true' to allow credentials. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. Response to preflight request doesn't pass access control check: Credentials flag is 'true', but the 'Access-Control-Allow-Credentials' header is ''. It must be 'true' to allow credentials. Origin 'http://192.168.21.1:58081' is therefore not allowed access
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=&creds=0. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=&creds=0. Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=0. A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of an XMLHttpRequest is controlled by the withCredentials attribute.
 XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=0. Response to preflight request doesn't pass access control check: A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of an XMLHttpRequest is controlled by the withCredentials attribute.
 XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=1. A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of an XMLHttpRequest is controlled by the withCredentials attribute.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=0. A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of an XMLHttpRequest is controlled by the withCredentials attribute.
-XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. Response to preflight request doesn't pass access control check: Credentials flag is 'true', but the 'Access-Control-Allow-Credentials' header is ''. It must be 'true' to allow credentials. Origin 'http://192.168.21.1:58081' is therefore not allowed access
+XMLHttpRequest cannot load http://192.168.0.16:58081/secret.txt?origin=*&creds=1. Response to preflight request doesn't pass access control check: A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of an XMLHttpRequest is controlled by the withCredentials attribute.
 
 ====================
 Opera 56.0:
-Failed to load http://192.168.0.16:58081/secret.txt?origin=*&creds=1: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
-Failed to load http://192.168.0.16:58081/secret.txt?origin=*&creds=0: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
+Failed to load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0: Response to preflight request doesn't pass access control check: The value of the 'Access-Control-Allow-Credentials' header in the response is '' which must be 'true' when the request's credentials mode is 'include'. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
 Failed to load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0: The value of the 'Access-Control-Allow-Credentials' header in the response is '' which must be 'true' when the request's credentials mode is 'include'. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
 Failed to load http://192.168.0.16:58081/secret.txt?origin=&creds=0: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
-Failed to load http://192.168.0.16:58081/secret.txt?origin=*&creds=1: Response to preflight request doesn't pass access control check: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
-Failed to load http://192.168.0.16:58081/secret.txt?origin=*&creds=0: Response to preflight request doesn't pass access control check: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
-Failed to load http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0: Response to preflight request doesn't pass access control check: The value of the 'Access-Control-Allow-Credentials' header in the response is '' which must be 'true' when the request's credentials mode is 'include'. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
 Failed to load http://192.168.0.16:58081/secret.txt?origin=&creds=0: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://192.168.21.1:58081' is therefore not allowed access.
+Failed to load http://192.168.0.16:58081/secret.txt?origin=*&creds=0: Response to preflight request doesn't pass access control check: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
+Failed to load http://192.168.0.16:58081/secret.txt?origin=*&creds=0: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
+Failed to load http://192.168.0.16:58081/secret.txt?origin=*&creds=1: Response to preflight request doesn't pass access control check: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
+Failed to load http://192.168.0.16:58081/secret.txt?origin=*&creds=1: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
 
 ====================
 Firefox 10.0:
@@ -158,10 +158,10 @@ Firefox 27.0:
 
 ====================
 Firefox 35.0:
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. This can be fixed by moving the resource to the same domain or enabling CORS. secret.txt
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=0. This can be fixed by moving the resource to the same domain or enabling CORS. secret.txt
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. This can be fixed by moving the resource to the same domain or enabling CORS. secret.txt
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=&creds=0. This can be fixed by moving the resource to the same domain or enabling CORS. 
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=0. This can be fixed by moving the resource to the same domain or enabling CORS. secret.txt
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. This can be fixed by moving the resource to the same domain or enabling CORS. secret.txt
 
 ====================
 Firefox 44.0:
@@ -172,32 +172,32 @@ Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remot
 
 ====================
 Firefox 52.0:
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').  (unknown)
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=0. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').  (unknown)
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. (Reason: expected 'true' in CORS header 'Access-Control-Allow-Credentials').  (unknown)
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=&creds=0. (Reason: CORS header 'Access-Control-Allow-Origin' missing).
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=0. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').  (unknown)
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').  (unknown)
 
 ====================
 Firefox 58.0:
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=0. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. (Reason: expected 'true' in CORS header 'Access-Control-Allow-Credentials').
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. (Reason: expected 'true' in CORS header 'Access-Control-Allow-Credentials').
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=&creds=0. (Reason: CORS header 'Access-Control-Allow-Origin' missing).
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=0. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=&creds=0. (Reason: CORS header 'Access-Control-Allow-Origin' missing).
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=0. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=0. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').
 
 ====================
 Firefox 63.0:
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').[Learn More]
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. (Reason: CORS request did not succeed).[Learn More]
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. (Reason: expected 'true' in CORS header 'Access-Control-Allow-Credentials').[Learn More]
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. (Reason: expected 'true' in CORS header 'Access-Control-Allow-Credentials').[Learn More]
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=&creds=0. (Reason: CORS header 'Access-Control-Allow-Origin' missing).[Learn More]
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').[Learn More]
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. (Reason: CORS request did not succeed).[Learn More]
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=0. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').[Learn More]
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=0. (Reason: CORS request did not succeed).[Learn More]
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. (Reason: expected 'true' in CORS header 'Access-Control-Allow-Credentials').[Learn More]
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=%%ECHO%%&creds=0. (Reason: CORS request did not succeed).[Learn More]
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=&creds=0. (Reason: CORS header 'Access-Control-Allow-Origin' missing).[Learn More]
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=&creds=0. (Reason: CORS request did not succeed).
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=0. (Reason: CORS request did not succeed).[Learn More]
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=0. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').[Learn More]
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. (Reason: CORS request did not succeed).[Learn More]
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').[Learn More]
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').[Learn More]
