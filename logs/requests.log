@@ -9534,3 +9534,3332 @@ Connection: keep-alive
 
 <----- Request End -----
 
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.0.16 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /jquery-1.12.0.min.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.0.16:58081/login.html
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /index.html HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.0.16:58081/login.html
+Cookie: auth=1
+Cookie2: $Version=1
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+If-Modified-Since: Thu, 10 Jan 2019 00:20:40 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.7.62 Version/11.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+If-Modified-Since: Thu, 10 Jan 2019 00:20:40 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.0.16 HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /jquery-1.12.0.min.js HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.0.16:58081/login.html
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /index.html HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: http://192.168.0.16:58081/login.html
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: image/webp,image/apng,image/*,*/*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=1 HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=0 HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=&creds=0 HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Access-Control-Request-Method: POST
+Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Access-Control-Request-Headers: content-type
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Access-Control-Request-Method: POST
+Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Access-Control-Request-Headers: content-type
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Access-Control-Request-Method: POST
+Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Access-Control-Request-Headers: content-type
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Access-Control-Request-Method: POST
+Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Access-Control-Request-Headers: content-type
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Access-Control-Request-Method: POST
+Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Access-Control-Request-Headers: content-type
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Access-Control-Request-Method: POST
+Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Access-Control-Request-Headers: content-type
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Access-Control-Request-Method: POST
+Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Access-Control-Request-Headers: content-type
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Access-Control-Request-Method: POST
+Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Access-Control-Request-Headers: content-type
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Access-Control-Request-Method: POST
+Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Access-Control-Request-Headers: content-type
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Access-Control-Request-Method: POST
+Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Access-Control-Request-Headers: content-type
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+POST /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.0.16:58081
+Connection: keep-alive
+Content-Length: 2
+Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
+Content-Type: application/json;charset=UTF-8
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+Cookie: auth=1
+
+
+{}
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.0.16 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /jquery-1.12.0.min.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.0.16:58081/login.html
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /index.html HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.0.16:58081/login.html
+Cookie: auth=1
+Cookie2: $Version=1
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+If-Modified-Since: Thu, 10 Jan 2019 00:20:40 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.5.22 Version/10.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1
+If-Modified-Since: Thu, 10 Jan 2019 00:20:40 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.0.16 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /jquery-1.12.0.min.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.0.16:58081/login.html
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /index.html HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.0.16:58081/login.html
+Cookie: auth=1
+Cookie2: $Version=1
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+If-Modified-Since: Fri, 11 Jan 2019 00:01:35 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1
+If-Modified-Since: Fri, 11 Jan 2019 00:01:35 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.10
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1
+If-Modified-Since: Fri, 11 Jan 2019 00:01:35 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.0.16 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /jquery-1.12.0.min.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.0.16:58081/login.html
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /index.html HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.0.16:58081/login.html
+Cookie: auth=1
+Cookie2: $Version=1
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+If-Modified-Since: Fri, 11 Jan 2019 00:01:35 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1
+If-Modified-Since: Fri, 11 Jan 2019 00:01:35 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.80 (Windows NT 6.2; U; en) Presto/2.2.15 Version/10.00
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1
+If-Modified-Since: Fri, 11 Jan 2019 00:01:35 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.0.16 HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/jquery-1.8.0.min.js HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.0.16:58081/login.html
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+If-Modified-Since: Fri, 11 Jan 2019 02:06:53 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+If-Modified-Since: Fri, 11 Jan 2019 02:06:53 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+If-Modified-Since: Fri, 11 Jan 2019 02:06:53 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+If-Modified-Since: Fri, 11 Jan 2019 02:06:53 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1
+If-Modified-Since: Fri, 11 Jan 2019 02:06:53 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1
+If-Modified-Since: Fri, 11 Jan 2019 02:06:53 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+If-Modified-Since: Fri, 11 Jan 2019 02:06:53 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+User-Agent: Opera/9.60 (Windows NT 6.2; U; en) Presto/2.1.1
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1
+If-Modified-Since: Fri, 11 Jan 2019 02:06:53 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.0.16 HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/jquery-1.8.0.min.js HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.0.16:58081/login.html
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+If-Modified-Since: Fri, 11 Jan 2019 02:06:53 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.20 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en-NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.0.16 HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/jquery-1.8.0.min.js HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.0.16:58081/login.html
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+If-Modified-Since: Fri, 11 Jan 2019 02:38:44 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Opera/9.00 (Windows NT 6.2; U; en)
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en_NZ,en;q=0.9
+Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.0.16 HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/jquery-1.8.0.min.js HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /allfuncs.js HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.0.16:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.0.16:58081/login.html
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+If-Modified-Since: Fri, 11 Jan 2019 02:38:44 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 6.2; en) Opera 8.50
+Host: 192.168.21.1:58081
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
+Accept-Language: en
+Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
+Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1
+If-Modified-Since: Fri, 11 Jan 2019 02:38:44 GMT
+Connection: Keep-Alive, TE
+TE: deflate, gzip, chunked, identity, trailers
+
+
+<----- Request End -----
+
