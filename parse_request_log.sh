@@ -1,6 +1,8 @@
 #!/bin/bash
 
-REQFILE="${1:-requests.log}"
+REQFILE="${1:-logs/requests.log}"
+OUTFILE="${2:-logs/requests_result.md}"
+TMPFILE="${OUTFILE}.unsorted"
 if [[ $(uname) == Darwin* ]] ; then
     AWK='gawk'
 else
@@ -72,4 +74,24 @@ BEGIN {
         requested=0
     }
 }
-' "${REQFILE}"
+' "${REQFILE}" > "${TMPFILE}"
+
+
+# Sort the table
+IFS=$'\n' read -d '' -a browsers < <(tail -n+3 "${TMPFILE}" | cut -d\| -f2 | sort -u)
+IFS=$'\n' read -d '' -a methods < <(tail -n+3 "${TMPFILE}" | cut -d\| -f3 | sort -u)
+sep=$(sed -n '2p' "${TMPFILE}")
+
+head -n2 "${TMPFILE}" > "${OUTFILE}"
+for browser in "${browsers[@]}" ; do
+    for origin in '\*' '%%ECHO%%' '' ; do
+        for creds in 1 0 ; do
+            for method in "${methods[@]}" ; do
+                egrep '^\| *'"${browser//./\\.}"' *\| *'"${method}"' *\| *'"${origin}"' *\| *'"${creds}"' *\|$' "${TMPFILE}"
+            done
+            echo "${sep}"
+        done
+    done
+done | uniq >> "${OUTFILE}"
+
+rm "${TMPFILE}"

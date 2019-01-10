@@ -45,7 +45,7 @@ python3 simple.py -S -l logs/requests.log
 then visit `https://<IP_1>:58081/getSecret.html?host=<IP_2>` from various browsers. To parse the script and print the results in a table do:
 
 ```
-/parse_request_log.sh logs/requests.log > logs/requests_result.md
+/parse_request_log.sh logs/requests.log logs/requests_result.md
 ```
 
 # Usage

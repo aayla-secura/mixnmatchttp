@@ -1,226 +1,226 @@
 | BROWSER              | METHOD               | ORIGIN               | CREDENTIALS          |
 | -------------------- | -------------------- | -------------------- | -------------------- |
-| Opera 12.10          | GET                  | *                    | 1                    |
-| Opera 12.10          | GET                  | *                    | 0                    |
-| Opera 12.10          | GET                  | %%ECHO%%             | 0                    |
-| Opera 12.10          | GET                  | %%ECHO%%             | 1                    |
-| Opera 12.10          | OPTIONS POST         | *                    | 1                    |
-| Opera 12.10          | OPTIONS POST         | *                    | 1                    |
-| Opera 12.10          | GET                  |                      | 0                    |
-| Opera 12.10          | OPTIONS POST         | *                    | 0                    |
-| Opera 12.10          | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Opera 12.10          | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Opera 12.10          | OPTIONS POST         | *                    | 0                    |
-| Opera 12.10          | OPTIONS POST         |                      | 0                    |
-| Opera 12.10          | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Opera 12.10          | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Opera 12.10          | OPTIONS POST         |                      | 0                    |
-| Opera 12.10          | POST                 | %%ECHO%%             | 1                    |
-| Opera 17.0.1241.45   | GET                  | %%ECHO%%             | 0                    |
-| Opera 17.0.1241.45   | GET                  | %%ECHO%%             | 1                    |
-| Opera 17.0.1241.45   | OPTIONS POST         | *                    | 0                    |
-| Opera 17.0.1241.45   | OPTIONS POST         | *                    | 0                    |
-| Opera 17.0.1241.45   | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Opera 17.0.1241.45   | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Opera 17.0.1241.45   | GET                  | *                    | 0                    |
-| Opera 17.0.1241.45   | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Opera 17.0.1241.45   | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Opera 17.0.1241.45   | GET                  |                      | 0                    |
-| Opera 17.0.1241.45   | OPTIONS POST         | *                    | 1                    |
-| Opera 17.0.1241.45   | OPTIONS POST         | *                    | 1                    |
-| Opera 17.0.1241.45   | GET                  | *                    | 1                    |
-| Opera 17.0.1241.45   | POST                 | %%ECHO%%             | 1                    |
-| Opera 17.0.1241.45   | OPTIONS POST         |                      | 0                    |
-| Opera 17.0.1241.45   | OPTIONS POST         |                      | 0                    |
-| Opera 24.0.1558.53   | GET                  | *                    | 0                    |
-| Opera 24.0.1558.53   | GET                  |                      | 0                    |
-| Opera 24.0.1558.53   | OPTIONS POST         | *                    | 0                    |
-| Opera 24.0.1558.53   | OPTIONS POST         | *                    | 0                    |
-| Opera 24.0.1558.53   | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Opera 24.0.1558.53   | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Opera 24.0.1558.53   | GET                  | %%ECHO%%             | 0                    |
-| Opera 24.0.1558.53   | GET                  | %%ECHO%%             | 1                    |
-| Opera 24.0.1558.53   | OPTIONS POST         | *                    | 1                    |
-| Opera 24.0.1558.53   | OPTIONS POST         | *                    | 1                    |
-| Opera 24.0.1558.53   | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Opera 24.0.1558.53   | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Opera 24.0.1558.53   | GET                  | *                    | 1                    |
-| Opera 24.0.1558.53   | POST                 | %%ECHO%%             | 1                    |
-| Opera 24.0.1558.53   | OPTIONS POST         |                      | 0                    |
-| Opera 24.0.1558.53   | OPTIONS POST         |                      | 0                    |
-| Opera 32.0.1948.25   | OPTIONS POST         |                      | 0                    |
-| Opera 32.0.1948.25   | OPTIONS POST         |                      | 0                    |
-| Opera 32.0.1948.25   | OPTIONS POST         | *                    | 1                    |
-| Opera 32.0.1948.25   | OPTIONS POST         | *                    | 1                    |
-| Opera 32.0.1948.25   | GET                  | %%ECHO%%             | 0                    |
-| Opera 32.0.1948.25   | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Opera 32.0.1948.25   | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Opera 32.0.1948.25   | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Opera 32.0.1948.25   | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Opera 32.0.1948.25   | GET                  | %%ECHO%%             | 1                    |
-| Opera 32.0.1948.25   | GET                  | *                    | 1                    |
-| Opera 32.0.1948.25   | GET                  | *                    | 0                    |
-| Opera 32.0.1948.25   | GET                  |                      | 0                    |
-| Opera 32.0.1948.25   | OPTIONS POST         | *                    | 0                    |
-| Opera 32.0.1948.25   | OPTIONS POST         | *                    | 0                    |
-| Opera 32.0.1948.25   | POST                 | %%ECHO%%             | 1                    |
-| Opera 40.0.2308.54   | OPTIONS POST         | *                    | 1                    |
-| Opera 40.0.2308.54   | OPTIONS POST         | *                    | 1                    |
-| Opera 40.0.2308.54   | OPTIONS POST         |                      | 0                    |
-| Opera 40.0.2308.54   | OPTIONS POST         |                      | 0                    |
-| Opera 40.0.2308.54   | GET                  |                      | 0                    |
-| Opera 40.0.2308.54   | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Opera 40.0.2308.54   | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Opera 40.0.2308.54   | GET                  | %%ECHO%%             | 0                    |
-| Opera 40.0.2308.54   | OPTIONS POST         | *                    | 0                    |
-| Opera 40.0.2308.54   | OPTIONS POST         | *                    | 0                    |
-| Opera 40.0.2308.54   | GET                  | *                    | 1                    |
-| Opera 40.0.2308.54   | GET                  | *                    | 0                    |
-| Opera 40.0.2308.54   | GET                  | %%ECHO%%             | 1                    |
-| Opera 40.0.2308.54   | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Opera 40.0.2308.54   | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Opera 40.0.2308.54   | POST                 | %%ECHO%%             | 1                    |
-| Opera 56.0.3051.31   | GET                  | *                    | 1                    |
-| Opera 56.0.3051.31   | GET                  | *                    | 0                    |
-| Opera 56.0.3051.31   | GET                  | %%ECHO%%             | 1                    |
-| Opera 56.0.3051.31   | GET                  | %%ECHO%%             | 0                    |
-| Opera 56.0.3051.31   | GET                  |                      | 0                    |
-| Opera 56.0.3051.31   | OPTIONS POST         | *                    | 1                    |
-| Opera 56.0.3051.31   | OPTIONS POST         | *                    | 1                    |
-| Opera 56.0.3051.31   | OPTIONS POST         | *                    | 0                    |
-| Opera 56.0.3051.31   | OPTIONS POST         | *                    | 0                    |
-| Opera 56.0.3051.31   | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Opera 56.0.3051.31   | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Opera 56.0.3051.31   | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Opera 56.0.3051.31   | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Opera 56.0.3051.31   | OPTIONS POST         |                      | 0                    |
-| Opera 56.0.3051.31   | OPTIONS POST         |                      | 0                    |
-| Opera 56.0.3051.31   | POST                 | %%ECHO%%             | 1                    |
 | Firefox 10.0         | GET                  | *                    | 1                    |
+| Firefox 10.0         | OPTIONS POST         | *                    | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 10.0         | GET                  | *                    | 0                    |
+| Firefox 10.0         | OPTIONS POST         | *                    | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 10.0         | GET                  | %%ECHO%%             | 1                    |
-| Firefox 10.0         | GET                  | %%ECHO%%             | 0                    |
-| Firefox 10.0         | GET                  |                      | 0                    |
-| Firefox 10.0         | OPTIONS POST         | *                    | 1                    |
-| Firefox 10.0         | OPTIONS POST         | *                    | 1                    |
-| Firefox 10.0         | OPTIONS POST         | *                    | 0                    |
-| Firefox 10.0         | OPTIONS POST         | *                    | 0                    |
 | Firefox 10.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Firefox 10.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Firefox 10.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Firefox 10.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
 | Firefox 10.0         | POST                 | %%ECHO%%             | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 10.0         | GET                  | %%ECHO%%             | 0                    |
+| Firefox 10.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 10.0         | GET                  |                      | 0                    |
 | Firefox 10.0         | OPTIONS POST         |                      | 0                    |
-| Firefox 10.0         | OPTIONS POST         |                      | 0                    |
-| Firefox 18.0         | GET                  | *                    | 0                    |
-| Firefox 18.0         | GET                  | %%ECHO%%             | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 18.0         | GET                  | *                    | 1                    |
-| Firefox 18.0         | GET                  | %%ECHO%%             | 0                    |
-| Firefox 18.0         | GET                  |                      | 0                    |
 | Firefox 18.0         | OPTIONS POST         | *                    | 1                    |
-| Firefox 18.0         | OPTIONS POST         | *                    | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 18.0         | GET                  | *                    | 0                    |
 | Firefox 18.0         | OPTIONS POST         | *                    | 0                    |
-| Firefox 18.0         | OPTIONS POST         | *                    | 0                    |
-| Firefox 18.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Firefox 18.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Firefox 18.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 18.0         | GET                  | %%ECHO%%             | 1                    |
 | Firefox 18.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
 | Firefox 18.0         | POST                 | %%ECHO%%             | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 18.0         | GET                  | %%ECHO%%             | 0                    |
+| Firefox 18.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 18.0         | GET                  |                      | 0                    |
 | Firefox 18.0         | OPTIONS POST         |                      | 0                    |
-| Firefox 18.0         | OPTIONS POST         |                      | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 27.0         | GET                  | *                    | 1                    |
-| Firefox 27.0         | GET                  | %%ECHO%%             | 1                    |
+| Firefox 27.0         | OPTIONS POST         | *                    | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 27.0         | GET                  | *                    | 0                    |
-| Firefox 27.0         | GET                  | %%ECHO%%             | 0                    |
-| Firefox 27.0         | GET                  |                      | 0                    |
-| Firefox 27.0         | OPTIONS POST         | *                    | 1                    |
-| Firefox 27.0         | OPTIONS POST         | *                    | 1                    |
 | Firefox 27.0         | OPTIONS POST         | *                    | 0                    |
-| Firefox 27.0         | OPTIONS POST         | *                    | 0                    |
-| Firefox 27.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 27.0         | GET                  | %%ECHO%%             | 1                    |
 | Firefox 27.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
 | Firefox 27.0         | POST                 | %%ECHO%%             | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 27.0         | GET                  | %%ECHO%%             | 0                    |
 | Firefox 27.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Firefox 27.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 27.0         | GET                  |                      | 0                    |
 | Firefox 27.0         | OPTIONS POST         |                      | 0                    |
-| Firefox 27.0         | OPTIONS POST         |                      | 0                    |
-| Firefox 35.0         | OPTIONS POST         | *                    | 1                    |
-| Firefox 35.0         | OPTIONS POST         | *                    | 1                    |
-| Firefox 35.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Firefox 35.0         | OPTIONS POST         | *                    | 0                    |
-| Firefox 35.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Firefox 35.0         | OPTIONS POST         | *                    | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 35.0         | GET                  | *                    | 1                    |
-| Firefox 35.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Firefox 35.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Firefox 35.0         | GET                  | %%ECHO%%             | 0                    |
-| Firefox 35.0         | GET                  |                      | 0                    |
+| Firefox 35.0         | OPTIONS POST         | *                    | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 35.0         | GET                  | *                    | 0                    |
+| Firefox 35.0         | OPTIONS POST         | *                    | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 35.0         | GET                  | %%ECHO%%             | 1                    |
-| Firefox 35.0         | OPTIONS POST         |                      | 0                    |
-| Firefox 35.0         | OPTIONS POST         |                      | 0                    |
+| Firefox 35.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
 | Firefox 35.0         | POST                 | %%ECHO%%             | 1                    |
-| Firefox 44.0         | GET                  | %%ECHO%%             | 1                    |
-| Firefox 44.0         | GET                  | %%ECHO%%             | 0                    |
-| Firefox 44.0         | GET                  |                      | 0                    |
-| Firefox 44.0         | GET                  | *                    | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 35.0         | GET                  | %%ECHO%%             | 0                    |
+| Firefox 35.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 35.0         | GET                  |                      | 0                    |
+| Firefox 35.0         | OPTIONS POST         |                      | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 44.0         | GET                  | *                    | 1                    |
 | Firefox 44.0         | OPTIONS POST         | *                    | 1                    |
-| Firefox 44.0         | OPTIONS POST         | *                    | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 44.0         | GET                  | *                    | 0                    |
 | Firefox 44.0         | OPTIONS POST         | *                    | 0                    |
-| Firefox 44.0         | OPTIONS POST         | *                    | 0                    |
-| Firefox 44.0         | OPTIONS POST         |                      | 0                    |
-| Firefox 44.0         | OPTIONS POST         |                      | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 44.0         | GET                  | %%ECHO%%             | 1                    |
 | Firefox 44.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Firefox 44.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
-| Firefox 44.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Firefox 44.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
 | Firefox 44.0         | POST                 | %%ECHO%%             | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 44.0         | GET                  | %%ECHO%%             | 0                    |
+| Firefox 44.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 44.0         | GET                  |                      | 0                    |
+| Firefox 44.0         | OPTIONS POST         |                      | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 52.0         | GET                  | *                    | 1                    |
+| Firefox 52.0         | OPTIONS POST         | *                    | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 52.0         | GET                  | *                    | 0                    |
+| Firefox 52.0         | OPTIONS POST         | *                    | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 52.0         | GET                  | %%ECHO%%             | 1                    |
-| Firefox 52.0         | GET                  | %%ECHO%%             | 0                    |
-| Firefox 52.0         | GET                  |                      | 0                    |
-| Firefox 52.0         | OPTIONS POST         | *                    | 1                    |
-| Firefox 52.0         | OPTIONS POST         | *                    | 1                    |
-| Firefox 52.0         | OPTIONS POST         | *                    | 0                    |
-| Firefox 52.0         | OPTIONS POST         | *                    | 0                    |
-| Firefox 52.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
 | Firefox 52.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
 | Firefox 52.0         | POST                 | %%ECHO%%             | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 52.0         | GET                  | %%ECHO%%             | 0                    |
 | Firefox 52.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Firefox 52.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 52.0         | GET                  |                      | 0                    |
 | Firefox 52.0         | OPTIONS POST         |                      | 0                    |
-| Firefox 52.0         | OPTIONS POST         |                      | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 58.0         | GET                  | *                    | 1                    |
+| Firefox 58.0         | OPTIONS POST         | *                    | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 58.0         | GET                  | *                    | 0                    |
+| Firefox 58.0         | OPTIONS POST         | *                    | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 58.0         | GET                  | %%ECHO%%             | 1                    |
-| Firefox 58.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Firefox 58.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Firefox 58.0         | GET                  | %%ECHO%%             | 0                    |
-| Firefox 58.0         | GET                  |                      | 0                    |
-| Firefox 58.0         | OPTIONS POST         | *                    | 1                    |
-| Firefox 58.0         | OPTIONS POST         | *                    | 1                    |
-| Firefox 58.0         | OPTIONS POST         | *                    | 0                    |
-| Firefox 58.0         | OPTIONS POST         | *                    | 0                    |
-| Firefox 58.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
 | Firefox 58.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
 | Firefox 58.0         | POST                 | %%ECHO%%             | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 58.0         | GET                  | %%ECHO%%             | 0                    |
+| Firefox 58.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 58.0         | GET                  |                      | 0                    |
 | Firefox 58.0         | OPTIONS POST         |                      | 0                    |
-| Firefox 58.0         | OPTIONS POST         |                      | 0                    |
-| Firefox 63.0         | GET                  | *                    | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 63.0         | GET                  | *                    | 1                    |
-| Firefox 63.0         | GET                  | %%ECHO%%             | 0                    |
+| Firefox 63.0         | OPTIONS POST         | *                    | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 63.0         | GET                  | *                    | 0                    |
+| Firefox 63.0         | OPTIONS POST         | *                    | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
 | Firefox 63.0         | GET                  | %%ECHO%%             | 1                    |
-| Firefox 63.0         | GET                  |                      | 0                    |
-| Firefox 63.0         | OPTIONS POST         | *                    | 1                    |
-| Firefox 63.0         | OPTIONS POST         | *                    | 1                    |
-| Firefox 63.0         | OPTIONS POST         | *                    | 0                    |
-| Firefox 63.0         | OPTIONS POST         | *                    | 0                    |
-| Firefox 63.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
 | Firefox 63.0         | OPTIONS POST         | %%ECHO%%             | 1                    |
 | Firefox 63.0         | POST                 | %%ECHO%%             | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 63.0         | GET                  | %%ECHO%%             | 0                    |
 | Firefox 63.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
-| Firefox 63.0         | OPTIONS POST         | %%ECHO%%             | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Firefox 63.0         | GET                  |                      | 0                    |
 | Firefox 63.0         | OPTIONS POST         |                      | 0                    |
-| Firefox 63.0         | OPTIONS POST         |                      | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 12.10          | GET                  | *                    | 1                    |
+| Opera 12.10          | OPTIONS POST         | *                    | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 12.10          | GET                  | *                    | 0                    |
+| Opera 12.10          | OPTIONS POST         | *                    | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 12.10          | GET                  | %%ECHO%%             | 1                    |
+| Opera 12.10          | OPTIONS POST         | %%ECHO%%             | 1                    |
+| Opera 12.10          | POST                 | %%ECHO%%             | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 12.10          | GET                  | %%ECHO%%             | 0                    |
+| Opera 12.10          | OPTIONS POST         | %%ECHO%%             | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 12.10          | GET                  |                      | 0                    |
+| Opera 12.10          | OPTIONS POST         |                      | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 17.0.1241.45   | GET                  | *                    | 1                    |
+| Opera 17.0.1241.45   | OPTIONS POST         | *                    | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 17.0.1241.45   | GET                  | *                    | 0                    |
+| Opera 17.0.1241.45   | OPTIONS POST         | *                    | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 17.0.1241.45   | GET                  | %%ECHO%%             | 1                    |
+| Opera 17.0.1241.45   | OPTIONS POST         | %%ECHO%%             | 1                    |
+| Opera 17.0.1241.45   | POST                 | %%ECHO%%             | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 17.0.1241.45   | GET                  | %%ECHO%%             | 0                    |
+| Opera 17.0.1241.45   | OPTIONS POST         | %%ECHO%%             | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 17.0.1241.45   | GET                  |                      | 0                    |
+| Opera 17.0.1241.45   | OPTIONS POST         |                      | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 24.0.1558.53   | GET                  | *                    | 1                    |
+| Opera 24.0.1558.53   | OPTIONS POST         | *                    | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 24.0.1558.53   | GET                  | *                    | 0                    |
+| Opera 24.0.1558.53   | OPTIONS POST         | *                    | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 24.0.1558.53   | GET                  | %%ECHO%%             | 1                    |
+| Opera 24.0.1558.53   | OPTIONS POST         | %%ECHO%%             | 1                    |
+| Opera 24.0.1558.53   | POST                 | %%ECHO%%             | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 24.0.1558.53   | GET                  | %%ECHO%%             | 0                    |
+| Opera 24.0.1558.53   | OPTIONS POST         | %%ECHO%%             | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 24.0.1558.53   | GET                  |                      | 0                    |
+| Opera 24.0.1558.53   | OPTIONS POST         |                      | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 32.0.1948.25   | GET                  | *                    | 1                    |
+| Opera 32.0.1948.25   | OPTIONS POST         | *                    | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 32.0.1948.25   | GET                  | *                    | 0                    |
+| Opera 32.0.1948.25   | OPTIONS POST         | *                    | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 32.0.1948.25   | GET                  | %%ECHO%%             | 1                    |
+| Opera 32.0.1948.25   | OPTIONS POST         | %%ECHO%%             | 1                    |
+| Opera 32.0.1948.25   | POST                 | %%ECHO%%             | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 32.0.1948.25   | GET                  | %%ECHO%%             | 0                    |
+| Opera 32.0.1948.25   | OPTIONS POST         | %%ECHO%%             | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 32.0.1948.25   | GET                  |                      | 0                    |
+| Opera 32.0.1948.25   | OPTIONS POST         |                      | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 40.0.2308.54   | GET                  | *                    | 1                    |
+| Opera 40.0.2308.54   | OPTIONS POST         | *                    | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 40.0.2308.54   | GET                  | *                    | 0                    |
+| Opera 40.0.2308.54   | OPTIONS POST         | *                    | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 40.0.2308.54   | GET                  | %%ECHO%%             | 1                    |
+| Opera 40.0.2308.54   | OPTIONS POST         | %%ECHO%%             | 1                    |
+| Opera 40.0.2308.54   | POST                 | %%ECHO%%             | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 40.0.2308.54   | GET                  | %%ECHO%%             | 0                    |
+| Opera 40.0.2308.54   | OPTIONS POST         | %%ECHO%%             | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 40.0.2308.54   | GET                  |                      | 0                    |
+| Opera 40.0.2308.54   | OPTIONS POST         |                      | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 56.0.3051.31   | GET                  | *                    | 1                    |
+| Opera 56.0.3051.31   | OPTIONS POST         | *                    | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 56.0.3051.31   | GET                  | *                    | 0                    |
+| Opera 56.0.3051.31   | OPTIONS POST         | *                    | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 56.0.3051.31   | GET                  | %%ECHO%%             | 1                    |
+| Opera 56.0.3051.31   | OPTIONS POST         | %%ECHO%%             | 1                    |
+| Opera 56.0.3051.31   | POST                 | %%ECHO%%             | 1                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 56.0.3051.31   | GET                  | %%ECHO%%             | 0                    |
+| Opera 56.0.3051.31   | OPTIONS POST         | %%ECHO%%             | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
+| Opera 56.0.3051.31   | GET                  |                      | 0                    |
+| Opera 56.0.3051.31   | OPTIONS POST         |                      | 0                    |
+| -------------------- | -------------------- | -------------------- | -------------------- |
