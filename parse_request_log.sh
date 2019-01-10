@@ -12,8 +12,8 @@ fi
 ${AWK} '
 BEGIN {
     IGNORECASE=1
-    printf "| %-20s | %-20s | %-20s | %-20s |\n", "BROWSER", "METHOD", "ORIGIN", "CREDENTIALS"
-    print "| :------------------: | :------------------: | :------------------: | :------------------: |"
+    printf "| %-13s | %-13s | %-13s | %-13s | %-13s |\n", "BROWSER", "METHOD", "ORIGIN", "CREDENTIALS", "COOKIE"
+    print "| :-----------: | :-----------: | :-----------: | :-----------: | :-----------: |"
 }
 /[^ ]/ {
     # look for first non-blank line after start
@@ -34,7 +34,8 @@ BEGIN {
             acMethod=mArr[1]
         }
         if (match($0, /^Cookie: *(.*)/, mArr)) {
-            cookie=mArr[1]
+            # cookie=mArr[1]
+            cookie="Y"
         }
         if (match($0, /^User-Agent: *(.*)/, mArr)) {
             ua=mArr[1]
@@ -70,7 +71,7 @@ BEGIN {
 /^<----- Request End -----/ {
     if (requested) {
         # print method "\nOrigin: " origin "\nCredentials: " creds "\nCookie: " cookie "\nUser-Agent: " ua "\n\n===================="
-        printf "| %-20s | %-20s | %-20s | %-20s |\n", ua, method " " acMethod, origin, creds
+        printf "| %-13s | %-13s | %-13s | %-13s | %-13s |\n", ua, method " " acMethod, origin, creds, cookie
         requested=0
     }
 }
@@ -87,7 +88,7 @@ for browser in "${browsers[@]}" ; do
     for origin in '\*' '%%ECHO%%' '' ; do
         for creds in 1 0 ; do
             for method in "${methods[@]}" ; do
-                egrep '^\| *'"${browser//./\\.}"' *\| *'"${method}"' *\| *'"${origin}"' *\| *'"${creds}"' *\|$' "${TMPFILE}"
+                egrep '^\| *'"${browser//./\\.}"' *\| *'"${method}"' *\| *'"${origin}"' *\| *'"${creds}"' *\|' "${TMPFILE}"
             done
             echo "${sep}"
         done
