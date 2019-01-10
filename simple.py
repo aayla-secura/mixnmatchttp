@@ -28,7 +28,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         else:
             msg += "\n{}".format(
                 self.rfile.read(length).decode('utf-8'))
-        msg += "<----- Request End -----\n"
+        msg += "\n<----- Request End -----\n"
         logger.info(msg)
     
     def do_OPTIONS(self):

@@ -34,6 +34,20 @@ You can omit the host parameter the goto URL if listening on `localhost` and `lo
 
 Results will be logged to the page, check the JS console for CORS security errors.
 
+### Logging to file and parsing it
+
+Start the server as follows:
+
+```
+python3 simple.py -S -l logs/requests.log
+```
+
+then visit `https://<IP_1>:58081/getSecret.html?host=<IP_2>` from various browsers. To parse the script and print the results in a table do:
+
+```
+/parse_request_log.sh logs/requests.log > logs/requests_result.md
+```
+
 # Usage
 
 ```

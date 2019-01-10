@@ -1,7 +1,10 @@
 *
 !.gitignore
+!logs
+!logs/*
 !README.md
 !simple.py
 !*.html
 !*.js
 !secret.txt
+!parse_request_log.sh
