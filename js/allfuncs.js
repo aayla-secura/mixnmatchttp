@@ -30,6 +30,20 @@ function registerOnReady(func) {
 	};
 };
 
+function createElement(tag, attr, appendTo) {
+	if (typeof appendTo === 'undefined') {
+		appendTo = document.body;
+	}
+	el = document.createElement(tag);
+	for (prop in attr) {
+		if (attr.hasOwnProperty(prop)) {
+			el.setAttribute(prop, attr[prop]);
+		}
+	}
+	appendTo.appendChild(el);
+	return el;
+};
+
 function logToPage(msg, msgStyle, divStyle, logId, quiet) {
 	if (typeof logId === 'undefined') {
 		logId = 'log';
@@ -40,9 +54,12 @@ function logToPage(msg, msgStyle, divStyle, logId, quiet) {
 	if (typeof divStyle === 'undefined') {
 		divStyle = '';
 	}
-	var log = $('#' + logId);
-	if (log.length === 0) {
-		log = $('<div></div>', {id: logId, style: divStyle}).appendTo('body');
+	// var log = $('#' + logId);
+	var log = document.getElementById(logId);
+	// if (log.length === 0) {
+	if (log === null) {
+		// log = $('<div></div>', {id: logId, style: divStyle}).appendTo('body');
+		log = createElement('div', {id: logId, style: divStyle})
 
 		if (typeof quiet === 'undefined' || ! quiet) {
 			logToConsole('Created log div');
@@ -51,9 +68,12 @@ function logToPage(msg, msgStyle, divStyle, logId, quiet) {
 	else if (typeof quiet === 'undefined' || ! quiet) {
 		logToConsole('Using old log div');
 	}
-	newlog = $('<p>', {style: 'margin-top: 0px; margin-bottom: 0px; ' + msgStyle});
-	newlog.text(msg);
-	log.append(newlog)
+	// newlog = $('<p>', {style: 'margin-top: 0px; margin-bottom: 0px; ' + msgStyle});
+	newlog = createElement('p', {style: 'margin-top: 0px; margin-bottom: 0px; ' + msgStyle});
+	// newlog.text(msg);
+	newlog.textContent = msg;
+	// log.append(newlog)
+	log.appendChild(newlog)
 };
 
 function logToConsole(msg) {
