@@ -5,6 +5,7 @@
 !README.md
 !simple.py
 !*.html
-!*.js
+!js
+!js/*
 !secret.txt
 !parse_request_log.sh
