@@ -9,8 +9,8 @@
 			DEBUG = true;
 
 			registerOnReady(function () {
-				doPost = Boolean(Number(getPar(document.location, "post")));
-				url = getPar(document.location, "goto");
+				doPost = Boolean(Number(getPar("post")));
+				url = getPar("goto");
 				if (url) {
 					url = decodeURIComponent(url);
 					getData(url, doPost);

@@ -9,40 +9,71 @@ CORS headers (Allow-Origins and Allow-Credentials) can also be controlled per re
 The html pages should work with older browser (not tested all yet).
 
   * `login.html`: sets the auth cookie and redirects to a URL given as the goto GET parameter or index.html
-  * `secret.txt`: a dummy secret
+  * `secret.txt`: a dummy secret, accessible only if an 'auth=1' cookie is present
   * `getData.html`: fetches the requested resource (given in the `goto` URL parameter) with `withCredentials` set to True; it does GET unless the `post` URL parameter is true
   * `getSecret.html`: fetches `secret.txt` by loading `getData.html` in multiple iframes (see below for description)
 
-Start the server on all interfaces (default) and then visit
+### Running the server
 
-```
-https://<IP_1>:58081/getSecret.html?host=<IP_2>
-```
-
-replacing `<IP_1>` and `<IP_2>` with two different interfaces, e.g. `127.0.0.1` and `192.168.0.1`.
-
-Alternatively, start it only on one interface and use a DNS name which resolves to the interface's IP address.
-
-You can omit the host parameter the goto URL if listening on `localhost` and `localhost` has the `127.0.0.1` address. `getSecret.html` will detect that and use `localhost` and `127.0.0.1` as `<IP_1>` and `<IP_2>` or the other way around.
-
-`getSecret.html` will log in to the target (`<IP_2>`) and load 10 iframes, each of which will fetch `https://<IP_2>/secret.txt?origin=...&creds=...` with one of these 5 CORS combinations, once using GET and once using POST methods:
-  * Origin: `*` , Credentials: true
-  * Origin: `*` , Credentials: false
-  * Origin: `<as requested>` , Credentials: true
-  * Origin: `<as requested>` , Credentials: false
-  * no CORS headers
-
-Results will be logged to the page, check the JS console for CORS security errors.
-
-### Logging to file and parsing it
-
-Start the server as follows:
+1. Start the server on all interfaces (default):
 
 ```
 python3 simple.py -S -l logs/requests.log
 ```
 
-then visit `https://<IP_1>:58081/getSecret.html?host=<IP_2>` from various browsers. To parse the script and print the results in a table do:
+then visit:
+
+```
+https://<IP_1>:58081/getSecret.html?hostname=<IP_2>
+```
+
+replacing `<IP_1>` and `<IP_2>` with two different interfaces, e.g. `127.0.0.1` and `192.168.0.1`.
+
+2. Alternatively, start it only on one interface:
+
+```
+python3 simple.py -S -a <IP> -l logs/requests.log
+```
+
+and use a DNS name which resolves to the interface's IP address:
+
+```
+https://<IP>:58081/getSecret.html?hostname=<hostname>
+```
+
+or:
+
+```
+https://<hostname>:58081/getSecret.html?hostname=<IP>
+```
+
+You can omit the hostname URL parameter if listening on `localhost` and `localhost` has the `127.0.0.1` address. `getSecret.html` will detect that and use `localhost` or `127.0.0.1` as the target domain (if the origin is `127.0.0.1` or `localhost` respectively).
+
+3. Alternatively, run two different instances on one interface but different ports:
+
+```
+python3 simple.py -S -a <IP> -l logs/requests.log
+python3 simple.py -S -a <IP> -p 58082 -l logs/requests_58082.log
+```
+
+then visit:
+
+```
+https://<IP>:58081/getSecret.html?host=<IP>:58082
+```
+
+Notice the different URL parameters: `host` and `hostname`. If you use `hostname` then the port number for the target host will be the same as the origin host. If you use `host` you must give the port number explicitly.
+
+### Viewing results, logging to file and parsing it
+
+`getSecret.html` will log in to the target host (e.g. `<IP_2>` if running as described in option 1. and load 10 iframes, each of which will fetch `https://<target_host>/secret.txt?origin=...&creds=...` requesting one of the following 5 CORS combinations from the server, once using GET and once using POST methods:
+  * Origin: `*` , Credentials: true
+  * Origin: `*` , Credentials: false
+  * Origin: `<as request origin>` , Credentials: true
+  * Origin: `<as request origin>` , Credentials: false
+  * no CORS headers
+
+Results from the Ajax calls will be logged to the page; check the JS console for CORS security errors. Full requests from the browser will be logged to the logfile given by the `-l` option. To parse the script and print the results in a table do:
 
 ```
 /parse_request_log.sh logs/requests.log logs/requests_result.md
@@ -55,7 +86,11 @@ usage: simple.py [-h] [-a IP] [-p PORT] [-o "Allowed origins" | -O] [-c]
                  [-H [Header: Value [Header: Value ...]]] [-C FILE] [-K FILE]
                  [-S] [-l FILE]
 
-Serve the current working directory over HTTPS and with custom headers.
+Serve the current working directory over HTTPS and with custom headers. The
+CORS related options (-o and -c) define the default behaviour. It can be
+overriden on a per-request basis using the origin and creds URL parameters.
+creds should be 0 or 1. origin is taken literally unless it is `%%ECHO%%`,
+then it is taken from the Origin header in the request.
 
 optional arguments:
   -h, --help            show this help message and exit

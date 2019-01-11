@@ -117,7 +117,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description='''Serve the current working directory over
-            HTTPS and with custom headers.''')
+            HTTPS and with custom headers. The CORS related options
+            (-o and -c) define the default behaviour. It can be
+            overriden on a per-request basis using the origin and
+            creds URL parameters. creds should be 0 or 1. origin is
+            taken literally unless it is `%%ECHO%%`, then it is taken
+            from the Origin header in the request.''')
     parser.add_argument('-a', '--address', dest='address',
             default='0.0.0.0', metavar='IP',
             help='''Address of interface to bind to.''')

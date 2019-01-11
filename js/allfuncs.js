@@ -123,11 +123,10 @@ function getData(reqURL, doPOST, sendURL, force_preflight) {
 	}
 };
 
-function getPar(docLocation, parname) {
-	// pass me document.location
+function getPar(parname) {
 	pars = document.location.search.slice(1).split('&');
 	for (i = 0; i < pars.length; i++){
-		if (pars[i].substr(0, parname.length) === parname) {
+		if (pars[i].substr(0, parname.length + 1) === parname + '=') {
 			return pars[i].slice(parname.length + 1);
 		}
 	}
