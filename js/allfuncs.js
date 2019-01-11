@@ -22,9 +22,14 @@ function registerOnReady(func) {
 	// };
 
 	window.onload = function () {
-		logToConsole('Doc state is ' + document.readyState);
+		if (typeof document.readyState !== 'undefined') {
+			logToConsole('Doc state is ' + document.readyState);
+		}
+		else {
+			logToConsole('Doc state is undefined');
+		}
 		// interactive not triggering in Opera 11.52
-		if (document.readyState === 'complete') {
+		if (typeof document.readyState === 'undefined' || document.readyState === 'complete') {
 			func();
 		}
 	};
