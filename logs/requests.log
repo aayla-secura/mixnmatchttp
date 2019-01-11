@@ -12863,3 +12863,4624 @@ TE: deflate, gzip, chunked, identity, trailers
 
 <----- Request End -----
 
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.1.105 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/jquery-1.8.0.min.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: image/png,image/*;q=0.8,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.1.105:58081/login.html
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /index.html HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.1.105:58081/login.html
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+POST /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Content-Type: application/json;charset=UTF-8
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+Content-Length: 2
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+{}
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.1.105 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/jquery-1.8.0.min.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.1.105:58081/login.html
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /index.html HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.1.105:58081/login.html
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+POST /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Content-Type: application/json;charset=UTF-8
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+Content-Length: 2
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+{}
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.1.105 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/jquery-1.8.0.min.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: image/png,image/*;q=0.8,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.1.105:58081/login.html
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /index.html HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.1.105:58081/login.html
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+POST /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Content-Type: application/json;charset=UTF-8
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+Content-Length: 2
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+{}
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.1.105 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/jquery-1.8.0.min.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.1.105:58081/login.html
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /index.html HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.1.105:58081/login.html
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+POST /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Content-Type: application/json;charset=UTF-8
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+Content-Length: 2
+Origin: http://192.168.21.1:58081
+Cookie: auth=1
+Pragma: no-cache
+Cache-Control: no-cache
+
+
+{}
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.1.105 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: image/png,image/*;q=0.8,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.1.105:58081/login.html
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /index.html HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.1.105:58081/login.html
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.1.105 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/jquery-1.8.0.min.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.1.105:58081/login.html
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /index.html HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.1.105:58081/login.html
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.1.105 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.1.105:58081/login.html
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /index.html HTTP/1.1
+Host: 192.168.1.105:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.1.105:58081/login.html
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.1.105
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: 192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.2; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+Accept: image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+<----- Request End -----
+

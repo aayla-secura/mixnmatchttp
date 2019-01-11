@@ -649,6 +649,71 @@ Failed to load http://192.168.0.16:58081/secret.txt?origin=*&creds=1: Response t
 Failed to load http://192.168.0.16:58081/secret.txt?origin=*&creds=1: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'. Origin 'http://192.168.21.1:58081' is therefore not allowed access. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
 
 ====================
+Firefox 1.0:
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+
+====================
+Firefox 2.0:
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+Error: uncaught exception: Permission denied to call method XMLHttpRequest.open
+
+====================
+Firefox 3.0:
+Security Error: Content at http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 may not load data from http://192.168.1.105:58081/secret.txt?origin=%%ECHO%%&creds=0.
+Error: uncaught exception: [Exception... "Access to restricted URI denied"  code: "1012" nsresult: "0x805303f4 (NS_ERROR_DOM_BAD_URI)"  location: "http://192.168.21.1:58081/js/allfuncs.js Line: 103"]
+Security Error: Content at http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 may not load data from http://192.168.1.105:58081/secret.txt?origin=%%ECHO%%&creds=0.
+Error: uncaught exception: [Exception... "Access to restricted URI denied"  code: "1012" nsresult: "0x805303f4 (NS_ERROR_DOM_BAD_URI)"  location: "http://192.168.21.1:58081/js/allfuncs.js Line: 99"]
+Security Error: Content at http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 may not load data from http://192.168.1.105:58081/secret.txt?origin=%%ECHO%%&creds=1.
+Error: uncaught exception: [Exception... "Access to restricted URI denied"  code: "1012" nsresult: "0x805303f4 (NS_ERROR_DOM_BAD_URI)"  location: "http://192.168.21.1:58081/js/allfuncs.js Line: 103"]
+Security Error: Content at http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 may not load data from http://192.168.1.105:58081/secret.txt?origin=%%ECHO%%&creds=1.
+Error: uncaught exception: [Exception... "Access to restricted URI denied"  code: "1012" nsresult: "0x805303f4 (NS_ERROR_DOM_BAD_URI)"  location: "http://192.168.21.1:58081/js/allfuncs.js Line: 99"]
+Security Error: Content at http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 may not load data from http://192.168.1.105:58081/secret.txt?origin=&creds=0.
+Error: uncaught exception: [Exception... "Access to restricted URI denied"  code: "1012" nsresult: "0x805303f4 (NS_ERROR_DOM_BAD_URI)"  location: "http://192.168.21.1:58081/js/allfuncs.js Line: 103"]
+Security Error: Content at http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 may not load data from http://192.168.1.105:58081/secret.txt?origin=&creds=0.
+Error: uncaught exception: [Exception... "Access to restricted URI denied"  code: "1012" nsresult: "0x805303f4 (NS_ERROR_DOM_BAD_URI)"  location: "http://192.168.21.1:58081/js/allfuncs.js Line: 99"]
+Security Error: Content at http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 may not load data from http://192.168.1.105:58081/secret.txt?origin=*&creds=0.
+Error: uncaught exception: [Exception... "Access to restricted URI denied"  code: "1012" nsresult: "0x805303f4 (NS_ERROR_DOM_BAD_URI)"  location: "http://192.168.21.1:58081/js/allfuncs.js Line: 103"]
+Security Error: Content at http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 may not load data from http://192.168.1.105:58081/secret.txt?origin=*&creds=0.
+Error: uncaught exception: [Exception... "Access to restricted URI denied"  code: "1012" nsresult: "0x805303f4 (NS_ERROR_DOM_BAD_URI)"  location: "http://192.168.21.1:58081/js/allfuncs.js Line: 99"]
+Security Error: Content at http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 may not load data from http://192.168.1.105:58081/secret.txt?origin=*&creds=1.
+Error: uncaught exception: [Exception... "Access to restricted URI denied"  code: "1012" nsresult: "0x805303f4 (NS_ERROR_DOM_BAD_URI)"  location: "http://192.168.21.1:58081/js/allfuncs.js Line: 103"]
+Security Error: Content at http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 may not load data from http://192.168.1.105:58081/secret.txt?origin=*&creds=1.
+Error: uncaught exception: [Exception... "Access to restricted URI denied"  code: "1012" nsresult: "0x805303f4 (NS_ERROR_DOM_BAD_URI)"  location: "http://192.168.21.1:58081/js/allfuncs.js Line: 99"]
+
+====================
+Firefox 3.5:
+--
+
+====================
+Firefox 3.6:
+--
+
+====================
+Firefox 4.0:
+--
+
+====================
+Firefox 5.0:
+--
+
+====================
 Firefox 10.0:
 --
 
