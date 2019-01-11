@@ -11,11 +11,19 @@ The html pages should work with older browser (not tested all yet).
   * `login.html`: sets the auth cookie and redirects to a URL given as the goto GET parameter or index.html
   * `secret.txt`: a dummy secret, accessible only if an 'auth=1' cookie is present
   * `getData.html`: fetches the requested resource (given in the `goto` URL parameter) with `withCredentials` set to True; it does GET unless the `post` URL parameter is true
-  * `getSecret.html`: fetches `secret.txt` by loading `getData.html` in multiple iframes (see below for description)
+  * `getSecret.html`: fetches `secret.txt` from the target host (given by the `host`, `hostname` or `port` URL parameters, see below) by loading `getData.html` in multiple iframes (see below for description)
 
 ### Running the server
 
+`getSecret.html` will determine the target host using one of the following URL parameters, in this order of precedence:
+  * `host`: gives the full hostname/IP address:port of the target
+  * `hostname`: gives only the hostname/IP address of the target; the port number is the same as the origin
+  * `port`: gives only the port number of the target; the hostname/IP address is the same as the origin
+
+You therefore have these options for CORS testing:
+
 1. Start the server on all interfaces (default):
+
 
 ```
 python3 simple.py -S -l logs/requests.log
@@ -52,17 +60,15 @@ You can omit the hostname URL parameter if listening on `localhost` and `localho
 3. Alternatively, run two different instances on one interface but different ports:
 
 ```
-python3 simple.py -S -a <IP> -l logs/requests.log
+python3 simple.py -S -a <IP> -p 58081 -l logs/requests_58081.log
 python3 simple.py -S -a <IP> -p 58082 -l logs/requests_58082.log
 ```
 
 then visit:
 
 ```
-https://<IP>:58081/getSecret.html?host=<IP>:58082
+https://<IP>:58081/getSecret.html?port=58082
 ```
-
-Notice the different URL parameters: `host` and `hostname`. If you use `hostname` then the port number for the target host will be the same as the origin host. If you use `host` you must give the port number explicitly.
 
 ### Viewing results, logging to file and parsing it
 
