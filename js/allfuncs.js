@@ -1,3 +1,24 @@
+// textContent on IE8 and earlier
+// thanks to https://stackoverflow.com/a/35213210
+if (Object.defineProperty
+  && Object.getOwnPropertyDescriptor
+  && Object.getOwnPropertyDescriptor(Element.prototype, "textContent")
+  && !Object.getOwnPropertyDescriptor(Element.prototype, "textContent").get) {
+  (function() {
+    var innerText = Object.getOwnPropertyDescriptor(Element.prototype, "innerText");
+    Object.defineProperty(Element.prototype, "textContent",
+     {
+       get: function() {
+         return innerText.get.call(this);
+       },
+       set: function(s) {
+         return innerText.set.call(this, s);
+       }
+     }
+   );
+  })();
+}
+
 function registerOnReady(func) {
 	// logToConsole('registerOnReady');
 	// Not working in Opera 11.52
@@ -85,7 +106,8 @@ function logToConsole(msg) {
 	if (typeof DEBUG === 'undefined' || ! DEBUG) { return; }
 	// There's no console in Opera 10.10
 	// if (typeof console === 'undefined') {
-		window.top.logToPage('[' + document.location.search + ']: ' + msg, '', 'font-family: monospace; color: white; background-color: red;', 'errLog', true)
+		window.top.logToPage('[' + document.location.search + ']: ' + msg, '',
+			'font-family: monospace; color: white; background-color: red;', 'errLog', true)
 	// }
 	// else {
 	//	console.log(msg);
