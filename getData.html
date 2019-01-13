@@ -3,17 +3,16 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<!-- <script src="js/jquery-1.8.0.min.js"></script> -->
 		<script src="js/allfuncs.js" charset="utf-8"></script>
 		<script charset="utf-8">
-			DEBUG = true;
+			var DEBUG = true;
 
-			registerOnReady(function () {
-				doPost = Boolean(Number(getPar("post")));
-				url = getPar("goto");
+			registerWinOnLoad(function () {
+				var doPost = Boolean(Number(getPar("post")));
+				var url = getPar("goto");
 				if (url) {
 					url = decodeURIComponent(url);
-					getData(url, doPost);
+					getData(url, doPost, document.location.href);
 				}
 			});
 		</script>
