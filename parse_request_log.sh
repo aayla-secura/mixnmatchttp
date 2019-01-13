@@ -37,24 +37,61 @@ BEGIN {
             # cookie=mArr[1]
             cookie="Y"
         }
-        if (match($0, /^User-Agent: *(.*)/, mArr)) {
-            ua=mArr[1]
-            numF=patsplit(ua, uaFields, /[A-Za-z]+\/[0-9\.]+/)
-            # printf "DEBUG UA: numF=" numF ", uaFields=["
-            # for (i in uaFields) { printf uaFields[i] ", " }
+        if (match($0, /^User-Agent: *([^\(]*) *(\([^\)]*\))? *(.*)/, mArr)) {
+            if (mArr[2]) {
+                os=gensub(/^\(|\)$/, "", "g", mArr[2])
+                uaFull=mArr[1] " " mArr[3]
+            }
+            else {
+                os=""
+                uaFull=mArr[1]
+            }
+            numF=patsplit(uaFull, uaFields, /[A-Za-z]+\/[0-9\.]+/)
+            # split(os, osFields, /; */)
+            # printf "DEBUG UA: os=" os ", numF=" numF ", uaFields=["
+            # for (i = 0; i <= numF ; i++) { printf uaFields[i] ", " }
             # print "]"
+            ua=""
             if (numF > 2) {
                 if (uaFields[1] ~ /Opera\// || uaFields[1] ~ /Mozilla\// && uaFields[numF] ~ /OPR\//) {
+                    # OPERA
                     ua="Opera " gensub(/.*\//, "", "1", uaFields[numF])
                 }
                 else if (uaFields[numF-1] ~ /Chrome\//) {
+                    # CHROME
                     ua=gensub(/\//, " ", "1", uaFields[numF-1])
                 }
-                else if (uaFields[numF] ~ /(Safari|Firefox)\//) {
+                else if (uaFields[numF] ~ /(Firefox)\//) {
+                    # FIREFOX
                     ua=gensub(/\//, " ", "1", uaFields[numF])
                 }
+                else if (uaFields[numF] ~ /(Safari)\//) {
+                    # SAFARI
+                    version=""
+                    for (i in uaFields) {
+                        if (uaFields[i] ~ /Version\// ) {
+                            version=gensub(/.*\//, "", "1", uaFields[i])
+                        }
+                    }
+                    if (! version) {
+                        version=gensub(/.*\//, "", "1", uaFields[numF]) # WebKit version
+                    }
+                    ua=gensub(/\//, " ", "1", uaFields[numF])
+                }
+            }
+            if (! ua) {
+                if (os ~ /MSIE|Trident/) {
+                    # INTERNET EXPLORER
+                    match(os, /(MSIE *|rv *: *)([0-9\.]+)/, mArr)
+                    version=mArr[2]
+                    if (! version) {
+                        version="(Unknown)"
+                    }
+                    ua="IE " version
+                }
                 else {
-                    ua=gensub(/\/.*/, "", "1", uaFields[1]) gensub(/\//, " ", "1", uaFields[numF])
+                    # UNKNOWN
+                    ua=uaFull
                 }
             }
         }
@@ -80,16 +117,21 @@ BEGIN {
 
 # Sort the table
 IFS=$'\n' read -d '' -a browsers < <(tail -n+3 "${TMPFILE}" | cut -d\| -f2 | sort -u)
-IFS=$'\n' read -d '' -a methods < <(tail -n+3 "${TMPFILE}" | cut -d\| -f3 | sort -u)
+# IFS=$'\n' read -d '' -a methods < <(tail -n+3 "${TMPFILE}" | cut -d\| -f3 | sort -u)
 sep=$(sed -n '2p' "${TMPFILE}" | tr ':-' '~')
 
 head -n2 "${TMPFILE}" > "${OUTFILE}"
 for browser in "${browsers[@]}" ; do
+    for c in '(' ')' '[' ']' '.' '^' '$' '+' '\?' '\*' '|' '\' '{' '}' ; do
+        browser="${browser//${c}/\\${c}}"
+    done
     for origin in '\*' '%%ECHO%%' '' ; do
         for creds in 1 0 ; do
-            for method in "${methods[@]}" ; do
-                egrep '^\| *'"${browser//./\\.}"' *\| *'"${method}"' *\| *'"${origin}"' *\| *'"${creds}"' *\|' "${TMPFILE}"
-            done
+            # don't sort them by method; keep the order in which requests were sent
+            # for method in "${methods[@]}" ; do
+            #    egrep '^\| *'"${browser}"' *\| *'"${method}"' *\| *'"${origin}"' *\| *'"${creds}"' *\|' "${TMPFILE}"
+            # done
+            egrep '^\| *'"${browser}"' *\| *'"[A-Z ]+"' *\| *'"${origin}"' *\| *'"${creds}"' *\|' "${TMPFILE}"
             echo "${sep}"
         done
     done
