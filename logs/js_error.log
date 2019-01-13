@@ -770,3 +770,137 @@ Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remot
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. (Reason: CORS request did not succeed).[Learn More]
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').[Learn More]
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://192.168.0.16:58081/secret.txt?origin=*&creds=1. (Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*').[Learn More]
+
+====================
+IE 8:
+Message: Access is denied.
+Line: 147
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 147
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 147
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 147
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 147
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 151
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 151
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 151
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 151
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 151
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+
+====================
+IE 9:
+Message: Access is denied.
+Line: 147
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 147
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 147
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 147
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 147
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 151
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 151
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 151
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 151
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+Message: Access is denied.
+Line: 151
+Char: 3
+Code: 0
+URI: http://192.168.21.1:58081/js/allfuncs.js
+
+====================
+IE 10:
+---
+
+====================
+IE 11:
+SEC7121: Wildcard in Access-Control-Allow-Origin not allowed when credentials flag is set to true.
+SCRIPT7002: XMLHttpRequest: Network Error 0x80700013, Could not complete the operation due to error 80700013.
+SEC7122: Credentials flag was set to true, but Access-Control-Allow-Credentials was not present or was not set to "true".
+SCRIPT7002: XMLHttpRequest: Network Error 0x80700013, Could not complete the operation due to error 80700013.
+SEC7120: Origin http://192.168.21.1:58081 not found in Access-Control-Allow-Origin header.
+SCRIPT7002: XMLHttpRequest: Network Error 0x80700013, Could not complete the operation due to error 80700013.
+SEC7121: Wildcard in Access-Control-Allow-Origin not allowed when credentials flag is set to true.
+SCRIPT7002: XMLHttpRequest: Network Error 0x80070005, Access is denied.
+SEC7121: Wildcard in Access-Control-Allow-Origin not allowed when credentials flag is set to true.
+SCRIPT7002: XMLHttpRequest: Network Error 0x80700013, Could not complete the operation due to error 80700013.
+SEC7121: Wildcard in Access-Control-Allow-Origin not allowed when credentials flag is set to true.
+SCRIPT7002: XMLHttpRequest: Network Error 0x80070005, Access is denied.
+SEC7122: Credentials flag was set to true, but Access-Control-Allow-Credentials was not present or was not set to "true".
+SCRIPT7002: XMLHttpRequest: Network Error 0x80070005, Access is denied.
+SEC7120: Origin http://192.168.21.1:58081 not found in Access-Control-Allow-Origin header.
+SCRIPT7002: XMLHttpRequest: Network Error 0x80070005, Access is denied.
+SCRIPT5: Access is denied.
+SCRIPT5: Access is denied.
+SCRIPT5: Access is denied.
+SCRIPT5: Access is denied.
+SCRIPT5: Access is denied.
