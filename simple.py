@@ -32,12 +32,15 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         logger.info(msg)
     
     def do_OPTIONS(self):
-        self.do_HEAD()
+        self.show()
+        self.send_response(200)
+        self.send_header('Content-Type', 'text/plain')
+        self.send_header('Content-Length', '0')
+        self.end_headers()
     
     def do_HEAD(self):
         self.show()
-        self.do_GET()
-        #  super().do_HEAD()
+        super().do_HEAD()
     
     def get_param(self, parname):
         try:
@@ -57,10 +60,11 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
     
     def do_GET(self):
         self.show()
-        if self.headers.get('Cookie') == AUTH_COOKIE or self.path != '/secret.txt':
+        if self.headers.get('Cookie') == AUTH_COOKIE or not \
+            re.match('/secret.txt(\?|$)', self.path):
             super().do_GET()
         else:
-            super().send_error(401)
+            self.send_error(401)
     
     def do_POST(self):
         self.do_GET()
