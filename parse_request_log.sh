@@ -82,12 +82,14 @@ BEGIN {
             if (! ua) {
                 if (os ~ /MSIE|Trident/) {
                     # INTERNET EXPLORER
+                    match(os, /(Windows NT *)([0-9\.]+)/, mArr)
+                    WinVersion=mArr[2]
                     match(os, /(MSIE *|rv *: *)([0-9\.]+)/, mArr)
-                    version=mArr[2]
-                    if (! version) {
-                        version="(Unknown)"
+                    IEVersion=mArr[2]
+                    if (! IEVersion) {
+                        IEVersion="(Unknown)"
                     }
-                    ua="IE " version
+                    ua="IE " IEVersion " (Win " WinVersion ")"
                 }
                 else {
                     # UNKNOWN
