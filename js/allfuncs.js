@@ -1,3 +1,13 @@
+// Can't find base64 implementation that works on IE 9.0 (and earlier maybe?)
+if (typeof btoa === 'undefined') {
+	atob = function () {
+		return "Can't find base64 implementation that works on IE";
+	};
+	btoa = function () {
+		return 'Q2FuJ3QgZmluZCBiYXNlNjQgaW1wbGVtZW50YXRpb24gdGhhdCB3b3JrcyBvbiBJRQo=';
+	};
+}
+
 // textContent on IE8 and earlier
 // thanks to https://stackoverflow.com/a/35213210
 if (Object.defineProperty
