@@ -12,7 +12,7 @@
 				var url = getPar("goto");
 				if (url) {
 					url = decodeURIComponent(url);
-					getData(url, doPost, document.location.href);
+					getData(url, document.location.href, doPost);
 				}
 			});
 		</script>

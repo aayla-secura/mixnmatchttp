@@ -128,7 +128,7 @@ function logToConsole(msg) {
 	// }
 };
 
-function getData(reqURL, doPOST, sendURL, force_preflight) {
+function getData(reqURL, sendURL, doPOST, force_preflight) {
 	getDataViaXHR(reqURL, sendURL, doPOST, force_preflight);
 	if (! doPOST) {
 		getDataViaCanvas(reqURL, sendURL);
