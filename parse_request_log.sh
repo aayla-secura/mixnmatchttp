@@ -46,54 +46,61 @@ BEGIN {
                 os=""
                 uaFull=mArr[1]
             }
-            numF=patsplit(uaFull, uaFields, /[A-Za-z]+\/[0-9\.]+/)
-            # split(os, osFields, /; */)
-            # printf "DEBUG UA: os=" os ", numF=" numF ", uaFields=["
-            # for (i = 0; i <= numF ; i++) { printf uaFields[i] ", " }
-            # print "]"
-            ua=""
-            if (numF > 2) {
-                if (uaFields[1] ~ /Opera\// || uaFields[1] ~ /Mozilla\// && uaFields[numF] ~ /OPR\//) {
-                    # OPERA
-                    ua="Opera " gensub(/.*\//, "", "1", uaFields[numF])
-                }
-                else if (uaFields[numF-1] ~ /Chrome\//) {
-                    # CHROME
-                    ua=gensub(/\//, " ", "1", uaFields[numF-1])
-                }
-                else if (uaFields[numF] ~ /(Firefox)\//) {
-                    # FIREFOX
-                    ua=gensub(/\//, " ", "1", uaFields[numF])
-                }
-                else if (uaFields[numF] ~ /(Safari)\//) {
-                    # SAFARI
-                    version=""
-                    for (i in uaFields) {
-                        if (uaFields[i] ~ /Version\// ) {
-                            version=gensub(/.*\//, "", "1", uaFields[i])
-                        }
-                    }
-                    if (! version) {
-                        version=gensub(/.*\//, "", "1", uaFields[numF]) # WebKit version
-                    }
-                    ua=gensub(/\//, " ", "1", uaFields[numF])
-                }
+
+            if (uaFull == "contype") {
+                # IE being an idiot
+                ua=uaOLD
             }
-            if (! ua) {
-                if (os ~ /MSIE|Trident/) {
-                    # INTERNET EXPLORER
-                    match(os, /(Windows NT *)([0-9\.]+)/, mArr)
-                    WinVersion=mArr[2]
-                    match(os, /(MSIE *|rv *: *)([0-9\.]+)/, mArr)
-                    IEVersion=mArr[2]
-                    if (! IEVersion) {
-                        IEVersion="(Unknown)"
+            else {
+                numF=patsplit(uaFull, uaFields, /[A-Za-z]+\/[0-9\.]+/)
+                # split(os, osFields, /; */)
+                # printf "DEBUG UA: os=" os ", numF=" numF ", uaFields=["
+                # for (i = 0; i <= numF ; i++) { printf uaFields[i] ", " }
+                # print "]"
+                ua=""
+                if (numF > 2) {
+                    if (uaFields[1] ~ /Opera\// || uaFields[1] ~ /Mozilla\// && uaFields[numF] ~ /OPR\//) {
+                        # OPERA
+                        ua="Opera " gensub(/.*\//, "", "1", uaFields[numF])
                     }
-                    ua="IE " IEVersion " (Win " WinVersion ")"
+                    else if (uaFields[numF-1] ~ /Chrome\//) {
+                        # CHROME
+                        ua=gensub(/\//, " ", "1", uaFields[numF-1])
+                    }
+                    else if (uaFields[numF] ~ /(Firefox)\//) {
+                        # FIREFOX
+                        ua=gensub(/\//, " ", "1", uaFields[numF])
+                    }
+                    else if (uaFields[numF] ~ /(Safari)\//) {
+                        # SAFARI
+                        version=""
+                        for (i in uaFields) {
+                            if (uaFields[i] ~ /Version\// ) {
+                                version=gensub(/.*\//, "", "1", uaFields[i])
+                            }
+                        }
+                        if (! version) {
+                            version=gensub(/.*\//, "", "1", uaFields[numF]) # WebKit version
+                        }
+                        ua=gensub(/\//, " ", "1", uaFields[numF])
+                    }
                 }
-                else {
-                    # UNKNOWN
-                    ua=uaFull
+                if (! ua) {
+                    if (os ~ /MSIE|Trident/) {
+                        # INTERNET EXPLORER
+                        match(os, /(Windows NT *)([0-9\.]+)/, mArr)
+                        WinVersion=mArr[2]
+                        match(os, /(MSIE *|rv *: *)([0-9\.]+)/, mArr)
+                        IEVersion=mArr[2]
+                        if (! IEVersion) {
+                            IEVersion="(Unknown)"
+                        }
+                        ua="IE " IEVersion " (Win " WinVersion ")"
+                    }
+                    else {
+                        # UNKNOWN
+                        ua=uaFull
+                    }
                 }
             }
         }
@@ -105,6 +112,8 @@ BEGIN {
     creds=""
     acMethod=""
     cookie=""
+    # keep it in case the next one is IE doing a HEAD with UA=contype
+    uaOLD=ua
     ua=""
 }
 /^<----- Request End -----/ {
