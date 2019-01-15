@@ -17487,265 +17487,14 @@ Connection: keep-alive
 
 ----- Request Start ----->
 
-GET /getSecret.html?hostname=192.168.1.105 HTTP/1.1
-Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
-Accept-Language: en-US
-User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /js/allfuncs.js HTTP/1.1
-Accept: */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.1.105
-Accept-Language: en-US
-User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /js/allfuncs.js HTTP/1.1
-Accept: */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.1.105
-Accept-Language: en-US
-User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /login.html HTTP/1.1
-Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.1.105
-Accept-Language: en-US
-User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)
-Accept-Encoding: gzip, deflate
-Host: 192.168.1.105:58081
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /js/allfuncs.js HTTP/1.1
-Accept: */*
-Referer: http://192.168.1.105:58081/login.html
-Accept-Language: en-US
-User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)
-Accept-Encoding: gzip, deflate
-Host: 192.168.1.105:58081
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /index.html HTTP/1.1
-Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
-Referer: http://192.168.1.105:58081/login.html
-Accept-Language: en-US
-User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)
-Accept-Encoding: gzip, deflate
-Host: 192.168.1.105:58081
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
-Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.1.105
-Accept-Language: en-US
-User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
-Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.1.105
-Accept-Language: en-US
-User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
-Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.1.105
-Accept-Language: en-US
-User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
-Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.1.105
-Accept-Language: en-US
-User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
-Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.1.105
-Accept-Language: en-US
-User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
-Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.1.105
-Accept-Language: en-US
-User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
-Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.1.105
-Accept-Language: en-US
-User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
-Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.1.105
-Accept-Language: en-US
-User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
-Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.1.105
-Accept-Language: en-US
-User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.1.105%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
-Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.1.105
-Accept-Language: en-US
-User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
 GET /getSecret.html?hostname=192.168.0.16 HTTP/1.1
 Accept: text/html, application/xhtml+xml, */*
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
 Host: 192.168.21.1:58081
 Connection: Keep-Alive
+Cache-Control: no-cache
 
 
 <----- Request End -----
@@ -17756,11 +17505,12 @@ Connection: Keep-Alive
 GET /js/allfuncs.js HTTP/1.1
 Accept: application/javascript, */*;q=0.8
 Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
 Host: 192.168.21.1:58081
 Connection: Keep-Alive
+Cache-Control: no-cache
 
 
 <----- Request End -----
@@ -17768,57 +17518,16 @@ Connection: Keep-Alive
 
 ----- Request Start ----->
 
-GET /favicon.ico HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /login.html HTTP/1.1
+GET /login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1 HTTP/1.1
 Accept: text/html, application/xhtml+xml, */*
 Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
 Host: 192.168.0.16:58081
 Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /js/allfuncs.js HTTP/1.1
-Accept: application/javascript, */*;q=0.8
-Referer: http://192.168.0.16:58081/login.html
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /index.html HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.0.16:58081/login.html
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
 
 
 <----- Request End -----
@@ -17829,11 +17538,12 @@ Connection: Keep-Alive
 GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
 Accept: text/html, application/xhtml+xml, */*
 Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
 Host: 192.168.21.1:58081
 Connection: Keep-Alive
+Cache-Control: no-cache
 
 
 <----- Request End -----
@@ -17844,11 +17554,12 @@ Connection: Keep-Alive
 GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
 Accept: text/html, application/xhtml+xml, */*
 Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
 Host: 192.168.21.1:58081
 Connection: Keep-Alive
+Cache-Control: no-cache
 
 
 <----- Request End -----
@@ -17859,11 +17570,12 @@ Connection: Keep-Alive
 GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
 Accept: text/html, application/xhtml+xml, */*
 Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
 Host: 192.168.21.1:58081
 Connection: Keep-Alive
+Cache-Control: no-cache
 
 
 <----- Request End -----
@@ -17874,11 +17586,12 @@ Connection: Keep-Alive
 GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
 Accept: text/html, application/xhtml+xml, */*
 Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
 Host: 192.168.21.1:58081
 Connection: Keep-Alive
+Cache-Control: no-cache
 
 
 <----- Request End -----
@@ -17889,11 +17602,12 @@ Connection: Keep-Alive
 GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
 Accept: text/html, application/xhtml+xml, */*
 Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
 Host: 192.168.21.1:58081
 Connection: Keep-Alive
+Cache-Control: no-cache
 
 
 <----- Request End -----
@@ -17901,14 +17615,15 @@ Connection: Keep-Alive
 
 ----- Request Start ----->
 
-GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
 Accept: text/html, application/xhtml+xml, */*
 Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
 Host: 192.168.21.1:58081
 Connection: Keep-Alive
+Cache-Control: no-cache
 
 
 <----- Request End -----
@@ -17919,56 +17634,12 @@ Connection: Keep-Alive
 GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
 Accept: text/html, application/xhtml+xml, */*
 Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
 Host: 192.168.21.1:58081
 Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
+Cache-Control: no-cache
 
 
 <----- Request End -----
@@ -17979,11 +17650,28 @@ Connection: Keep-Alive
 GET /js/allfuncs.js HTTP/1.1
 Accept: application/javascript, */*;q=0.8
 Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
 Host: 192.168.21.1:58081
 Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
 
 
 <----- Request End -----
@@ -17993,209 +17681,13 @@ Connection: Keep-Alive
 
 GET /js/allfuncs.js HTTP/1.1
 Accept: application/javascript, */*;q=0.8
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getSecret.html?hostname=192.168.0.16 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-DNT: 1
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /js/allfuncs.js HTTP/1.1
-Accept: application/javascript, */*;q=0.8
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-DNT: 1
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /favicon.ico HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.21.1:58081
-DNT: 1
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /login.html HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Referer: http://192.168.0.16:58081/login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
 Host: 192.168.0.16:58081
-DNT: 1
 Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /js/allfuncs.js HTTP/1.1
-Accept: application/javascript, */*;q=0.8
-Referer: http://192.168.0.16:58081/login.html
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-DNT: 1
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /index.html HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.0.16:58081/login.html
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-DNT: 1
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-DNT: 1
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-DNT: 1
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-DNT: 1
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-DNT: 1
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-DNT: 1
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-DNT: 1
-Connection: Keep-Alive
+Cache-Control: no-cache
 Cookie: auth=1
 
 
@@ -18207,30 +17699,12 @@ Cookie: auth=1
 GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
 Accept: text/html, application/xhtml+xml, */*
 Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
 Host: 192.168.21.1:58081
-DNT: 1
 Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-DNT: 1
-Connection: Keep-Alive
-Cookie: auth=1
+Cache-Control: no-cache
 
 
 <----- Request End -----
@@ -18241,693 +17715,12 @@ Cookie: auth=1
 GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
 Accept: text/html, application/xhtml+xml, */*
 Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-DNT: 1
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-DNT: 1
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /js/allfuncs.js HTTP/1.1
-Accept: application/javascript, */*;q=0.8
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-DNT: 1
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /secret.txt?origin=*&creds=1 HTTP/1.1
-Accept: */*
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
-Accept-Language: en-US
-Origin: http://192.168.21.1:58081
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.0.16:58081
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=*&creds=1 HTTP/1.1
-Accept: */*
-User-Agent: contype
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /secret.txt?origin=*&creds=0 HTTP/1.1
-Accept: */*
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
-Accept-Language: en-US
-Origin: http://192.168.21.1:58081
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.0.16:58081
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=*&creds=0 HTTP/1.1
-Accept: */*
-User-Agent: contype
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
-Accept: */*
-Accept-Language: en-US
-Origin: http://192.168.21.1:58081
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.0.16:58081
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
-Accept: */*
-User-Agent: contype
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=*&creds=1 HTTP/1.1
-Accept: */*
-User-Agent: contype
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=*&creds=0 HTTP/1.1
-Accept: */*
-User-Agent: contype
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
-Accept: */*
-User-Agent: contype
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
-Accept: */*
-Accept-Language: en-US
-Origin: http://192.168.21.1:58081
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.0.16:58081
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
-Accept: */*
-User-Agent: contype
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
-Accept: */*
-User-Agent: contype
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /secret.txt?origin=&creds=0 HTTP/1.1
-Accept: */*
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
-Accept-Language: en-US
-Origin: http://192.168.21.1:58081
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.0.16:58081
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=&creds=0 HTTP/1.1
-Accept: */*
-User-Agent: contype
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=&creds=0 HTTP/1.1
-Accept: */*
-User-Agent: contype
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-POST /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
-Accept: */*
-Content-Type: application/json;charset=UTF-8
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
-Accept-Language: en-US
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.21.1:58081
-Content-Length: 21
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-Cookie: auth=1
-
-
-{data:"c2hoaGglMEE="}
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.0.16:58081
-Content-Length: 0
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-DNT: 1
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /secret.txt?origin=*&creds=0 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-DNT: 1
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-DNT: 1
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /secret.txt?origin=*&creds=1 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-DNT: 1
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /secret.txt?origin=&creds=0 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
-Accept-Language: en-US
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-DNT: 1
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-POST /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
-Accept: */*
-Content-Type: application/json;charset=UTF-8
-Accept-Language: en-US
-Origin: http://192.168.21.1:58081
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.0.16:58081
-Content-Length: 2
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-{}
-<----- Request End -----
-
-
------ Request Start ----->
-
-POST /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
-Accept: */*
-Content-Type: application/json;charset=UTF-8
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
-Accept-Language: en-US
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
-Host: 192.168.21.1:58081
-Content-Length: 21
-DNT: 1
-Connection: Keep-Alive
-Cache-Control: no-cache
-Cookie: auth=1
-
-
-{data:"c2hoaGglMEE="}
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /getSecret.html?hostname=192.168.0.16 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
 Accept-Language: en-GB
 User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
 Host: 192.168.21.1:58081
 Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /js/allfuncs.js HTTP/1.1
-Accept: application/javascript, */*;q=0.8
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-GB
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Accept-Encoding: gzip, deflate
-Host: 192.168.21.1:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /login.html HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-GB
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Connection: Keep-Alive
+Cache-Control: no-cache
 
 
 <----- Request End -----
@@ -18949,11 +17742,674 @@ Connection: Keep-Alive
 
 ----- Request Start ----->
 
-GET /js/allfuncs.js HTTP/1.1
-Accept: application/javascript, */*;q=0.8
-Referer: http://192.168.0.16:58081/login.html
+GET /getSecret.html?host=192.168.0.16:58081&loggedIn=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.0.16:58081/login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1
 Accept-Language: en-GB
 User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Accept: */*
+UA-CPU: AMD64
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=0 HTTP/1.1
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+Accept-Language: en-GB
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=*&creds=0 HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Accept: */*
+Accept-Language: en-GB
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Accept: */*
+Accept-Language: en-GB
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=&creds=0 HTTP/1.1
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+Accept-Language: en-GB
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
+Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=&creds=0 HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
+Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
+Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=1 HTTP/1.1
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Accept-Language: en-GB
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=*&creds=1 HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=&creds=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+POST /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Accept: */*
+Content-Type: application/json;charset=UTF-8
+Accept-Language: en-GB
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 2
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+{}
+<----- Request End -----
+
+
+----- Request Start ----->
+
+POST /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Accept: */*
+Content-Type: application/json;charset=UTF-8
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+Accept-Language: en-GB
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.21.1:58081
+Content-Length: 21
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+{data:"c2hoaGglMEE="}
+<----- Request End -----
+
+
+----- Request Start ----->
+
+POST /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Accept: */*
+Content-Type: application/json;charset=UTF-8
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+Accept-Language: en-GB
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.21.1:58081
+Content-Length: 21
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+{data:"c2hoaGglMEE="}
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?hostname=192.168.0.16 HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
+Accept-Language: en-NZ
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-NZ
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1 HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
+Accept-Language: en-NZ
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
 Accept-Encoding: gzip, deflate
 Host: 192.168.0.16:58081
 Connection: Keep-Alive
@@ -18964,9 +18420,256 @@ Connection: Keep-Alive
 
 ----- Request Start ----->
 
-GET /index.html HTTP/1.1
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-NZ
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-NZ
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-NZ
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-NZ
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-NZ
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-NZ
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-NZ
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: */*
+Referer: http://192.168.0.16:58081/login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1
+Accept-Language: en-NZ
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-NZ
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-NZ
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-NZ
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.0.16:58081&loggedIn=1 HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, */*
+Accept-Language: en-NZ
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?hostname=192.168.0.16 HTTP/1.1
 Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.0.16:58081/login.html
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
 Accept-Language: en-GB
 User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
@@ -19020,6 +18723,20 @@ Accept-Encoding: gzip, deflate
 Host: 192.168.21.1:58081
 Connection: Keep-Alive
 Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Accept: */*
+UA-CPU: AMD64
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
 
 
 <----- Request End -----
@@ -19091,6 +18808,21 @@ Cookie: auth=1
 
 ----- Request Start ----->
 
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.0.16:58081/login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
 GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
 Accept: text/html, application/xhtml+xml, */*
 Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
@@ -19141,7 +18873,23 @@ Cookie: auth=1
 
 GET /js/allfuncs.js HTTP/1.1
 Accept: application/javascript, */*;q=0.8
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.0.16:58081&loggedIn=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.0.16:58081/login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1
 Accept-Language: en-GB
 User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
@@ -19157,7 +18905,7 @@ Cookie: auth=1
 
 GET /js/allfuncs.js HTTP/1.1
 Accept: application/javascript, */*;q=0.8
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
 Accept-Language: en-GB
 User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
@@ -19171,16 +18919,15 @@ Cookie: auth=1
 
 ----- Request Start ----->
 
-GET /secret.txt?origin=&creds=0 HTTP/1.1
-Accept: */*
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
 Accept-Language: en-GB
-Origin: http://192.168.21.1:58081
-Accept-Encoding: gzip, deflate
 User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
 Connection: Keep-Alive
-Cache-Control: no-cache
+Cookie: auth=1
 
 
 <----- Request End -----
@@ -19188,16 +18935,15 @@ Cache-Control: no-cache
 
 ----- Request Start ----->
 
-GET /secret.txt?origin=*&creds=1 HTTP/1.1
-Accept: */*
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
 Accept-Language: en-GB
-Origin: http://192.168.21.1:58081
-Accept-Encoding: gzip, deflate
 User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
 Connection: Keep-Alive
-Cache-Control: no-cache
+Cookie: auth=1
 
 
 <----- Request End -----
@@ -19205,47 +18951,15 @@ Cache-Control: no-cache
 
 ----- Request Start ----->
 
-HEAD /secret.txt?origin=*&creds=1 HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=&creds=0 HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
-Accept: */*
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
 Accept-Language: en-GB
-Origin: http://192.168.21.1:58081
-Accept-Encoding: gzip, deflate
 User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
 Connection: Keep-Alive
-Cache-Control: no-cache
+Cookie: auth=1
 
 
 <----- Request End -----
@@ -19253,15 +18967,127 @@ Cache-Control: no-cache
 
 ----- Request Start ----->
 
-HEAD /secret.txt?origin=*&creds=1 HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
 User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
 Connection: Keep-Alive
-Cache-Control: no-cache
+Cookie: auth=1
 
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
 
 
 <----- Request End -----
@@ -19285,22 +19111,6 @@ Cookie: auth=1
 
 ----- Request Start ----->
 
-HEAD /secret.txt?origin=&creds=0 HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
 GET /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
 Accept: */*
 Accept-Language: en-GB
@@ -19310,6 +19120,112 @@ User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Host: 192.168.0.16:58081
 Connection: Keep-Alive
 Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=*&creds=1 HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=1 HTTP/1.1
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Accept-Language: en-GB
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=0 HTTP/1.1
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+Accept-Language: en-GB
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=*&creds=0 HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=&creds=0 HTTP/1.1
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+Accept-Language: en-GB
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
 
 
 <----- Request End -----
@@ -19336,7 +19252,59 @@ Cache-Control: no-cache
 
 ----- Request Start ----->
 
-OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Accept: */*
+Accept-Language: en-GB
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
 Accept: */*
 Origin: http://192.168.21.1:58081
 Access-Control-Request-Method: POST
@@ -19356,15 +19324,80 @@ Cache-Control: no-cache
 ----- Request Start ----->
 
 GET /secret.txt?origin=*&creds=0 HTTP/1.1
-Accept: */*
+Accept: text/html, application/xhtml+xml, */*
 Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
 Accept-Language: en-GB
-Origin: http://192.168.21.1:58081
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=&creds=0 HTTP/1.1
+Accept: */*
 Accept-Encoding: gzip, deflate
 User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Host: 192.168.0.16:58081
+Content-Length: 0
 Connection: Keep-Alive
 Cache-Control: no-cache
+Cookie: auth=1
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
+Accept-Language: en-GB
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
 
 
 <----- Request End -----
@@ -19391,27 +19424,11 @@ Cache-Control: no-cache
 
 ----- Request Start ----->
 
-OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
+OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
 Accept: */*
 Origin: http://192.168.21.1:58081
 Access-Control-Request-Method: POST
 Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
-Accept: */*
 Accept-Encoding: gzip, deflate
 User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Host: 192.168.0.16:58081
@@ -19434,245 +19451,7 @@ User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
 Host: 192.168.0.16:58081
 Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=*&creds=0 HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=*&creds=0 HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /secret.txt?origin=*&creds=1 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
-Accept-Language: en-GB
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
-Accept-Language: en-GB
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Connection: Keep-Alive
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /secret.txt?origin=*&creds=0 HTTP/1.1
-Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
-Accept-Language: en-GB
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Connection: Keep-Alive
+Cookie: auth=1
 
 
 <----- Request End -----
@@ -19688,8 +19467,29 @@ User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
 Host: 192.168.0.16:58081
 Connection: Keep-Alive
+Cookie: auth=1
 
 
+<----- Request End -----
+
+
+----- Request Start ----->
+
+POST /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Accept: */*
+Content-Type: application/json;charset=UTF-8
+Accept-Language: en-GB
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.0.16:58081
+Content-Length: 2
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+{}
 <----- Request End -----
 
 
@@ -19715,17 +19515,1598 @@ Cookie: auth=1
 
 ----- Request Start ----->
 
+POST /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Accept: */*
+Content-Type: application/json;charset=UTF-8
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
+Accept-Language: en-GB
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.21.1:58081
+Content-Length: 21
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+{data:"c2hoaGglMEE="}
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?hostname=192.168.0.16 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.0.16:58081/login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.0.16:58081&loggedIn=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.0.16:58081/login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?hostname=192.168.0.16 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=1 HTTP/1.1
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Accept-Language: en-US
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=*&creds=1 HTTP/1.1
+Accept: */*
+User-Agent: contype
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=0 HTTP/1.1
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+Accept-Language: en-US
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=*&creds=0 HTTP/1.1
+Accept: */*
+User-Agent: contype
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Accept: */*
+Accept-Language: en-US
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Accept: */*
+User-Agent: contype
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Accept: */*
+Accept-Language: en-US
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Accept: */*
+User-Agent: contype
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=&creds=0 HTTP/1.1
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+Accept-Language: en-US
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=&creds=0 HTTP/1.1
+Accept: */*
+User-Agent: contype
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
+Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
+Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
+Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.0.16:58081/login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.0.16:58081&loggedIn=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.0.16:58081/login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=1 HTTP/1.1
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Accept-Language: en-US
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=*&creds=1 HTTP/1.1
+Accept: */*
+User-Agent: contype
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=0 HTTP/1.1
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+Accept-Language: en-US
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=*&creds=0 HTTP/1.1
+Accept: */*
+User-Agent: contype
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Accept: */*
+Accept-Language: en-US
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Accept: */*
+User-Agent: contype
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Accept: */*
+Accept-Language: en-US
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Accept: */*
+User-Agent: contype
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=&creds=0 HTTP/1.1
+Accept: */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+Accept-Language: en-US
+Origin: http://192.168.21.1:58081
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+HEAD /secret.txt?origin=&creds=0 HTTP/1.1
+Accept: */*
+User-Agent: contype
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
+Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
+Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
+Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.0.16:58081
+Content-Length: 0
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=*&creds=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=&creds=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0
+Accept-Language: en-US
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+DNT: 1
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+POST /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Accept: */*
+Content-Type: application/json;charset=UTF-8
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0
+Accept-Language: en-US
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
+Host: 192.168.21.1:58081
+Content-Length: 21
+DNT: 1
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: auth=1
+
+
+{data:"c2hoaGglMEE="}
+<----- Request End -----
+
+
+----- Request Start ----->
+
 POST /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
 Accept: */*
 Content-Type: application/json;charset=UTF-8
-Accept-Language: en-GB
+Accept-Language: en-US
 Origin: http://192.168.21.1:58081
 Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
 Host: 192.168.0.16:58081
 Content-Length: 2
+DNT: 1
 Connection: Keep-Alive
 Cache-Control: no-cache
+Cookie: auth=1
 
 
 {}
@@ -19738,11 +21119,12 @@ POST /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%
 Accept: */*
 Content-Type: application/json;charset=UTF-8
 Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1
-Accept-Language: en-GB
+Accept-Language: en-US
 Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
 Host: 192.168.21.1:58081
 Content-Length: 21
+DNT: 1
 Connection: Keep-Alive
 Cache-Control: no-cache
 Cookie: auth=1
@@ -19785,54 +21167,6 @@ Cookie: auth=1
 
 ----- Request Start ----->
 
-GET /login.html HTTP/1.1
-Accept: text/html, application/xhtml+xml, image/jxr, */*
-Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
-Accept-Language: en-NZ
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /js/allfuncs.js HTTP/1.1
-Accept: application/javascript, */*;q=0.8
-Referer: http://192.168.0.16:58081/login.html
-Accept-Language: en-NZ
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-GET /index.html HTTP/1.1
-Accept: text/html, application/xhtml+xml, image/jxr, */*
-Referer: http://192.168.0.16:58081/login.html
-Accept-Language: en-NZ
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
-Accept-Encoding: gzip, deflate
-Host: 192.168.0.16:58081
-Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
 GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
 Accept: text/html, application/xhtml+xml, image/jxr, */*
 Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
@@ -19858,6 +21192,35 @@ Accept-Encoding: gzip, deflate
 Host: 192.168.21.1:58081
 Connection: Keep-Alive
 Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-NZ
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Accept: */*
+UA-CPU: AMD64
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
 
 
 <----- Request End -----
@@ -19977,9 +21340,246 @@ Cookie: auth=1
 
 ----- Request Start ----->
 
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.0.16:58081/login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1
+Accept-Language: en-NZ
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.0.16:58081
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
 GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
 Accept: text/html, application/xhtml+xml, image/jxr, */*
 Referer: http://192.168.21.1:58081/getSecret.html?hostname=192.168.0.16
+Accept-Language: en-NZ
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0
+Accept-Language: en-NZ
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getSecret.html?host=192.168.0.16:58081&loggedIn=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Referer: http://192.168.0.16:58081/login.html?goto=http%3A%2F%2F192.168.21.1%3A58081%2FgetSecret.html%3Fhost%3D192.168.0.16%3A58081%26loggedIn%3D1
+Accept-Language: en-NZ
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-NZ
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Accept: */*
+UA-CPU: AMD64
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; Trident/7.0; rv:11.0) like Gecko
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-NZ
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-NZ
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-NZ
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-NZ
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=0 HTTP/1.1
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-NZ
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D1&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-NZ
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-NZ
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D1&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-NZ
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%25%25ECHO%25%25%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
+Accept-Language: en-NZ
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+Accept-Encoding: gzip, deflate
+Host: 192.168.21.1:58081
+Connection: Keep-Alive
+Cookie: auth=1
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D%26creds%3D0&post=1 HTTP/1.1
+Accept: text/html, application/xhtml+xml, image/jxr, */*
+Referer: http://192.168.21.1:58081/getSecret.html?host=192.168.0.16:58081&loggedIn=1
 Accept-Language: en-NZ
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
@@ -20041,21 +21641,6 @@ Cookie: auth=1
 
 ----- Request Start ----->
 
-HEAD /secret.txt?origin=*&creds=1 HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Connection: Keep-Alive
-Cache-Control: no-cache
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
 GET /secret.txt?origin=*&creds=0 HTTP/1.1
 Accept: */*
 Referer: http://192.168.21.1:58081/getData.html?goto=http%3A%2F%2F192.168.0.16%3A58081%2Fsecret.txt%3Forigin%3D*%26creds%3D0&post=0
@@ -20065,21 +21650,6 @@ Accept-Encoding: gzip, deflate
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
 Host: 192.168.0.16:58081
 Connection: Keep-Alive
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=*&creds=0 HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Connection: Keep-Alive
-Cache-Control: no-cache
 Cookie: auth=1
 
 
@@ -20134,21 +21704,6 @@ Cookie: auth=1
 
 ----- Request Start ----->
 
-HEAD /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Connection: Keep-Alive
-Cache-Control: no-cache
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
 GET /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
 Accept: */*
 Accept-Language: en-NZ
@@ -20173,59 +21728,6 @@ Host: 192.168.0.16:58081
 Connection: Keep-Alive
 Cache-Control: no-cache
 Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-HEAD /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
-Accept: */*
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Connection: Keep-Alive
-Cache-Control: no-cache
-Cookie: auth=1
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
 
 
 <----- Request End -----
@@ -20265,14 +21767,18 @@ Cookie: auth=1
 
 ----- Request Start ----->
 
-HEAD /secret.txt?origin=&creds=0 HTTP/1.1
+OPTIONS /secret.txt?origin=*&creds=1 HTTP/1.1
 Accept: */*
+Origin: http://192.168.21.1:58081
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
 Accept-Encoding: gzip, deflate
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
 Host: 192.168.0.16:58081
+Content-Length: 0
 Connection: Keep-Alive
 Cache-Control: no-cache
-Cookie: auth=1
+
 
 
 <----- Request End -----
@@ -20395,44 +21901,6 @@ Cache-Control: no-cache
 
 ----- Request Start ----->
 
-OPTIONS /secret.txt?origin=*&creds=0 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
 OPTIONS /secret.txt?origin=%%ECHO%%&creds=1 HTTP/1.1
 Accept: */*
 Origin: http://192.168.21.1:58081
@@ -20453,44 +21921,6 @@ Cache-Control: no-cache
 ----- Request Start ----->
 
 OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=%%ECHO%%&creds=0 HTTP/1.1
-Accept: */*
-Origin: http://192.168.21.1:58081
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Accept-Encoding: gzip, deflate
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
-Host: 192.168.0.16:58081
-Content-Length: 0
-Connection: Keep-Alive
-Cache-Control: no-cache
-
-
-
-<----- Request End -----
-
-
------ Request Start ----->
-
-OPTIONS /secret.txt?origin=&creds=0 HTTP/1.1
 Accept: */*
 Origin: http://192.168.21.1:58081
 Access-Control-Request-Method: POST
