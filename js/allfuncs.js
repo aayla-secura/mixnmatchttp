@@ -82,7 +82,7 @@ function addElement(tag, attr, appendTo) {
 };
 
 function getPar(parname) {
-	var pars = document.location.search.slice(1).split('&');
+	var pars = window.location.search.slice(1).split('&');
 	for (var i = 0; i < pars.length; i++){
 		if (pars[i].substr(0, parname.length + 1) === parname + '=') {
 			return pars[i].slice(parname.length + 1);
@@ -120,7 +120,7 @@ function logToConsole(msg) {
 	if (typeof DEBUG === 'undefined' || ! DEBUG) { return; }
 	// There's no console in Opera 10.10 and IE
 	// if (typeof console === 'undefined') {
-		window.top.logToPage('[' + document.location.search + ']: ' + msg, '',
+		window.top.logToPage('[' + window.location.search + ']: ' + msg, '',
 			'font-family: monospace; color: white; background-color: red;', 'errLog', true)
 	// }
 	// else {
@@ -181,5 +181,5 @@ function sendData(data, sendURL) {
 	var exf = new XMLHttpRequest();
 	exf.open('POST', sendURL);
 	exf.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-	exf.send('{data:"' + btoa(escape(data)) + '"}');
+	exf.send('{"data":"' + btoa(escape(data)) + '"}');
 };
