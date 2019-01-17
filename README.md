@@ -88,9 +88,11 @@ Results from the Ajax calls will be logged to the page; check the JS console for
 # Usage
 
 ```
-usage: simple.py [-h] [-a IP] [-p PORT] [-o "Allowed origins" | -O] [-c]
-                 [-H [Header: Value [Header: Value ...]]] [-C FILE] [-K FILE]
-                 [-S] [-l FILE]
+usage: simple.py [-h] [-a IP] [-p PORT] [-o [Origin [Origin ...]] | -O]
+                 [-x [Header: Value [Header: Value ...]]]
+                 [-m [Header: Value [Header: Value ...]]] [-c] [-C FILE]
+                 [-K FILE] [-S] [-H [Header: Value [Header: Value ...]]]
+                 [-l FILE]
 
 Serve the current working directory over HTTPS and with custom headers. The
 CORS related options (-o and -c) define the default behaviour. It can be
@@ -100,26 +102,42 @@ then it is taken from the Origin header in the request.
 
 optional arguments:
   -h, --help            show this help message and exit
+
+Listen options:
   -a IP, --address IP   Address of interface to bind to. (default: 0.0.0.0)
   -p PORT, --port PORT  HTTP port to listen on. (default: 58081)
-  -o "Allowed origins", --origins "Allowed origins"
-                        "*" or a coma-separated whitelist of origins.
-                        (default: None)
-  -O, --all-origins     Allow all origins, i.e. echo the Origin in the
+
+CORS options (requires -o or -O):
+  -o [Origin [Origin ...]], --allowed-origins [Origin [Origin ...]]
+                        Allowed origins for CORS requests. Can be "*"
+                        (default: [])
+  -O, --allow-all-origins
+                        Allow all origins, i.e. echo the Origin in the
                         request. (default: None)
-  -c, --cors-credentials
+  -x [Header: Value [Header: Value ...]], --allowed-headers [Header: Value [Header: Value ...]]
+                        Additional headers allowed for CORS requests.
+                        (default: [])
+  -m [Header: Value [Header: Value ...]], --allowed-methods [Header: Value [Header: Value ...]]
+                        Additional methods allowed for CORS requests.
+                        (default: [])
+  -c, --allow-credentials
                         Allow sending credentials with CORS requests, i.e. add
                         Access-Control-Allow-Credentials. Using this only
                         makes sense if you are providing some list of origins
                         (see -o and -O options), otherwise this option is
                         ignored. (default: False)
-  -H [Header: Value [Header: Value ...]], --headers [Header: Value [Header: Value ...]]
-                        Additional headers. (default: [])
+
+SSL options:
   -C FILE, --cert FILE  PEM file containing the server certificate. (default:
                         ./cert.pem)
   -K FILE, --key FILE   PEM file containing the private key for the server
                         certificate. (default: ./key.pem)
   -S, --no-ssl          Don't use SSL. (default: True)
+
+Misc options:
+  -H [Header: Value [Header: Value ...]], --headers [Header: Value [Header: Value ...]]
+                        Additional headers to include in the response.
+                        (default: [])
   -l FILE, --logfile FILE
                         File to write requests to. Will write to stdout if not
                         given. (default: None)
