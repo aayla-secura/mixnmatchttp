@@ -1,48 +1,36 @@
 #!/usr/bin/env python3
 import socketserver
 import logging
-import http.server, http.server
+import http.server
 import ssl
 import re
 import sys
 import argparse
+import urllib
 
 AUTH_COOKIE = 'auth=1'
 logger = logging.getLogger('CORS Http Server')
 logger.setLevel(logging.INFO)
 
+class UnsupportedOperation(Exception):
+    '''Exception raised when request body is read more than once'''
+
+    def __init__(self):
+        super().__init__(
+            'Cannot read body data again, buffer not seekable')
+
 class ThreadingCORSHttpsServer(socketserver.ThreadingMixIn, http.server.HTTPServer):
     pass
 
 class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
+    __can_read_body = False
+
     def send_custom_headers(self):
+        '''The new_server factory overrides this'''
         pass
 
-    def show(self):
-        msg = "\n----- Request Start ----->\n\n{}\n{}".format(
-            self.requestline, self.headers)
-        try:
-            length = int(self.headers.get('Content-Length'))
-        except TypeError:
-            pass
-        else:
-            msg += "\n{}".format(
-                self.rfile.read(length).decode('utf-8'))
-        msg += "\n<----- Request End -----\n"
-        logger.info(msg)
-
-    def do_OPTIONS(self):
-        self.show()
-        self.send_response(200)
-        self.send_header('Content-Type', 'text/plain')
-        self.send_header('Content-Length', '0')
-        self.end_headers()
-
-    def do_HEAD(self):
-        self.show()
-        super().do_HEAD()
-
     def get_param(self, parname):
+        '''Returns the value of parname given in the URL'''
         try:
             query = re.split('\?([^/]+)$', self.path)[1]
         except IndexError:
@@ -58,9 +46,90 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
             return None
         return value
 
+    def get_body(self):
+        '''Returns the body data. Cannot be called more than once'''
+
+        if not self.__can_read_body:
+            raise UnsupportedOperation
+
+        try:
+            length = int(self.headers.get('Content-Length'))
+        except TypeError:
+            req_body = b''
+        else:
+            req_body = self.rfile.read(length)
+
+        self.__can_read_body = False
+        return req_body
+
+    def show(self, req_body):
+        '''Logs the request'''
+
+        msg = "\n----- Request Start ----->\n\n{}\n{}".format(
+            self.requestline, self.headers)
+
+        try:
+            req_body_dec = req_body.decode('utf-8')
+        except UnicodeDecodeError:
+            req_body_dec = '>> Cannot decode request body! <<'
+        msg += "\n{}".format(req_body_dec)
+
+        msg += "\n<----- Request End -----\n"
+        logger.info(msg)
+        return req_body
+
+    def echo(self, post_data):
+        '''Decodes the request and returns it as the response body'''
+
+        try:
+            post_data = post_data.decode('utf-8')
+        except UnicodeDecodeError:
+            self.send_error(400, explain='Cannot UTF-8 decode request body!')
+            return
+
+        try:
+            req_params = dict([p.split('=') for p in post_data.split('&')])
+        except ValueError:
+            self.send_error(400, explain='Cannot load parameters from request!')
+            return
+        logger.debug('Request parameters: {}'.format(req_params))
+
+        try:
+            html_enc = req_params['data']
+        except KeyError:
+            self.send_error(400, explain='No "data" parameter present!')
+            return
+        logger.debug('Encoded HTML: {}'.format(html_enc))
+
+        try:
+            html = urllib.parse.unquote_plus(html_enc)
+        except: # what exception does it throw???
+            self.send_error(400, explain='Cannot URL decode request body!')
+            return
+        logger.debug('Decoded HTML: {}'.format(html))
+
+        html = html.encode('utf-8')
+
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.send_header('Content-Length', len(html))
+        self.end_headers()
+        self.wfile.write(html)
+
+    def handle(self):
+        self.__can_read_body = True
+        super().handle()
+
+    def end_headers(self):
+        self.send_custom_headers()
+        super().end_headers()
+
     def do_GET(self):
-        self.show()
-        if self.headers.get('Cookie') == AUTH_COOKIE or not \
+        req_data = self.get_body()
+        self.show(req_data)
+        if re.match('/echo(\?|$)', self.path) and self.command in ['OPTIONS', 'POST']:
+            self.echo(req_data)
+        elif self.headers.get('Cookie') == AUTH_COOKIE or not \
             re.match('/secret.txt(\?|$)', self.path):
             super().do_GET()
         else:
@@ -69,9 +138,18 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         self.do_GET()
 
-    def end_headers(self):
-        self.send_custom_headers()
-        super().end_headers()
+    def do_OPTIONS(self):
+        req_data = self.get_body()
+        self.show(req_data)
+        self.send_response(200)
+        self.send_header('Content-Type', 'text/plain')
+        self.send_header('Content-Length', '0')
+        self.end_headers()
+
+    def do_HEAD(self):
+        req_data = self.get_body()
+        self.show(req_data)
+        super().do_HEAD()
 
 def new_server(clsname, cors, headers):
     def send_custom_headers(self):
@@ -187,12 +265,17 @@ if __name__ == "__main__":
             metavar='FILE',
             help='''File to write requests to. Will write to stdout if
             not given.''')
+    misc_parser.add_argument('-d', '--debug', dest='loglevel',
+            default=logging.INFO, action='store_const',
+            const=logging.DEBUG,
+            help='''Enable debugging output.''')
     args = parser.parse_args()
 
     if args.logfile is None:
         logger.addHandler(logging.StreamHandler(sys.stdout))
     else:
         logger.addHandler(logging.FileHandler(args.logfile))
+    logger.setLevel(args.loglevel)
 
     httpd = ThreadingCORSHttpsServer((args.address, args.port),
             new_server('CORSHttpsServer', {

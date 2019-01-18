@@ -92,7 +92,7 @@ usage: simple.py [-h] [-a IP] [-p PORT] [-o [Origin [Origin ...]] | -O]
                  [-x [Header: Value [Header: Value ...]]]
                  [-m [Header: Value [Header: Value ...]]] [-c] [-C FILE]
                  [-K FILE] [-S] [-H [Header: Value [Header: Value ...]]]
-                 [-l FILE]
+                 [-l FILE] [-d]
 
 Serve the current working directory over HTTPS and with custom headers. The
 CORS related options (-o and -c) define the default behaviour. It can be
@@ -141,4 +141,5 @@ Misc options:
   -l FILE, --logfile FILE
                         File to write requests to. Will write to stdout if not
                         given. (default: None)
+  -d, --debug           Enable debugging output. (default: 20)
 ```
