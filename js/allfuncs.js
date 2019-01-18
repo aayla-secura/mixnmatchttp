@@ -111,9 +111,8 @@ function logToPage(msg, msgStyle, divStyle, logId, quiet) {
 	else if (typeof quiet === 'undefined' || ! quiet) {
 		logToConsole('Using old log div');
 	}
-	var newlog = addElement('p', {style: 'margin-top: 0px; margin-bottom: 0px; ' + msgStyle});
+	var newlog = addElement('p', {style: 'margin-top: 0px; margin-bottom: 0px; ' + msgStyle}, log);
 	newlog.textContent = msg;
-	log.appendChild(newlog)
 };
 
 function logToConsole(msg) {
@@ -164,7 +163,7 @@ function getDataViaXHR(reqURL, sendURL, doPOST, force_preflight) {
 	if (force_preflight) {
 		req.setRequestHeader('X-Foo', 'Custom header');
 	}
-	req.onreadystatechange = function reqListener(){
+	req.onreadystatechange = function (){
 		if (this.readyState != 4) { return; }
 		logToPage(this.responseText, 'color: red; font-weight: bold');
 		sendData(this.responseText, sendURL);
