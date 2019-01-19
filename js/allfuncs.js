@@ -1,3 +1,5 @@
+var CSShidden = 'visibility: hidden; width: 0; height: 0; border: 0; border: none;';
+
 // Can't find base64 implementation that works on IE 9.0 (and earlier maybe?)
 if (typeof btoa === 'undefined') {
 	atob = function () {
@@ -111,7 +113,8 @@ function logToPage(msg, msgStyle, divStyle, logId, quiet) {
 	else if (typeof quiet === 'undefined' || ! quiet) {
 		logToConsole('Using old log div');
 	}
-	var newlog = addElement('p', {style: 'margin-top: 0px; margin-bottom: 0px; ' + msgStyle}, log);
+	var newlog = addElement('p', {
+			style: 'margin-top: 0px; margin-bottom: 0px; ' + msgStyle}, log);
 	newlog.textContent = msg;
 };
 
@@ -127,17 +130,16 @@ function logToConsole(msg) {
 	// }
 };
 
-function getData(reqURL, sendURL, doPOST, force_preflight) {
-	getDataViaXHR(reqURL, sendURL, doPOST, force_preflight);
-	if (! doPOST) {
+function getData(reqURL, reqViaPOST, sendURL, custom_header) {
+	getDataViaXHR(reqURL, reqViaPOST, sendURL, custom_header);
+	if (! reqViaPOST) {
 		getDataViaCanvas(reqURL, sendURL);
 	}
 };
 
 function getDataViaCanvas(reqURL, sendURL) {
-	var hidden = 'visibility: hidden; width: 0; height: 0; border: 0; border: none;';
 	var img = addElement('object', {data: reqURL, crossOrigin: 'Anonymous',
-		type: 'image/svg+xml', style: hidden});
+		type: 'image/svg+xml', style: CSShidden});
 	registerOnLoad(img, function () {
 		// the onload handler of <object> fires too soon so we call it from setTimeout
 		// IE11 doesn't support arrow functions, so we need to use bind
@@ -149,9 +151,9 @@ function getDataViaCanvas(reqURL, sendURL) {
 	});
 };
 
-function getDataViaXHR(reqURL, sendURL, doPOST, force_preflight) {
+function getDataViaXHR(reqURL, reqViaPOST, sendURL, custom_header) {
 	var req = new XMLHttpRequest();
-	if (doPOST) {
+	if (reqViaPOST) {
 		logToPage('POSTing to ' + reqURL);
 		req.open('POST', reqURL);
 		req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
@@ -160,15 +162,16 @@ function getDataViaXHR(reqURL, sendURL, doPOST, force_preflight) {
 		req.open('GET', reqURL);
 	}
 	req.withCredentials = true;
-	if (force_preflight) {
-		req.setRequestHeader('X-Foo', 'Custom header');
+	if (custom_header) {
+		// should force preflight and fail if header is not allowed
+		req.setRequestHeader(custom_header, 'Custom header');
 	}
 	req.onreadystatechange = function (){
 		if (this.readyState != 4) { return; }
 		logToPage(this.responseText, 'color: red; font-weight: bold');
 		sendData(this.responseText, sendURL);
 	};
-	if (doPOST) {
+	if (reqViaPOST) {
 		req.send("{}"); // old browsers don't support JSON
 	} else {
 		req.send();

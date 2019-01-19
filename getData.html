@@ -8,11 +8,11 @@
 			var DEBUG = true;
 
 			registerWinOnLoad(function () {
-				var doPost = Boolean(Number(getPar("post")));
+				var doPOST = Boolean(Number(getPar("post")));
 				var url = getPar("goto");
 				if (url) {
 					url = decodeURIComponent(url);
-					getData(url, window.location.href, doPost);
+					getData(url, doPOST, window.location.href);
 				}
 			});
 		</script>
