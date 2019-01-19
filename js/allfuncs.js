@@ -12,23 +12,39 @@ if (typeof btoa === 'undefined') {
 
 // textContent on IE8 and earlier
 // thanks to https://stackoverflow.com/a/35213210
-if (Object.defineProperty
-  && Object.getOwnPropertyDescriptor
-  && Object.getOwnPropertyDescriptor(Element.prototype, "textContent")
-  && !Object.getOwnPropertyDescriptor(Element.prototype, "textContent").get) {
-  (function() {
-    var innerText = Object.getOwnPropertyDescriptor(Element.prototype, "innerText");
-    Object.defineProperty(Element.prototype, "textContent",
-     {
-       get: function() {
-         return innerText.get.call(this);
-       },
-       set: function(s) {
-         return innerText.set.call(this, s);
-       }
-     }
-   );
-  })();
+// sadly does not work on Opera 8.5 which has neither textContent nor Object.defineProperty, nor Object.getOwnPropertyDescriptor
+// if (Object.defineProperty
+//   && Object.getOwnPropertyDescriptor
+//   && Object.getOwnPropertyDescriptor(Element.prototype, "textContent")
+//   && !Object.getOwnPropertyDescriptor(Element.prototype, "textContent").get) {
+//   (function() {
+//     var innerText = Object.getOwnPropertyDescriptor(Element.prototype, "innerText");
+//     Object.defineProperty(Element.prototype, "textContent",
+//      {
+//        get: function() {
+//          return innerText.get.call(this);
+//        },
+//        set: function(s) {
+//          return innerText.set.call(this, s);
+//        }
+//      }
+//    );
+//   })();
+// }
+// Hence the below "workaround"
+function getTextContent(el) {
+    if (typeof el.textContent === 'undefined') {
+        return el.innerText;
+    } else {
+        return el.textContent;
+    }
+}
+function setTextContent(el, s) {
+    if (typeof el.textContent === 'undefined') {
+        el.innerText = s;
+    } else {
+        el.textContent = s;
+    }
 }
 
 function registerWinOnLoad(func) {
@@ -48,6 +64,7 @@ function registerWinOnLoad(func) {
 	// };
 
 	window.onload = function () {
+		window.DEBUG = getBoolPar('debug');
 		if (typeof document.readyState !== 'undefined') {
 			logToConsole('Doc state is ' + document.readyState);
 		}
@@ -62,9 +79,9 @@ function registerWinOnLoad(func) {
 };
 
 function registerOnLoad(obj, func) {
-	if(obj.attachEvent) { // IE
+	if (obj.attachEvent) { // IE
 		obj.attachEvent('onload', func);
-	} else {
+	} else { // old browsers may not support addEventListener
 		obj.onload = func;
 	}
 };
@@ -86,10 +103,70 @@ function addElement(tag, attr, appendTo) {
 function getPar(parname) {
 	var pars = window.location.search.slice(1).split('&');
 	for (var i = 0; i < pars.length; i++){
-		if (pars[i].substr(0, parname.length + 1) === parname + '=') {
-			return pars[i].slice(parname.length + 1);
+		var par = pars[i].split('=');
+		if (par[0] === parname) { return par[1]; }
+	}
+};
+
+function getBoolPar(parname) {
+	return Boolean(Number(getPar(parname)));
+};
+
+function getReqOrigin() {
+	// check host, hostname and port URL parameters in this order;
+	// otherwise if running on localhost or 127.0.0.1, use the other of the two;
+
+	// check if full target host is given
+	var reqHost = getPar('host');
+	if (! reqHost) {
+		// otherwise check hostname
+		reqHost = getPar('hostname');
+		if (reqHost) {
+			reqHost += ':' + window.location.port;
 		}
 	}
+	if (! reqHost) {
+		// otherwise check port
+		reqHost = getPar('port');
+		if (reqHost) {
+			reqHost = window.location.hostname + ':' + reqHost;
+		}
+	}
+
+	// otherwise check if localhost
+	if (reqHost) { }
+	else if (window.location.hostname == 'localhost') {
+		reqHost = '127.0.0.1:' + window.location.port;
+	}
+	else if (window.location.hostname == '127.0.0.1') {
+		reqHost = 'localhost:' + window.location.port;
+	}
+
+	if (reqHost) {
+		return window.location.protocol + '//' + reqHost;
+	}
+};
+
+function getCurrOrigin() {
+	// return the current proto://domain:port
+	return window.location.protocol + '//' + window.location.host;
+};
+
+function getCurrDir() {
+	// includes trailing slash
+	return window.location.pathname.substring(0,
+		window.location.pathname.lastIndexOf("/") + 1);
+};
+
+function filterPars(filteredPars) {
+	// replace leading ? with & so regex matches first param
+	var result = '&' + window.location.search.slice(1);
+	for (var i = 0; i < filteredPars.length; i++){
+		// also match parameters without value, e.g. foo in &foo&bar=baz
+		r = new RegExp('&' + filteredPars[i] + '(=[^&]*)?&','g');
+		result = result.replace(r, '&');
+	}
+	return result.slice(1); // remove leading &
 };
 
 function logToPage(msg, msgStyle, divStyle, logId, quiet) {
@@ -115,29 +192,24 @@ function logToPage(msg, msgStyle, divStyle, logId, quiet) {
 	}
 	var newlog = addElement('p', {
 			style: 'margin-top: 0px; margin-bottom: 0px; ' + msgStyle}, log);
-	newlog.textContent = msg;
+	setTextContent(newlog, msg);
 };
 
 function logToConsole(msg) {
 	if (typeof DEBUG === 'undefined' || ! DEBUG) { return; }
-	// There's no console in Opera 10.10 and IE
-	// if (typeof console === 'undefined') {
-		window.top.logToPage('[' + window.location.search + ']: ' + msg, '',
-			'font-family: monospace; color: white; background-color: red;', 'errLog', true)
-	// }
-	// else {
-	//	console.log(msg);
-	// }
+	// There's no console in Opera 10.10 and IE => log to page
+	window.top.logToPage('[' + window.location.search + ']: ' + msg, '',
+		'font-family: monospace; color: white; background-color: red;', 'errLog', true)
 };
 
-function getData(reqURL, reqViaPOST, sendURL, custom_header) {
-	getDataViaXHR(reqURL, reqViaPOST, sendURL, custom_header);
+function getData(reqURL, reqViaPOST, sendURL, callback, custom_header) {
+	getDataViaXHR(reqURL, reqViaPOST, sendURL, callback, custom_header);
 	if (! reqViaPOST) {
-		getDataViaCanvas(reqURL, sendURL);
+		getDataViaCanvas(reqURL, sendURL, callback);
 	}
 };
 
-function getDataViaCanvas(reqURL, sendURL) {
+function getDataViaCanvas(reqURL, sendURL, callback) {
 	var img = addElement('object', {data: reqURL, crossOrigin: 'Anonymous',
 		type: 'image/svg+xml', style: CSShidden});
 	registerOnLoad(img, function () {
@@ -145,18 +217,23 @@ function getDataViaCanvas(reqURL, sendURL) {
 		// IE11 doesn't support arrow functions, so we need to use bind
 		sendDataLater = (function () {
 			if (this.contentDocument) {
-				sendData(this.contentDocument.body.childNodes[0].innerHTML, sendURL);
-			} }).bind(this);
+				// How to get the content-type??
+				sendData(this.contentDocument.body.childNodes[0].innerHTML,
+					'text/plain', sendURL);
+				if (callback) {
+					callback(this.contentDocument.body.childNodes[0].innerHTML);
+				} } }).bind(this);
 		setTimeout(sendDataLater, 2000);
 	});
 };
 
-function getDataViaXHR(reqURL, reqViaPOST, sendURL, custom_header) {
+function getDataViaXHR(reqURL, reqViaPOST, sendURL, callback, custom_header) {
 	var req = new XMLHttpRequest();
 	if (reqViaPOST) {
 		logToPage('POSTing to ' + reqURL);
 		req.open('POST', reqURL);
-		req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+		req.setRequestHeader('Content-Type',
+			'application/json;charset=UTF-8');
 	} else {
 		logToPage('GETting ' + reqURL);
 		req.open('GET', reqURL);
@@ -169,19 +246,30 @@ function getDataViaXHR(reqURL, reqViaPOST, sendURL, custom_header) {
 	req.onreadystatechange = function (){
 		if (this.readyState != 4) { return; }
 		logToPage(this.responseText, 'color: red; font-weight: bold');
-		sendData(this.responseText, sendURL);
+		sendData(this.responseText, this.getResponseHeader('content-type'),
+			sendURL);
+		if (callback) { callback(this.responseText); }
 	};
 	if (reqViaPOST) {
-		req.send("{}"); // old browsers don't support JSON
+		req.send("{}"); // Opera 8.5 doesn't support JSON
 	} else {
 		req.send();
 	}
 };
 
-function sendData(data, sendURL) {
+function sendData(data, type, sendURL) {
+	// Opera 8.5 doesn't support JSON, so the JSON is constructed "by
+	// hand"; the base64 data is safe, type shouldn't normally contain
+	// characters special to JSON, i.e.  " or \, but we escape them in any
+	// case. Unicode ranges are not supported in very old browsers, assume there
+	// are no other characters special to JSON.
 	if (! data || ! sendURL) { return; }
+	// type = type.replace(/[\\"]/g,'');
+	type = type.replace(/\\/g,'\\\\').replace(/"/g,'\\"');
 	var exf = new XMLHttpRequest();
 	exf.open('POST', sendURL);
-	exf.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-	exf.send('{"data":"' + btoa(escape(data)) + '"}');
+	exf.setRequestHeader('Content-Type',
+		'application/json;charset=UTF-8');
+	exf.send('{"data":"' + btoa(data) +
+		'", "type": "' + type + '"}');
 };

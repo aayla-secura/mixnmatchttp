@@ -1,29 +1,211 @@
 #!/usr/bin/env python3
-import socketserver
+# TO DO: write doc
 import logging
 import http.server
 import ssl
 import re
 import sys
+import os.path
 import argparse
 import urllib
+import json
+import base64, binascii
+import mimetypes
+import uuid
+from random import randint
+from functools import wraps
+from socketserver import ThreadingMixIn
 
-AUTH_COOKIE = 'auth=1'
 logger = logging.getLogger('CORS Http Server')
 logger.setLevel(logging.INFO)
 
-class UnsupportedOperation(Exception):
+############################################################
+######################### EXCEPTIONS ########################
+############################################################
+class PageReadError(Exception):
+    '''Base class for exceptions related to request body read'''
+    pass
+
+class UnsupportedOperation(PageReadError):
     '''Exception raised when request body is read more than once'''
 
     def __init__(self):
         super().__init__(
             'Cannot read body data again, buffer not seekable')
 
-class ThreadingCORSHttpsServer(socketserver.ThreadingMixIn, http.server.HTTPServer):
+class DecodingError(PageReadError):
+    '''Exception raised when cannot decode data sent to /cache/save or
+    /echo
+    '''
+    pass
+
+
+class CacheError(Exception):
+    '''Base class for exceptions related to the cache'''
+    pass
+
+class PageNotCached(CacheError):
+    '''Exception raised when a non-existent page is requested'''
+
+    def __init__(self):
+        super().__init__(
+            'This page has not been cached yet.')
+
+class PageCleared(CacheError):
+    '''Exception raised when a deleted page is requested'''
+
+    def __init__(self):
+        super().__init__(
+            'This page has been cleared.')
+
+class MemoryError(CacheError):
+    '''Exception raised when max data already stored in cache'''
+
+    def __init__(self):
+        super().__init__(
+            'Cannot save any more pages, call /cache/clear or' +
+            '/cache/clear/{page_name}')
+
+class CacheOverwriteError(CacheError):
+    '''Exception raised when attempted overwriting of page'''
+
+    def __init__(self):
+        super().__init__(
+            'Cannot overwrite page, choose a different name')
+
+############################################################
+########################## CLASSES #########################
+############################################################
+class Cache():
+    __max_size = 2*1024*1024
+
+    def __init__(self, max_size=None):
+        if max_size is not None:
+            self.__max_size = max_size
+        self.__size = 0
+        self.__pages = {}
+
+    def save(self, name, page):
+        '''Saves the page to the cache.
+        
+        name is the alphanumeric identifier
+        page is a dictionary with the following items:
+            - data: the content of the page
+            - type: the content type
+        '''
+
+        #TODO Multi-thread safety!
+        if self.size + len(page['data']) > self.max_size:
+            raise MemoryError
+        try:
+            self.__pages[name]
+        except KeyError:
+            logger.debug('Caching page "{}"'.format(name))
+            self.__pages[name] = page
+            self.__size += len(page['data'])
+            logger.debug('Cache size is: {}'.format(self.size))
+        else:
+            raise CacheOverwriteError
+
+    def get(self, name):
+        logger.debug('Trying to get page "{}"'.format(name))
+        try:
+            page = self.__pages[name]
+        except KeyError:
+            raise PageNotCached
+        if page is None:
+            raise PageCleared
+        return page
+
+    def clear(self, name=None):
+        '''Marks all pages as purged, but remembers page names'''
+
+        try:
+            self.__pages[name]
+        except KeyError:
+            if name is None:
+                to_clear = [k for k,v in self.__pages.items() \
+                        if v is not None]
+            else:
+                return # no such cached page
+        else:
+            to_clear = [name]
+
+        logger.debug('Clearing from cache: {}'.format(
+            ', '.join(to_clear)))
+
+        for key in to_clear:
+            if self.__pages[key] is not None:
+                self.__size -= len(self.__pages[key]['data'])
+            self.__pages[key] = None
+
+        logger.debug('Cache size is: {}'.format(self.size))
+        assert self.__size >= 0
+
+    @property
+    def max_size(self):
+        return self.__max_size
+
+    @property
+    def size(self):
+        return self.__size
+
+############################################################
+class ThreadingCORSHttpsServer(ThreadingMixIn, http.server.HTTPServer):
     pass
 
 class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
-    __can_read_body = False
+
+    cache = Cache()
+    __cookie_len = 20
+    __sessions = []
+    __max_sessions = 10
+    # format for endpoints: 'root': {'subpoint': ['method1', ...]}
+    # request path is checked against each endpoint's root;
+    # if match, then the subpath after that is matched agains the
+    # endpoint's subpoint
+    # if no match, then the default subpoint '' is used
+    # the request method is checked agains the list of allowed methods
+    # then a handler called do_<root> is called, passing it the
+    # subpoint that matched and a list of the rest of the subpaths
+    __endpoints = {
+        'echo': {
+            '': ['POST'],
+            },
+        'login': {
+            '': ['GET'],
+            },
+        'cache': {
+            'clear': ['GET'],
+            'new': ['GET'],
+            '': ['GET', 'POST'],
+            },
+        }
+    __templates = {
+        'default':{
+            'data':'''
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    {%HEAD%}
+  </head>
+  <body>
+    {%BODY%}
+  </body>
+</html>
+    ''',
+            'type':'text/html'
+            },
+        }
+    __template_pages = {
+        'example': {
+            'fields':{
+                'HEAD':'<meta http-equiv="refresh" content="30">',
+                'BODY':'Example "dynamic" page, will refresh every 30s.',
+            },
+        },
+    }
 
     def send_custom_headers(self):
         '''The new_server factory overrides this'''
@@ -31,22 +213,79 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
 
     def get_param(self, parname):
         '''Returns the value of parname given in the URL'''
-        try:
-            query = re.split('\?([^/]+)$', self.path)[1]
-        except IndexError:
-            return None
+
         try:
             params = dict(filter(lambda x: len(x) == 2,
-                [p.split('=') for p in query.split('&')]))
+                [p.split('=') for p in self.__query.split('&')]))
         except ValueError:
             params = {}
+
         try:
             value = params[parname]
         except KeyError:
             return None
+
         return value
 
-    def get_body(self):
+    def show(self):
+        '''Logs the request'''
+
+        msg = "\n----- Request Start ----->\n\n{}\n{}".format(
+            self.requestline, self.headers)
+
+        try:
+            req_body_dec = self.__body.decode('utf-8')
+        except UnicodeDecodeError:
+            req_body_dec = '>> Cannot decode request body! <<'
+        msg += "\n{}".format(req_body_dec)
+
+        msg += "\n<----- Request End -----\n"
+        logger.info(msg)
+
+    def render(self, page):
+        '''Renders a page as a 200 OK.
+        
+        page is a dictionary with the following items:
+            - data: the content of the page
+            - type: the content type
+        '''
+
+        self.send_response(200)
+        self.send_header('Content-type', page['type'])
+        self.send_header('Content-Length', len(page['data']))
+        self.end_headers()
+        self.wfile.write(page['data'])
+
+    def page_from_template(self,t_page):
+        try:
+            t_name = t_page['template']
+        except KeyError:
+            logger.debug('Using default template for page')
+            t_name = 'default'
+
+        try:
+            page = self.__templates[t_name]
+        except KeyError:
+            return {'data':
+                b'No such template {}'.format(t_name)}
+
+        try:
+            fields = t_page['fields']
+        except KeyError:
+            logger.debug(
+                'No fields for template page')
+
+        for f,v in fields.items():
+            logger.debug('Replacing field {} with "{}"'.format(f,v))
+            page['data'] = page['data'].replace('{%'+f+'%}', v)
+
+        # remove unused fields and encode
+        page['data'] = re.sub('{%[^%]*%}', '',
+                page['data']).encode('utf-8')
+
+        return page
+
+    def read_body(self):
         '''Returns the body data. Cannot be called more than once'''
 
         if not self.__can_read_body:
@@ -55,105 +294,300 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         try:
             length = int(self.headers.get('Content-Length'))
         except TypeError:
-            req_body = b''
+            self.__body = b''
         else:
-            req_body = self.rfile.read(length)
+            self.__body = self.rfile.read(length)
 
+        logger.debug('Read {} bytes from body'.format(len(self.__body)))
         self.__can_read_body = False
-        return req_body
 
-    def show(self, req_body):
-        '''Logs the request'''
+    def decode_body(self):
+        '''Decodes the request.
+        
+        It must contain the following parameters:
+            - data: the content of the page
+            - type: the content type
 
-        msg = "\n----- Request Start ----->\n\n{}\n{}".format(
-            self.requestline, self.headers)
+        Returns the same data/type dictionary but with a decoded
+        content'''
 
-        try:
-            req_body_dec = req_body.decode('utf-8')
-        except UnicodeDecodeError:
-            req_body_dec = '>> Cannot decode request body! <<'
-        msg += "\n{}".format(req_body_dec)
-
-        msg += "\n<----- Request End -----\n"
-        logger.info(msg)
-        return req_body
-
-    def echo(self, post_data):
-        '''Decodes the request and returns it as the response body'''
-
-        try:
-            post_data = post_data.decode('utf-8')
-        except UnicodeDecodeError:
-            self.send_error(400, explain='Cannot UTF-8 decode request body!')
+        ctype = self.headers.get('Content-Type').split(';',1)[0]
+        if ctype in ['application/json', 'text/json']:
+            param_loader = self.JSON_params
+            data_decoder = self.b64_data
+            type_decoder = lambda x: x
+        elif ctype == 'application/x-www-form-urlencoded':
+            param_loader = self.form_params
+            data_decoder = self.url_data
+            type_decoder = self.url_data
+        else:
+            raise DecodingError(
+                'Unknown Content-Type: {}'.format(ctype))
             return
+
+        try:
+            post_data = self.__body.decode('utf-8')
+        except UnicodeDecodeError:
+            raise DecodingError('Cannot UTF-8 decode request body!')
+
+        req_params = param_loader(post_data)
+        logger.debug('Request parameters: {}'.format(req_params))
+
+        try:
+            body_enc = req_params['data']
+        except KeyError:
+            raise DecodingError('No "data" parameter present!')
+        logger.debug('Encoded body: {}'.format(body_enc))
+
+        try:
+            ctype = type_decoder(req_params['type']).split(';',1)[0]
+            if ctype not in mimetypes.types_map.values():
+                raise ValueError('Unsupported Content-type')
+        except (KeyError, ValueError):
+            ctype = 'text/plain'
+        else:
+            logger.debug('Content-Type: {}'.format(ctype))
+
+        body = data_decoder(body_enc).encode('utf-8')
+        logger.debug('Decoded body: {}'.format(body))
+
+        return {'data': body, 'type': ctype}
+
+    @staticmethod
+    def form_params(post_data):
+        '''Parameter loader.
+        
+        Returns a dictionary read from an
+        application/x-www-form-urlencoded POST
+        '''
 
         try:
             req_params = dict([p.split('=') for p in post_data.split('&')])
         except ValueError:
-            self.send_error(400, explain='Cannot load parameters from request!')
-            return
-        logger.debug('Request parameters: {}'.format(req_params))
+            raise DecodingError('Cannot load parameters from request!')
+        return req_params
+
+    @staticmethod
+    def JSON_params(post_data):
+        '''Parameter loader.
+        
+        Returns a dictionary read from a JSON string
+        '''
 
         try:
-            html_enc = req_params['data']
-        except KeyError:
-            self.send_error(400, explain='No "data" parameter present!')
-            return
-        logger.debug('Encoded HTML: {}'.format(html_enc))
+            req_params = json.loads(post_data)
+        except JSONDecodeError:
+            raise DecodingError('Cannot decode JSON!')
+        return req_params
+
+    @staticmethod
+    def url_data(data_enc):
+        '''Data decoder.
+        
+        Returns the percent-decoded data
+        '''
 
         try:
-            html = urllib.parse.unquote_plus(html_enc)
+            data = urllib.parse.unquote_plus(data_enc)
         except: # what exception does it throw???
-            self.send_error(400, explain='Cannot URL decode request body!')
-            return
-        logger.debug('Decoded HTML: {}'.format(html))
+            raise DecodingError('Cannot URL decode request data!')
+        return data
 
-        html = html.encode('utf-8')
+    @staticmethod
+    def b64_data(data_enc):
+        '''Data decoder.
+        
+        Returns the base64-decoded data
+        '''
 
-        self.send_response(200)
-        self.send_header('Content-type', 'text/html')
-        self.send_header('Content-Length', len(html))
-        self.end_headers()
-        self.wfile.write(html)
-
-    def handle(self):
-        self.__can_read_body = True
-        super().handle()
+        try:
+            data = base64.b64decode(data_enc)
+        except binascii.Error:
+            raise DecodingError('Cannot Base64 decode request data!')
+        return data.decode('utf-8')
 
     def end_headers(self):
         self.send_custom_headers()
         super().end_headers()
 
+    def do_login(self, cmd, *args):
+        '''Issues a random cookie and saves it'''
+
+        if args:
+            # sub not supported
+            self.send_error(404)
+            return
+
+        cookie = '{:02x}'.format(
+            randint(0, 2**(4*self.__cookie_len)-1))
+        if len(self.__sessions) >= self.__max_sessions:
+            # remove a third of the oldest sessions
+            logger.debug('Purging old sessions')
+            del self.__sessions[int(self.__max_sessions/3):]
+        self.__sessions.append(cookie)
+
+        self.send_response(200)
+        #TODO Set the Secure flag if over TLS
+        self.send_header('Set-Cookie',
+            'SESSION={}; path=/; HttpOnly'.format(cookie))
+        self.send_header('Content-type', 'text/plain')
+        self.send_header('Content-Length', 0)
+        self.end_headers()
+
+    def do_echo(self, cmd, *args):
+        '''Decodes the request and returns it as the response body'''
+
+        if args:
+            # sub not supported
+            self.send_error(404)
+            return
+
+        try:
+            page = self.decode_body()
+        except DecodingError as e:
+            self.send_error(400, explain=str(e))
+            return
+        self.render(page)
+
+    def do_cache(self, cmd, *args):
+        '''Saves, retrieves or clears a cached page'''
+
+        try:
+            name = args[0]
+        except IndexError:
+            name = None
+
+        if args[1:] or (not cmd and not name):
+            # either additional data, or only /cache called
+            self.send_error(404)
+            return
+
+        if cmd == 'clear':
+            self.cache.clear(name)
+            self.send_response(204)
+            self.end_headers()
+        elif cmd == 'new':
+            if name:
+                self.send_error(404)
+                return
+
+            self.render({
+                'data': '{}'.format(
+                    uuid.uuid4()).encode('utf-8'),
+                'type': 'text/plain'})
+        else:
+            assert not cmd # did we forget to handle a command
+
+            if self.command == 'GET':
+                try:
+                    page = self.cache.get(name)
+                except (PageCleared, PageNotCached) as e:
+                    self.send_error(500, explain=str(e))
+                else:
+                    self.render(page)
+
+            else:
+                try:
+                    page = self.decode_body()
+                except DecodingError as e:
+                    self.send_error(400, explain=str(e))
+                    return
+                try:
+                    self.cache.save(name, page)
+                except CacheError as e:
+                    self.send_error(500, explain=str(e))
+                else:
+                    self.send_response(204)
+                    self.end_headers()
+
+    def methodhandler(func):
+        @wraps(func)
+        def wrapper(self):
+            logger.debug('INIT for method handler')
+
+            self.__pathname, _, self.__query = self.path.partition('?')
+            # decode path
+            #TODO other encodings??
+            logger.debug('Path is {}'.format(self.__pathname))
+            self.__pathname = urllib.parse.unquote_plus(
+                    self.__pathname)
+            # canonicalize it
+            assert self.__pathname[0] == '/'
+            self.__pathname = os.path.abspath(self.__pathname)
+            logger.debug('Real path is {}'.format(self.__pathname))
+
+            self.__can_read_body = True
+            self.__body = None
+            self.read_body()
+            self.show()
+            root, sub, *args = self.__pathname[1:].split('/') + ['']
+            args = list(filter(None,args))
+            try:
+                endpoint = self.__endpoints[root]
+            except KeyError:
+                logger.debug('{} is not special'.format(root))
+                func(self)
+            else:
+                if sub not in endpoint.keys():
+                    args.insert(0, sub)
+                    sub = ''
+                logger.debug(
+                    'API call: root: {}, sub: {}, {} args'.format(
+                        root, sub, len(args)))
+                if self.command not in endpoint[sub]:
+                    self.send_error(405)
+                    return
+                handler = getattr(self, 'do_' + root)
+                handler(sub, *args)
+
+        return wrapper
+
+    @methodhandler
     def do_GET(self):
-        req_data = self.get_body()
-        self.show(req_data)
-        if re.match('/echo(\?|$)', self.path) and self.command in ['OPTIONS', 'POST']:
-            self.echo(req_data)
-        elif self.headers.get('Cookie') == AUTH_COOKIE or not \
-            re.match('/secret.txt(\?|$)', self.path):
+        logger.debug('GETting {}'.format(self.__pathname))
+        try:
+            cookies = dict([x.split('=') for x in re.split(
+                ' *; *', self.headers.get('Cookie'))])
+        except (AttributeError, IndexError, ValueError):
+            logger.debug('No cookie given')
+            session = None
+        else:
+            try:
+                session = cookies['SESSION']
+            except KeyError:
+                logger.debug('Unexpected cookie given')
+                session = None
+            else:
+                logger.debug('Cookie is {}valid'.format(
+                    '' if session in self.__sessions else 'not '))
+
+        if self.__pathname[1:].split('/')[0] != 'secret' or \
+             (session and session in self.__sessions):
             super().do_GET()
         else:
             self.send_error(401)
 
+    @methodhandler
     def do_POST(self):
-        self.do_GET()
+        self.do_GET.__wrapped__(self)
 
+    @methodhandler
     def do_OPTIONS(self):
-        req_data = self.get_body()
-        self.show(req_data)
         self.send_response(200)
         self.send_header('Content-Type', 'text/plain')
         self.send_header('Content-Length', '0')
         self.end_headers()
 
+    @methodhandler
     def do_HEAD(self):
-        req_data = self.get_body()
-        self.show(req_data)
         super().do_HEAD()
+
+    methodhandler = staticmethod(methodhandler)
 
 def new_server(clsname, cors, headers):
     def send_custom_headers(self):
         # Disable Cache
+        # self.__pathname not defined yet
         if not re.search('/jquery-[0-9\.]+(\.min)?\.js$', self.path):
             self.send_header('Cache-Control',
                 'no-cache, no-store, must-revalidate')
@@ -269,6 +703,12 @@ if __name__ == "__main__":
             default=logging.INFO, action='store_const',
             const=logging.DEBUG,
             help='''Enable debugging output.''')
+    misc_parser.add_argument('-t', '--multithread', dest='srv_cls',
+            default=http.server.HTTPServer, action='store_const',
+            const=ThreadingCORSHttpsServer,
+            help='''Enable multi-threading support. EXPERIMENTAL! You
+            ma experience crashes. The cache has not been implemented
+            in an MT safe way yet.''')
     args = parser.parse_args()
 
     if args.logfile is None:
@@ -277,8 +717,8 @@ if __name__ == "__main__":
         logger.addHandler(logging.FileHandler(args.logfile))
     logger.setLevel(args.loglevel)
 
-    httpd = ThreadingCORSHttpsServer((args.address, args.port),
-            new_server('CORSHttpsServer', {
+    httpd = args.srv_cls((args.address, args.port),
+            new_server('CORSHttpsServerCustom', {
                     'origins': args.allowed_origins,
                     'methods': args.allowed_methods,
                     'headers': args.allowed_headers,

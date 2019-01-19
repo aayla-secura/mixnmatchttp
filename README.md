@@ -1,38 +1,91 @@
 # Description
 
-This is a simple multi-threaded wrapper around python's simple http server for CORS testing purposes. It can add custom headers including Access-Control-Allow-Origin: `<request origin>`. It can serve over SSL too.
+This is a multi-threaded HTTPS server based on python's simple http server. It is not built specifically with security in mind and of course is not suitable for production. Its sole purpose is for testing purposes of browser's same-origin policy and CORS misconfigurations of other servers.
 
-CORS headers (Allow-Origins and Allow-Credentials) can also be controlled per request with the `origin` and `creds` URL parameters. If origin is `%%ECHO%%` it is taken from the Origin header in the request.
+# Features
 
-# CORS test
+	* SSL (can be disabled)
+	* Multi-threading (disabled by default)
+	* Easily configure default CORS-related headers (`Access-Control-Allow-*`) via command line or on a per-request basis using the `origin` and `creds` URL parameters (if `origin` is `%%ECHO%%` it is taken from the `Origin` header in the request)
+  * Other custom headers via command line only
 
-The html pages should work with older browser (not tested all yet).
+## Special endpoints
+  * GET /login: issues a random `SESSION` cookie
+		- Response codes:
+		  + 200 OK: empty body
+		- Notes:
+		  + sessions are forgotten on the server side upon restart
+	* POST /echo: render the requested content
+	  - Supported parameters:
+			+ data: the encoded content of the page to be rendered (required)
+			+ type: the content type of the rendered page (defaults to text/plain)
+		- Supported formats:
+			+ application/json with base64 encoded data
+			+ application/x-www-form-urlencoded (with URL encoded data)
+		- Response codes:
+		  + 200 OK: the body and content-type are as requested
+			+ 400 Bad Request: cannot decode data or find the data parameter
+	* POST /cache/{name}: temporarily save the requested content (in memory only)
+	  - Supported parameters and formats are the same as for POST /echo
+		- Response codes:
+		  + 204 No Content: page cached
+			+ 404 Not Found: page name contains disallowed characters
+			+ 500 Server Error: maximum cache memory reached, or page {name} already cached
+		- Notes:
+		  + Once saved, a page cannot be overwritten (until the server is shutdown) even if it is cleared from memory (see /cache/clear)
+			+ Only alphanumeric chatacters, dashes and underscores are allowed in name
+	* GET /cache/{name}: retrieve a previously saved page
+		- Response codes:
+		  + 200 OK: the body and content-type are as requested during caching
+			+ 500 Server Error: no such cached page, or page cleared from memory
+	* GET /cache/clear/{name}: clear a previously saved page to free memory
+		- Response codes:
+		  + 204 No Content: page cleared
+	* GET /cache/clear: clear all previously saved pages to free memory
+		- Response codes:
+		  + 204 No Content: all pages cleared
+	* GET /cache/new: get a random UUID
+		- Response codes:
+		  + 200 OK: body contains a randomly generated UUID; use in POST /cache/{uuid}
 
-  * `login.html`: sets the auth cookie and redirects to a URL given as the goto GET parameter or index.html
-  * `secret.txt`: a dummy secret, accessible only if an 'auth=1' cookie is present
-  * `getData.html`: fetches the requested resource (given in the `goto` URL parameter) with `withCredentials` set to True; it does GET unless the `post` URL parameter is true
-  * `getSecret.html`: fetches `secret.txt` from the target host (given by the `host`, `hostname` or `port` URL parameters, see below) by loading `getData.html` in multiple iframes (see below for description)
+# TO DO
 
-### Running the server
+	* MT-safe saving and clearing of cache
+	* Take a list of resources protected by a cookie (instead of `/secret/*`)
+	* Set cookie with the `Secure` flag when over TLS
 
-`getSecret.html` will determine the target host using one of the following URL parameters, in this order of precedence:
-  * `host`: gives the full hostname/IP address:port of the target
-  * `hostname`: gives only the hostname/IP address of the target; the port number is the same as the origin
-  * `port`: gives only the port number of the target; the hostname/IP address is the same as the origin
+# Uses
 
-You therefore have these options for CORS testing:
+## Same-origin browser test
+
+The html pages in /tests/sop can be used to test the behaviour of various browsers (many old ones supported) when it comes to cross-origin requests.
+
+  * `login.html`: sets the auth cookie and redirects to a given URL; supported URL parameters:
+	  - `goto`: URL of the page to redirect to
+  * `getData.html`: fetches the requested resource with `withCredentials` set to True; supported URL parameters:
+	  - `reqURL`: the URL of the page to fetch
+		- `post`: fetch using POST instead of GET
+  * `getSecret.html`: fetches `/secret/secret.txt` from the target host by loading `getData.html` in multiple iframes (see below for description); supported URL parameters:
+		- `host`: the full hostname/IP address:port of the target
+		- `hostname`: only the hostname/IP address of the target; the port number is the same as the origin
+		- `port`: only the port number of the target; the hostname/IP address is the same as the origin
+
+#### Running the server
+
+`getSecret.html` will determine the target host using any of the `host`, `hostname` or `port` URL parameters, in this order of precedence.
+
+You have these options for CORS testing:
 
 1. Start the server on all interfaces (default):
-
 
 ```
 python3 simple.py -S -l logs/requests.log
 ```
 
-then visit:
+Visit:
 
 ```
-https://<IP_1>:58081/getSecret.html?hostname=<IP_2>
+https://<IP_1>:58081/tests/sop/getSecret.html?hostname=<IP_2>
 ```
 
 replacing `<IP_1>` and `<IP_2>` with two different interfaces, e.g. `127.0.0.1` and `192.168.0.1`.
@@ -46,13 +99,13 @@ python3 simple.py -S -a <IP> -l logs/requests.log
 and use a DNS name which resolves to the interface's IP address:
 
 ```
-https://<IP>:58081/getSecret.html?hostname=<hostname>
+https://<IP>:58081/tests/sop/getSecret.html?hostname=<hostname>
 ```
 
 or:
 
 ```
-https://<hostname>:58081/getSecret.html?hostname=<IP>
+https://<hostname>:58081/tests/sop/getSecret.html?hostname=<IP>
 ```
 
 You can omit the hostname URL parameter if listening on `localhost` and `localhost` has the `127.0.0.1` address. `getSecret.html` will detect that and use `localhost` or `127.0.0.1` as the target domain (if the origin is `127.0.0.1` or `localhost` respectively).
@@ -67,12 +120,12 @@ python3 simple.py -S -a <IP> -p 58082 -l logs/requests_58082.log
 then visit:
 
 ```
-https://<IP>:58081/getSecret.html?port=58082
+https://<IP>:58081/tests/sop/getSecret.html?port=58082
 ```
 
-### Viewing results, logging to file and parsing it
+#### Viewing results, logging to file and parsing it
 
-`getSecret.html` will log in to the target host (e.g. `<IP_2>` if running as described in option 1. and load 10 iframes, each of which will fetch `https://<target_host>/secret.txt?origin=...&creds=...` requesting one of the following 5 CORS combinations from the server, once using GET and once using POST methods:
+`getSecret.html` will log in to the target host (e.g. `<IP_2>` if running as described in option 1. and load 10 iframes, each of which will fetch `https://<target_host>/secret/secret.txt?origin=...&creds=...` requesting one of the following 5 CORS combinations from the server, once using GET and once using POST methods:
   * Origin: `*` , Credentials: true
   * Origin: `*` , Credentials: false
   * Origin: `<as request origin>` , Credentials: true
@@ -84,6 +137,42 @@ Results from the Ajax calls will be logged to the page; check the JS console for
 ```
 /parse_request_log.sh logs/requests.log logs/requests_result.md
 ```
+
+## Data exfiltration via CSRF
+
+The html pages in /tests/csrf can be used to test for [CSRF](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29) vulnerabilities.
+
+  * `getData.html`: requests a new cache UUID for saving the exfiltrated data to and presents you with an input field where you put the URL of the secret page you want to fetch via the victim; then generates a URL for the victim to click on (`evil.html`)
+		- `post`: fetch target using POST instead of GET
+  * `evil.html`: this is the page you send to the victim; it will fetch the data and send it back to you; supported URL parameters:
+	  - `reqURL`: the URL of the page to fetch
+	  - `sendURL`: the URL of the page to send the data to
+		- `post`: fetch using POST instead of GET
+
+#### Running the server
+
+The "victim" (`evil.html`) and "attacker" (`getData.html`) must be loaded in different browsers.
+
+Start the server on any interface, e.g.:
+
+```
+python3 simple.py -S
+```
+
+Visit `getData.html` in one browser:
+
+```
+https://<IP>:58081/tests/csrf/getData.html
+```
+
+then input the target URL in the input box, e.g.:
+
+```
+https://<IP>:58081/secret/secret.html
+```
+
+Click on the link "Click here to wait for the stolen data". Copy the generated victim URL and open it in another browser.
+The cached page should refresh every 30s, but you can manually refresh it to check if the secret data has arrived.
 
 # Usage
 

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<script src="/js/allfuncs.js" charset="utf-8"></script>
+		<script charset="UTF-8">
+			registerWinOnLoad(function () {
+				var reqURL = getPar('reqURL');
+				var sendURL = getPar('sendURL');
+				var doPOST = getBoolPar('post');
+				if (! reqURL || ! sendURL) { return; }
+				reqURL = decodeURIComponent(reqURL);
+				sendURL = decodeURIComponent(sendURL);
+				getDataViaXHR(reqURL, doPOST, sendURL, function (data) {
+					setTextContent(document.getElementById('log'), 'Success');
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="log">Getting data...</div>
+	</body>
+</html>
