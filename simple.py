@@ -548,7 +548,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         try:
             cookies = dict([x.split('=') for x in re.split(
                 ' *; *', self.headers.get('Cookie'))])
-        except (AttributeError, IndexError, ValueError):
+        except (AttributeError, TypeError, IndexError, ValueError):
             logger.debug('No cookie given')
             session = None
         else:

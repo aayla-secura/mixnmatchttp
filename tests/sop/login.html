@@ -8,11 +8,11 @@
 	</head>
 	<body>
 		<script charset="utf-8">
-			document.cookie = "auth=1; path=/"
+			getDataViaXHR('/login');
 			var url = getPar("goto");
-			if (url) { url = decodeURIComponent(url); }
-			else { url = "index.html"; }
-			window.location.replace(url);
+			if (url) {
+				window.location.replace(decodeURIComponent(url));
+			}
 		</script>
 	</body>
 </html>
