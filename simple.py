@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# TO DO: write doc
+# TO DO: write doc for all classes and methods
 import logging
 import http.server
 import ssl
@@ -26,7 +26,7 @@ class PageReadError(Exception):
     '''Base class for exceptions related to request body read'''
     pass
 
-class UnsupportedOperation(PageReadError):
+class UnsupportedOperationError(PageReadError):
     '''Exception raised when request body is read more than once'''
 
     def __init__(self):
@@ -34,9 +34,7 @@ class UnsupportedOperation(PageReadError):
             'Cannot read body data again, buffer not seekable')
 
 class DecodingError(PageReadError):
-    '''Exception raised when cannot decode data sent to /cache/save or
-    /echo
-    '''
+    '''Exception raised when cannot decode sent data'''
     pass
 
 
@@ -44,14 +42,14 @@ class CacheError(Exception):
     '''Base class for exceptions related to the cache'''
     pass
 
-class PageNotCached(CacheError):
+class PageNotCachedError(CacheError):
     '''Exception raised when a non-existent page is requested'''
 
     def __init__(self):
         super().__init__(
             'This page has not been cached yet.')
 
-class PageCleared(CacheError):
+class PageClearedError(CacheError):
     '''Exception raised when a deleted page is requested'''
 
     def __init__(self):
@@ -72,6 +70,36 @@ class CacheOverwriteError(CacheError):
     def __init__(self):
         super().__init__(
             'Cannot overwrite page, choose a different name')
+
+
+class EndpointError(Exception):
+    '''Base class for exceptions related to the special endpoints'''
+    pass
+
+class NotAnEndpointError(EndpointError):
+    '''Exception raised when the root path is unknown'''
+
+    def __init__(self, root):
+        super().__init__('{} is not special.'.format(root))
+
+class MethodNotAllowedError(EndpointError):
+    '''Exception raised when the request method is not allowed'''
+
+    def __init__(self):
+        super().__init__('Method not allowed.')
+
+class MissingArgsError(EndpointError):
+    '''Exception raised when a required argument is not given'''
+
+    def __init__(self):
+        super().__init__('Missing required argument.')
+
+class ExtraArgsError(EndpointError):
+    '''Exception raised when extra arguments are given'''
+
+    def __init__(self, args):
+        super().__init__('Extra arguments: ({}).'.format(
+            ', '.join(args)))
 
 ############################################################
 ########################## CLASSES #########################
@@ -112,9 +140,9 @@ class Cache():
         try:
             page = self.__pages[name]
         except KeyError:
-            raise PageNotCached
+            raise PageNotCachedError
         if page is None:
-            raise PageCleared
+            raise PageClearedError
         return page
 
     def clear(self, name=None):
@@ -151,58 +179,120 @@ class Cache():
         return self.__size
 
 ############################################################
+class Endpoints():
+    '''Special endpoints
+    
+    Format for endpoints:
+    '<root>': {
+            '<subpoint>': {
+                'allowed_methods': ['<method1>', ...],
+                'args': <number>|Endpoints.ARGS_*
+                }
+            }
+    
+    'args' can be a number for exact number of arguments
+    'allowed_methods defaults to ['GET']
+    'args' defaults to 0
+    '''
+
+    ARGS_OPTIONAL = '?' # 0 or 1
+    ARGS_ANY = '*'      # any number
+    ARGS_REQUIRED = '+' # 1 or more
+
+    def __init__(self, **kwargs):
+        self.__endpoints = kwargs.copy()
+        for root, subs in self.__endpoints.items():
+            for sub in subs.values():
+                try:
+                    sub['allowed_methods']
+                except KeyError:
+                    sub['allowed_methods'] = ['GET']
+                try:
+                    sub['args']
+                except KeyError:
+                    sub['args'] = 0
+
+    def parse(self, path, command):
+        '''Path must have a leading /'''
+
+        root, sub, *args = path[1:].split('/') + ['']
+        args = list(filter(None,args))
+        try:
+            endpoint = self.__endpoints[root]
+        except KeyError:
+            raise NotAnEndpointError(root)
+        else:
+            if sub not in endpoint.keys():
+                args.insert(0, sub)
+                sub = ''
+            logger.debug(
+                'API call: root: {}, sub: {}, {} args'.format(
+                    root, sub, len(args)))
+
+            if command not in endpoint[sub]['allowed_methods']:
+                raise MethodNotAllowedError
+
+            if endpoint[sub]['args'] == self.ARGS_ANY:
+                pass
+            elif endpoint[sub]['args'] == self.ARGS_REQUIRED:
+                if not args:
+                    raise MissingArgsError
+            elif endpoint[sub]['args'] == self.ARGS_OPTIONAL:
+                if args[1:]:
+                    raise ExtraArgsError(args[1:])
+            elif len(args) > endpoint[sub]['args']:
+                raise ExtraArgsError(args[endpoint[sub]['args']:])
+            elif len(args) < endpoint[sub]['args']:
+                raise MissingArgsError
+
+        return root, sub, args
+
+############################################################
 class ThreadingCORSHttpsServer(ThreadingMixIn, http.server.HTTPServer):
     pass
 
 class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
 
-    cache = Cache()
     __cookie_len = 20
     __sessions = []
     __max_sessions = 10
-    #XXX args supported?
-    # format for endpoints:
-    # '<root>': {
-    #         '<subpoint>': {
-    #             'allowed_methods': ['<method1>', ...],
-    #             'args_ok': True|False
-    #             }
-    #         }
+
+    cache = Cache()
     # request path is checked against each endpoint's root;
     # if match, then the subpath after that is matched agains the
     # endpoint's subpoint
     # if no match, then the default subpoint '' is used
-    # the request method is checked agains the list of allowed methods
+    # the request method is checked against the list of allowed methods
     # then a handler called do_<root> is called, passing it the
     # subpoint that matched and a list of the rest of the subpaths
-    __endpoints = {
-        'echo': {
+    endpoints = Endpoints(
+        echo={
             '': {
                 'allowed_methods': ['POST'],
-                'args_ok': False,
+                'args': 0,
                 },
             },
-        'login': {
+        login={
             '': {
                 'allowed_methods': ['GET'],
-                'args_ok': False,
+                'args': 0,
                 },
             },
-        'cache': {
+        cache={
+            '': {
+                'allowed_methods': ['GET', 'POST'],
+                'args': 1,
+                },
             'clear': {
                 'allowed_methods': ['GET'],
-                'args_ok': True,
+                'args': Endpoints.ARGS_OPTIONAL,
                 },
             'new': {
                 'allowed_methods': ['GET'],
-                'args_ok': False,
-                },
-            '': {
-                'allowed_methods': ['GET', 'POST'],
-                'args_ok': True,
+                'args': 0,
                 },
             },
-        }
+        )
     __templates = {
         'default':{
             'data':'''
@@ -305,7 +395,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         '''Returns the body data. Cannot be called more than once'''
 
         if not self.__can_read_body:
-            raise UnsupportedOperation
+            raise UnsupportedOperationError
 
         try:
             length = int(self.headers.get('Content-Length'))
@@ -483,7 +573,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
             if self.command == 'GET':
                 try:
                     page = self.cache.get(name)
-                except (PageCleared, PageNotCached) as e:
+                except (PageClearedError, PageNotCachedError) as e:
                     self.send_error(500, explain=str(e))
                 else:
                     self.render(page)
@@ -530,26 +620,22 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
             self.__body = None
             self.read_body()
             self.show()
-            root, sub, *args = self.__pathname[1:].split('/') + ['']
-            args = list(filter(None,args))
+
             try:
-                endpoint = self.__endpoints[root]
-            except KeyError:
-                logger.debug('{} is not special'.format(root))
+                root, sub, args = self.endpoints.parse(
+                        self.__pathname, self.command)
+            except NotAnEndpointError as e:
+                logger.debug('{}'.format(str(e)))
                 func(self)
+            except MethodNotAllowedError as e:
+                logger.debug('{}'.format(str(e)))
+                self.send_error(405)
+                return
+            except (MissingArgsError, ExtraArgsError) as e:
+                logger.debug('{}'.format(str(e)))
+                self.send_error(404)
+                return
             else:
-                if sub not in endpoint.keys():
-                    args.insert(0, sub)
-                    sub = ''
-                logger.debug(
-                    'API call: root: {}, sub: {}, {} args'.format(
-                        root, sub, len(args)))
-                if self.command not in endpoint[sub]['allowed_methods']:
-                    self.send_error(405)
-                    return
-                if args and not endpoint[sub]['args_ok']:
-                    self.send_error(404)
-                    return
                 handler = getattr(self, 'do_' + root)
                 handler(sub, *args)
 
