@@ -1,58 +1,58 @@
 # Description
 
-This is a multi-threaded HTTPS server based on python's simple http server. It is not built specifically with security in mind and of course is not suitable for production. Its sole purpose is for testing purposes of browser's same-origin policy and CORS misconfigurations of other servers.
+This is a multi-threaded HTTPS server based on python's simple http server. It is not built with security in mind and is **not** suitable for production. Its sole purpose is for testing the same-origin policy of browsers, and CORS misconfigurations of other servers.
 
 # Features
 
-	* SSL (can be disabled)
-	* Multi-threading (disabled by default)
-	* Easily configure default CORS-related headers (`Access-Control-Allow-*`) via command line or on a per-request basis using the `origin` and `creds` URL parameters (if `origin` is `%%ECHO%%` it is taken from the `Origin` header in the request)
+  * SSL (can be disabled)
+  * Multi-threading (disabled by default)
+  * Easily configure default CORS-related headers (`Access-Control-Allow-*`) via command line or on a per-request basis using the `origin` and `creds` URL parameters (if `origin` is `%%ECHO%%` it is taken from the `Origin` header in the request)
   * Other custom headers via command line only
 
 ## Special endpoints
-  * GET /login: issues a random `SESSION` cookie
-		- Response codes:
-		  + 200 OK: empty body
-		- Notes:
-		  + sessions are forgotten on the server side upon restart
-	* POST /echo: render the requested content
-	  - Supported parameters:
-			+ data: the encoded content of the page to be rendered (required)
-			+ type: the content type of the rendered page (defaults to text/plain)
-		- Supported formats:
-			+ application/json with base64 encoded data
-			+ application/x-www-form-urlencoded (with URL encoded data)
-		- Response codes:
-		  + 200 OK: the body and content-type are as requested
-			+ 400 Bad Request: cannot decode data or find the data parameter
-	* POST /cache/{name}: temporarily save the requested content (in memory only)
-	  - Supported parameters and formats are the same as for POST /echo
-		- Response codes:
-		  + 204 No Content: page cached
-			+ 404 Not Found: page name contains disallowed characters
-			+ 500 Server Error: maximum cache memory reached, or page {name} already cached
-		- Notes:
-		  + Once saved, a page cannot be overwritten (until the server is shutdown) even if it is cleared from memory (see /cache/clear)
-			+ Only alphanumeric chatacters, dashes and underscores are allowed in name
-	* GET /cache/{name}: retrieve a previously saved page
-		- Response codes:
-		  + 200 OK: the body and content-type are as requested during caching
-			+ 500 Server Error: no such cached page, or page cleared from memory
-	* GET /cache/clear/{name}: clear a previously saved page to free memory
-		- Response codes:
-		  + 204 No Content: page cleared
-	* GET /cache/clear: clear all previously saved pages to free memory
-		- Response codes:
-		  + 204 No Content: all pages cleared
-	* GET /cache/new: get a random UUID
-		- Response codes:
-		  + 200 OK: body contains a randomly generated UUID; use in POST /cache/{uuid}
+  * `GET /login`: issues a random `SESSION` cookie
+    - Response codes:
+      + 200 OK: empty body
+    - Notes:
+      + sessions are forgotten on the server side upon restart
+  * `POST /echo`: render the requested content
+    - Supported parameters:
+      + data: the encoded content of the page to be rendered (required)
+      + type: the content type of the rendered page (defaults to text/plain)
+    - Supported formats:
+      + application/json with base64 encoded data
+      + application/x-www-form-urlencoded (with URL encoded data)
+    - Response codes:
+      + 200 OK: the body and content-type are as requested
+      + 400 Bad Request: cannot decode data or find the data parameter
+  * `POST /cache/{name}`: temporarily save the requested content (in memory only)
+    - Supported parameters and formats are the same as for `POST /echo`
+    - Response codes:
+      + 204 No Content: page cached
+      + 404 Not Found: page name contains disallowed characters
+      + 500 Server Error: maximum cache memory reached, or page {name} already cached
+    - Notes:
+      + Once saved, a page cannot be overwritten (until the server is shutdown) even if it is cleared from memory (see /cache/clear)
+      + Only alphanumeric chatacters, dashes and underscores are allowed in name
+  * `GET /cache/{name}`: retrieve a previously saved page
+    - Response codes:
+      + 200 OK: the body and content-type are as requested during caching
+      + 500 Server Error: no such cached page, or page cleared from memory
+  * `GET /cache/clear/{name}`: clear a previously saved page to free memory
+    - Response codes:
+      + 204 No Content: page cleared
+  * `GET /cache/clear`: clear all previously saved pages to free memory
+    - Response codes:
+      + 204 No Content: all pages cleared
+  * `GET /cache/new`: get a random UUID
+    - Response codes:
+      + 200 OK: body contains a randomly generated UUID; use in `POST /cache/{uuid}`
 
 # TO DO
 
-	* MT-safe saving and clearing of cache
-	* Take a list of resources protected by a cookie (instead of `/secret/*`)
-	* Set cookie with the `Secure` flag when over TLS
+  * MT-safe saving and clearing of cache
+  * Take a list of resources protected by a cookie (instead of `/secret/*`)
+  * Set cookie with the `Secure` flag when over TLS
 
 # Uses
 
@@ -61,14 +61,14 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
 The html pages in /tests/sop can be used to test the behaviour of various browsers (many old ones supported) when it comes to cross-origin requests.
 
   * `login.html`: sets the auth cookie and redirects to a given URL; supported URL parameters:
-	  - `goto`: URL of the page to redirect to
+    - `goto`: URL of the page to redirect to
   * `getData.html`: fetches the requested resource with `withCredentials` set to True; supported URL parameters:
-	  - `reqURL`: the URL of the page to fetch
-		- `post`: fetch using POST instead of GET
+    - `reqURL`: the URL of the page to fetch
+    - `post`: fetch using POST instead of GET
   * `getSecret.html`: fetches `/secret/secret.txt` from the target host by loading `getData.html` in multiple iframes (see below for description); supported URL parameters:
-		- `host`: the full hostname/IP address:port of the target
-		- `hostname`: only the hostname/IP address of the target; the port number is the same as the origin
-		- `port`: only the port number of the target; the hostname/IP address is the same as the origin
+    - `host`: the full hostname/IP address:port of the target
+    - `hostname`: only the hostname/IP address of the target; the port number is the same as the origin
+    - `port`: only the port number of the target; the hostname/IP address is the same as the origin
 
 #### Running the server
 
@@ -143,11 +143,11 @@ Results from the Ajax calls will be logged to the page; check the JS console for
 The html pages in /tests/csrf can be used to test for [CSRF](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29) vulnerabilities.
 
   * `getData.html`: requests a new cache UUID for saving the exfiltrated data to and presents you with an input field where you put the URL of the secret page you want to fetch via the victim; then generates a URL for the victim to click on (`evil.html`)
-		- `post`: fetch target using POST instead of GET
+    - `post`: fetch target using POST instead of GET
   * `evil.html`: this is the page you send to the victim; it will fetch the data and send it back to you; supported URL parameters:
-	  - `reqURL`: the URL of the page to fetch
-	  - `sendURL`: the URL of the page to send the data to
-		- `post`: fetch using POST instead of GET
+    - `reqURL`: the URL of the page to fetch
+    - `sendURL`: the URL of the page to send the data to
+    - `post`: fetch using POST instead of GET
 
 #### Running the server
 
