@@ -160,6 +160,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
     __cookie_len = 20
     __sessions = []
     __max_sessions = 10
+    #XXX args supported?
     # format for endpoints: 'root': {'subpoint': ['method1', ...]}
     # request path is checked against each endpoint's root;
     # if match, then the subpath after that is matched agains the
@@ -215,13 +216,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         '''Returns the value of parname given in the URL'''
 
         try:
-            params = dict(filter(lambda x: len(x) == 2,
-                [p.split('=') for p in self.__query.split('&')]))
-        except ValueError:
-            params = {}
-
-        try:
-            value = params[parname]
+            value = self.__query[parname]
         except KeyError:
             return None
 
@@ -414,7 +409,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         '''Issues a random cookie and saves it'''
 
         if args:
-            # sub not supported
+            # args not supported
             self.send_error(404)
             return
 
@@ -426,7 +421,12 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
             del self.__sessions[int(self.__max_sessions/3):]
         self.__sessions.append(cookie)
 
-        self.send_response(200)
+        goto = self.get_param('goto')
+        if goto is not None:
+            self.send_response(302)
+            self.send_header('Location', urllib.parse.unquote_plus(goto))
+        else:
+            self.send_response(200)
         #TODO Set the Secure flag if over TLS
         self.send_header('Set-Cookie',
             'SESSION={}; path=/; HttpOnly'.format(cookie))
@@ -438,7 +438,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         '''Decodes the request and returns it as the response body'''
 
         if args:
-            # sub not supported
+            # args not supported
             self.send_error(404)
             return
 
@@ -505,7 +505,8 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         def wrapper(self):
             logger.debug('INIT for method handler')
 
-            self.__pathname, _, self.__query = self.path.partition('?')
+            # split query from pathname
+            self.__pathname, _, query_str = self.path.partition('?')
             # decode path
             #TODO other encodings??
             logger.debug('Path is {}'.format(self.__pathname))
@@ -515,6 +516,13 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
             assert self.__pathname[0] == '/'
             self.__pathname = os.path.abspath(self.__pathname)
             logger.debug('Real path is {}'.format(self.__pathname))
+
+            # save query parameters
+            try:
+                self.__query = dict([p.partition('=')[0::2]
+                    for p in query_str.split('&')])
+            except ValueError:
+                self.__query = {}
 
             self.__can_read_body = True
             self.__body = None

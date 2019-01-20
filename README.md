@@ -25,8 +25,11 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
 
 ## Special endpoints
   * `GET /login`: issues a random `SESSION` cookie
+    - Supported parameters:
+      + `goto`: redirect to this URL
     - Response codes:
       + `200 OK`: empty body
+      + `302 OK`: Location is as requested via the `goto` parameter
     - Notes:
       + Sessions are forgotten on the server side upon restart
   * `POST /echo`: render the requested content
@@ -74,8 +77,6 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
 
 The html pages in `/tests/sop` can be used to test the behaviour of various browsers (many old ones supported) when it comes to cross-origin requests.
 
-  * `login.html`: logs in and redirects to a given URL; supported URL parameters:
-    - `goto`: URL of the page to redirect to
   * `getData.html`: fetches the requested resource with `withCredentials` set to True; supported URL parameters:
     - `reqURL`: the URL of the page to fetch
     - `post`: fetch using POST instead of GET
