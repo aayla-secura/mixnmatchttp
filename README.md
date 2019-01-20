@@ -2,6 +2,8 @@
 
 This is a multi-threaded HTTPS server based on python's simple http server. It is not built with security in mind and is **not** suitable for production. Its sole purpose is for testing the same-origin policy of browsers, and CORS misconfigurations of other servers.
 
+# Table of contents
+
   * [Description](#description)
   * [Features](#features)
     - [Special endpoints](#special-endpoints)
@@ -67,6 +69,8 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
 # Uses
 
 ## Same-origin browser test
+
+![](demos/poc_sop.gif)
 
 The html pages in `/tests/sop` can be used to test the behaviour of various browsers (many old ones supported) when it comes to cross-origin requests.
 
@@ -151,6 +155,8 @@ Results from the Ajax calls will be logged to the page; check the JS console for
 There are logs in `/tests/sop/logs` for various browsers.
 
 ## Data exfiltration via CSRF
+
+![](demos/poc_csrf.gif)
 
 The html pages in `/tests/csrf` can be used to test for [CSRF](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29) vulnerabilities.
 
