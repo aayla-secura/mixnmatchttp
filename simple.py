@@ -161,7 +161,13 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
     __sessions = []
     __max_sessions = 10
     #XXX args supported?
-    # format for endpoints: 'root': {'subpoint': ['method1', ...]}
+    # format for endpoints:
+    # '<root>': {
+    #         '<subpoint>': {
+    #             'allowed_methods': ['<method1>', ...],
+    #             'args_ok': True|False
+    #             }
+    #         }
     # request path is checked against each endpoint's root;
     # if match, then the subpath after that is matched agains the
     # endpoint's subpoint
@@ -171,15 +177,30 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
     # subpoint that matched and a list of the rest of the subpaths
     __endpoints = {
         'echo': {
-            '': ['POST'],
+            '': {
+                'allowed_methods': ['POST'],
+                'args_ok': False,
+                },
             },
         'login': {
-            '': ['GET'],
+            '': {
+                'allowed_methods': ['GET'],
+                'args_ok': False,
+                },
             },
         'cache': {
-            'clear': ['GET'],
-            'new': ['GET'],
-            '': ['GET', 'POST'],
+            'clear': {
+                'allowed_methods': ['GET'],
+                'args_ok': True,
+                },
+            'new': {
+                'allowed_methods': ['GET'],
+                'args_ok': False,
+                },
+            '': {
+                'allowed_methods': ['GET', 'POST'],
+                'args_ok': True,
+                },
             },
         }
     __templates = {
@@ -408,11 +429,6 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
     def do_login(self, cmd, *args):
         '''Issues a random cookie and saves it'''
 
-        if args:
-            # args not supported
-            self.send_error(404)
-            return
-
         cookie = '{:02x}'.format(
             randint(0, 2**(4*self.__cookie_len)-1))
         if len(self.__sessions) >= self.__max_sessions:
@@ -437,11 +453,6 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
     def do_echo(self, cmd, *args):
         '''Decodes the request and returns it as the response body'''
 
-        if args:
-            # args not supported
-            self.send_error(404)
-            return
-
         try:
             page = self.decode_body()
         except DecodingError as e:
@@ -457,20 +468,11 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         except IndexError:
             name = None
 
-        if args[1:] or (not cmd and not name):
-            # either additional data, or only /cache called
-            self.send_error(404)
-            return
-
         if cmd == 'clear':
             self.cache.clear(name)
             self.send_response(204)
             self.end_headers()
         elif cmd == 'new':
-            if name:
-                self.send_error(404)
-                return
-
             self.render({
                 'data': '{}'.format(
                     uuid.uuid4()).encode('utf-8'),
@@ -542,8 +544,11 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
                 logger.debug(
                     'API call: root: {}, sub: {}, {} args'.format(
                         root, sub, len(args)))
-                if self.command not in endpoint[sub]:
+                if self.command not in endpoint[sub]['allowed_methods']:
                     self.send_error(405)
+                    return
+                if args and not endpoint[sub]['args_ok']:
+                    self.send_error(404)
                     return
                 handler = getattr(self, 'do_' + root)
                 handler(sub, *args)
