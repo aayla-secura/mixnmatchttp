@@ -76,7 +76,7 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
 
 ![](demos/poc_sop.gif)
 
-The html pages in `/tests/sop` can be used to test the behaviour of various browsers (many old ones supported) when it comes to cross-origin requests.
+The html pages in `/demos/sop` can be used to test the behaviour of various browsers (many old ones supported) when it comes to cross-origin requests.
 
   * `getData.html`: fetches the requested resource with `withCredentials` set to True; supported URL parameters:
     - `reqURL`: the URL of the page to fetch
@@ -95,13 +95,13 @@ You have these options for CORS testing:
 1. Start the server on all interfaces (default):
 
 ```
-python3 simple.py -S -l tests/sop/logs/requests.log
+python3 simple.py -S -l demos/sop/logs/requests.log
 ```
 
 Visit:
 
 ```
-https://<IP_1>:58080/tests/sop/getSecret.html?hostname=<IP_2>
+https://<IP_1>:58080/demos/sop/getSecret.html?hostname=<IP_2>
 ```
 
 replacing `<IP_1>` and `<IP_2>` with two different interfaces, e.g. `127.0.0.1` and `192.168.0.1`.
@@ -109,19 +109,19 @@ replacing `<IP_1>` and `<IP_2>` with two different interfaces, e.g. `127.0.0.1` 
 2. Alternatively, start it only on one interface:
 
 ```
-python3 simple.py -S -a <IP> -l tests/sop/logs/requests.log
+python3 simple.py -S -a <IP> -l demos/sop/logs/requests.log
 ```
 
 and use a DNS name which resolves to the interface's IP address:
 
 ```
-https://<IP>:58080/tests/sop/getSecret.html?hostname=<hostname>
+https://<IP>:58080/demos/sop/getSecret.html?hostname=<hostname>
 ```
 
 or:
 
 ```
-https://<hostname>:58080/tests/sop/getSecret.html?hostname=<IP>
+https://<hostname>:58080/demos/sop/getSecret.html?hostname=<IP>
 ```
 
 You can omit the hostname URL parameter if listening on `localhost` and `localhost` has the `127.0.0.1` address. `getSecret.html` will detect that and use `localhost` or `127.0.0.1` as the target domain (if the origin is `127.0.0.1` or `localhost` respectively).
@@ -129,14 +129,14 @@ You can omit the hostname URL parameter if listening on `localhost` and `localho
 3. Alternatively, run two different instances on one interface but different ports:
 
 ```
-python3 simple.py -S -a <IP> -p 58080 -l tests/sop/logs/requests_58080.log
-python3 simple.py -S -a <IP> -p 58081 -l tests/sop/logs/requests_58081.log
+python3 simple.py -S -a <IP> -p 58080 -l demos/sop/logs/requests_58080.log
+python3 simple.py -S -a <IP> -p 58081 -l demos/sop/logs/requests_58081.log
 ```
 
 then visit:
 
 ```
-https://<IP>:58080/tests/sop/getSecret.html?port=58081
+https://<IP>:58080/demos/sop/getSecret.html?port=58081
 ```
 
 #### Viewing results, logging to file and parsing it
@@ -151,16 +151,16 @@ https://<IP>:58080/tests/sop/getSecret.html?port=58081
 Results from the Ajax calls will be logged to the page; check the JS console for CORS security errors. Full requests from the browser will be logged to the logfile given by the `-l` option. To parse the script and print the results in a table do:
 
 ```
-./tests/sop/parse_request_log.sh tests/sop/logs/requests.log tests/sop/logs/requests_result.md
+./demos/sop/parse_request_log.sh demos/sop/logs/requests.log demos/sop/logs/requests_result.md
 ```
 
-There are logs in `/tests/sop/logs` for various browsers.
+There are logs in `/demos/sop/logs` for various browsers.
 
 ## Data exfiltration via CSRF
 
 ![](demos/poc_csrf.gif)
 
-The html pages in `/tests/csrf` can be used to test for [CSRF](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29) vulnerabilities.
+The html pages in `/demos/csrf` can be used to test for [CSRF](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29) vulnerabilities.
 
   * `getData.html`: requests a new cache UUID for saving the exfiltrated data to and presents you with an input field where you put the URL of the secret page you want to fetch via the victim; then generates a URL for the victim to click on (`evil.html`)
     - `post`: fetch target using POST instead of GET
@@ -182,7 +182,7 @@ python3 simple.py -S
 Visit `getData.html` in one browser:
 
 ```
-https://<IP>:58080/tests/csrf/getData.html
+https://<IP>:58080/demos/csrf/getData.html
 ```
 
 then input the target URL in the input box, e.g.:

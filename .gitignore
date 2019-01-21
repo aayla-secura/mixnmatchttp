@@ -4,8 +4,6 @@
 !simple.py
 !js
 !js/**
-!tests
-!tests/**
 !secret
 !secret/**
 !demos
