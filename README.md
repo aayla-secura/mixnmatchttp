@@ -18,7 +18,9 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
 
 # Features
 
-  * SSL (can be disabled)
+  * SSL (disabled by default)
+  * Dummy authentication (no credentials required, but issues cookies)
+  * Paths requiring authentication (dummy cookies issued by the server)
   * Multi-threading (disabled by default)
   * Easily configure default CORS-related headers (`Access-Control-Allow-*`) via command line or on a per-request basis using the `origin` and `creds` URL parameters (if `origin` is `%%ECHO%%` it is taken from the `Origin` header in the request)
   * Other custom headers via command line only
