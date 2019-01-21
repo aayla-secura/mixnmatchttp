@@ -35,6 +35,9 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
     - Notes:
       + Sessions are forgotten on the server side upon restart
       + Cookies are issued with the `HttpOnly` flag, and if over SSL with the `Secure` flag as well
+  * `GET /logout`: clears the `SESSION` cookie from the browser and the server
+    - Response codes:
+      + `200 OK`: empty body
   * `POST /echo`: render the requested content
     - Supported parameters:
       + `data`: the encoded content of the page to be rendered (required)

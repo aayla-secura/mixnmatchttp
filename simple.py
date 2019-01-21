@@ -278,6 +278,12 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
                 'args': 0,
                 },
             },
+        logout={
+            '': {
+                'allowed_methods': ['GET'],
+                'args': 0,
+                },
+            },
         cache={
             '': {
                 'allowed_methods': ['GET', 'POST'],
@@ -343,6 +349,27 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
             return None
 
         return value
+
+    def get_session(self):
+        '''Returns the session cookie'''
+
+        try:
+            cookies = dict([x.split('=') for x in re.split(
+                ' *; *', self.headers.get('Cookie'))])
+        except (AttributeError, TypeError, IndexError, ValueError):
+            logger.debug('No cookies given')
+            session = None
+        else:
+            try:
+                session = cookies['SESSION']
+            except KeyError:
+                logger.debug('No SESSION cookie given')
+                session = None
+            else:
+                logger.debug('Cookie is {}valid'.format(
+                    '' if session in self.__sessions else 'not '))
+
+        return session
 
     def show(self):
         '''Logs the request'''
@@ -527,6 +554,19 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         self.send_custom_headers()
         super().end_headers()
 
+    def do_logout(self, cmd, *args):
+        '''Clears the cookie from the browser and the saved sessions'''
+        session = self.get_session()
+        try:
+            self.__sessions.remove(session)
+        except ValueError:
+            pass
+        self.send_response(200)
+        self.send_header('Set-Cookie', 'SESSION=')
+        self.send_header('Content-type', 'text/plain')
+        self.send_header('Content-Length', 0)
+        self.end_headers()
+
     def do_login(self, cmd, *args):
         '''Issues a random cookie and saves it'''
 
@@ -660,24 +700,9 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
     @methodhandler
     def do_GET(self):
         logger.debug('GETting {}'.format(self.__pathname))
-        try:
-            cookies = dict([x.split('=') for x in re.split(
-                ' *; *', self.headers.get('Cookie'))])
-        except (AttributeError, TypeError, IndexError, ValueError):
-            logger.debug('No cookie given')
-            session = None
-        else:
-            try:
-                session = cookies['SESSION']
-            except KeyError:
-                logger.debug('Unexpected cookie given')
-                session = None
-            else:
-                logger.debug('Cookie is {}valid'.format(
-                    '' if session in self.__sessions else 'not '))
 
         if not self.is_secret() or \
-             (session and session in self.__sessions):
+             self.get_session() in self.__sessions:
             super().do_GET()
         else:
             self.send_error(401)
