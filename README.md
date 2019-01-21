@@ -154,8 +154,6 @@ Results from the Ajax calls will be logged to the page; check the JS console for
 ./demos/sop/parse_request_log.sh demos/sop/logs/requests.log demos/sop/logs/requests_result.md
 ```
 
-There are logs in `/demos/sop/logs` for various browsers.
-
 ## Data exfiltration via CSRF
 
 ![](demos/poc_csrf.gif)
