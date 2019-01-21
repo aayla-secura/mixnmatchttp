@@ -323,6 +323,17 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         '''The new_server factory overrides this'''
         pass
 
+    def is_secret(self):
+        '''Returns whether path requires authentication.'''
+
+        for s in self._secrets:
+            if re.search('{}{}(?:/|$)'.format(
+                ('^' if s[0] == '/' else ''), s),
+                self.__pathname):
+                return True
+
+        return False
+
     def get_param(self, parname):
         '''Returns the value of parname given in the URL'''
 
@@ -604,9 +615,14 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
             logger.debug('Path is {}'.format(self.__pathname))
             self.__pathname = urllib.parse.unquote_plus(
                     self.__pathname)
-            # canonicalize it
+            logger.debug('Decoded path is {}'.format(self.__pathname))
             assert self.__pathname[0] == '/'
-            self.__pathname = os.path.abspath(self.__pathname)
+            # canonicalize it; os.path.abspath preserves two
+            # consecutive slashes at the beginning, since they may
+            # indicate a URI with a default protocol;
+            # we explicitly remove them here
+            self.__pathname = os.path.abspath(
+                self.__pathname).replace('//','/')
             logger.debug('Real path is {}'.format(self.__pathname))
 
             # save query parameters
@@ -660,7 +676,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
                 logger.debug('Cookie is {}valid'.format(
                     '' if session in self.__sessions else 'not '))
 
-        if self.__pathname[1:].split('/')[0] != 'secret' or \
+        if not self.is_secret() or \
              (session and session in self.__sessions):
             super().do_GET()
         else:
@@ -683,10 +699,16 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
 
     methodhandler = staticmethod(methodhandler)
 
-def new_server(clsname, cors, headers, is_SSL):
+def new_server(clsname, cors, headers, is_SSL, secrets):
     def send_custom_headers(self):
         # Disable Cache
         # self.__pathname not defined yet
+        # if request if garbage, e.g. HTTPS talking to HTTP
+        try:
+            self.path
+        except AttributeError:
+            return
+
         if not re.search('/jquery-[0-9\.]+(\.min)?\.js$', self.path):
             self.send_header('Cache-Control',
                 'no-cache, no-store, must-revalidate')
@@ -734,12 +756,9 @@ def new_server(clsname, cors, headers, is_SSL):
                 self.send_header('Access-Control-Allow-Credentials',
                     'true')
 
-    def __init__(self, *args, **kwargs):
-        self._is_SSL = is_SSL
-        super(self.__class__, self).__init__(*args, **kwargs)
-
     return type(clsname, (CORSHttpsServer,), {
-        '__init__': __init__,
+        '_is_SSL': is_SSL,
+        '_secrets': secrets,
         'send_custom_headers': send_custom_headers})
 
 if __name__ == "__main__":
@@ -758,8 +777,9 @@ if __name__ == "__main__":
             default='0.0.0.0', metavar='IP',
             help='''Address of interface to bind to.''')
     listen_parser.add_argument('-p', '--port', dest='port',
-            default='58081', metavar='PORT', type=int,
-            help='''HTTP port to listen on.''')
+            metavar='PORT', type=int,
+            help='''HTTP port to listen on. Default is 58080 if not
+            over SSL or 58443 if over SSL.''')
 
     cors_parser = parser.add_argument_group('CORS options (requires -o or -O)')
     ac_origin_parser = cors_parser.add_mutually_exclusive_group()
@@ -784,6 +804,9 @@ if __name__ == "__main__":
             -o and -O options), otherwise this option is ignored.''')
 
     ssl_parser = parser.add_argument_group('SSL options')
+    ssl_parser.add_argument('-s', '--ssl', dest='ssl',
+            default=False, action='store_true',
+            help='''Use SSL.''')
     ssl_parser.add_argument('-C', '--cert', dest='certfile',
             default='./cert.pem', metavar='FILE',
             help='''PEM file containing the server certificate.''')
@@ -791,14 +814,16 @@ if __name__ == "__main__":
             default='./key.pem', metavar='FILE',
             help='''PEM file containing the private key for the server
             certificate.''')
-    ssl_parser.add_argument('-S', '--no-ssl', dest='ssl',
-            default=True, action='store_false',
-            help='''Don't use SSL.''')
 
     misc_parser = parser.add_argument_group('Misc options')
     misc_parser.add_argument('-H', '--headers', dest='headers',
             default=[], metavar='Header: Value', nargs='*',
             help='''Additional headers to include in the response.''')
+    misc_parser.add_argument('-S', '--secrets', dest='secrets',
+            default=['secret'], metavar='DIR|FILE', nargs='*',
+            help='''Directories or files which require a SESSION
+            cookie. If no leading slash then it is matched anywhere in
+            the path.''')
     misc_parser.add_argument('-l', '--logfile', dest='logfile',
             metavar='FILE',
             help='''File to write requests to. Will write to stdout if
@@ -821,6 +846,9 @@ if __name__ == "__main__":
         logger.addHandler(logging.FileHandler(args.logfile))
     logger.setLevel(args.loglevel)
 
+    if args.port is None:
+        args.port = 58443 if args.ssl else 58080
+
     httpd = args.srv_cls((args.address, args.port),
             new_server('CORSHttpsServerCustom', {
                     'origins': args.allowed_origins,
@@ -828,7 +856,8 @@ if __name__ == "__main__":
                     'headers': args.allowed_headers,
                     'creds': args.allow_creds},
                 args.headers,
-                args.ssl))
+                args.ssl,
+                args.secrets))
     if args.ssl:
         httpd.socket = ssl.wrap_socket(
                 httpd.socket,

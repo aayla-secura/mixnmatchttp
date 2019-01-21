@@ -7,8 +7,8 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
   * [Description](#description)
   * [Features](#features)
     - [Special endpoints](#special-endpoints)
-  * [TO DO](#to-do)
-  * [Uses](#uses)
+  * [To do](#to-do)
+  * [Use cases](#use-cases)
     - [Same-origin browser test](#same-origin-browser-test)
       + [Running the server](#running-the-server)
       + [Viewing results, logging to file and parsing it](#viewing-results-logging-to-file-and-parsing-it)
@@ -64,12 +64,11 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
     - Response codes:
       + `200 OK`: body contains a randomly generated UUID; use in `POST /cache/{uuid}`
 
-# TO DO
+# To do
 
   * MT-safe saving and clearing of cache
-  * Take a list of resources protected by a cookie (instead of `/secret/*`)
 
-# Uses
+# Use cases
 
 ## Same-origin browser test
 
@@ -100,7 +99,7 @@ python3 simple.py -S -l tests/sop/logs/requests.log
 Visit:
 
 ```
-https://<IP_1>:58081/tests/sop/getSecret.html?hostname=<IP_2>
+https://<IP_1>:58080/tests/sop/getSecret.html?hostname=<IP_2>
 ```
 
 replacing `<IP_1>` and `<IP_2>` with two different interfaces, e.g. `127.0.0.1` and `192.168.0.1`.
@@ -114,13 +113,13 @@ python3 simple.py -S -a <IP> -l tests/sop/logs/requests.log
 and use a DNS name which resolves to the interface's IP address:
 
 ```
-https://<IP>:58081/tests/sop/getSecret.html?hostname=<hostname>
+https://<IP>:58080/tests/sop/getSecret.html?hostname=<hostname>
 ```
 
 or:
 
 ```
-https://<hostname>:58081/tests/sop/getSecret.html?hostname=<IP>
+https://<hostname>:58080/tests/sop/getSecret.html?hostname=<IP>
 ```
 
 You can omit the hostname URL parameter if listening on `localhost` and `localhost` has the `127.0.0.1` address. `getSecret.html` will detect that and use `localhost` or `127.0.0.1` as the target domain (if the origin is `127.0.0.1` or `localhost` respectively).
@@ -128,14 +127,14 @@ You can omit the hostname URL parameter if listening on `localhost` and `localho
 3. Alternatively, run two different instances on one interface but different ports:
 
 ```
+python3 simple.py -S -a <IP> -p 58080 -l tests/sop/logs/requests_58080.log
 python3 simple.py -S -a <IP> -p 58081 -l tests/sop/logs/requests_58081.log
-python3 simple.py -S -a <IP> -p 58082 -l tests/sop/logs/requests_58082.log
 ```
 
 then visit:
 
 ```
-https://<IP>:58081/tests/sop/getSecret.html?port=58082
+https://<IP>:58080/tests/sop/getSecret.html?port=58081
 ```
 
 #### Viewing results, logging to file and parsing it
@@ -181,13 +180,13 @@ python3 simple.py -S
 Visit `getData.html` in one browser:
 
 ```
-https://<IP>:58081/tests/csrf/getData.html
+https://<IP>:58080/tests/csrf/getData.html
 ```
 
 then input the target URL in the input box, e.g.:
 
 ```
-https://<IP>:58081/secret/secret.html
+https://<IP>:58080/secret/secret.html
 ```
 
 Click on the link "Click here to wait for the stolen data". Copy the generated victim URL and open it in another browser.
@@ -198,9 +197,9 @@ The cached page should refresh every 30s, but you can manually refresh it to che
 ```
 usage: simple.py [-h] [-a IP] [-p PORT] [-o [Origin [Origin ...]] | -O]
                  [-x [Header: Value [Header: Value ...]]]
-                 [-m [Header: Value [Header: Value ...]]] [-c] [-C FILE]
-                 [-K FILE] [-S] [-H [Header: Value [Header: Value ...]]]
-                 [-l FILE] [-d] [-t]
+                 [-m [Header: Value [Header: Value ...]]] [-c] [-s] [-C FILE]
+                 [-K FILE] [-H [Header: Value [Header: Value ...]]]
+                 [-S [DIR|FILE [DIR|FILE ...]]] [-l FILE] [-d] [-t]
 
 Serve the current working directory over HTTPS and with custom headers. The
 CORS related options (-o and -c) define the default behaviour. It can be
@@ -213,7 +212,8 @@ optional arguments:
 
 Listen options:
   -a IP, --address IP   Address of interface to bind to. (default: 0.0.0.0)
-  -p PORT, --port PORT  HTTP port to listen on. (default: 58081)
+  -p PORT, --port PORT  HTTP port to listen on. Default is 58080 if not over
+                        SSL or 58443 if over SSL. (default: None)
 
 CORS options (requires -o or -O):
   -o [Origin [Origin ...]], --allowed-origins [Origin [Origin ...]]
@@ -236,16 +236,20 @@ CORS options (requires -o or -O):
                         ignored. (default: False)
 
 SSL options:
+  -s, --ssl             Use SSL. (default: False)
   -C FILE, --cert FILE  PEM file containing the server certificate. (default:
                         ./cert.pem)
   -K FILE, --key FILE   PEM file containing the private key for the server
                         certificate. (default: ./key.pem)
-  -S, --no-ssl          Don't use SSL. (default: True)
 
 Misc options:
   -H [Header: Value [Header: Value ...]], --headers [Header: Value [Header: Value ...]]
                         Additional headers to include in the response.
                         (default: [])
+  -S [DIR|FILE [DIR|FILE ...]], --secrets [DIR|FILE [DIR|FILE ...]]
+                        Directories or files which require a SESSION cookie.
+                        If no leading slash then it is matched anywhere in the
+                        path. (default: ['secret'])
   -l FILE, --logfile FILE
                         File to write requests to. Will write to stdout if not
                         given. (default: None)
