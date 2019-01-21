@@ -533,9 +533,9 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
             self.send_header('Location', urllib.parse.unquote_plus(goto))
         else:
             self.send_response(200)
-        #TODO Set the Secure flag if over TLS
         self.send_header('Set-Cookie',
-            'SESSION={}; path=/; HttpOnly'.format(cookie))
+            'SESSION={}; path=/; {}HttpOnly'.format(
+                cookie, ('Secure; ' if self._is_SSL else '')))
         self.send_header('Content-type', 'text/plain')
         self.send_header('Content-Length', 0)
         self.end_headers()
@@ -683,7 +683,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
 
     methodhandler = staticmethod(methodhandler)
 
-def new_server(clsname, cors, headers):
+def new_server(clsname, cors, headers, is_SSL):
     def send_custom_headers(self):
         # Disable Cache
         # self.__pathname not defined yet
@@ -734,7 +734,12 @@ def new_server(clsname, cors, headers):
                 self.send_header('Access-Control-Allow-Credentials',
                     'true')
 
+    def __init__(self, *args, **kwargs):
+        self._is_SSL = is_SSL
+        super(self.__class__, self).__init__(*args, **kwargs)
+
     return type(clsname, (CORSHttpsServer,), {
+        '__init__': __init__,
         'send_custom_headers': send_custom_headers})
 
 if __name__ == "__main__":
@@ -822,7 +827,8 @@ if __name__ == "__main__":
                     'methods': args.allowed_methods,
                     'headers': args.allowed_headers,
                     'creds': args.allow_creds},
-                args.headers))
+                args.headers,
+                args.ssl))
     if args.ssl:
         httpd.socket = ssl.wrap_socket(
                 httpd.socket,

@@ -32,6 +32,7 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
       + `302 OK`: Location is as requested via the `goto` parameter
     - Notes:
       + Sessions are forgotten on the server side upon restart
+      + Cookies are issued with the `HttpOnly` flag, and if over SSL with the `Secure` flag as well
   * `POST /echo`: render the requested content
     - Supported parameters:
       + `data`: the encoded content of the page to be rendered (required)
@@ -67,7 +68,6 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
 
   * MT-safe saving and clearing of cache
   * Take a list of resources protected by a cookie (instead of `/secret/*`)
-  * Set cookie with the `Secure` flag when over TLS
 
 # Uses
 
