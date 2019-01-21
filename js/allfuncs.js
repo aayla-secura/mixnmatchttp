@@ -1,12 +1,12 @@
 var CSShidden = 'visibility: hidden; width: 0; height: 0; border: 0; border: none;';
 
-// Can't find base64 implementation that works on IE 9.0 (and earlier maybe?)
+// Can't find base64 implementation that works on old IE and Opera
 if (typeof btoa === 'undefined') {
 	atob = function () {
-		return "Can't find base64 implementation that works on IE";
+		return "Can't find base64 implementation";
 	};
 	btoa = function () {
-		return 'Q2FuJ3QgZmluZCBiYXNlNjQgaW1wbGVtZW50YXRpb24gdGhhdCB3b3JrcyBvbiBJRQo=';
+		return 'Q2FuJ3QgZmluZCBiYXNlNjQgaW1wbGVtZW50YXRpb24K';
 	};
 }
 
@@ -65,6 +65,17 @@ function registerWinOnLoad(func) {
 
 	window.onload = function () {
 		window.DEBUG = getBoolPar('debug');
+		if (typeof window.top.requestsLeft != 'undefined') {
+			if (typeof window.top.doneChecker == 'undefined') {
+				window.top.doneChecker = setInterval(function () {
+					if (window.top.requestsLeft == 0) {
+						clearInterval(window.top.doneChecker);
+						alert('Done!');
+					}
+				}, 1000);
+			}
+		}
+
 		if (typeof document.readyState !== 'undefined') {
 			logToConsole('Doc state is ' + document.readyState);
 		}
@@ -83,6 +94,14 @@ function registerOnLoad(obj, func) {
 		obj.attachEvent('onload', func);
 	} else { // old browsers may not support addEventListener
 		obj.onload = func;
+	}
+};
+
+function requestDone() {
+	// very old browsers don't support postMessage, so instead check
+	// a global variable periodically
+	if (typeof window.top.requestsLeft != 'undefined') {
+		window.top.requestsLeft--;
 	}
 };
 
@@ -143,7 +162,7 @@ function getReqOrigin() {
 	}
 
 	if (reqHost) {
-		return window.location.protocol + '//' + reqHost;
+		return window.location.protocol + '//' + decodeURIComponent(reqHost);
 	}
 };
 
@@ -222,7 +241,9 @@ function getDataViaCanvas(reqURL, sendURL, callback) {
 					'text/plain', sendURL);
 				if (callback) {
 					callback(this.contentDocument.body.childNodes[0].innerHTML);
-				} } }).bind(this);
+				} }
+			requestDone();
+		}).bind(this);
 		setTimeout(sendDataLater, 2000);
 	});
 };
@@ -249,6 +270,7 @@ function getDataViaXHR(reqURL, reqViaPOST, sendURL, callback, custom_header) {
 		sendData(this.responseText, this.getResponseHeader('content-type'),
 			sendURL);
 		if (callback) { callback(this.responseText); }
+		requestDone();
 	};
 	if (reqViaPOST) {
 		req.send("{}"); // Opera 8.5 doesn't support JSON
