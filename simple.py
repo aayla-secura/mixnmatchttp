@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-# TO DO: write doc for all classes and methods
+# TO DO:
+#  - write doc for all classes and methods
+#  - goto endpoint
 import logging
 import http.server
 import ssl
@@ -191,7 +193,7 @@ class Endpoints():
             }
     
     'args' can be a number for exact number of arguments
-    'allowed_methods defaults to ['GET']
+    'allowed_methods defaults to ['GET', 'OPTIONS']
     'args' defaults to 0
     '''
 
@@ -206,7 +208,7 @@ class Endpoints():
                 try:
                     sub['allowed_methods']
                 except KeyError:
-                    sub['allowed_methods'] = ['GET']
+                    sub['allowed_methods'] = ['GET', 'OPTIONS']
                 try:
                     sub['args']
                 except KeyError:
@@ -268,33 +270,33 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
     endpoints = Endpoints(
         echo={
             '': {
-                'allowed_methods': ['POST'],
+                'allowed_methods': ['POST', 'OPTIONS'],
                 'args': 0,
                 },
             },
         login={
             '': {
-                'allowed_methods': ['GET'],
+                'allowed_methods': ['GET', 'OPTIONS'],
                 'args': 0,
                 },
             },
         logout={
             '': {
-                'allowed_methods': ['GET'],
+                'allowed_methods': ['GET', 'OPTIONS'],
                 'args': 0,
                 },
             },
         cache={
             '': {
-                'allowed_methods': ['GET', 'POST'],
+                'allowed_methods': ['GET', 'POST', 'OPTIONS'],
                 'args': 1,
                 },
             'clear': {
-                'allowed_methods': ['GET'],
+                'allowed_methods': ['GET', 'OPTIONS'],
                 'args': Endpoints.ARGS_OPTIONAL,
                 },
             'new': {
-                'allowed_methods': ['GET'],
+                'allowed_methods': ['GET', 'OPTIONS'],
                 'args': 0,
                 },
             },
@@ -380,7 +382,9 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         try:
             req_body_dec = self.__body.decode('utf-8')
         except UnicodeDecodeError:
-            req_body_dec = '>> Cannot decode request body! <<'
+            logger.debug('Errors decoding request body')
+            req_body_dec = self.__body.decode('utf-8',
+                    errors='backslashreplace')
         msg += "\n{}".format(req_body_dec)
 
         msg += "\n<----- Request End -----\n"
@@ -424,8 +428,13 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
             page['data'] = page['data'].replace('{%'+f+'%}', v)
 
         # remove unused fields and encode
-        page['data'] = re.sub('{%[^%]*%}', '',
-                page['data']).encode('utf-8')
+        page['data'] = re.sub('{%[^%]*%}', '', page['data'])
+        try:
+            page['data'] = page['data'].encode('utf-8')
+        except UnicodeEncodeError:
+            logger.debug('Errors encoding page body')
+            page['data'] = page['data'].encode('utf-8',
+                    errors='backslashreplace')
 
         return page
 
@@ -472,7 +481,9 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         try:
             post_data = self.__body.decode('utf-8')
         except UnicodeDecodeError:
-            raise DecodingError('Cannot UTF-8 decode request body!')
+            logger.debug('Errors decoding request body')
+            post_data = self.__body.decode('utf-8',
+                    errors='backslashreplace')
 
         req_params = param_loader(post_data)
         logger.debug('Request parameters: {}'.format(req_params))
@@ -492,7 +503,12 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         else:
             logger.debug('Content-Type: {}'.format(ctype))
 
-        body = data_decoder(body_enc).encode('utf-8')
+        try:
+            body = data_decoder(body_enc).encode('utf-8')
+        except UnicodeEncodeError:
+            logger.debug('Errors encoding request data')
+            body = data_decoder(body_enc).encode('utf-8',
+                    errors='backslashreplace')
         logger.debug('Decoded body: {}'.format(body))
 
         return {'data': body, 'type': ctype}
@@ -548,7 +564,11 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
             data = base64.b64decode(data_enc)
         except binascii.Error:
             raise DecodingError('Cannot Base64 decode request data!')
-        return data.decode('utf-8')
+        try:
+            return data.decode('utf-8')
+        except UnicodeDecodeError:
+            logger.debug('Errors decoding base64 data')
+            return data.decode('utf-8', errors='backslashreplace')
 
     def end_headers(self):
         self.send_custom_headers()
@@ -561,7 +581,13 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
             self.__sessions.remove(session)
         except ValueError:
             pass
-        self.send_response(200)
+        # move to separate method
+        goto = self.get_param('goto')
+        if goto is not None:
+            self.send_response(302)
+            self.send_header('Location', urllib.parse.unquote_plus(goto))
+        else:
+            self.send_response(200)
         self.send_header('Set-Cookie', 'SESSION=')
         self.send_header('Content-type', 'text/plain')
         self.send_header('Content-Length', 0)
