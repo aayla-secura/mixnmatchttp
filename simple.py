@@ -464,7 +464,12 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         Returns the same data/type dictionary but with a decoded
         content'''
 
-        ctype = self.headers.get('Content-Type').split(';',1)[0]
+        ctype = self.headers.get('Content-Type')
+        try:
+            ctype = ctype.split(';',1)[0]
+        except AttributeError:
+            # No Content-Type
+            ctype = None
         if ctype in ['application/json', 'text/json']:
             param_loader = self.JSON_params
             data_decoder = self.b64_data

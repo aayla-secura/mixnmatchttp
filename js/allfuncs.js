@@ -2,10 +2,12 @@ var CSShidden = 'visibility: hidden; width: 0; height: 0; border: 0; border: non
 
 // Can't find base64 implementation that works on old IE and Opera
 if (typeof btoa === 'undefined') {
-	atob = function () {
+	atob = function (data) {
+		if (! data) { return; }
 		return "Can't find base64 implementation";
 	};
-	btoa = function () {
+	btoa = function (data) {
+		if (! data) { return; }
 		return 'Q2FuJ3QgZmluZCBiYXNlNjQgaW1wbGVtZW50YXRpb24K';
 	};
 }
@@ -70,7 +72,7 @@ function registerWinOnLoad(func) {
 				window.top.doneChecker = setInterval(function () {
 					if (window.top.requestsLeft == 0) {
 						clearInterval(window.top.doneChecker);
-						alert('Done!');
+						logToPage('Done!');
 					}
 				}, 1000);
 			}
@@ -182,7 +184,7 @@ function filterPars(filteredPars) {
 	var result = '&' + window.location.search.slice(1);
 	for (var i = 0; i < filteredPars.length; i++){
 		// also match parameters without value, e.g. foo in &foo&bar=baz
-		r = new RegExp('&' + filteredPars[i] + '(=[^&]*)?&','g');
+		r = new RegExp('&' + filteredPars[i] + '(=[^&]*)?($|&)','g');
 		result = result.replace(r, '&');
 	}
 	return result.slice(1); // remove leading &
@@ -222,28 +224,43 @@ function logToConsole(msg) {
 };
 
 function getData(reqURL, reqViaPOST, sendURL, callback, custom_header) {
-	getDataViaXHR(reqURL, reqViaPOST, sendURL, callback, custom_header);
+	if (reqURL.split('?')[1]) { reqURL += '&via='; }
+	else { reqURL += '?via='; }
+	if (sendURL) {
+		if (sendURL.split('?')[1]) { sendURL += '&via='; }
+		else { sendURL += '?via='; }
+	}
+	getDataViaXHR(reqURL + 'XHR', reqViaPOST, sendURL ? sendURL + 'XHR' : null, callback, custom_header);
 	if (! reqViaPOST) {
-		getDataViaCanvas(reqURL, sendURL, callback);
+		getDataViaObject(reqURL + 'Object', sendURL ? sendURL + 'Object' : null, callback);
 	}
 };
 
-function getDataViaCanvas(reqURL, sendURL, callback) {
+function getDataViaObject(reqURL, sendURL, callback) {
+	logToPage('Embedding ' + reqURL);
 	var img = addElement('object', {data: reqURL, crossOrigin: 'Anonymous',
 		type: 'image/svg+xml', style: CSShidden});
 	registerOnLoad(img, function () {
 		// the onload handler of <object> fires too soon so we call it from setTimeout
 		// IE11 doesn't support arrow functions, so we need to use bind
+		// old browsers don't support .bind, nor lambda functions
+		// getDataViaObject should be called only once in the current iFrame,
+		// otherwise a random name for the variable in this call should be
+		// generated
+		window.dataViaObject = this;
 		sendDataLater = (function () {
-			if (this.contentDocument) {
-				// How to get the content-type??
-				sendData(this.contentDocument.body.childNodes[0].innerHTML,
-					'text/plain', sendURL);
-				if (callback) {
-					callback(this.contentDocument.body.childNodes[0].innerHTML);
-				} }
+			try {
+				if (window.dataViaObject.contentDocument) {
+					// How to get the content-type??
+					sendData(window.dataViaObject.contentDocument.body.childNodes[0].innerHTML,
+						'text/plain', sendURL);
+					if (callback) {
+						callback(window.dataViaObject.contentDocument.body.childNodes[0].innerHTML);
+					}
+				}
+			} catch(err) { logToConsole(err); }
 			requestDone();
-		}).bind(this);
+		});
 		setTimeout(sendDataLater, 2000);
 	});
 };

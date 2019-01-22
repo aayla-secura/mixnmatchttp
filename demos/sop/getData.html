@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width" />
 		<script src="/js/allfuncs.js" charset="utf-8"></script>
 		<script charset="utf-8">
+			//XXX If getDataViaXHR throws an error, getDataViaCanvas is not called
 			registerWinOnLoad(function () {
 				var doPOST = getBoolPar('post');
 				var reqURL = getPar("reqURL");
