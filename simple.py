@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 # TO DO:
 #  - write doc for all classes and methods
-#  - goto endpoint
+#  - goto endpoint (web cache poisoning usecase)
+#  - token stealer (open redirection + token in URL usecase)
+#  - if cookie is given upon login, invalidate that session
 import logging
 import http.server
 import ssl
@@ -334,7 +336,9 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
     def is_secret(self):
         '''Returns whether path requires authentication.'''
 
+        logger.debug('{} secrets'.format(len(self._secrets)))
         for s in self._secrets:
+            logger.debug('{} is secret'.format(s))
             if re.search('{}{}(?:/|$)'.format(
                 ('^' if s[0] == '/' else ''), s),
                 self.__pathname):
@@ -779,7 +783,8 @@ def new_server(clsname, cors, headers, is_SSL, secrets):
         allowed_origins = self.get_param('origin')
         if allowed_origins is None:
             allowed_origins = ', '.join(cors['origins'])
-        if allowed_origins == '%%ECHO%%':
+        allowed_origins = urllib.parse.unquote_plus(allowed_origins)
+        if allowed_origins == '{ECHO}':
             allowed_origins = self.headers.get('Origin')
             if not allowed_origins: allowed_origins = '*'
 
@@ -803,18 +808,19 @@ def new_server(clsname, cors, headers, is_SSL, secrets):
         if allowed_origins:
             self.send_header('Access-Control-Allow-Origin',
                 allowed_origins)
-            self.send_header('Access-Control-Allow-Headers',
-                'Accept, Accept-Language, Content-Language,' +
-                'Content-Type, Authorization' + allowed_headers)
-            self.send_header('Access-Control-Allow-Methods',
-                'POST, GET, OPTIONS, HEAD' + allowed_methods)
+            if allowed_headers:
+                self.send_header('Access-Control-Allow-Headers',
+                    allowed_headers)
+            if allowed_methods:
+                self.send_header('Access-Control-Allow-Methods',
+                    allowed_methods)
             if allow_creds:
                 self.send_header('Access-Control-Allow-Credentials',
                     'true')
 
     return type(clsname, (CORSHttpsServer,), {
         '_is_SSL': is_SSL,
-        '_secrets': secrets,
+        '_secrets': list(filter(None, secrets)),
         'send_custom_headers': send_custom_headers})
 
 if __name__ == "__main__":
@@ -825,7 +831,7 @@ if __name__ == "__main__":
             (-o and -c) define the default behaviour. It can be
             overriden on a per-request basis using the origin and
             creds URL parameters. creds should be 0 or 1. origin is
-            taken literally unless it is `%%ECHO%%`, then it is taken
+            taken literally unless it is `{ECHO}`, then it is taken
             from the Origin header in the request.''')
 
     listen_parser = parser.add_argument_group('Listen options')
@@ -843,15 +849,17 @@ if __name__ == "__main__":
             default=[], metavar='Origin', nargs='*',
             help='''Allowed origins for CORS requests. Can be "*"''')
     ac_origin_parser.add_argument('-O', '--allow-all-origins',
-            dest='allowed_origins', action='store_const', const=['%%ECHO%%'],
+            dest='allowed_origins', action='store_const', const=['{ECHO}'],
             help='''Allow all origins, i.e. echo the Origin in the
             request.''')
     cors_parser.add_argument('-x', '--allowed-headers', dest='allowed_headers',
-            default=[], metavar='Header: Value', nargs='*',
-            help='''Additional headers allowed for CORS requests.''')
+            default=['Accept', 'Accept-Language', 'Content-Language',
+                'Content-Type', 'Authorization'],
+            metavar='Header: Value', nargs='*',
+            help='''Headers allowed for CORS requests.''')
     cors_parser.add_argument('-m', '--allowed-methods', dest='allowed_methods',
-            default=[], metavar='Header: Value', nargs='*',
-            help='''Additional methods allowed for CORS requests.''')
+            default=['POST', 'GET', 'OPTIONS', 'HEAD'], metavar='Header: Value', nargs='*',
+            help='''Methods allowed for CORS requests.''')
     cors_parser.add_argument('-c', '--allow-credentials', dest='allow_creds',
             default=False, action='store_true',
             help='''Allow sending credentials with CORS requests,

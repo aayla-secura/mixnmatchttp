@@ -22,7 +22,7 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
   * Dummy authentication (no credentials required, but issues cookies)
   * Paths requiring authentication (dummy cookies issued by the server)
   * Multi-threading (disabled by default)
-  * Easily configure default CORS-related headers (`Access-Control-Allow-*`) via command line or on a per-request basis using the `origin` and `creds` URL parameters (if `origin` is `%%ECHO%%` it is taken from the `Origin` header in the request)
+  * Easily configure default CORS-related headers (`Access-Control-Allow-*`) via command line or on a per-request basis using the `origin` and `creds` URL parameters (if `origin` is `{ECHO}` it is taken from the `Origin` header in the request)
   * Other custom headers via command line only
 
 ## Special endpoints
@@ -101,7 +101,7 @@ You have these options for CORS testing:
 1. Start the server on all interfaces (default):
 
 ```
-python3 simple.py -S -l demos/sop/logs/requests.log
+python3 simple.py -S -l demos/sop/logs/requests_vary_host.log
 ```
 
 Visit:
@@ -115,7 +115,7 @@ replacing `<IP_1>` and `<IP_2>` with two different interfaces, e.g. `127.0.0.1` 
 2. Alternatively, start it only on one interface:
 
 ```
-python3 simple.py -S -a <IP> -l demos/sop/logs/requests.log
+python3 simple.py -S -a <IP> -l demos/sop/logs/requests_vary_host.log
 ```
 
 and use a DNS name which resolves to the interface's IP address:
@@ -135,14 +135,14 @@ You can omit the hostname URL parameter if listening on `localhost` and `localho
 3. Alternatively, run two different instances on one interface but different ports:
 
 ```
-python3 simple.py -S -a <IP> -p 58080 -l demos/sop/logs/requests_58080.log
-python3 simple.py -S -a <IP> -p 58081 -l demos/sop/logs/requests_58081.log
+python3 simple.py -S -a <IP> -p 58081 -l demos/sop/logs/requests_vary_port_target.log
+python3 simple.py -S -a <IP> -p 58082 -l demos/sop/logs/requests_vary_port_origin.log
 ```
 
 then visit:
 
 ```
-https://<IP>:58080/demos/sop/getSecret.html?port=58081
+https://<IP>:58082/demos/sop/getSecret.html?port=58081
 ```
 
 #### Viewing results, logging to file and parsing it
@@ -154,11 +154,24 @@ https://<IP>:58080/demos/sop/getSecret.html?port=58081
   * Origin: `<as request origin>` , Credentials: false
   * no CORS headers
 
-Results from the Ajax calls will be logged to the page; check the JS console for CORS security errors. Full requests from the browser will be logged to the logfile given by the `-l` option. To parse the script and print the results in a table do:
+Results from the Ajax calls will be logged to the page; check the JS console for CORS security errors. Full requests from the browser will be logged to the logfile given by the `-l` option.
+
+To check the exfiltrated data is as it should, do:
 
 ```
-./demos/sop/parse_request_log.sh demos/sop/logs/requests.log demos/sop/logs/requests_result.md
+demos/sop/test_exfiltrated_data.sh
 ```
+
+To parse the script and print the results in a table do:
+
+```
+cd demos/sop
+./parse_request_log.sh logs/requests_vary_host.log logs/request_vary_host_table.md
+cat logs/request_vary_port_target.log logs/request_vary_port_origin.log > logs/request_vary_port.log
+./parse_request_log.sh logs/requests_vary_port.log logs/request_vary_port_table.md
+```
+
+The folder already contains logs and results for many browsers.
 
 ## Data exfiltration via CSRF
 
@@ -210,8 +223,8 @@ usage: simple.py [-h] [-a IP] [-p PORT] [-o [Origin [Origin ...]] | -O]
 Serve the current working directory over HTTPS and with custom headers. The
 CORS related options (-o and -c) define the default behaviour. It can be
 overriden on a per-request basis using the origin and creds URL parameters.
-creds should be 0 or 1. origin is taken literally unless it is `%%ECHO%%`,
-then it is taken from the Origin header in the request.
+creds should be 0 or 1. origin is taken literally unless it is `{ECHO}`, then
+it is taken from the Origin header in the request.
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -229,11 +242,12 @@ CORS options (requires -o or -O):
                         Allow all origins, i.e. echo the Origin in the
                         request. (default: None)
   -x [Header: Value [Header: Value ...]], --allowed-headers [Header: Value [Header: Value ...]]
-                        Additional headers allowed for CORS requests.
-                        (default: [])
+                        Headers allowed for CORS requests. (default:
+                        ['Accept', 'Accept-Language', 'Content-Language',
+                        'Content-Type', 'Authorization'])
   -m [Header: Value [Header: Value ...]], --allowed-methods [Header: Value [Header: Value ...]]
-                        Additional methods allowed for CORS requests.
-                        (default: [])
+                        Methods allowed for CORS requests. (default: ['POST',
+                        'GET', 'OPTIONS', 'HEAD'])
   -c, --allow-credentials
                         Allow sending credentials with CORS requests, i.e. add
                         Access-Control-Allow-Credentials. Using this only
