@@ -10,7 +10,7 @@ else
 fi
 DEBUG=0
 
-${AWK} -v debug=$DEBUG '
+${AWK} -v debug=${DEBUG} '
 BEGIN {
   IGNORECASE=1
   printf "| %-20s | %-22s | %-11s | %-11s | %-15s | %-11s | %-11s |\n", "BROWSER", "METHOD", "ORIGIN", "CREDENTIALS", "PREFLIGHT", "COOKIE", "READ BY JS"
@@ -148,6 +148,10 @@ BEGIN {
           }
           ua="IE " IEVersion " (Win " WinVersion ")"
         }
+        else if (numF == 1) {
+          # OPERA v5 and some others maybe?
+          ua=gensub(/\//, " ", "1", uaFields[1])
+        }
         else {
           # UNKNOWN
           if (debug > 1) { print "DEBUG: UA is Unknown" }
@@ -206,7 +210,7 @@ END {
   }
 }
 ' "${REQFILE}" > "${TMPFILE}"
-[[ $DEBUG -eq 0 ]] || exit 0
+[[ ${DEBUG} -eq 0 ]] || exit 0
 
 ############################################################
 DEBUG=0
@@ -219,7 +223,7 @@ IFS=$'\n' read -d '' -a origins < <(tail -n+3 "${TMPFILE}" | cut -d\| -f4 | sort
 sep=$(sed -n '2p' "${TMPFILE}" | tr ':-' '~')
 SPECIAL_CHARS=('\\' '\(' '\)' '\[' '\]' '\.' '\^' '\$' '\+' '\?' '\*' '\|' '\{' '\}')
 
-if [[ $DEBUG -ne 0 ]] ; then
+if [[ ${DEBUG} -ne 0 ]] ; then
   echo "browsers:"
   printf "  %s\n" "${browsers[@]}"
   echo "exfMethods:"
@@ -239,7 +243,7 @@ for browser in "${browsers[@]}" ; do
     done
     for creds in 1 0 ; do
       for method in "${exfMethods[@]}" ; do
-        [[ $DEBUG -eq 0 ]] || echo '^\| *'"${browser}"' *\| *'"[A-Z]+ \(${method}\)"' *\| *'"${origin}"' *\| *'"${creds}"' *\|' 1>&2
+        [[ ${DEBUG} -eq 0 ]] || echo '^\| *'"${browser}"' *\| *'"[A-Z]+ \(${method}\)"' *\| *'"${origin}"' *\| *'"${creds}"' *\|' 1>&2
         egrep '^\| *'"${browser}"' *\| *'"[A-Z]+ \(${method}\)"' *\| *'"${origin}"' *\| *'"${creds}"' *\|' "${TMPFILE}"
       done
       echo "${sep}"
@@ -247,4 +251,4 @@ for browser in "${browsers[@]}" ; do
   done
 done | uniq >> "${OUTFILE}"
 
-[[ $DEBUG -eq 0 ]] && rm "${TMPFILE}"
+[[ ${DEBUG} -eq 0 ]] && rm "${TMPFILE}"

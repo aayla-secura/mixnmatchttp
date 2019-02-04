@@ -1442,6 +1442,56 @@
 | Opera 56.0.3051.31   | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
 | Opera 56.0.3051.31   | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
 | ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Opera 9.00           | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Opera 9.00           | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Opera 9.00           | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Opera 9.00           | GET (via Object)       |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Opera 9.00           | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Opera 9.00           | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Opera 9.00           | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Opera 9.00           | GET (via Object)       | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Opera 9.00           | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Opera 9.00           | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Opera 9.00           | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Opera 9.00           | GET (via Object)       | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Opera 9.00           | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           |             |
+| Opera 9.00           | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Opera 9.00           | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Opera 9.00           | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Opera 9.00           | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Opera 9.00           | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Opera 9.00           | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Opera 9.00           | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Opera 9.20           | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Opera 9.20           | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Opera 9.20           | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Opera 9.20           | GET (via Object)       |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Opera 9.20           | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Opera 9.20           | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Opera 9.20           | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Opera 9.20           | GET (via Object)       | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Opera 9.20           | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Opera 9.20           | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Opera 9.20           | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Opera 9.20           | GET (via Object)       | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Opera 9.20           | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           |             |
+| Opera 9.20           | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Opera 9.20           | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Opera 9.20           | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Opera 9.20           | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Opera 9.20           | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Opera 9.20           | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Opera 9.20           | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
 | Opera 9.60           | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
 | Opera 9.60           | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
 | Opera 9.60           | GET (via Iframe)       |             | 0           |                 | Y           |             |
@@ -1466,54 +1516,4 @@
 | Opera 9.60           | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
 | Opera 9.60           | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
 | Opera 9.60           | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
-| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
-| Opera/9.00           | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
-| Opera/9.00           | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
-| Opera/9.00           | GET (via Iframe)       |             | 0           |                 | Y           |             |
-| Opera/9.00           | GET (via Object)       |             | 0           |                 | Y           |             |
-| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
-| Opera/9.00           | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
-| Opera/9.00           | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
-| Opera/9.00           | GET (via Iframe)       | *           | 1           |                 | Y           |             |
-| Opera/9.00           | GET (via Object)       | *           | 1           |                 | Y           |             |
-| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
-| Opera/9.00           | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
-| Opera/9.00           | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
-| Opera/9.00           | GET (via Iframe)       | *           | 0           |                 | Y           |             |
-| Opera/9.00           | GET (via Object)       | *           | 0           |                 | Y           |             |
-| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
-| Opera/9.00           | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           |             |
-| Opera/9.00           | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
-| Opera/9.00           | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
-| Opera/9.00           | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
-| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
-| Opera/9.00           | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
-| Opera/9.00           | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
-| Opera/9.00           | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
-| Opera/9.00           | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
-| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
-| Opera/9.20           | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
-| Opera/9.20           | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
-| Opera/9.20           | GET (via Iframe)       |             | 0           |                 | Y           |             |
-| Opera/9.20           | GET (via Object)       |             | 0           |                 | Y           |             |
-| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
-| Opera/9.20           | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
-| Opera/9.20           | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
-| Opera/9.20           | GET (via Iframe)       | *           | 1           |                 | Y           |             |
-| Opera/9.20           | GET (via Object)       | *           | 1           |                 | Y           |             |
-| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
-| Opera/9.20           | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
-| Opera/9.20           | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
-| Opera/9.20           | GET (via Iframe)       | *           | 0           |                 | Y           |             |
-| Opera/9.20           | GET (via Object)       | *           | 0           |                 | Y           |             |
-| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
-| Opera/9.20           | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           |             |
-| Opera/9.20           | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
-| Opera/9.20           | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
-| Opera/9.20           | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
-| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
-| Opera/9.20           | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
-| Opera/9.20           | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
-| Opera/9.20           | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
-| Opera/9.20           | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
 | ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
