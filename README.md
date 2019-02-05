@@ -82,19 +82,31 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
 
 ![](demos/poc_sop.gif)
 
-The html pages in `/demos/sop` can be used to test the behaviour of various browsers (many old ones supported) when it comes to cross-origin requests.
+The html page in `/demos/sop` can be used to test the behaviour of various browsers (many old ones supported) when it comes to cross-origin requests.
 
-  * `getData.html`: fetches the requested resource with `withCredentials` set to True; supported URL parameters:
-    - `reqURL`: the URL of the page to fetch
-    - `post`: fetch using POST instead of GET
-  * `getSecret.html`: fetches `/secret/secret.txt` from the target host by loading `getData.html` in multiple iframes (see below for description); supported URL parameters:
+  * `getSecret.html`: fetches `/secret/secret.txt` or `/secret/secret.png` using 6 different methods (see below), for each requesting five CORS combinations from the server (see below); supported URL parameters:
     - `host`: the full hostname/IP address:port of the target
     - `hostname`: only the hostname/IP address of the target; the port number will be the same as the origin
     - `port`: only the port number of the target; the hostname/IP address will be the same as the origin
 
+`getSecret.html` will log in to the target origin, and fetch `https://<target_origin>/secret/secret.<txt or png>?origin=...&creds=...` requesting each one of the following 5 CORS combinations from the server:
+  * Origin: `<as request origin>` , Credentials: true
+  * Origin: `<as request origin>` , Credentials: false
+  * Origin: `*` , Credentials: true
+  * Origin: `*` , Credentials: false
+  * no CORS headers
+
+It will do so using each the following six methods:
+  * GET `/secret/secret.txt` via XMLHttpRequest
+  * POST `/secret/secret.txt` via XMLHttpRequest
+  * GET `/secret/secret.txt` via `<iframe>`
+  * GET `/secret/secret.txt` via `<object>`
+  * GET `/secret/secret.png` via `<img>`, then draw it in a 2D canvas
+  * GET `/secret/secret.png` via `<img>`, then draw it in a bitmap canvas
+
 #### Running the server
 
-`getSecret.html` will determine the target host using any of the `host`, `hostname` or `port` URL parameters, in this order of precedence.
+`getSecret.html` will determine the target origin using any of the `host`, `hostname` or `port` URL parameters, in this order of precedence.
 
 You have these options for CORS testing:
 
@@ -147,14 +159,7 @@ https://<IP>:58082/demos/sop/getSecret.html?port=58081
 
 #### Viewing results, logging to file and parsing it
 
-`getSecret.html` will log in to the target host (e.g. `<IP_2>` if running as described in option 1. and load 10 iframes, each of which will fetch `https://<target_host>/secret/secret.txt?origin=...&creds=...` requesting one of the following 5 CORS combinations from the server, once using GET and once using POST methods:
-  * Origin: `*` , Credentials: true
-  * Origin: `*` , Credentials: false
-  * Origin: `<as request origin>` , Credentials: true
-  * Origin: `<as request origin>` , Credentials: false
-  * no CORS headers
-
-Results from the Ajax calls will be logged to the page; check the JS console for CORS security errors. Full requests from the browser will be logged to the logfile given by the `-l` option.
+Results from the requests calls will be logged to the page; check the JS console for CORS security errors. Full requests from the browser will be logged to the logfile given by the `-l` option.
 
 To check the exfiltrated data is as it should, do:
 

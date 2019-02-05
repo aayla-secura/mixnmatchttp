@@ -361,7 +361,7 @@ function getDataViaIframe(reqURL, reqViaPOST, sendURL, callback) {
 		//DEBUG if (this == window){logToPage('this is window', CSS['red'], null, logId);return}
 		var doc = this.contentDocument || (this.contentWindow ? this.contentWindow.document : null);
 		data = doc.body.innerHTML;
-		logToPage(getTextContent(data), null, null, logId);
+		logToPage(data, CSS['red'], null, logId);
 		sendData(data, doc.contentType, sendURL);
 	}, null, callbackWrapper);
 	var ifr = addElement('iframe', {src: reqURL, style: CSS['hidden']},

@@ -13,8 +13,8 @@ DEBUG=0
 ${AWK} -v debug=${DEBUG} '
 BEGIN {
   IGNORECASE=1
-  printf "| %-20s | %-22s | %-11s | %-11s | %-15s | %-11s | %-11s |\n", "BROWSER", "METHOD", "ORIGIN", "CREDENTIALS", "PREFLIGHT", "COOKIE", "READ BY JS"
-  print "| :------------------: | :--------------------: | :---------: | :---------: | :-------------: | :---------: | :---------: |"
+  printf "| %-20s | %-22s | %-11s | %-11s | %-15s | %-15s | %-11s | %-11s |\n", "BROWSER", "METHOD", "ORIGIN", "CREDENTIALS", "SENDS ORIGIN", "PREFLIGHT", "COOKIE", "READ BY JS"
+  print "| :------------------: | :--------------------: | :---------: | :---------: | :-------------: | :-------------: | :---------: | :---------: |"
 }
 /[^ ]/ {
   # look for first non-blank line after start
@@ -52,7 +52,7 @@ BEGIN {
   }
 }
 (requested || exfiltrated) {
-  # look for the Access-Control-Request-Method, or the Cookie
+  # look for the Access-Control-Request-Method, Origin or the Cookie
   # after a request for the secret
   if (requested && match($0, /^Access-Control-Request-Method: *(.*)/, mArr)) {
     method=mArr[1]
@@ -60,8 +60,12 @@ BEGIN {
     preflight="Y"
   }
   if (requested && match($0, /^Cookie: *SESSION=/)) {
-    if (debug > 1) { print "DEBUG: Cookie: " $0 }
+    if (debug > 1) { print "DEBUG: " $0 }
     cookie="Y"
+  }
+  if (requested && match($0, /^Origin:/)) {
+    if (debug > 1) { print "DEBUG: " $0 }
+    sendsOrigin="Y"
   }
   # look for the Host after exfiltration and compare to origin (which is allowed)
   if (exfiltrated && match($0, /^Host: *(.*)/, mArr)) {
@@ -118,7 +122,7 @@ BEGIN {
         else if (uaFields[numF] ~ /(Edge)\//) {
           # EDGE
           if (debug > 1) { print "DEBUG: UA is Edge" }
-          ua=gensub(/\//, " ", "1", uaFields[numF])
+          ua=gensub(/\//, "HTML ", "1", uaFields[numF])
         }
         else if (uaFields[numF] ~ /(Safari)\//) {
           # SAFARI
@@ -183,6 +187,7 @@ BEGIN {
       result[id]["ua"]=ua
       result[id]["origin"]=origin
       result[id]["creds"]=creds
+      result[id]["sendsOrigin"]=sendsOrigin
       result[id]["method"]=method " (via " exfMethod ")"
       result[id]["cookie"]=cookie
     } else if (exfiltrated) {
@@ -206,7 +211,7 @@ BEGIN {
 }
 END {
   for (id in result) {
-    printf "| %-20s | %-22s | %-11s | %-11s | %-15s | %-11s | %-11s |\n", result[id]["ua"], result[id]["method"], result[id]["origin"], result[id]["creds"], result[id]["preflight"], result[id]["cookie"], result[id]["read"]
+    printf "| %-20s | %-22s | %-11s | %-11s | %-15s | %-15s | %-11s | %-11s |\n", result[id]["ua"], result[id]["method"], result[id]["origin"], result[id]["creds"], result[id]["sendsOrigin"], result[id]["preflight"], result[id]["cookie"], result[id]["read"]
   }
 }
 ' "${REQFILE}" > "${TMPFILE}"
