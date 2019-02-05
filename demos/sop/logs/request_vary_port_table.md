@@ -1,6 +1,101 @@
 | BROWSER              | METHOD                 | ORIGIN      | CREDENTIALS | PREFLIGHT       | COOKIE      | READ BY JS  |
 | :------------------: | :--------------------: | :---------: | :---------: | :-------------: | :---------: | :---------: |
 | ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 0.2.150.0     | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 0.2.150.0     | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 0.2.150.0     | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 0.2.150.0     | GET (via Object)       |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 0.2.150.0     | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 0.2.150.0     | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 0.2.150.0     | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 0.2.150.0     | GET (via Object)       | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 0.2.150.0     | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 0.2.150.0     | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 0.2.150.0     | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 0.2.150.0     | GET (via Object)       | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 0.2.150.0     | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 0.2.150.0     | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 0.2.150.0     | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 0.2.150.0     | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 0.2.150.0     | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 0.2.150.0     | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 0.2.150.0     | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 0.2.150.0     | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 0.3.155.0     | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via XHR)          |             | 0           |                 | Y           |             |
+| Chrome 0.3.155.0     | POST (via XHR)         |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 0.3.155.0     | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via XHR)          | *           | 1           |                 | Y           |             |
+| Chrome 0.3.155.0     | POST (via XHR)         | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 0.3.155.0     | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via XHR)          | *           | 0           |                 | Y           |             |
+| Chrome 0.3.155.0     | POST (via XHR)         | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 0.3.155.0     | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via XHR)          | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 0.3.155.0     | POST (via XHR)         | {ECHO}      | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 0.3.155.0     | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 0.3.155.0     | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 0.3.155.0     | POST (via XHR)         | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 0.5.155.0     | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 0.5.155.0     | POST (via XHR)         |             | 0           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via XHR)          |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 0.5.155.0     | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via XHR)          | *           | 1           |                 | Y           |             |
+| Chrome 0.5.155.0     | POST (via XHR)         | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 0.5.155.0     | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via XHR)          | *           | 0           |                 | Y           |             |
+| Chrome 0.5.155.0     | POST (via XHR)         | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 0.5.155.0     | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 0.5.155.0     | POST (via XHR)         | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via XHR)          | {ECHO}      | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 0.5.155.0     | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 0.5.155.0     | POST (via XHR)         | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 0.5.155.0     | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
 | Chrome 13.0.772.0    | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
 | Chrome 13.0.772.0    | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
 | Chrome 13.0.772.0    | GET (via Iframe)       |             | 0           |                 | Y           |             |
@@ -63,6 +158,37 @@
 | Chrome 16.0.906.0    | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
 | Chrome 16.0.906.0    | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
 | ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 18.0.998.0    | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via XHR)          |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 18.0.998.0    | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via XHR)          | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 18.0.998.0    | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via XHR)          | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 18.0.998.0    | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           | Y           |
+| Chrome 18.0.998.0    | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 18.0.998.0    | POST (via XHR)         | {ECHO}      | 1           | Y (with Cookie) | Y           | Y           |
+| Chrome 18.0.998.0    | GET (via XHR)          | {ECHO}      | 1           |                 | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 18.0.998.0    | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 18.0.998.0    | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
 | Chrome 18.0.999.0    | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
 | Chrome 18.0.999.0    | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
 | Chrome 18.0.999.0    | GET (via Iframe)       |             | 0           |                 | Y           |             |
@@ -93,6 +219,207 @@
 | Chrome 18.0.999.0    | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
 | Chrome 18.0.999.0    | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
 | Chrome 18.0.999.0    | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.157.0     | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via XHR)          |             | 0           |                 | Y           |             |
+| Chrome 2.0.157.0     | POST (via XHR)         |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.157.0     | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via XHR)          | *           | 1           |                 | Y           |             |
+| Chrome 2.0.157.0     | POST (via XHR)         | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.157.0     | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 2.0.157.0     | POST (via XHR)         | *           | 0           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via XHR)          | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.157.0     | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via XHR)          | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.157.0     | POST (via XHR)         | {ECHO}      | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.157.0     | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.157.0     | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.157.0     | POST (via XHR)         | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.160.0     | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 2.0.160.0     | POST (via XHR)         |             | 0           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via XHR)          |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.160.0     | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via XHR)          | *           | 1           |                 | Y           |             |
+| Chrome 2.0.160.0     | POST (via XHR)         | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.160.0     | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via XHR)          | *           | 0           |                 | Y           |             |
+| Chrome 2.0.160.0     | POST (via XHR)         | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.160.0     | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.160.0     | POST (via XHR)         | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via XHR)          | {ECHO}      | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.160.0     | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.160.0     | POST (via XHR)         | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.160.0     | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.165.0     | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via XHR)          |             | 0           |                 | Y           |             |
+| Chrome 2.0.165.0     | POST (via XHR)         |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.165.0     | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via XHR)          | *           | 1           |                 | Y           | Y           |
+| Chrome 2.0.165.0     | POST (via XHR)         | *           | 1           |                 | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.165.0     | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 2.0.165.0     | POST (via XHR)         | *           | 0           |                 | Y           | Y           |
+| Chrome 2.0.165.0     | GET (via XHR)          | *           | 0           |                 | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.165.0     | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.165.0     | POST (via XHR)         | {ECHO}      | 1           |                 | Y           | Y           |
+| Chrome 2.0.165.0     | GET (via XHR)          | {ECHO}      | 1           |                 | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.165.0     | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.165.0     | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.165.0     | POST (via XHR)         | {ECHO}      | 0           |                 | Y           | Y           |
+| Chrome 2.0.165.0     | GET (via XHR)          | {ECHO}      | 0           |                 | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.173.0     | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via XHR)          |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.173.0     | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 2.0.173.0     | POST (via XHR)         | *           | 1           | Y (with Cookie) | Y           | Y           |
+| Chrome 2.0.173.0     | GET (via XHR)          | *           | 1           |                 | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.173.0     | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 2.0.173.0     | POST (via XHR)         | *           | 0           | Y (with Cookie) | Y           | Y           |
+| Chrome 2.0.173.0     | GET (via XHR)          | *           | 0           |                 | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.173.0     | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.173.0     | POST (via XHR)         | {ECHO}      | 1           | Y (with Cookie) | Y           | Y           |
+| Chrome 2.0.173.0     | GET (via XHR)          | {ECHO}      | 1           |                 | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.173.0     | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.173.0     | GET (via XHR)          | {ECHO}      | 0           |                 | Y           | Y           |
+| Chrome 2.0.173.0     | POST (via XHR)         | {ECHO}      | 0           | Y (with Cookie) | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.178.0     | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via XHR)          |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.178.0     | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via XHR)          | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.178.0     | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via XHR)          | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.178.0     | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via XHR)          | {ECHO}      | 1           |                 | Y           | Y           |
+| Chrome 2.0.178.0     | POST (via XHR)         | {ECHO}      | 1           | Y (with Cookie) | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 2.0.178.0     | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 2.0.178.0     | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 20.0.1103.0   | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via XHR)          |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 20.0.1103.0   | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via XHR)          | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 20.0.1103.0   | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via XHR)          | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 20.0.1103.0   | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           | Y           |
+| Chrome 20.0.1103.0   | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 20.0.1103.0   | POST (via XHR)         | {ECHO}      | 1           | Y               | Y           | Y           |
+| Chrome 20.0.1103.0   | GET (via XHR)          | {ECHO}      | 1           |                 | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 20.0.1103.0   | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 20.0.1103.0   | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
 | ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
 | Chrome 21.0.1169.0   | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
 | Chrome 21.0.1169.0   | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
@@ -187,6 +514,37 @@
 | Chrome 24.0.1294.0   | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
 | Chrome 24.0.1294.0   | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
 | ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 26.0.1401.0   | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via XHR)          |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 26.0.1401.0   | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via XHR)          | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 26.0.1401.0   | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via XHR)          | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 26.0.1401.0   | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           | Y           |
+| Chrome 26.0.1401.0   | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 26.0.1401.0   | POST (via XHR)         | {ECHO}      | 1           | Y               | Y           | Y           |
+| Chrome 26.0.1401.0   | GET (via XHR)          | {ECHO}      | 1           |                 | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 26.0.1401.0   | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 26.0.1401.0   | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
 | Chrome 29.0.1539.0   | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
 | Chrome 29.0.1539.0   | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
 | Chrome 29.0.1539.0   | GET (via Iframe)       |             | 0           |                 | Y           |             |
@@ -217,6 +575,37 @@
 | Chrome 29.0.1539.0   | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
 | Chrome 29.0.1539.0   | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
 | Chrome 29.0.1539.0   | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 3.0.187.0     | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via XHR)          |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 3.0.187.0     | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via XHR)          | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 3.0.187.0     | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via XHR)          | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 3.0.187.0     | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via XHR)          | {ECHO}      | 1           |                 | Y           | Y           |
+| Chrome 3.0.187.0     | POST (via XHR)         | {ECHO}      | 1           | Y (with Cookie) | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 3.0.187.0     | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 3.0.187.0     | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
 | ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
 | Chrome 31.0.1631.0   | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
 | Chrome 31.0.1631.0   | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
@@ -311,6 +700,37 @@
 | Chrome 37.0.2046.0   | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
 | Chrome 37.0.2046.0   | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
 | ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 4.0.205.0     | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via XHR)          |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 4.0.205.0     | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via XHR)          | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 4.0.205.0     | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via XHR)          | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 4.0.205.0     | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via XHR)          | {ECHO}      | 1           |                 | Y           | Y           |
+| Chrome 4.0.205.0     | POST (via XHR)         | {ECHO}      | 1           | Y (with Cookie) | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 4.0.205.0     | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 4.0.205.0     | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
 | Chrome 40.0.2199.0   | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
 | Chrome 40.0.2199.0   | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
 | Chrome 40.0.2199.0   | GET (via Iframe)       |             | 0           |                 | Y           |             |
@@ -373,6 +793,37 @@
 | Chrome 42.0.2290.0   | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
 | Chrome 42.0.2290.0   | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
 | ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 44.0.2386.0   | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via XHR)          |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 44.0.2386.0   | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via XHR)          | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 44.0.2386.0   | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via XHR)          | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 44.0.2386.0   | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           | Y           |
+| Chrome 44.0.2386.0   | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via XHR)          | {ECHO}      | 1           |                 | Y           | Y           |
+| Chrome 44.0.2386.0   | POST (via XHR)         | {ECHO}      | 1           | Y               | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 44.0.2386.0   | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 44.0.2386.0   | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
 | Chrome 46.0.2485.0   | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
 | Chrome 46.0.2485.0   | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
 | Chrome 46.0.2485.0   | GET (via Iframe)       |             | 0           |                 | Y           |             |
@@ -403,6 +854,130 @@
 | Chrome 46.0.2485.0   | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
 | Chrome 46.0.2485.0   | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
 | Chrome 46.0.2485.0   | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 49.0.2586.0   | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via XHR)          |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 49.0.2586.0   | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via XHR)          | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 49.0.2586.0   | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via XHR)          | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 49.0.2586.0   | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           | Y           |
+| Chrome 49.0.2586.0   | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 49.0.2586.0   | POST (via XHR)         | {ECHO}      | 1           | Y               | Y           | Y           |
+| Chrome 49.0.2586.0   | GET (via XHR)          | {ECHO}      | 1           |                 | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 49.0.2586.0   | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 49.0.2586.0   | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 5.0.338.0     | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via XHR)          |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 5.0.338.0     | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via XHR)          | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 5.0.338.0     | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via XHR)          | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 5.0.338.0     | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 5.0.338.0     | POST (via XHR)         | {ECHO}      | 1           | Y (with Cookie) | Y           | Y           |
+| Chrome 5.0.338.0     | GET (via XHR)          | {ECHO}      | 1           |                 | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 5.0.338.0     | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 5.0.338.0     | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 51.0.2683.0   | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via XHR)          |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 51.0.2683.0   | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via XHR)          | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 51.0.2683.0   | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via XHR)          | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 51.0.2683.0   | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           | Y           |
+| Chrome 51.0.2683.0   | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via XHR)          | {ECHO}      | 1           |                 | Y           | Y           |
+| Chrome 51.0.2683.0   | POST (via XHR)         | {ECHO}      | 1           | Y               | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 51.0.2683.0   | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 51.0.2683.0   | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 7.0.501.0     | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via Iframe)       |             | 0           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via Object)       |             | 0           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via XHR)          |             | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 7.0.501.0     | GET (via 2DCanvas)     | *           | 1           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via BitmapCanvas) | *           | 1           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via Iframe)       | *           | 1           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via Object)       | *           | 1           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via XHR)          | *           | 1           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 7.0.501.0     | GET (via 2DCanvas)     | *           | 0           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via BitmapCanvas) | *           | 0           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via Iframe)       | *           | 0           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via Object)       | *           | 0           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via XHR)          | *           | 0           |                 | Y           |             |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 7.0.501.0     | GET (via 2DCanvas)     | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via BitmapCanvas) | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via Iframe)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via Object)       | {ECHO}      | 1           |                 | Y           |             |
+| Chrome 7.0.501.0     | POST (via XHR)         | {ECHO}      | 1           | Y (with Cookie) | Y           | Y           |
+| Chrome 7.0.501.0     | GET (via XHR)          | {ECHO}      | 1           |                 | Y           | Y           |
+| ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
+| Chrome 7.0.501.0     | GET (via 2DCanvas)     | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via BitmapCanvas) | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via Iframe)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via Object)       | {ECHO}      | 0           |                 | Y           |             |
+| Chrome 7.0.501.0     | GET (via XHR)          | {ECHO}      | 0           |                 | Y           |             |
 | ~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~~~~~ | ~~~~~~~~~~~ | ~~~~~~~~~~~ |
 | Edge 17.17134        | GET (via 2DCanvas)     |             | 0           |                 | Y           |             |
 | Edge 17.17134        | GET (via BitmapCanvas) |             | 0           |                 | Y           |             |
