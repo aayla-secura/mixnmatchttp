@@ -8,7 +8,6 @@ Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, imag
 Accept-Language: en
 Accept-Charset: windows-1252, utf-8, utf-16, iso-8859-1;q=0.6, *;q=0.1
 Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
-Referer: http://192.168.21.1:58083/foo.html
 Connection: Keep-Alive
 
 
@@ -677,7 +676,6 @@ Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, imag
 Accept-Language: en_NZ,en;q=0.9
 Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
 Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
-Referer: http://192.168.21.1:58083/foo.html
 Connection: Keep-Alive
 
 
@@ -1241,7 +1239,6 @@ Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, imag
 Accept-Language: en-NZ,en;q=0.9
 Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
 Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
-Referer: http://192.168.21.1:58083/foo.html
 Connection: Keep-Alive
 
 
@@ -1785,7 +1782,6 @@ Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, imag
 Accept-Language: en-NZ,en;q=0.9
 Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
 Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
-Referer: http://192.168.21.1:58083/foo.html
 Connection: Keep-Alive
 
 
@@ -2434,7 +2430,6 @@ Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, imag
 Accept-Language: en-NZ,en;q=0.9
 Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
 Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
-Referer: http://192.168.21.1:58083/foo.html
 Connection: Keep-Alive
 
 
@@ -3062,7 +3057,6 @@ Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, imag
 Accept-Language: en-NZ,en;q=0.9
 Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
 Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
-Referer: http://192.168.21.1:58083/foo.html
 Connection: Keep-Alive
 
 
@@ -3711,7 +3705,6 @@ Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, imag
 Accept-Language: en-NZ,en;q=0.9
 Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
 Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
-Referer: http://192.168.21.1:58083/foo.html
 Connection: Keep-Alive
 
 
@@ -4339,7 +4332,6 @@ Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, imag
 Accept-Language: en-NZ,en;q=0.9
 Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1
 Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0
-Referer: http://192.168.21.1:58083/foo.html
 Connection: Keep-Alive
 
 
@@ -4987,7 +4979,6 @@ Host: 192.168.21.1:58080
 Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/webp, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
 Accept-Language: en-NZ,en;q=0.9
 Accept-Encoding: gzip, deflate
-Referer: http://192.168.21.1:58083/foo.html
 Connection: Keep-Alive
 
 
@@ -5457,7 +5448,6 @@ Host: 192.168.21.1:58080
 Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/webp, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1
 Accept-Language: en-NZ,en;q=0.9
 Accept-Encoding: gzip, deflate
-Referer: http://192.168.21.1:58083/foo.html
 Connection: Keep-Alive
 
 
@@ -6205,7 +6195,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
 User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.69 Safari/537.36 OPR/17.0.1241.45
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -6959,7 +6948,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
 User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.94 Safari/537.36 OPR/24.0.1558.53
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip,deflate,lzma,sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -7699,7 +7687,6 @@ Connection: keep-alive
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36 OPR/32.0.1948.25
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate, lzma, sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -8468,7 +8455,6 @@ Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36 OPR/40.0.2308.54
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate, lzma, sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -9221,7 +9207,6 @@ Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.91 Safari/537.36 OPR/48.0.2685.32
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate
 Accept-Language: en-US,en;q=0.8
 
@@ -9974,7 +9959,6 @@ Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36 OPR/56.0.3051.31
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate
 Accept-Language: en-US,en;q=0.9
 Cookie: SESSION=2bed7198fe93df08e943
@@ -10756,7 +10740,6 @@ Accept-Encoding: gzip,deflate
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
 Keep-Alive: 300
 Connection: keep-alive
-Referer: http://192.168.21.1:58083/foo.html
 
 
 
@@ -11296,7 +11279,6 @@ Accept-Encoding: gzip,deflate
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
 Keep-Alive: 300
 Connection: keep-alive
-Referer: http://192.168.21.1:58083/foo.html
 
 
 
@@ -11819,7 +11801,6 @@ Accept-Encoding: gzip,deflate
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
 Keep-Alive: 300
 Connection: keep-alive
-Referer: http://192.168.21.1:58083/foo.html
 
 
 
@@ -12376,7 +12357,6 @@ Accept-Encoding: gzip,deflate
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
 Keep-Alive: 300
 Connection: keep-alive
-Referer: http://192.168.21.1:58083/foo.html
 
 
 
@@ -13196,7 +13176,6 @@ Accept-Encoding: gzip,deflate
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
 Keep-Alive: 115
 Connection: keep-alive
-Referer: http://192.168.21.1:58083/foo.html
 
 
 
@@ -14050,7 +14029,6 @@ Accept-Encoding: gzip, deflate
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
 Keep-Alive: 115
 Connection: keep-alive
-Referer: http://192.168.21.1:58083/foo.html
 
 
 
@@ -14874,7 +14852,6 @@ Accept-Language: en-us,en;q=0.5
 Accept-Encoding: gzip, deflate
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
 Connection: keep-alive
-Referer: http://192.168.21.1:58083/foo.html
 
 
 
@@ -15665,7 +15642,6 @@ Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Language: en-us,en;q=0.5
 Accept-Encoding: gzip, deflate
 Connection: keep-alive
-Referer: http://192.168.21.1:58083/foo.html
 
 
 
@@ -16443,7 +16419,6 @@ User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:18.0) Gecko/20100101 Firefox/
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Language: en-US,en;q=0.5
 Accept-Encoding: gzip, deflate
-Referer: http://192.168.21.1:58083/foo.html
 Connection: keep-alive
 
 
@@ -17207,7 +17182,6 @@ User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:27.0) Gecko/20100101 Firefox/
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Language: en-US,en;q=0.5
 Accept-Encoding: gzip, deflate
-Referer: http://192.168.21.1:58083/foo.html
 Connection: keep-alive
 
 
@@ -17971,7 +17945,6 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:35.0) Gecko/20100101 Firefox
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Language: en-US,en;q=0.5
 Accept-Encoding: gzip, deflate
-Referer: http://192.168.21.1:58083/foo.html
 Connection: keep-alive
 
 
@@ -18735,7 +18708,6 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:44.0) Gecko/20100101 Fi
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Language: en-US,en;q=0.5
 Accept-Encoding: gzip, deflate
-Referer: http://192.168.21.1:58083/foo.html
 Connection: keep-alive
 
 
@@ -19481,7 +19453,6 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Fi
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Language: en-US,en;q=0.5
 Accept-Encoding: gzip, deflate
-Referer: http://192.168.21.1:58083/foo.html
 Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 
@@ -20238,7 +20209,6 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:58.0) Gecko/20100101 Fi
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Language: en-US,en;q=0.5
 Accept-Encoding: gzip, deflate
-Referer: http://192.168.21.1:58083/foo.html
 Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 
@@ -21010,7 +20980,6 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:63.0) Gecko/20100101 Fi
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Language: en-US,en;q=0.5
 Accept-Encoding: gzip, deflate
-Referer: http://192.168.21.1:58083/foo.html
 Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 
@@ -21762,7 +21731,6 @@ Connection: keep-alive
 ----- Request Start ----->
 
 GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
-Referer: http://192.168.21.1:58083/foo.html
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/17.17134
 Accept-Language: en-NZ
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
@@ -22584,7 +22552,6 @@ Cache-Control: no-cache
 
 GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Accept: text/html, application/xhtml+xml, image/jxr, */*
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Language: en-NZ
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
@@ -23551,7 +23518,6 @@ Cache-Control: no-cache
 
 GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Language: en-GB
 User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: gzip, deflate
@@ -24376,7 +24342,6 @@ Cache-Control: no-cache
 
 GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Language: en-US
 User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)
 Accept-Encoding: gzip, deflate
@@ -25207,7 +25172,6 @@ Cache-Control: no-cache
 
 GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Accept: text/html, application/xhtml+xml, */*
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Language: en-US
 User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)
 Accept-Encoding: gzip, deflate
@@ -25760,7 +25724,6 @@ Cookie: SESSION=920cfac1a294608877da
 
 GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Accept: */*
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Language: en-NZ
 User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
 Accept-Encoding: gzip, deflate
@@ -26182,7 +26145,6 @@ Cookie: SESSION=bd13f8b2f548376eadcf
 
 GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Accept: */*
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Language: en-us
 UA-CPU: x86
 Accept-Encoding: gzip, deflate
@@ -26701,7 +26663,6 @@ Cookie: SESSION=b48b6f2e14032e2a278f
 
 GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/525.19 (KHTML, like Gecko) Chrome/0.2.150.0 Safari/525.19
-Referer: http://192.168.21.1:58083/foo.html
 Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
 Accept-Language: en-US,en
 Accept-Charset: ISO-8859-1,*,utf-8
@@ -27198,7 +27159,6 @@ GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Host: 192.168.21.1:58080
 Connection: keep-alive
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/530.1 (KHTML, like Gecko) Chrome/2.0.165.0 Safari/530.1
-Referer: http://192.168.21.1:58083/foo.html
 Accept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
 Accept-Encoding: gzip,deflate,bzip2,sdch
 Accept-Language: en-US,en;q=0.8
@@ -28040,7 +28000,6 @@ Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
 GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Host: 192.168.21.1:58080
 Connection: keep-alive
-Referer: http://192.168.21.1:58083/foo.html
 Accept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/534.6 (KHTML, like Gecko) Chrome/7.0.501.0 Safari/534.6
 Accept-Encoding: gzip,deflate,sdch
@@ -28789,7 +28748,6 @@ Cookie: SESSION=8b6dd94549b37a30fda9
 GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Host: 192.168.21.1:58080
 Connection: keep-alive
-Referer: http://192.168.21.1:58083/foo.html
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.772.0 Safari/535.1
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Encoding: gzip,deflate,sdch
@@ -29579,7 +29537,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/16.0.906.0 Safari/535.7
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
@@ -30397,7 +30354,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/535.15 (KHTML, like Gecko) Chrome/18.0.998.0 Safari/535.15
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
@@ -31215,7 +31171,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/535.16 (KHTML, like Gecko) Chrome/18.0.999.0 Safari/535.16
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
@@ -32033,7 +31988,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/536.8 (KHTML, like Gecko) Chrome/20.0.1103.0 Safari/536.8
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
@@ -32846,7 +32800,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1169.0 Safari/537.1
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
@@ -33659,7 +33612,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/23.0.1232.0 Safari/537.4
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
@@ -34472,7 +34424,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/537.15 (KHTML, like Gecko) Chrome/24.0.1294.0 Safari/537.15
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
@@ -35285,7 +35236,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/537.30 (KHTML, like Gecko) Chrome/26.0.1401.0 Safari/537.30
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
@@ -36727,7 +36677,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1539.0 Safari/537.36
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -37450,7 +37399,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1631.0 Safari/537.36
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -38189,7 +38137,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1758.0 Safari/537.36
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -38928,7 +38875,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2046.0 Safari/537.36
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -39667,7 +39613,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2199.0 Safari/537.36
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate, sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -40406,7 +40351,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2290.0 Safari/537.36
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate, sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -41146,7 +41090,6 @@ Host: 192.168.21.1:58080
 Connection: keep-alive
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2386.0 Safari/537.36
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate, sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -41887,7 +41830,6 @@ Connection: keep-alive
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2485.0 Safari/537.36
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate, sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -42656,7 +42598,6 @@ Connection: keep-alive
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2683.0 Safari/537.36
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate, sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -43409,7 +43350,6 @@ Connection: keep-alive
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2586.0 Safari/537.36
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate, sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -44176,7 +44116,6 @@ GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Host: 192.168.21.1:58080
 Connection: keep-alive
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/528.4 (KHTML, like Gecko) Chrome/0.3.155.0 Safari/528.4
-Referer: http://192.168.21.1:58083/foo.html
 Accept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
 Accept-Encoding: gzip,deflate,bzip2
 Accept-Language: en-US,en
@@ -44871,7 +44810,6 @@ GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Host: 192.168.21.1:58080
 Connection: keep-alive
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/528.6 (KHTML, like Gecko) Chrome/0.5.155.0 Safari/528.6
-Referer: http://192.168.21.1:58083/foo.html
 Accept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
 Accept-Encoding: gzip,deflate,bzip2,sdch
 Accept-Language: en-US,en
@@ -45586,7 +45524,6 @@ GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Host: 192.168.21.1:58080
 Connection: keep-alive
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/532.0 (KHTML, like Gecko) Chrome/4.0.205.0 Safari/532.0
-Referer: http://192.168.21.1:58083/foo.html
 Accept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
 Accept-Encoding: gzip,deflate
 Accept-Language: en-US,en;q=0.8
@@ -46358,7 +46295,6 @@ GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Host: 192.168.21.1:58080
 Connection: keep-alive
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/533.2 (KHTML, like Gecko) Chrome/5.0.338.0 Safari/533.2
-Referer: http://192.168.21.1:58083/foo.html
 Accept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
 Accept-Encoding: gzip,deflate,sdch
 Accept-Language: en-US,en;q=0.8
@@ -47130,7 +47066,6 @@ GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Host: 192.168.21.1:58080
 Connection: keep-alive
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/530.5 (KHTML, like Gecko) Chrome/2.0.173.0 Safari/530.5
-Referer: http://192.168.21.1:58083/foo.html
 Accept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
 Accept-Encoding: gzip,deflate,bzip2,sdch
 Accept-Language: en-US,en;q=0.8
@@ -48078,7 +48013,6 @@ GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Host: 192.168.21.1:58080
 Connection: keep-alive
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/531.0 (KHTML, like Gecko) Chrome/3.0.187.0 Safari/531.0
-Referer: http://192.168.21.1:58083/foo.html
 Accept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
 Accept-Encoding: gzip,deflate,bzip2,sdch
 Accept-Language: en-US,en;q=0.8
@@ -48843,7 +48777,6 @@ GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Host: 192.168.21.1:58080
 Connection: keep-alive
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/528.10 (KHTML, like Gecko) Chrome/2.0.157.0 Safari/528.10
-Referer: http://192.168.21.1:58083/foo.html
 Accept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
 Accept-Encoding: gzip,deflate,bzip2,sdch
 Accept-Language: en-US,en
@@ -49542,7 +49475,6 @@ GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Host: 192.168.21.1:58080
 Connection: keep-alive
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/530.0 (KHTML, like Gecko) Chrome/2.0.160.0 Safari/530.0
-Referer: http://192.168.21.1:58083/foo.html
 Accept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
 Accept-Encoding: gzip,deflate,bzip2,sdch
 Accept-Language: en-US,en;q=0.8
@@ -50241,7 +50173,6 @@ GET /demos/sop/getSecret.html?hostname=172.16.14.1&debug=1 HTTP/1.1
 Host: 192.168.21.1:58080
 Connection: keep-alive
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/530.8 (KHTML, like Gecko) Chrome/2.0.178.0 Safari/530.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
 Accept-Encoding: gzip,deflate,bzip2,sdch
 Accept-Language: en-US,en;q=0.8
@@ -51024,7 +50955,6 @@ Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2716.0 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate, sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -51793,7 +51723,6 @@ Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2860.0 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate, sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -52546,7 +52475,6 @@ Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3008.0 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate, sdch
 Accept-Language: en-US,en;q=0.8
 
@@ -53315,7 +53243,6 @@ Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3142.0 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate
 Accept-Language: en-US,en;q=0.8
 
@@ -54084,7 +54011,6 @@ Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3279.0 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate
 Accept-Language: en-US,en;q=0.9
 
@@ -54832,7 +54758,6 @@ Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3387.0 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate
 Accept-Language: en-US,en;q=0.9
 
@@ -55615,7 +55540,6 @@ Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3480.0 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate
 Accept-Language: en-US,en;q=0.9
 
@@ -56382,7 +56306,6 @@ Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3549.0 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate
 Accept-Language: en-US,en;q=0.9
 
@@ -57154,7 +57077,6 @@ Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3617.0 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate
 Accept-Language: en-US,en;q=0.9
 
@@ -57926,7 +57848,6 @@ Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3695.0 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
-Referer: http://192.168.21.1:58083/foo.html
 Accept-Encoding: gzip, deflate
 Accept-Language: en-US,en;q=0.9
 

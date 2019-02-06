@@ -84,7 +84,7 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
 
 The html page in `/demos/sop` can be used to test the behaviour of various browsers (many old ones supported) when it comes to cross-origin requests.
 
-  * `getSecret.html`: fetches `/secret/secret.txt` or `/secret/secret.png` using 6 different methods (see below), for each requesting five CORS combinations from the server (see below); supported URL parameters:
+  * `getSecret.html`: fetches `/secret/secret.txt` or `/secret/secret.png` using 6 different methods (see below), for each requesting 5 CORS combinations from the server (see below); supported URL parameters:
     - `host`: the full hostname/IP address:port of the target
     - `hostname`: only the hostname/IP address of the target; the port number will be the same as the origin
     - `port`: only the port number of the target; the hostname/IP address will be the same as the origin
@@ -106,7 +106,7 @@ It will do so using each the following six methods:
 
 #### Running the server
 
-`getSecret.html` will determine the target origin using any of the `host`, `hostname` or `port` URL parameters, in this order of precedence.
+`getSecret.html` will determine the target origin using any of the `host`, `hostname` or `port` URL parameters, in this order of precedence. If neither is given, it will present an input prompting you for the target origin.
 
 You have these options for CORS testing:
 
@@ -161,7 +161,7 @@ https://<IP>:58082/demos/sop/getSecret.html?port=58081
 
 Results from the requests calls will be logged to the page; check the JS console for CORS security errors. Full requests from the browser will be logged to the logfile given by the `-l` option.
 
-To check the exfiltrated data is as it should, do:
+To check the exfiltrated data is as it should be, do:
 
 ```
 demos/sop/test_exfiltrated_data.sh
@@ -184,9 +184,9 @@ The folder already contains logs and results for many browsers.
 
 The html pages in `/demos/csrf` can be used to test for [CSRF](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29) vulnerabilities.
 
-  * `getData.html`: requests a new cache UUID for saving the exfiltrated data to and presents you with an input field where you put the URL of the secret page you want to fetch via the victim; then generates a URL for the victim to click on (`evil.html`)
+  * `getData.html`: requests a new cache UUID for saving the exfiltrated data to and presents you with an input field where you put the URL of the secret page you want to fetch via the victim; then generates a URL for the victim to click on (`evil.html`); supported URL parameters:
     - `post`: fetch target using POST instead of GET
-  * `evil.html`: this is the page you send to the victim; it will fetch the data and send it back to you; supported URL parameters:
+  * `evil.html`: this is the page you send to the victim; it will fetch the data and cache it in the server under the previously generated UUID; supported URL parameters:
     - `reqURL`: the URL of the page to fetch
     - `sendURL`: the URL of the page to send the data to
     - `post`: fetch using POST instead of GET
@@ -213,8 +213,10 @@ then input the target URL in the input box, e.g.:
 https://<IP>:58080/secret/secret.html
 ```
 
-Click on the link "Click here to wait for the stolen data". Copy the generated victim URL and open it in another browser.
-The cached page should refresh every 30s, but you can manually refresh it to check if the secret data has arrived.
+Copy the generated victim URL. Click on the link "Click here to wait for the stolen data". Open the copied link in another browser.
+Refresh the cached page to see the stolen secret data.
+
+Note: The cached page should refresh itself every 30s.
 
 # Usage
 
