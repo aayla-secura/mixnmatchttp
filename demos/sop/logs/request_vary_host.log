@@ -58610,3 +58610,206 @@ Accept-Language: en-US,en;q=0.9
 {"data":"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", "type": "image/png"}
 <----- Request End -----
 
+
+----- Request Start ----->
+
+GET /demos/sop/getSecret.html HTTP/1.1
+Host: localhost:58080
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+Cookie: foo=bar
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: localhost:58080
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36
+Accept: */*
+Referer: http://localhost:58080/demos/sop/getSecret.html
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+Cookie: foo=bar
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /favicon.ico HTTP/1.1
+Host: localhost:58080
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36
+Accept: image/webp,image/apng,image/*,*/*;q=0.8
+Referer: http://localhost:58080/demos/sop/getSecret.html
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+Cookie: foo=bar
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /demos/sop/getSecret.html HTTP/1.1
+Host: localhost:58080
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+Cookie: foo=bar
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: localhost:58080
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36
+Accept: */*
+Referer: http://localhost:58080/demos/sop/getSecret.html
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+Cookie: foo=bar
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /demos/sop/getSecret.html HTTP/1.1
+Host: localhost:58080
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+Cookie: foo=bar
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: localhost:58080
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36
+Accept: */*
+Referer: http://localhost:58080/demos/sop/getSecret.html
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+Cookie: foo=bar
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /demos/sop/getSecret.html HTTP/1.1
+Host: localhost:58080
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+Cookie: foo=bar
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: localhost:58080
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36
+Accept: */*
+Referer: http://localhost:58080/demos/sop/getSecret.html
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+Cookie: foo=bar
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /demos/sop/getSecret.html HTTP/1.1
+Host: localhost:58080
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+Cookie: foo=bar
+
+
+
+<----- Request End -----
+
+
+----- Request Start ----->
+
+GET /js/allfuncs.js HTTP/1.1
+Host: localhost:58080
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36
+Accept: */*
+Referer: http://localhost:58080/demos/sop/getSecret.html
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+Cookie: foo=bar
+
+
+
+<----- Request End -----
+
