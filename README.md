@@ -80,7 +80,7 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
 
 ## Same-origin browser test
 
-![](demos/poc_sop.gif)
+![](demos/poc_sop_alt.gif)
 
 The html page in `/demos/sop` can be used to test the behaviour of various browsers (many old ones supported) when it comes to cross-origin requests.
 
@@ -112,7 +112,7 @@ You have these options for CORS testing:
 
 1. Start the server on all interfaces (default):
 
-```
+```bash
 python3 simple.py -S -l demos/sop/logs/requests_vary_host.log
 ```
 
@@ -126,7 +126,7 @@ replacing `<IP_1>` and `<IP_2>` with two different interfaces, e.g. `127.0.0.1` 
 
 2. Alternatively, start it only on one interface:
 
-```
+```bash
 python3 simple.py -S -a <IP> -l demos/sop/logs/requests_vary_host.log
 ```
 
@@ -146,7 +146,7 @@ You can omit the hostname URL parameter if listening on `localhost` and `localho
 
 3. Alternatively, run two different instances on one interface but different ports:
 
-```
+```bash
 python3 simple.py -S -a <IP> -p 58081 -l demos/sop/logs/requests_vary_port_target.log
 python3 simple.py -S -a <IP> -p 58082 -l demos/sop/logs/requests_vary_port_origin.log
 ```
@@ -163,13 +163,13 @@ Results from the requests calls will be logged to the page; check the JS console
 
 To check the exfiltrated data is as it should be, do:
 
-```
+```bash
 demos/sop/test_exfiltrated_data.sh
 ```
 
 To parse the script and print the results in a table do:
 
-```
+```bash
 cd demos/sop
 ./parse_request_log.sh logs/requests_vary_host.log logs/request_vary_host_table.md
 cat logs/request_vary_port_target.log logs/request_vary_port_origin.log > logs/request_vary_port.log
@@ -197,7 +197,7 @@ The "victim" (`evil.html`) and "attacker" (`getData.html`) must be loaded in dif
 
 Start the server on any interface, e.g.:
 
-```
+```bash
 python3 simple.py -S
 ```
 
