@@ -169,6 +169,7 @@ BEGIN {
   newReq=1
   origin=""
   creds=""
+  sendsOrigin=""
   method=""
   preflight=""
   exfMethod=""
