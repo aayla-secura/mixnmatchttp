@@ -93,8 +93,20 @@ function registerOnError(obj, func) {
 };
 
 function rand(len) {
-	if (typeof len === 'undefined' || ! len) { len = 20 };
-	return Math.floor(Math.random()*Math.pow(2,4*len)).toString(16);
+	if (typeof len === 'undefined' || ! len) { len = 13 };
+	if (len > 13) {
+		logToConsole('Size of randomly generated integer may exceed MAX_SAFE_INTEGER! ' +
+			'Will generate numbers up to MAX_SAFE_INTEGER instead, ' +
+			'and concatenate the hex strings. Entropy will be lower than requested!');
+	}
+	randStr = '';
+	while (len > 0) {
+		currLen = (len > 13 ? 13 : len);
+		currStr = Math.floor(Math.random()*Math.pow(2,4*currLen)).toString(16);
+		randStr += Array(currLen - currStr.length + 1).join('0') + currStr;
+		len -= currLen;
+	}
+	return randStr;
 };
 
 function addElement(tag, attr, appendTo, onload, onerror) {
