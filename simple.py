@@ -3,7 +3,6 @@
 #  - write doc for all classes and methods
 #  - goto endpoint (web cache poisoning usecase)
 #  - token stealer (open redirection + token in URL usecase)
-#  - if cookie is given upon login, invalidate that session
 import logging
 import http.server
 import ssl
@@ -377,6 +376,28 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
 
         return session
 
+    def rm_session(self):
+        '''Invalidate the session server-side'''
+
+        session = self.get_session()
+        try:
+            self.__sessions.remove(session)
+        except ValueError:
+            pass
+
+    def begin_response_goto(self):
+        goto = self.get_param('goto')
+        if goto is not None:
+            self.send_response(302)
+            self.send_header('Location', urllib.parse.unquote_plus(goto))
+        else:
+            self.send_response(200)
+
+    def end_response_default(self):
+        self.send_header('Content-type', 'text/plain')
+        self.send_header('Content-Length', 0)
+        self.end_headers()
+
     def show(self):
         '''Logs the request'''
 
@@ -585,26 +606,16 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
 
     def do_logout(self, cmd, *args):
         '''Clears the cookie from the browser and the saved sessions'''
-        session = self.get_session()
-        try:
-            self.__sessions.remove(session)
-        except ValueError:
-            pass
-        # move to separate method
-        goto = self.get_param('goto')
-        if goto is not None:
-            self.send_response(302)
-            self.send_header('Location', urllib.parse.unquote_plus(goto))
-        else:
-            self.send_response(200)
+
+        self.rm_session()
+        self.begin_response_goto()
         self.send_header('Set-Cookie', 'SESSION=')
-        self.send_header('Content-type', 'text/plain')
-        self.send_header('Content-Length', 0)
-        self.end_headers()
+        self.end_response_default()
 
     def do_login(self, cmd, *args):
         '''Issues a random cookie and saves it'''
 
+        self.rm_session()
         cookie = '{:02x}'.format(
             randint(0, 2**(4*self.__cookie_len)-1))
         if len(self.__sessions) >= self.__max_sessions:
@@ -613,18 +624,11 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
             del self.__sessions[int(self.__max_sessions/3):]
         self.__sessions.append(cookie)
 
-        goto = self.get_param('goto')
-        if goto is not None:
-            self.send_response(302)
-            self.send_header('Location', urllib.parse.unquote_plus(goto))
-        else:
-            self.send_response(200)
+        self.begin_response_goto()
         self.send_header('Set-Cookie',
             'SESSION={}; path=/; {}HttpOnly'.format(
                 cookie, ('Secure; ' if self._is_SSL else '')))
-        self.send_header('Content-type', 'text/plain')
-        self.send_header('Content-Length', 0)
-        self.end_headers()
+        self.end_response_default()
 
     def do_echo(self, cmd, *args):
         '''Decodes the request and returns it as the response body'''
@@ -749,9 +753,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
     @methodhandler
     def do_OPTIONS(self):
         self.send_response(200)
-        self.send_header('Content-Type', 'text/plain')
-        self.send_header('Content-Length', '0')
-        self.end_headers()
+        self.end_response_default()
 
     @methodhandler
     def do_HEAD(self):
