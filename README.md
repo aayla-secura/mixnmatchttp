@@ -7,6 +7,7 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
   * [Description](#description)
   * [Features](#features)
     - [Special endpoints](#special-endpoints)
+  * [Known issues](#known-issues)
   * [To do](#to-do)
   * [Use cases](#use-cases)
     - [Same-origin browser test](#same-origin-browser-test)
@@ -71,6 +72,12 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
   * `GET /cache/new`: get a random UUID
     - Response codes:
       + `200 OK`: body contains a randomly generated UUID; use in `POST /cache/{uuid}`
+
+# Known issues
+
+  * Clearing of cache is not done safely in mutli-threaded context. *Solution*: Wait for fix...
+  * When running as a signle thread (default), the server sometimes hangs. It seems to be an issue whereby some browsers don't close the socket. *Solution*: Run the server in multi-thread mode (`-t` option).
+  * Occasionally a `BrokenPipeError` is thrown. It happens with some browsers which close the socket abruptly. *Solution*: Just ignore it.
 
 # To do
 
