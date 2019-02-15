@@ -5,6 +5,7 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
 # Table of contents
 
   * [Description](#description)
+  * [Table of contents](#table-of-contents)
   * [Features](#features)
     - [Special endpoints](#special-endpoints)
   * [Known issues](#known-issues)
@@ -15,6 +16,7 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
       + [Viewing results, logging to file and parsing it](#viewing-results-logging-to-file-and-parsing-it)
     - [Data exfiltration via CSRF](#data-exfiltration-via-csrf)
       + [Running the server](#running-the-server-1)
+    - [Stealing information via web cache poisoning or open redirects](#stealing-information-via-web-cache-poisoning-or-open-redirects)
   * [Usage](#usage)
 
 # Features
@@ -72,6 +74,13 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
   * `GET /cache/new`: get a random UUID
     - Response codes:
       + `200 OK`: body contains a randomly generated UUID; use in `POST /cache/{uuid}`
+  * `GET /goto/{address}`: redirect to this (URI-decoded) address
+    - Response codes:
+      + `302 Found`: Location is the address which follows `/goto/`; if domain is not given it is taken from the `Referer`, `Origin`, `X-Forwarded-Host`, `X-Forwarded-For` or `Forwarded`
+      + `200 OK`: empty body; this happens if address was relative (no domain) and neither of the aforementioned headers was given
+    - Notes:
+      + Unlike the address given as a `goto` parameter to some of the other endpoints, the address here is not URI-decoded
+      + The `{address}` is not parsed at all, its path is not canonicalized unlike calls to other endpoints. I.e. `/login///foo.baz/../..//cache` will call `/cache`, but `/goto///foo.baz/../..//cache` will redirect to `//foo.baz/../..//cache` (remote host `foo.baz` with path `../..//cache`)
 
 # Known issues
 
@@ -224,6 +233,10 @@ Copy the generated victim URL. Click on the link "Click here to wait for the sto
 Refresh the cached page to see the stolen secret data.
 
 Note: The cached page should refresh itself every 30s.
+
+## Stealing information via web cache poisoning or open redirects
+
+TO DO (uses `/goto`)
 
 # Usage
 

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # TO DO:
 #  - write doc for all classes and methods
-#  - goto endpoint (web cache poisoning usecase)
 #  - token stealer (open redirection + token in URL usecase)
+#  - colorful log
+#  - independent Access-Control-Allow-Methods for special endpoints
 import logging
 import http.server
 import ssl
@@ -101,8 +102,7 @@ class ExtraArgsError(EndpointError):
     '''Exception raised when extra arguments are given'''
 
     def __init__(self, args):
-        super().__init__('Extra arguments: ({}).'.format(
-            ', '.join(args)))
+        super().__init__('Extra arguments: {}.'.format(args))
 
 ############################################################
 ########################## CLASSES #########################
@@ -188,14 +188,18 @@ class Endpoints():
     Format for endpoints:
     '<root>': {
             '<subpoint>': {
-                'allowed_methods': ['<method1>', ...],
-                'args': <number>|Endpoints.ARGS_*
+                'allowed_methods': ['<method1>', ...], # GET, POST, etc
+                'args': <number>|Endpoints.ARGS_*, # how many args,
+                                                   # only reliable if
+                                                   # raw_args is False
+                'raw_args': True|False, # should we canonicalize
                 }
             }
     
     'args' can be a number for exact number of arguments
-    'allowed_methods defaults to ['GET', 'OPTIONS']
+    'allowed_methods defaults to ['GET']
     'args' defaults to 0
+    'raw_args' defaults to False
     '''
 
     ARGS_OPTIONAL = '?' # 0 or 1
@@ -205,49 +209,113 @@ class Endpoints():
     def __init__(self, **kwargs):
         self.__endpoints = kwargs.copy()
         for root, subs in self.__endpoints.items():
+            if not subs:
+                subs[''] = {}
             for sub in subs.values():
                 try:
                     sub['allowed_methods']
                 except KeyError:
-                    sub['allowed_methods'] = ['GET', 'OPTIONS']
+                    sub['allowed_methods'] = ['GET']
                 try:
                     sub['args']
                 except KeyError:
                     sub['args'] = 0
+                try:
+                    sub['raw_args']
+                except KeyError:
+                    sub['raw_args'] = False
 
     def parse(self, path, command):
-        '''Path must have a leading /'''
+        '''Selects an endpoint for the path
+        
+        Returns (root, sub, args) if an endpoint, or raises an
+        exception:
+            NotAnEndpointError
+            MethodNotAllowedError
+            MissingArgsError
+            ExtraArgsError
+        '''
 
-        root, sub, *args = path[1:].split('/') + ['']
-        args = list(filter(None,args))
-        try:
-            endpoint = self.__endpoints[root]
-        except KeyError:
-            raise NotAnEndpointError(root)
+        if not isinstance(path, str) or not path or path[0] != '/':
+            pass #TODO Exception
+
+        # we don't yet know if the endpoints or subpoint wants the
+        # arguments raw or canonicalized. So we check the first
+        # absolute segment
+        # if it's an endpoint which expects raw arguments, we're done
+        root, sub, args = self._parse_raw(abspath_up_to_nth(path, 1))
+        if not root:
+            # otherwise check for the second abs segment
+            logger.debug('Checking if subpoint takes raw args')
+            root, sub, args = self._parse_raw(abspath_up_to_nth(path, 2))
+
+        if root:
+            logger.debug(('Parsed endpoint with raw args: root: {}, ' +
+                'sub: {}, args: {}').format(root, sub, args))
+            if self.__endpoints[root][sub]['args'] not in \
+                [self.ARGS_ANY, self.ARGS_REQUIRED]:
+                logger.warning(('Endpoint {} requires non-canonical ' +
+                    'arguments, but is sensitive to the number ' +
+                    'of arguments; not reliable!').format(root))
         else:
-            if sub not in endpoint.keys():
-                args.insert(0, sub)
-                sub = ''
-            logger.debug(
-                'API call: root: {}, sub: {}, {} args'.format(
-                    root, sub, len(args)))
+            # finally canonicalize the whole path and take the root
+            # endpoint and subpoint from there
+            root, sub, args = self._unpacker(
+                    *abspath(path).lstrip('/').split('/', 2))
+            logger.debug(('Parsed endpoint: root: {}, sub: {}, args: {}'
+                ).format(root, sub, args))
 
-            if command not in endpoint[sub]['allowed_methods']:
-                raise MethodNotAllowedError
+        if not self._is_endp(root, sub):
+            args = '/'.join(filter(None, [sub, args])) # consume the sub into args
+            sub = ''
 
-            if endpoint[sub]['args'] == self.ARGS_ANY:
-                pass
-            elif endpoint[sub]['args'] == self.ARGS_REQUIRED:
-                if not args:
-                    raise MissingArgsError
-            elif endpoint[sub]['args'] == self.ARGS_OPTIONAL:
-                if args[1:]:
-                    raise ExtraArgsError(args[1:])
-            elif len(args) > endpoint[sub]['args']:
-                raise ExtraArgsError(args[endpoint[sub]['args']:])
-            elif len(args) < endpoint[sub]['args']:
+        if not self._is_endp(root):
+            raise NotAnEndpointError(root)
+
+        logger.debug(
+                'API call: root: {}, sub: {}, args: {}'.format(
+                    root, sub, args))
+
+        args_arr = list(filter(None, args.split('/')))
+        endpoint = self.__endpoints[root]
+        if endpoint[sub]['args'] == self.ARGS_ANY:
+            pass
+        elif endpoint[sub]['args'] == self.ARGS_REQUIRED:
+            if not args:
                 raise MissingArgsError
+        elif endpoint[sub]['args'] == self.ARGS_OPTIONAL:
+            if len(args_arr) > 1:
+                raise ExtraArgsError('/'.join(args_arr[1:]))
+        elif len(args_arr) > endpoint[sub]['args']:
+            raise ExtraArgsError('/'.join(
+                args_arr[endpoint[sub]['args']:]))
+        elif len(args_arr) < endpoint[sub]['args']:
+            raise MissingArgsError
 
+        if command not in endpoint[sub]['allowed_methods']:
+            raise MethodNotAllowedError
+
+        return root, sub, args
+
+    def _parse_raw(self, path):
+        root, sub, args = self._unpacker(*path.lstrip('/').split('/', 2))
+        if self._is_endp(root, sub) and \
+                self.__endpoints[root][sub]['raw_args']:
+            return root, sub, args
+
+        return '', '', ''
+
+    def _is_endp(self, root, sub=''):
+        try:
+            self.__endpoints[root][sub]
+        except KeyError:
+            return False
+
+        return True
+
+    @staticmethod
+    def _unpacker(root, sub='',args=''):
+        # handle case of not enough / in path during splitting
         return root, sub, args
 
 ############################################################
@@ -262,44 +330,40 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
 
     cache = Cache()
     # request path is checked against each endpoint's root;
-    # if match, then the subpath after that is matched agains the
+    # if match, then the subpath after that is matched against the
     # endpoint's subpoint
     # if no match, then the default subpoint '' is used
     # the request method is checked against the list of allowed methods
     # then a handler called do_<root> is called, passing it the
-    # subpoint that matched and a list of the rest of the subpaths
+    # subpoint that matched and the rest of the subpaths
     endpoints = Endpoints(
         echo={
             '': {
-                'allowed_methods': ['POST', 'OPTIONS'],
-                'args': 0,
+                'allowed_methods': ['POST'],
                 },
             },
-        login={
+        goto={
+            # call it as /goto?<params for this server>/<URI-decoded address>;
+            # include the ? after /goto even if not giving parameters,
+            # otherwise any parameters in the address would be
+            # consumed
             '': {
-                'allowed_methods': ['GET', 'OPTIONS'],
-                'args': 0,
+                'allowed_methods': ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+                'args': Endpoints.ARGS_ANY,
+                'raw_args': True,
                 },
             },
-        logout={
-            '': {
-                'allowed_methods': ['GET', 'OPTIONS'],
-                'args': 0,
-                },
-            },
+        login={ },
+        logout={ },
         cache={
             '': {
-                'allowed_methods': ['GET', 'POST', 'OPTIONS'],
+                'allowed_methods': ['GET', 'POST'],
                 'args': 1,
                 },
             'clear': {
-                'allowed_methods': ['GET', 'OPTIONS'],
                 'args': Endpoints.ARGS_OPTIONAL,
                 },
-            'new': {
-                'allowed_methods': ['GET', 'OPTIONS'],
-                'args': 0,
-                },
+            'new': { },
             },
         )
     __templates = {
@@ -338,7 +402,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         logger.debug('{} secrets'.format(len(self._secrets)))
         for s in self._secrets:
             logger.debug('{} is secret'.format(s))
-            if re.search('{}{}(?:/|$)'.format(
+            if re.search('{}{}(/|$)'.format(
                 ('^' if s[0] == '/' else ''), s),
                 self.__pathname):
                 return True
@@ -358,10 +422,8 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
     def get_session(self):
         '''Returns the session cookie'''
 
-        try:
-            cookies = dict([x.split('=') for x in re.split(
-                ' *; *', self.headers.get('Cookie'))])
-        except (AttributeError, TypeError, IndexError, ValueError):
+        cookies = param_dict(self.headers.get('Cookie', failobj=''))
+        if not cookies:
             logger.debug('No cookies given')
             session = None
         else:
@@ -385,16 +447,17 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         except ValueError:
             pass
 
-    def begin_response_goto(self):
-        goto = self.get_param('goto')
-        if goto is not None:
-            self.send_response(302)
-            self.send_header('Location', urllib.parse.unquote_plus(goto))
+    def begin_response_goto(self, code=302, url=None):
+        if url is None:
+            url = self.get_param('goto')
+        if url is not None:
+            self.send_response(code)
+            self.send_header('Location', urllib.parse.unquote_plus(url))
         else:
             self.send_response(200)
 
     def end_response_default(self):
-        self.send_header('Content-type', 'text/plain')
+        #  self.send_header('Content-type', 'text/plain')
         self.send_header('Content-Length', 0)
         self.end_headers()
 
@@ -551,9 +614,8 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         application/x-www-form-urlencoded POST
         '''
 
-        try:
-            req_params = dict([p.split('=') for p in post_data.split('&')])
-        except ValueError:
+        req_params = param_dict(post_data, itemsep='&')
+        if not req_params:
             raise DecodingError('Cannot load parameters from request!')
         return req_params
 
@@ -604,7 +666,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         self.send_custom_headers()
         super().end_headers()
 
-    def do_logout(self, cmd, *args):
+    def do_logout(self, cmd, args):
         '''Clears the cookie from the browser and the saved sessions'''
 
         self.rm_session()
@@ -612,7 +674,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         self.send_header('Set-Cookie', 'SESSION=')
         self.end_response_default()
 
-    def do_login(self, cmd, *args):
+    def do_login(self, cmd, args):
         '''Issues a random cookie and saves it'''
 
         self.rm_session()
@@ -630,23 +692,89 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
                 cookie, ('Secure; ' if self._is_SSL else '')))
         self.end_response_default()
 
-    def do_echo(self, cmd, *args):
+    def do_goto(self, cmd, args):
+        '''Redirects to the path following /goto/
+        
+        If the path does not include a domain, it is taken from the
+        following headers, in this order:
+        - Referer
+        - Origin
+        - X-Forwarded-Host
+        - X-Forwarded-For
+        - Forwarded
+        '''
+
+        # check if path includes domain
+        if re.match('(https?:)?//[^/]', args):
+            self.begin_response_goto(code=307, url=args)
+            self.end_response_default()
+            return
+
+        def send_redir(host, proto='', pref='', **kwargs):
+            if args[:1] == '/':
+                # relative to root => ignore prefix path
+                pref = ''
+            elif pref[-1:] != '/':
+                # otherwise make sure there's a trailing slash for prefix
+                pref += '/'
+            if proto and proto[-1] != ':':
+                proto += ':'
+            path = ''.join([proto, '//', host, pref, args])
+            logger.debug('Redirecting to {}'.format(path))
+            self.begin_response_goto(code=307, url=path)
+            self.end_response_default()
+
+        fwd = dict()
+        # otherwise check Referer and Origin
+        try:
+            # a valid Origin shouldn't have a path, but nevermind
+            fwd = re.fullmatch(
+                    '(?P<proto>https?:|)//(?P<host>[^/]+)(?P<pref>/?.*)',
+                    list(filter(None, [
+                        self.headers.get('Referer'),
+                        self.headers.get('Origin'),
+                        ]))[0]).groupdict()
+        except (IndexError, AttributeError):
+            # otherwise check X-Forwarded-*
+            logger.debug('Checking Origin and X-Forwarded-*')
+            try:
+                fwd['host'] = list(filter(None, [
+                    self.headers.get('X-Forwarded-Host'),
+                    self.headers.get('X-Forwarded-For')
+                    ]))[0]
+            except IndexError:
+                # otherwise check Forwarded
+                logger.debug('Checking Forwarded')
+                fwd = param_dict(self.headers.get('Forwarded',
+                    failobj='').replace('for=', 'host='))
+            else:
+                # one of X-Forwarded-* may have matched
+                fwd['proto'] = self.headers.get('X-Forwarded-Proto',
+                        failobj='')
+
+        try:
+            logger.debug('fwd: {}'.format(fwd))
+            send_redir(**fwd)
+        except TypeError:
+            logger.debug("Couldn't figure out host to redirect to...")
+            self.send_response(200)
+            self.end_response_default()
+
+    def do_echo(self, cmd, args):
         '''Decodes the request and returns it as the response body'''
 
         try:
             page = self.decode_body()
         except DecodingError as e:
-            self.send_error(400, explain=str(e))
+            self.send_error(400, None, explain=str(e))
             return
         self.render(page)
 
-    def do_cache(self, cmd, *args):
+    def do_cache(self, cmd, name):
         '''Saves, retrieves or clears a cached page'''
 
-        try:
-            name = args[0]
-        except IndexError:
-            name = None
+        if not name:
+            name = None # cache.clear expects non-empty or None, not ''
 
         if cmd == 'clear':
             self.cache.clear(name)
@@ -664,7 +792,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
                 try:
                     page = self.cache.get(name)
                 except (PageClearedError, PageNotCachedError) as e:
-                    self.send_error(500, explain=str(e))
+                    self.send_error(500, None, explain=str(e))
                 else:
                     self.render(page)
 
@@ -672,12 +800,12 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
                 try:
                     page = self.decode_body()
                 except DecodingError as e:
-                    self.send_error(400, explain=str(e))
+                    self.send_error(400, None, explain=str(e))
                     return
                 try:
                     self.cache.save(name, page)
                 except CacheError as e:
-                    self.send_error(500, explain=str(e))
+                    self.send_error(500, None, explain=str(e))
                 else:
                     self.send_response(204)
                     self.end_headers()
@@ -688,7 +816,12 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
             logger.debug('INIT for method handler')
 
             # split query from pathname
-            self.__pathname, _, query_str = self.path.partition('?')
+            # take only the first set of parameters (i.e. everything
+            # between the first ? and the subsequent / or #
+            m = re.match('(/[^\?]*)(?:\?([^/#]*))?(.*)', self.path)
+            query_str = m.group(2) if m.group(2) else ''
+            self.__pathname = m.group(1) + m.group(3)
+
             # decode path
             #TODO other encodings??
             logger.debug('Path is {}'.format(self.__pathname))
@@ -696,43 +829,41 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
                     self.__pathname)
             logger.debug('Decoded path is {}'.format(self.__pathname))
             assert self.__pathname[0] == '/'
-            # canonicalize it; os.path.abspath preserves two
-            # consecutive slashes at the beginning, since they may
-            # indicate a URI with a default protocol;
-            # we explicitly remove them here
-            self.__pathname = os.path.abspath(
-                self.__pathname).replace('//','/')
+            # canonicalize it
+            raw_path = self.__pathname
+            self.__pathname = abspath(self.__pathname)
             logger.debug('Real path is {}'.format(self.__pathname))
 
             # save query parameters
-            try:
-                self.__query = dict([p.partition('=')[0::2]
-                    for p in query_str.split('&')])
-            except ValueError:
-                self.__query = {}
+            self.__query = param_dict(query_str, itemsep='&',
+                    values_are_opt=True)
+            logger.debug('Query params are {}'.format(self.__query))
 
             self.__can_read_body = True
             self.__body = None
             self.read_body()
             self.show()
 
+            # check if it's a special endpoint
             try:
                 root, sub, args = self.endpoints.parse(
-                        self.__pathname, self.command)
+                        raw_path, self.command)
             except NotAnEndpointError as e:
                 logger.debug('{}'.format(str(e)))
                 func(self)
             except MethodNotAllowedError as e:
-                logger.debug('{}'.format(str(e)))
-                self.send_error(405)
-                return
+                if self.command == 'OPTIONS':
+                    func(self) # OPTIONS allows ok
+                else:
+                    logger.debug('{}'.format(str(e)))
+                    self.send_error(405)
             except (MissingArgsError, ExtraArgsError) as e:
                 logger.debug('{}'.format(str(e)))
-                self.send_error(404)
+                self.send_error(404, None, str(e))
                 return
             else:
                 handler = getattr(self, 'do_' + root)
-                handler(sub, *args)
+                handler(sub, args)
 
         return wrapper
 
@@ -761,6 +892,77 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
 
     methodhandler = staticmethod(methodhandler)
 
+def abspath(path):
+    '''Canonicalize the path segment by segment
+    
+    Leading slash is preserved if present, but is not required.
+    '''
+
+    if not path:
+        return ''
+
+    # if path doesn't start with /, temporarily add it so that
+    prefix = ''
+    if path[0] != '/':
+        prefix = '/'
+    # os.path.abspath doesn't prepend cwd
+    # os.path.abspath preserves two consecutive slashes at the
+    # beginning, since they may indicate a URI with a default
+    # protocol; we explicitly remove them here
+    return os.path.abspath(prefix + path).replace(
+            '//','/')[len(prefix):]
+
+def abspath_up_to_nth(path, n=1):
+    '''Canonicalize the path segment by segment
+    
+    Leading slash is preserved if present, but is not required.
+    Returns the path canonicalized to the first n segments, followed
+    by the rest of the segments.
+    Stop as soon as we have n non-empty segments, i.e.
+    /../foo/../bar/./baz/./ will return /foo/../bar/./baz/./ for n=1,
+    but /bar/baz/./ for n=2. If we never reach n, return ''
+    '''
+
+    if not path:
+        return ''
+
+    # temporarily add a trailing /
+    pathlen = len(path)
+    if path[-1] != '/':
+        path += '/'
+
+    curr_index = 0
+    skip = path.find('/')
+    root = path[: skip if skip != -1 else None]
+    while skip != -1:
+        curr_index += skip + 1
+        curr_abs = abspath(path[:curr_index])
+        curr_abs_parts = list(filter(None, curr_abs.split('/')))
+        # filter because leading or trailing / will result in ''
+        # items
+        if len(curr_abs_parts) == n:
+            return '/'.join(filter(None, [curr_abs,
+                path[curr_index:pathlen]]))
+        skip = path[curr_index+1:].find('/')
+
+    return ''
+
+def param_dict(s, itemsep=' *; *', valsep='=', values_are_opt=False):
+    '''itemsep is a regex, valsep is literal'''
+
+    params = dict()
+    sepfunc = lambda x: x.split(valsep)
+    if values_are_opt:
+        sepfunc = lambda x: x.partition(valsep)[0::2]
+
+    try:
+        params = dict([sepfunc(v) for v in re.split(itemsep, s)])
+    except ValueError:
+        pass
+
+    logger.debug('Got params from {}: {}'.format(s, params))
+    return params
+
 def new_server(clsname, cors, headers, is_SSL, secrets):
     def send_custom_headers(self):
         # Disable Cache
@@ -771,7 +973,7 @@ def new_server(clsname, cors, headers, is_SSL, secrets):
         except AttributeError:
             return
 
-        if not re.search('/jquery-[0-9\.]+(\.min)?\.js$', self.path):
+        if not re.search('/jquery-[0-9\.]+(\.min)?\.js(\?|$)', self.path):
             self.send_header('Cache-Control',
                 'no-cache, no-store, must-revalidate')
             self.send_header('Pragma', 'no-cache')
