@@ -518,6 +518,27 @@ function sendData(data, ctype, sendURL, alreadyEncoded) {
 		(ctype ? '", "type": "' + ctype + '"}' : '"}'));
 };
 
+function simpleXHR(reqURL, doPOST, callback, withCreds) {
+	var req = new XMLHttpRequest();
+	if (doPOST) {
+		req.open('POST', reqURL);
+		req.setRequestHeader('Content-Type',
+			'application/json;charset=UTF-8');
+	} else {
+		req.open('GET', reqURL);
+	}
+	req.withCredentials = Boolean(withCreds);
+	req.onreadystatechange = function () {
+		if (this.readyState != 4) { return; }
+		callback(this.responseText);
+	};
+	if (doPOST) {
+		req.send("{}"); // Opera 8.5 doesn't support JSON
+	} else {
+		req.send();
+	}
+};
+
 // old browsers support neither .bind, nor lambda functions so we use closure
 function createBoundedWrapper(object, method) {
 	return function() {

@@ -7,11 +7,11 @@
 			registerWinOnLoad(function () {
 				var reqURL = getPar('reqURL');
 				var sendURL = getPar('sendURL');
-				var doPOST = getBoolPar('post');
+				var httpmethod = getBoolPar('post') ? 'POST' : 'GET';
 				if (! reqURL || ! sendURL) { return; }
 				reqURL = decodeURIComponent(reqURL);
 				sendURL = decodeURIComponent(sendURL);
-				getDataViaXHR(reqURL, doPOST, sendURL, function (data) {
+				getDataViaXHR(reqURL, {http: httpmethod}, sendURL, function (data) {
 					setTextContent(document.getElementById('log'), 'Success');
 				});
 			});
