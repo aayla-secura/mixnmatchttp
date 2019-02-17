@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<script src="/js/allfuncs.js" charset="utf-8"></script>
+		<script charset="utf-8">
+			registerWinOnLoad(function () {
+				var cacheService = getPar('cacheURI');
+				if (! cacheService) {
+					logToPage("Using caching service on the current origin. " +
+						"Use the 'host', 'hostname' or 'port' URL parameters to change");
+					cacheService = getCurrOrigin();
+				}
+				else {
+					cacheService = decodeURIComponent(cacheService);
+				}
+				// Get a new cache UUID
+				simpleXHR('/secret/secret.txt', false, function (data) {
+          var uuid = rand();
+          var cacheURL = cacheService + '/' + uuid;
+          document.getElementById('secret').value = data;
+          var frm = document.getElementById('frm');
+          frm.action = cacheURL;
+          frm.submit();
+          var link = document.getElementById('link');
+          link.href = cacheURL;
+          link.style = '';
+        });
+			});
+		</script>
+	</head>
+	<body>
+		<a href="#" style="display: none" id="link" target="_blank">Here's your unique secret cached page with the sensitive data</a>
+    <form action="#" method="post" id="frm" accept-charset="utf-8">
+      <input type="hidden" value="" name="data" id="secret"/>
+    </form>
+	</body>
+</html>

