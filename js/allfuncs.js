@@ -518,12 +518,13 @@ function sendData(data, ctype, sendURL, alreadyEncoded) {
 		(ctype ? '", "type": "' + ctype + '"}' : '"}'));
 };
 
-function simpleXHR(reqURL, doPOST, callback, withCreds) {
+function simpleXHR(reqURL, callback, data, doPOST, withCreds, urlenc) {
 	var req = new XMLHttpRequest();
 	if (doPOST) {
 		req.open('POST', reqURL);
 		req.setRequestHeader('Content-Type',
-			'application/json;charset=UTF-8');
+			(urlenc ? 'application/x-www-form-urlencoded' :
+				'application/json;charset=UTF-8'));
 	} else {
 		req.open('GET', reqURL);
 	}
@@ -533,9 +534,9 @@ function simpleXHR(reqURL, doPOST, callback, withCreds) {
 		callback(this.responseText);
 	};
 	if (doPOST) {
-		req.send("{}"); // Opera 8.5 doesn't support JSON
+		req.send((data || urlenc) ? data : '{}');
 	} else {
-		req.send();
+		req.send(data);
 	}
 };
 

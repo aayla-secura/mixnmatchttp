@@ -8,7 +8,7 @@
 				var doPOST = getBoolPar('post');
 				var currOrigin = getCurrOrigin();
 				// Get a new cache UUID
-				simpleXHR(currOrigin + '/cache/new', false, function (uuid) {
+				simpleXHR(currOrigin + '/cache/new', function (uuid) {
 					var cacheURL = currOrigin + '/cache/' + uuid;
 					setTextContent(document.getElementById('t_victimURL'),
 						currOrigin + getCurrDir() + 'evil.html' +

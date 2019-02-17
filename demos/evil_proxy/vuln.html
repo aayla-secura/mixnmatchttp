@@ -9,13 +9,13 @@
 				if (! cacheService) {
 					logToPage("Using caching service on the current origin. " +
 						"Use the 'host', 'hostname' or 'port' URL parameters to change");
-					cacheService = getCurrOrigin();
+					cacheService = getCurrOrigin() + '/cache';
 				}
 				else {
 					cacheService = decodeURIComponent(cacheService);
 				}
 				// Get a new cache UUID
-				simpleXHR('/secret/secret.txt', false, function (data) {
+				simpleXHR('/secret/secret.txt', function (data) {
           var uuid = rand();
           var cacheURL = cacheService + '/' + uuid;
           document.getElementById('secret').value = data;
