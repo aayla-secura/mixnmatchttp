@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # TO DO:
 #  - write doc for all classes and methods
-#  - token stealer (open redirection + token in URL usecase)
 #  - colorful log
-#  - independent Access-Control-Allow-Methods for special endpoints
 import logging
 import http.server
 import ssl
@@ -224,6 +222,13 @@ class Endpoints():
                     sub['raw_args']
                 except KeyError:
                     sub['raw_args'] = False
+                sub['allowed_methods'] += ['OPTIONS']
+
+    def get(self, root):
+        try:
+            return self.__endpoints[root]
+        except KeyError:
+            return None
 
     def parse(self, path, command):
         '''Selects an endpoint for the path
@@ -324,6 +329,8 @@ class ThreadingCORSHttpsServer(ThreadingMixIn, http.server.HTTPServer):
 
 class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
 
+    _secrets = []
+    _is_SSL = False
     __cookie_len = 20
     __sessions = []
     __max_sessions = 10
@@ -391,6 +398,14 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
             },
         },
     }
+
+    def __init__(self, *args, **kwargs):
+        self.__pathname = ''
+        self.__query = dict()
+        self.__can_read_body = True
+        self.__body = None
+        self.__allowed_methods = None
+        super().__init__(*args, **kwargs)
 
     def send_custom_headers(self):
         '''The new_server factory overrides this'''
@@ -810,8 +825,8 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
                     self.send_response(204)
                     self.end_headers()
 
-    def methodhandler(func):
-        @wraps(func)
+    def methodhandler(realhandler):
+        @wraps(realhandler)
         def wrapper(self):
             logger.debug('INIT for method handler')
 
@@ -841,6 +856,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
 
             self.__can_read_body = True
             self.__body = None
+            self.__allowed_methods = None # use default
             self.read_body()
             self.show()
 
@@ -850,20 +866,23 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
                         raw_path, self.command)
             except NotAnEndpointError as e:
                 logger.debug('{}'.format(str(e)))
-                func(self)
+                realhandler(self)
             except MethodNotAllowedError as e:
-                if self.command == 'OPTIONS':
-                    func(self) # OPTIONS allows ok
-                else:
-                    logger.debug('{}'.format(str(e)))
-                    self.send_error(405)
+                logger.debug('{}'.format(str(e)))
+                self.send_error(405)
             except (MissingArgsError, ExtraArgsError) as e:
                 logger.debug('{}'.format(str(e)))
                 self.send_error(404, None, str(e))
-                return
             else:
-                handler = getattr(self, 'do_' + root)
-                handler(sub, args)
+                self.__allowed_methods = self.endpoints.get(
+                        root)[sub]['allowed_methods']
+                if self.command == 'OPTIONS':
+                    logger.debug('Doing OPTIONS')
+                    realhandler(self)
+                else:
+                    logger.debug('Calling endpoint handler')
+                    handler = getattr(self, 'do_' + root)
+                    handler(sub, args)
 
         return wrapper
 
@@ -966,14 +985,14 @@ def param_dict(s, itemsep=' *; *', valsep='=', values_are_opt=False):
 def new_server(clsname, cors, headers, is_SSL, secrets):
     def send_custom_headers(self):
         # Disable Cache
-        # self.__pathname not defined yet
         # if request if garbage, e.g. HTTPS talking to HTTP
-        try:
-            self.path
-        except AttributeError:
-            return
+        #try:
+        #    self._CORSHttpsServer__pathname
+        #except AttributeError:
+        #    return
 
-        if not re.search('/jquery-[0-9\.]+(\.min)?\.js(\?|$)', self.path):
+        if not re.search('/jquery-[0-9\.]+(\.min)?\.js',
+                self._CORSHttpsServer__pathname):
             self.send_header('Cache-Control',
                 'no-cache, no-store, must-revalidate')
             self.send_header('Pragma', 'no-cache')
@@ -994,13 +1013,13 @@ def new_server(clsname, cors, headers, is_SSL, secrets):
 
         allowed_headers = ''
         if cors['headers']:
-            # add a leading comma
-            allowed_headers = ', '.join([''] + cors['headers'])
+            allowed_headers = ', '.join(cors['headers'])
 
-        allowed_methods = ''
-        if cors['methods']:
-            # add a leading comma
-            allowed_methods = ', '.join([''] + cors['methods'])
+        allowed_methods = self._CORSHttpsServer__allowed_methods
+        if not allowed_methods and cors['methods']:
+            allowed_methods = cors['methods']
+        if allowed_methods:
+            allowed_methods = ', '.join(allowed_methods)
 
         allow_creds = self.get_param('creds')
         try:
@@ -1012,15 +1031,15 @@ def new_server(clsname, cors, headers, is_SSL, secrets):
         if allowed_origins:
             self.send_header('Access-Control-Allow-Origin',
                 allowed_origins)
-            if allowed_headers:
-                self.send_header('Access-Control-Allow-Headers',
-                    allowed_headers)
-            if allowed_methods:
-                self.send_header('Access-Control-Allow-Methods',
-                    allowed_methods)
-            if allow_creds:
-                self.send_header('Access-Control-Allow-Credentials',
-                    'true')
+        if allowed_headers:
+            self.send_header('Access-Control-Allow-Headers',
+                allowed_headers)
+        if allowed_methods:
+            self.send_header('Access-Control-Allow-Methods',
+                allowed_methods)
+        if allow_creds:
+            self.send_header('Access-Control-Allow-Credentials',
+                'true')
 
     return type(clsname, (CORSHttpsServer,), {
         '_is_SSL': is_SSL,
@@ -1062,7 +1081,7 @@ if __name__ == "__main__":
             metavar='Header: Value', nargs='*',
             help='''Headers allowed for CORS requests.''')
     cors_parser.add_argument('-m', '--allowed-methods', dest='allowed_methods',
-            default=['POST', 'GET', 'OPTIONS', 'HEAD'], metavar='Header: Value', nargs='*',
+            default=['POST', 'GET', 'OPTIONS', 'HEAD'], metavar='Method', nargs='*',
             help='''Methods allowed for CORS requests.''')
     cors_parser.add_argument('-c', '--allow-credentials', dest='allow_creds',
             default=False, action='store_true',
