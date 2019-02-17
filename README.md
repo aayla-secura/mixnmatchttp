@@ -17,6 +17,7 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
     - [Data exfiltration via CSRF](#data-exfiltration-via-csrf)
       + [Running the server](#running-the-server-1)
     - [Stealing information via web cache poisoning or open redirects](#stealing-information-via-web-cache-poisoning-or-open-redirects)
+      + [Running the server](#running-the-server-2)
   * [Usage](#usage)
 
 # Features
