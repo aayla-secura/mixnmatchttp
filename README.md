@@ -301,10 +301,10 @@ usage: simple.py [-h] [-a IP] [-p PORT] [-o [Origin [Origin ...]] | -O]
                  [-S [DIR|FILE [DIR|FILE ...]]] [-l FILE] [-d] [-t]
 
 Serve the current working directory over HTTPS and with custom headers. The
-CORS related options (-o and -c) define the default behaviour. It can be
-overriden on a per-request basis using the origin and creds URL parameters.
-creds should be 0 or 1. origin is taken literally unless it is `{ECHO}`, then
-it is taken from the Origin header in the request.
+CORS related options define the default behaviour. It can be overriden on a
+per-request basis using the origin and creds URL parameters. creds should be 0
+or 1. origin is taken literally unless it is `{ECHO}`, then it is taken from
+the Origin header in the request.
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -314,7 +314,7 @@ Listen options:
   -p PORT, --port PORT  HTTP port to listen on. Default is 58080 if not over
                         SSL or 58443 if over SSL. (default: None)
 
-CORS options (requires -o or -O):
+CORS options:
   -o [Origin [Origin ...]], --allowed-origins [Origin [Origin ...]]
                         Allowed origins for CORS requests. Can be "*"
                         (default: [])
@@ -326,8 +326,10 @@ CORS options (requires -o or -O):
                         ['Accept', 'Accept-Language', 'Content-Language',
                         'Content-Type', 'Authorization'])
   -m [Method [Method ...]], --allowed-methods [Method [Method ...]]
-                        Methods allowed for CORS requests. (default: ['POST',
-                        'GET', 'OPTIONS', 'HEAD'])
+                        Methods allowed for CORS requests. OPTIONS to one of
+                        the special endpoints always return the allowed
+                        methods of that endpoint. (default: ['POST', 'GET',
+                        'OPTIONS', 'HEAD'])
   -c, --allow-credentials
                         Allow sending credentials with CORS requests, i.e. add
                         Access-Control-Allow-Credentials. Using this only
@@ -354,7 +356,7 @@ Misc options:
                         File to write requests to. Will write to stdout if not
                         given. (default: None)
   -d, --debug           Enable debugging output. (default: 20)
-  -t, --multithread     Enable multi-threading support. EXPERIMENTAL! You ma
-                        experience crashes. The cache has not been implemented
-                        in an MT safe way yet. (default: HTTPServer)
+  -t, --multithread     Enable multi-threading support. EXPERIMENTAL! The
+                        cache has not been implemented in an MT safe way yet.
+                        (default: HTTPServer)
 ```

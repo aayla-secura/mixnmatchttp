@@ -1051,11 +1051,11 @@ if __name__ == "__main__":
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description='''Serve the current working directory over
             HTTPS and with custom headers. The CORS related options
-            (-o and -c) define the default behaviour. It can be
-            overriden on a per-request basis using the origin and
-            creds URL parameters. creds should be 0 or 1. origin is
-            taken literally unless it is `{ECHO}`, then it is taken
-            from the Origin header in the request.''')
+            define the default behaviour. It can be overriden on
+            a per-request basis using the origin and creds URL
+            parameters. creds should be 0 or 1. origin is taken
+            literally unless it is `{ECHO}`, then it is taken from the
+            Origin header in the request.''')
 
     listen_parser = parser.add_argument_group('Listen options')
     listen_parser.add_argument('-a', '--address', dest='address',
@@ -1066,7 +1066,7 @@ if __name__ == "__main__":
             help='''HTTP port to listen on. Default is 58080 if not
             over SSL or 58443 if over SSL.''')
 
-    cors_parser = parser.add_argument_group('CORS options (requires -o or -O)')
+    cors_parser = parser.add_argument_group('CORS options')
     ac_origin_parser = cors_parser.add_mutually_exclusive_group()
     ac_origin_parser.add_argument('-o', '--allowed-origins', dest='allowed_origins',
             default=[], metavar='Origin', nargs='*',
@@ -1082,7 +1082,9 @@ if __name__ == "__main__":
             help='''Headers allowed for CORS requests.''')
     cors_parser.add_argument('-m', '--allowed-methods', dest='allowed_methods',
             default=['POST', 'GET', 'OPTIONS', 'HEAD'], metavar='Method', nargs='*',
-            help='''Methods allowed for CORS requests.''')
+            help='''Methods allowed for CORS requests. OPTIONS to one
+            of the special endpoints always return the allowed methods
+            of that endpoint.''')
     cors_parser.add_argument('-c', '--allow-credentials', dest='allow_creds',
             default=False, action='store_true',
             help='''Allow sending credentials with CORS requests,
@@ -1122,9 +1124,8 @@ if __name__ == "__main__":
     misc_parser.add_argument('-t', '--multithread', dest='srv_cls',
             default=http.server.HTTPServer, action='store_const',
             const=ThreadingCORSHttpsServer,
-            help='''Enable multi-threading support. EXPERIMENTAL! You
-            ma experience crashes. The cache has not been implemented
-            in an MT safe way yet.''')
+            help='''Enable multi-threading support. EXPERIMENTAL! The
+            cache has not been implemented in an MT safe way yet.''')
     args = parser.parse_args()
 
     if args.logfile is None:
