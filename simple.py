@@ -507,7 +507,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(page['data'])
 
-    def page_from_template(self,t_page):
+    def page_from_template(self, t_page, dynfields={}):
         try:
             t_name = t_page['template']
         except KeyError:
@@ -525,8 +525,16 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         except KeyError:
             logger.debug(
                 'No fields for template page')
+            fields = {}
 
         for f,v in fields.items():
+            logger.debug('Replacing field {} with "{}"'.format(f,v))
+            page['data'] = page['data'].replace('{%'+f+'%}', v)
+
+        # those fields may be present in the original static fields
+        # themselves, so we replace them at the end, after all static
+        # ones
+        for f,v in dynfields.items():
             logger.debug('Replacing field {} with "{}"'.format(f,v))
             page['data'] = page['data'].replace('{%'+f+'%}', v)
 
