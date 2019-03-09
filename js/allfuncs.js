@@ -197,12 +197,9 @@ function filterPars(filteredPars) {
 	return result.slice(1); // remove leading &
 };
 
-function logToPage(msg, msgStyle, divStyle, logId, quiet) {
+function getLogEl(logId, divStyle, quiet) {
 	if (typeof logId === 'undefined' || logId === null) {
 		logId = 'log';
-	}
-	if (typeof msgStyle === 'undefined' || msgStyle === null) {
-		msgStyle = 'font-family: monospace';
 	}
 	if (typeof divStyle === 'undefined' || divStyle === null) {
 		divStyle = 'margin-top: 20px; margin-bottom: 20px';
@@ -218,9 +215,27 @@ function logToPage(msg, msgStyle, divStyle, logId, quiet) {
 	else if (typeof quiet === 'undefined' || ! quiet) {
 		// logToConsole('Using old log div');
 	}
+  return log;
+}
+
+function logToPage(msg, msgStyle, divStyle, logId, quiet) {
+	if (typeof msgStyle === 'undefined' || msgStyle === null) {
+		msgStyle = 'font-family: monospace';
+	}
+	var log = getLogEl(logId, divStyle, quiet);
 	var newlog = addElement('p', {
 			style: 'margin-top: 0px; margin-bottom: 0px; ' + msgStyle}, log);
 	setTextContent(newlog, msg);
+};
+
+function logImage(data, logId) {
+	if (typeof logId === 'undefined' || logId === null) {
+		logId = 'log';
+	}
+	var log = getLogEl(logId);
+	var newlog = addElement('p', {}, log);
+  var img = addElement('img', {}, newlog);
+  img.src = data;
 };
 
 function logToConsole(msg) {
@@ -448,33 +463,45 @@ function getDataViaCanvas(reqURL, methods, sendURL, callback) {
 		if (callback) { callback(data); }
 	};
 
-	var exportCanvas = function() {
-		var dataParts = /^data:([^;,]+)(;base64)?,(.*)/.exec(this.toDataURL());
+	var exportCanvas = function () {
+    var dataURI = this.toDataURL();
+		var dataParts = /^data:([^;,]+)(;base64)?,(.*)/.exec(dataURI);
 		var ctype = dataParts[1];
 		var alreadyEncoded = Boolean(dataParts[2]);
 		data = dataParts[3];
 		logToPage(data, CSS['red'], null, logId);
+    logImage(dataURI, logId);
 		sendData(data, ctype, sendURL, alreadyEncoded);
 	};
+
+  var newCanvasForImg = function (image) {
+    wd = image.naturalWidth || 300;
+    ht = image.naturalHeight || 200;
+    var can = document.createElement('canvas');
+    can.height = ht;
+    can.width = wd;
+    return can;
+  };
 
 	renderers['2d'] = function () {
 		//DEBUG if (this == window){logToPage('this is window', CSS['red'], null, logId);return}
 		// the onload handler of <img> fires too soon in IE9 so we call it from
 		// setTimeout
 		// old browsers support neither .bind, nor lambda functions so we use closure
-		var currThis = this;
+		var image = this;
 		var sendDataLater = getTryHandlerWrapper(function () {
-			var can = document.createElement('canvas');
+			var can = newCanvasForImg(image);
 			var ctx = can.getContext('2d');
-			ctx.drawImage(currThis, 0, 0);
+			ctx.drawImage(image, 0, 0);
 			exportCanvas.call(can);
 		}, null, callbackWrapper);
 		setTimeout(sendDataLater, 1000);
 	};
 	renderers['bitmap'] = getTryHandlerWrapper(function () {
 		//DEBUG if (this == window){logToPage('this is window', CSS['red'], null, logId);return}
+		var image = this;
 		createImageBitmap(this, 0, 0, 100, 100).then(function(bmap) {
-			var can = document.createElement('canvas');
+			var can = newCanvasForImg(image);
 			var ctx = can.getContext('bitmaprenderer');
 			ctx.transferFromImageBitmap(bmap);
 			exportCanvas.call(can);
