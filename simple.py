@@ -558,32 +558,27 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         self.__can_read_body = False
 
     def decode_body(self):
-        '''Decodes the request.
+        '''Decodes the body.
         
-        It must contain the following parameters:
-            - data: the content of the page
-            - type: the content type
+        Returns the Content-Type and the parameters'''
 
-        Returns the same data/type dictionary but with a decoded
-        content'''
-
-        ctype = self.headers.get('Content-Type')
+        post_type = self.headers.get('Content-Type')
         try:
-            ctype = ctype.split(';',1)[0]
+            post_type = post_type.split(';',1)[0]
         except AttributeError:
             # No Content-Type
-            ctype = None
-        if ctype in ['application/json', 'text/json']:
+            post_type = None
+        if post_type in ['application/json', 'text/json']:
             param_loader = self.JSON_params
             data_decoder = self.b64_data
             type_decoder = lambda x: x
-        elif ctype == 'application/x-www-form-urlencoded':
+        elif post_type == 'application/x-www-form-urlencoded':
             param_loader = self.form_params
             data_decoder = self.url_data
             type_decoder = self.url_data
         else:
             raise DecodingError(
-                'Unknown Content-Type: {}'.format(ctype))
+                'Unknown Content-Type: {}'.format(post_type))
             return
 
         try:
@@ -595,6 +590,27 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
 
         req_params = param_loader(post_data)
         logger.debug('Request parameters: {}'.format(req_params))
+        return req_params, post_type
+
+    def decode_page(self):
+        '''Decodes the request.
+        
+        It must contain the following parameters:
+            - data: the content of the page
+            - type: the content type
+
+        Returns the same data/type dictionary but with a decoded
+        content'''
+
+        req_params, post_type = self.decode_body()
+        data_decoder = type_decoder = None
+        if post_type in ['application/json', 'text/json']:
+            data_decoder = self.b64_data
+            type_decoder = lambda x: x
+        elif post_type == 'application/x-www-form-urlencoded':
+            data_decoder = self.url_data
+            type_decoder = self.url_data
+        # decode_body will raise DecodingError otherwise
 
         try:
             body_enc = req_params['data']
@@ -609,7 +625,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         except (KeyError, ValueError):
             ctype = 'text/plain'
         else:
-            logger.debug('Content-Type: {}'.format(ctype))
+            logger.debug('Echo Content-Type: {}'.format(ctype))
 
         try:
             body = data_decoder(body_enc).encode('utf-8')
@@ -779,7 +795,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
         '''Decodes the request and returns it as the response body'''
 
         try:
-            page = self.decode_body()
+            page = self.decode_page()
         except DecodingError as e:
             self.send_error(400, None, explain=str(e))
             return
@@ -813,7 +829,7 @@ class CORSHttpsServer(http.server.SimpleHTTPRequestHandler):
 
             else:
                 try:
-                    page = self.decode_body()
+                    page = self.decode_page()
                 except DecodingError as e:
                     self.send_error(400, None, explain=str(e))
                     return
