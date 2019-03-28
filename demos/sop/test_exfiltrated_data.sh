@@ -13,7 +13,7 @@ fi
 
 entry=0
 ${AWK} '
-/POST \/demos/  { inpattern=1 }
+/POST \/sop/  { inpattern=1 }
 /<----- Request End -----/ {
   inpattern=0;
 }

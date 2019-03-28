@@ -35,7 +35,7 @@ function setTextContent(el, s) {
   }
 }
 
-function registerWinOnLoad(func) {
+function registerOnWinLoad(func) {
   // Not working in Opera 11.52
   // document.addEventListener("DOMContentLoaded", function (event) {
   //   logToConsole('DOM loaded');

@@ -2,9 +2,9 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<script src="/js/allfuncs.js" charset="utf-8"></script>
+		<script src="/js/main.js" charset="utf-8"></script>
 		<script charset="utf-8">
-			registerWinOnLoad(function () {
+			registerOnWinLoad(function () {
 				var cacheService = getPar('cacheURI');
 				if (! cacheService) {
 					logToPage("Using caching service on the current origin. " +

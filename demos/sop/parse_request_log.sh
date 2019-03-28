@@ -37,7 +37,7 @@ BEGIN {
       exfMethod=mArr[4]
     } else {
       exfiltrated=match($0,
-        /^POST \/demos\/sop\/getSecret.html\?.*&allowOrigin=([^&]*)&allowCreds=([01])&method=([^&]+)&via=([^&]+) HTTP\/[0-9\.]+$/,
+        /^POST \/sop\/getSecret.html\?.*&allowOrigin=([^&]*)&allowCreds=([01])&method=([^&]+)&via=([^&]+) HTTP\/[0-9\.]+$/,
         mArr)
       if (exfiltrated) {
         origin=gensub(/%3a/, ":", "g", tolower(mArr[1]))
