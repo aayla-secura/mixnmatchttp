@@ -34,44 +34,58 @@ TESTS_ALL=(auth proxy cache endpoints template misc)
 ############################################################
 function test_auth {
   log INFO "-------------------- AUTHENTICATION TESTS --------------------"
-  req -eh "^HTTP/1\.[01] 401" /secret/ # no cookie
-  req -eh "^HTTP/1\.[01] 401" /topsecret/
-  req -eh "^HTTP/1\.[01] 401" /foo/secret/
-  req -eh "^HTTP/1\.[01] 200" /foo/topsecret/ # /topsecret is not relative
+  req -eh "^HTTP/1\.[01] 401" GET /secret/ # no cookie
+  req -eh "^HTTP/1\.[01] 401" GET /topsecret/
+  req -eh "^HTTP/1\.[01] 401" GET /foo/secret/
+  req -eh "^HTTP/1\.[01] 200" GET /foo/topsecret/ # /topsecret is not relative
 
-  req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" /login
-  req -eb "default:  \(\)" /secret/
+  req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" GET /dummylogin
+  req -eb "default:  \(\)" GET /secret/
 
-  req -i -eh "^Set-Cookie: *SESSION=[^\w]" /logout # should clear the session on the
-                                                # server, but not in client, since
-                                                # session is read-only here
-  req -eh "^HTTP/1\.[01] 401" /secret/ # old cookie, should be invalid
+  req -i -eh "^Set-Cookie: *SESSION=[^\w]" GET /logout # should clear the session on the
+                                                   # server, but not in client, since
+                                                   # session is read-only here
+  req -eh "^HTTP/1\.[01] 401" GET /secret/ # old cookie, should be invalid
 
-  req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" /login # re-login
-  req -eb "default:  \(\)" /secret/
-  req -i -eh "^Set-Cookie: *SESSION=[a-f0-9]" /login # re-login should clear the old cookie (set above)
-                                                  # do not remember the new one
-  req -eh "^HTTP/1\.[01] 401" /secret/ # request secret with the old cookie, should fail
-  req -i -w -eh "^Set-Cookie: *SESSION=[^\w]" /logout
+  req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" GET /dummylogin # re-login
+  req -eb "default:  \(\)" GET /secret/
+  req -i -eh "^Set-Cookie: *SESSION=[a-f0-9]" GET /dummylogin # re-login should clear the old cookie (set above)
+                                                     # do not remember the new one
+  req -eh "^HTTP/1\.[01] 401" GET /secret/ # request secret with the old cookie, should fail
+  req -i -w -eh "^Set-Cookie: *SESSION=[^\w]" GET /logout
+
+  req -eh "^HTTP/1\.[01] 401" POST /login # no credentials
+  req -eh "^HTTP/1\.[01] 401" GET /secret/ # old cookie, should be invalid
+  req -w -eh "^HTTP/1\.[01] 401" POST /login
+  req -eh "^HTTP/1\.[01] 401" GET /secret/
+  req -w -eh "^HTTP/1\.[01] 401" POST /login username=foo # no password
+  req -eh "^HTTP/1\.[01] 401" GET /secret/
+  req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" POST /login username=foo password=bar
+  req -eb "default:  \(\)" GET /secret/
+  req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" -f POST /login username=foo password=bar
+  req -eb "default:  \(\)" GET /secret/
+  req -w -eh "^HTTP/1\.[01] 401" POST /login username=bla password= # user has no password, should not have been created
+  req -w -eh "^HTTP/1\.[01] 401" POST /login username=baz password= # user has no password, should not have been created
+  req -w -eh "^HTTP/1\.[01] 401" POST /login username=foobar  # user has weak password, should not have been created
 }
 
 ############################################################
 function test_proxy {
   log INFO "-------------------- PROXY TESTS --------------------"
-  req -eh "^HTTP/1\.[01] 200" /goto/foo # no host given
-  req -eh "^HTTP/1\.[01] 200" /goto//foo # no host given
-  req -i -eh "^Location: *//foo" /goto///foo
-  req -eh "^HTTP/1\.[01] 200" /goto/foo # no host given
-  req -eh "^HTTP/1\.[01] 200" /goto/foo 'Referer: foobar' # invalid Referer
-  req -i -eh "^Location: *//foobar/foo" /goto/foo 'Referer: //foobar'
-  req -i -eh "^Location: *//foobar/bar/foo" /goto/foo 'Referer: //foobar/bar'
-  req -i -eh "^Location: *//foobar/foo" /goto//foo 'Referer: //foobar/bar'
-  req -i -eh "^Location: *http://foobar/foo" /goto//foo 'Referer: http://foobar/bar'
-  req -i -eh "^Location: *http://foobar/foo" /goto/foo 'Origin: http://foobar'
-  req -i -eh "^Location: *//foobar/foo" /goto/foo 'Origin: //foobar'
-  req -i -eh "^Location: *//foobar/foo" /goto/foo 'X-Forwarded-Host: foobar'
-  req -i -eh "^Location: *//foobar/foo" /goto/foo 'X-Forwarded-For: foobar'
-  req -i -eh "^Location: *//foobar/../foo" /goto/../foo 'Referer: //foobar'
+  req -eh "^HTTP/1\.[01] 200" GET /goto/foo # no host given
+  req -eh "^HTTP/1\.[01] 200" GET /goto//foo # no host given
+  req -i -eh "^Location: *//foo" GET /goto///foo
+  req -eh "^HTTP/1\.[01] 200" GET /goto/foo # no host given
+  req -eh "^HTTP/1\.[01] 200" GET /goto/foo 'Referer: foobar' # invalid Referer
+  req -i -eh "^Location: *//foobar/foo" GET /goto/foo 'Referer: //foobar'
+  req -i -eh "^Location: *//foobar/bar/foo" GET /goto/foo 'Referer: //foobar/bar'
+  req -i -eh "^Location: *//foobar/foo" GET /goto//foo 'Referer: //foobar/bar'
+  req -i -eh "^Location: *http://foobar/foo" GET /goto//foo 'Referer: http://foobar/bar'
+  req -i -eh "^Location: *http://foobar/foo" GET /goto/foo 'Origin: http://foobar'
+  req -i -eh "^Location: *//foobar/foo" GET /goto/foo 'Origin: //foobar'
+  req -i -eh "^Location: *//foobar/foo" GET /goto/foo 'X-Forwarded-Host: foobar'
+  req -i -eh "^Location: *//foobar/foo" GET /goto/foo 'X-Forwarded-For: foobar'
+  req -i -eh "^Location: *//foobar/../foo" GET /goto/../foo 'Referer: //foobar'
 }
 
 ############################################################
@@ -79,7 +93,7 @@ function test_cache {
   log INFO "-------------------- CACHE TESTS --------------------"
   # req -eb "Error code explanation: 500 - This page has not been cached yet" \
   req -eh "^HTTP/1\.[01] 500" \
-    /cache/"${SESSION}" # SESSION will do as it's re-generated each time the script is run
+    GET /cache/"${SESSION}" # SESSION will do as it's re-generated each time the script is run
   # req -eb "Error code explanation: 400 - Cannot load parameters from request" \
   req -eh "^HTTP/1\.[01] 400" \
     -f POST /cache/"${SESSION}"
@@ -96,7 +110,7 @@ function test_cache {
   req -eh "^HTTP/1\.[01] 204" \
     -f POST /cache/"${SESSION}" data=foo type="text/foo" # invalid type should default to text/plain
   req -i -eh "^HTTP/1\.[01] 200" -eh "Content-Type: *text/plain" -eb "foo" \
-    /cache/"${SESSION}"
+    GET /cache/"${SESSION}"
   req -i -eh "^HTTP/1\.[01] 200" -eh "Content-Type: *text/plain" -eb "foo" \
     -f POST /echo data=foo type="text/foo"
 
@@ -104,12 +118,12 @@ function test_cache {
   req -eh "^HTTP/1\.[01] 500" \
     -f POST /cache/"${SESSION}" data=bar type="text/foo"
   req -eb "foo" \
-    /cache/"${SESSION}" # data should not have been overwritten
+    GET /cache/"${SESSION}" # data should not have been overwritten
 
   req -eh "^HTTP/1\.[01] 204" \
     -f POST /cache/"${SESSION}.2" data=foo type="text/html"
   req -i -eh "^Content-Type: *text/html" \
-    /cache/"${SESSION}.2"
+    GET /cache/"${SESSION}.2"
   req -i -eh "^Content-Type: *text/html" \
     -f POST /echo data=foo type="text/html"
   # req -eb "Error code explanation: 400 - Cannot Base64 decode request data" \
@@ -122,7 +136,7 @@ function test_endpoints {
   log INFO "-------------------- MISC ENDPOINTS TESTS --------------------"
   # req -eb "Error code explanation: 404 - Extra arguments: foo" \
   req -eh "^HTTP/1\.[01] 404" \
-    /test/foo
+    GET /test/foo
   # req -eb "Error code explanation: 404 - Missing required argument" \
   req -eh "^HTTP/1\.[01] 404" \
     POST /test/post_one
@@ -131,55 +145,55 @@ function test_endpoints {
     POST /test/post_one/foo/bar
   # req -eb "Error code explanation: 404 - Missing required argument" \
   req -eh "^HTTP/1\.[01] 404" \
-    /test/get_req
+    GET /test/get_req
   # req -eb "Error code explanation: 404 - Missing required argument" \
   req -eh "^HTTP/1\.[01] 404" \
-    /test/get_req/
+    GET /test/get_req/
   # req -eb "Error code explanation: 404 - Extra arguments: bar" \
   req -eh "^HTTP/1\.[01] 404" \
-    /test/get_opt/foo/bar
+    GET /test/get_opt/foo/bar
 
   # req -eb "Error code explanation: 405 - Specified method is invalid for this resource" \
   req -eh "^HTTP/1\.[01] 405" \
-    /test/post_one/foo
+    GET /test/post_one/foo
   # req -eb "Error code explanation: 405 - Specified method is invalid for this resource" \
   req -eh "^HTTP/1\.[01] 405" \
     POST /test/get_opt/foo
   req -i -eh "^HTTP/1\.[01] 200" -eh "^Content-Length: *0" \
     OPTIONS /test/post_one/foo
 
-  req -eb "test:  \(\)" /test/
+  req -eb "test:  \(\)" GET /test/
   req -eb "test: post_one \(foo\)" POST /test/post_one/foo
-  req -eb "test: get_opt \(\)" /test/get_opt
-  req -eb "test: get_opt \(\)" /test/get_opt/
-  req -eb "test: get_opt \(foo\)" /test/get_opt/foo
-  req -eb "test: get_any \(\)" /test/get_any/
-  req -eb "test: get_any \(foo/bar/baz\)" /test/get_any/foo/bar/baz
-  req -eb "test: get_req \(foo/bar/baz\)" /test/get_req/foo/bar/baz
+  req -eb "test: get_opt \(\)" GET /test/get_opt
+  req -eb "test: get_opt \(\)" GET /test/get_opt/
+  req -eb "test: get_opt \(foo\)" GET /test/get_opt/foo
+  req -eb "test: get_any \(\)" GET /test/get_any/
+  req -eb "test: get_any \(foo/bar/baz\)" GET /test/get_any/foo/bar/baz
+  req -eb "test: get_req \(foo/bar/baz\)" GET /test/get_req/foo/bar/baz
 
-  req /test/modtest # modifies the default subpoint for /test to require 1 arg
+  req GET /test/modtest # modifies the default subpoint for /test to require 1 arg
   # req -eb "Error code explanation: 404 - Extra arguments: foo" \
   req -eh "^HTTP/1\.[01] 404" \
-    /test/foo # should not take effect, i.e. it should still accept no args as before
+    GET /test/foo # should not take effect, i.e. it should still accept no args as before
 }
 
 ############################################################
 function test_template {
   log INFO "-------------------- TEMPLATES TESTS --------------------"
-  req -eb "test:  \(\)" /test/
-  req -eb "default:  \(\)" /foo/
+  req -eb "test:  \(\)" GET /test/
+  req -eb "default:  \(\)" GET /foo/
 }
 
 ############################################################
 function test_misc {
   log INFO "-------------------- MISC TESTS --------------------"
-  req -eh "^HTTP/1\.[01] 403" -eh "^X-Foo: Foo" /forbidden/
-  req -i -eh "^Cache-Control: *no-cache, *no-store, *must-revalidate" /foo
-  req -i -uh "^Cache-Control: *no-cache, *no-store, *must-revalidate" /foo.js
+  req -eh "^HTTP/1\.[01] 403" -eh "^X-Foo: Foo" GET /forbidden/
+  req -i -eh "^Cache-Control: *no-cache, *no-store, *must-revalidate" GET /foo
+  req -i -uh "^Cache-Control: *no-cache, *no-store, *must-revalidate" GET /foo.js
 
-  req -eb "test:  \(\)" //test/
-  req -eb "test:  \(\)" /foo/../test/
-  req -eb "test:  \(\)" /foo%2f../test/
+  req -eb "test:  \(\)" GET //test/
+  req -eb "test:  \(\)" GET /foo/../test/
+  req -eb "test:  \(\)" GET /foo%2f../test/
 }
 
 ############################################################

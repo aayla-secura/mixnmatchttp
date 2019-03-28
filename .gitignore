@@ -9,6 +9,7 @@
 !demos/**
 !tests
 !tests/**
+tests/mixnmatchttp
 .DS_Store
 __pycache__
 *.pyc

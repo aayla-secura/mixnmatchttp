@@ -14,7 +14,6 @@ import re
 import urllib
 import json
 import base64, binascii
-import mimetypes
 from wrapt import decorator
 from string import Template
 from future.utils import with_metaclass
@@ -63,6 +62,13 @@ def methodhandler(realhandler, self, args, kwargs):
     self._BaseHTTPRequestHandler__body = None
     self._BaseHTTPRequestHandler__allowed_methods = None # use default
     self._BaseHTTPRequestHandler__read_body()
+
+    # save content-type and body parameters
+    try:
+        self._BaseHTTPRequestHandler__decode_body()
+    except DecodingError as e:
+        self.send_error(400, explain=str(e))
+        return
 
     self.show()
     # check if it's forbidden
@@ -224,13 +230,13 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         self._template_pages = value
 
     def __init__(self, *args, **kwargs):
-        '''Initializes pathname, query, body and allowed_methods'''
-
         _logger.debug('INIT for {}'.format(self))
         self.__pathname = ''
         self.__query = dict()
         self.__can_read_body = True
         self.__body = None
+        self.__ctype = None
+        self.__params = None
         self.__allowed_methods = None
         super(BaseHTTPRequestHandler, self).__init__(*args, **kwargs)
 
@@ -241,16 +247,31 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         return self.__pathname
 
     @property
-    def query(self):
-        '''Property for the request's query dictionary'''
+    def body(self):
+        '''Property for the decoded request's body
+        
+        Raises a UnicodeDecodeError if we can't decode
+        '''
 
-        return self.__query
+        try:
+            body = self.__body.decode('utf-8')
+        except UnicodeDecodeError:
+            _logger.debug('Errors decoding request body')
+            body = self.__body.decode('utf-8',
+                    errors='backslashreplace')
+        return body
 
     @property
-    def body(self):
-        '''Property for the request's body'''
+    def ctype(self):
+        '''Property for the request's Content-Type'''
 
-        return self.__body
+        return self.__ctype
+
+    @property
+    def params(self):
+        '''Property for the request's body parameters'''
+
+        return self.__params
 
     @property
     def allowed_methods(self):
@@ -258,15 +279,60 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
 
         return self.__allowed_methods
 
-    def get_param(self, parname):
-        '''Returns the value of parname given in the URL'''
+    @property
+    def query(self):
+        '''Property for the request's query dictionary'''
 
+        return self.__query
+
+    def get_param(self, parname, dic=None):
+        '''Returns the value of parname inside dic
+        
+        dic is a dictionary, if None, then the body paramaters are
+        checked first, then the URL parameters
+        '''
+
+        if dic is None:
+            dic = self.__query
+            dic.update(self.__params)
         try:
-            value = self.__query[parname]
+            value = dic[parname]
         except KeyError:
             return None
 
         return value
+
+    def form_params(self, post_data=None):
+        '''Parameter loader
+        
+        Returns a dictionary read from an
+        application/x-www-form-urlencoded form
+        post_data defaults to the request body
+        '''
+
+        _logger.debug('Loading parameters from form body')
+        if post_data is None:
+            post_data = self.body
+        req_params = param_dict(post_data, itemsep='&')
+        if not req_params:
+            raise DecodingError('Cannot load parameters from request!')
+        return req_params
+
+    def JSON_params(self, post_data=None):
+        '''Parameter loader
+        
+        Returns a dictionary read from a JSON string
+        post_data defaults to the request body
+        '''
+
+        _logger.debug('Loading parameters from JSON body')
+        if post_data is None:
+            post_data = self.body
+        try:
+            req_params = json.loads(post_data)
+        except JSONDecodeError:
+            raise DecodingError('Cannot decode JSON!')
+        return req_params
 
     def denied(self):
         '''Child class overrides this
@@ -357,19 +423,15 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
     def show(self):
         '''Logs the request'''
 
-        msg = "\n----- Request Start ----->\n\n{}\n{}".format(
-            self.requestline, self.headers)
+        _logger.info('''
+----- Request Start ----->
 
-        try:
-            req_body_dec = self.__body.decode('utf-8')
-        except UnicodeDecodeError:
-            _logger.debug('Errors decoding request body')
-            req_body_dec = self.__body.decode('utf-8',
-                    errors='backslashreplace')
-        msg += "\n{}".format(req_body_dec)
+{}
+{}
+{}
 
-        msg += "\n<----- Request End -----\n"
-        _logger.info(msg)
+<----- Request End -----
+'''.format(self.requestline, self.headers, self.body))
 
     def render(self, page, code=200, headers={}):
         '''Renders a page
@@ -423,7 +485,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         return page
 
     def __read_body(self):
-        '''Returns the body data.
+        '''Sets __body to the body data
         
         methodhandler calls this and it cannot be called again
         '''
@@ -442,15 +504,13 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         _logger.debug('Read {} bytes from body'.format(len(self.__body)))
         self.__can_read_body = False
 
-    def decode_body(self):
-        '''Decodes the request.
+    def __decode_body(self):
+        '''Decodes the request, sets __ctype and __params appropriately
         
-        It must contain the following parameters:
-            - data: the content of the page
-            - type: the content type
-
-        Returns the same data/type dictionary but with a decoded
-        content
+        __ctype is the Content-Type and __params is a dictionary of
+        parameters. If Content-Type is neither JSON nor URL-encoded
+        form, __params is empty
+        raises DecodingError on failure
         '''
 
         ctype = self.headers.get('Content-Type')
@@ -458,84 +518,25 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
             ctype = ctype.split(';',1)[0]
         except AttributeError:
             # No Content-Type
+            if self.__body:
+                raise DecodingError(
+                    'Missing Content-Type with non-empty body')
             ctype = None
         if ctype in ['application/json', 'text/json']:
             param_loader = self.JSON_params
-            data_decoder = self.b64_data
-            type_decoder = lambda x: x
         elif ctype == 'application/x-www-form-urlencoded':
             param_loader = self.form_params
-            data_decoder = self.url_data
-            type_decoder = self.url_data
         else:
-            raise DecodingError(
-                'Unknown Content-Type: {}'.format(ctype))
-            return
+            _logger.debug("Don't know how to read body parameters")
+            param_loader = lambda: {}
 
-        try:
-            post_data = self.__body.decode('utf-8')
-        except UnicodeDecodeError:
-            _logger.debug('Errors decoding request body')
-            post_data = self.__body.decode('utf-8',
-                    errors='backslashreplace')
-
-        req_params = param_loader(post_data)
-        _logger.debug('Request parameters: {}'.format(req_params))
-
-        try:
-            body_enc = req_params['data']
-        except KeyError:
-            raise DecodingError('No "data" parameter present!')
-        _logger.debug('Encoded body: {}'.format(body_enc))
-
-        try:
-            ctype = type_decoder(req_params['type']).split(';',1)[0]
-            if ctype not in mimetypes.types_map.values():
-                raise ValueError('Unsupported Content-type')
-        except (KeyError, ValueError):
-            ctype = 'text/plain'
-        else:
-            _logger.debug('Content-Type: {}'.format(ctype))
-
-        try:
-            body = data_decoder(body_enc).encode('utf-8')
-        except UnicodeEncodeError:
-            _logger.debug('Errors encoding request data')
-            body = data_decoder(body_enc).encode('utf-8',
-                    errors='backslashreplace')
-        _logger.debug('Decoded body: {}'.format(body))
-
-        return {'data': body, 'type': ctype}
-
-    @staticmethod
-    def form_params(post_data):
-        '''Parameter loader.
-        
-        Returns a dictionary read from an
-        application/x-www-form-urlencoded POST
-        '''
-
-        req_params = param_dict(post_data, itemsep='&')
-        if not req_params:
-            raise DecodingError('Cannot load parameters from request!')
-        return req_params
-
-    @staticmethod
-    def JSON_params(post_data):
-        '''Parameter loader.
-        
-        Returns a dictionary read from a JSON string
-        '''
-
-        try:
-            req_params = json.loads(post_data)
-        except JSONDecodeError:
-            raise DecodingError('Cannot decode JSON!')
-        return req_params
+        self.__params = param_loader()
+        self.__ctype = ctype
+        _logger.debug('Request parameters: {}'.format(self.__params))
 
     @staticmethod
     def url_data(data_enc):
-        '''Data decoder.
+        '''Data decoder
         
         Returns the percent-decoded data
         '''
@@ -548,7 +549,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
 
     @staticmethod
     def b64_data(data_enc):
-        '''Data decoder.
+        '''Data decoder
         
         Returns the base64-decoded data
         '''

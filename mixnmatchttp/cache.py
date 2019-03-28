@@ -60,7 +60,7 @@ class Cache(object):
         self.__pages = {}
 
     def save(self, name, page):
-        '''Saves the page to the cache.
+        '''Saves the page to the cache
         
         name is the alphanumeric identifier
         page is a dictionary with the following items:

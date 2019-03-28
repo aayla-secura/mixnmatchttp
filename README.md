@@ -172,14 +172,18 @@ if __name__ == "__main__":
 
 ## AuthHTTPRequestHandler
 
-Implements dummy authentication (no credentials required, but issues cookies). Has configurable file paths/endpoints for which authentication is required.
+Implements username:password authentication via form or JSON `POST` request. Has configurable file paths/endpoints for which authentication is required.
 
-  * `GET /login`: Issues a random `SESSION` cookie
+  * `POST /login`: Issues a `SESSION` cookie if username and password is valid
     - Supported URL parameters:
       + `goto`: Redirect to this URL
+    - Required body parameters:
+      + `username`: Username (duh)
+      + `password`: Password (duh)
     - Response codes:
-      + `200 OK`: Empty body
-      + `302 OK`: Location is as requested via the `goto` parameter
+      + `200 OK`: Authentication successful; `SESSION` cookie is set
+      + `401 Unauthorized`: Username or password invalid;
+      + `302 Found`: Location is as requested via the `goto` parameter
     - Notes:
       + Sessions are forgotten on the server side upon restart
       + Cookies are issued with the `HttpOnly` flag, and if over SSL with the `Secure` flag as well
@@ -188,7 +192,27 @@ Implements dummy authentication (no credentials required, but issues cookies). H
       + `goto`: Redirect to this URL
     - Response codes:
       + `200 OK`: Empty body
-      + `302 OK`: Location is as requested via the `goto` parameter
+      + `302 Found`: Location is as requested via the `goto` parameter
+  * `POST /changepwd`: Changes the password for a given username
+    - Supported URL parameters:
+      + `goto`: Redirect to this URL
+    - Required body parameters:
+      + `username`: Username (duh)
+      + `password`: Current password
+      + `new_password`: New password (duh)
+    - Response codes:
+      + `200 OK`: Success; password is changed, current
+        `SESSION` is invalidated and a new `SESSION` cookie is set
+      + `401 Unauthorized`: Username or password invalid
+      + `302 Found`: Location is as requested via the `goto` parameter
+  * `POST /changepwd/{username}`: Changes the password for a given username
+    - Response codes: as for `POST /changepwd` in addition to:
+      + `400 Bad Request`: `username` was given in the body and differs from
+        the one in the URL
+    - Notes:
+      + Identical to `POST /changepwd`, but `username` is taken from the URL
+        and is optional in the body; if also given in the body, the two
+        usernames must match
 
 ## CachingHTTPRequestHandler
 
@@ -246,8 +270,12 @@ Redirects (with `307`) to any address given in the URL.
 # Coming soon
 
   * MT-safe saving and clearing of cache
-  * Authentication with credentials
   * Unlimited levels of subpoints (e.g. `/root/sub1/sub2/sub3/...`)
+
+## Possibly coming at some point
+
+  * Database lookup of users
+  * Password policy
 
 # Demos and source
 

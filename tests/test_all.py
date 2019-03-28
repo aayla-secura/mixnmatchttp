@@ -33,7 +33,10 @@ class TestHTTPRequestHandler(AuthHTTPRequestHandler,
         CachingHTTPRequestHandler, ProxyingHTTPRequestHandler):
 
     _secrets=('secret', '/topsecret')
+    _userfile='users.txt'
+    _min_pwdlen=3
     _endpoints = endpoints.Endpoints(
+            dummylogin={},
             modtest={},
             test={
                 'post_one': {
@@ -66,6 +69,14 @@ class TestHTTPRequestHandler(AuthHTTPRequestHandler,
         },
     )
 
+    def do_dummylogin(self, sub, args):
+        self.rm_session()
+        cookie = self.new_session()
+        self.send_response_goto(headers={'Set-Cookie':
+            'SESSION={}; path=/; {}HttpOnly'.format(
+                cookie, ('Secure; ' if self._is_SSL else ''))
+            })
+        
     def do_modtest(self, sub, args):
         # modify endpoint, should affect only current request
         self.endpoints['test'] = {}

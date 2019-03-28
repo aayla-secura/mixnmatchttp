@@ -35,11 +35,15 @@ class DebugStreamHandler(logging.StreamHandler):
 class CORSHttpsServer(AuthHTTPRequestHandler,
         CachingHTTPRequestHandler, ProxyingHTTPRequestHandler):
 
+    def authenticate(self):
+        # dummy authentication
+        return True
+
     def no_cache(self):
         return (not re.search('/jquery-[0-9\.]+(\.min)?\.js',
                 self.pathname)) or super(CORSHttpsServer, self).no_cache()
 
-def new_server(clsname, cors, headers, is_SSL, secrets):
+def new_server(clsname, cors, headers, is_SSL, secrets, userfile):
     def send_custom_headers(self):
 
         for h in headers:
@@ -88,6 +92,7 @@ def new_server(clsname, cors, headers, is_SSL, secrets):
     return type(clsname, (CORSHttpsServer,), {
         '_is_SSL': is_SSL,
         '_secrets': tuple(filter(None, secrets)),
+        '_userfile': userfile,
         'send_custom_headers': send_custom_headers})
 
 if __name__ == "__main__":
@@ -152,6 +157,11 @@ if __name__ == "__main__":
     misc_parser.add_argument('-H', '--headers', dest='headers',
             default=[], metavar='Header: Value', nargs='*',
             help='''Additional headers to include in the response.''')
+    misc_parser.add_argument('-u', '--userfile', dest='userfile',
+            metavar='FILE',
+            help='''File containing one username:password per line.
+            Note that it is loaded in memory, so should be of
+            reasonable size.''')
     misc_parser.add_argument('-S', '--secrets', dest='secrets',
             default=['secret'], metavar='DIR|FILE', nargs='*',
             help='''Directories or files which require a SESSION
@@ -196,7 +206,8 @@ if __name__ == "__main__":
                     'creds': args.allow_creds},
                 args.headers,
                 args.ssl,
-                args.secrets))
+                args.secrets,
+                args.userfile))
     if args.ssl:
         httpd.socket = ssl.wrap_socket(
                 httpd.socket,

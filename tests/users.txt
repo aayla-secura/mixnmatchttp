@@ -1,0 +1,7 @@
+foo:bar
+bar:baz
+bla:
+baz
+foobar:fo
+:foo
+

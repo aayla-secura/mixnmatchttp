@@ -7,6 +7,7 @@ from future import standard_library
 standard_library.install_aliases()
 import logging
 import uuid
+import mimetypes
 
 from .. import endpoints,cache
 from .base import BaseHTTPRequestHandler, DecodingError
@@ -33,11 +34,58 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
                 },
             )
 
+    def decode_page(self):
+        '''Decodes the request which contains a page
+        
+        It must contain the following parameters:
+            - data: the content of the page
+            - type: the content type
+
+        Returns the same data/type dictionary but with a decoded
+        content
+        '''
+
+        if self.ctype in ['application/json', 'text/json']:
+            data_decoder = self.b64_data
+            type_decoder = lambda x: x
+        elif self.ctype == 'application/x-www-form-urlencoded':
+            data_decoder = self.url_data
+            type_decoder = self.url_data
+        else:
+            raise DecodingError(
+                'Unknown Content-Type: {}'.format(self.ctype))
+            return
+
+        try:
+            body_enc = self.params['data']
+        except KeyError:
+            raise DecodingError('No "data" parameter present!')
+        _logger.debug('Encoded body: {}'.format(body_enc))
+
+        try:
+            page_ctype = type_decoder(self.params['type']).split(';',1)[0]
+            if page_ctype not in mimetypes.types_map.values():
+                raise ValueError('Unsupported Content-type')
+        except (KeyError, ValueError):
+            page_ctype = 'text/plain'
+        else:
+            _logger.debug('Content-Type: {}'.format(page_ctype))
+
+        try:
+            body = data_decoder(body_enc).encode('utf-8')
+        except UnicodeEncodeError:
+            _logger.debug('Errors encoding request data')
+            body = data_decoder(body_enc).encode('utf-8',
+                    errors='backslashreplace')
+        _logger.debug('Decoded body: {}'.format(body))
+
+        return {'data': body, 'type': page_ctype}
+
     def do_echo(self, sub, args):
         '''Decodes the request and returns it as the response body'''
 
         try:
-            page = self.decode_body()
+            page = self.decode_page()
         except DecodingError as e:
             self.send_error(400, explain=str(e))
             return
@@ -70,7 +118,7 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
 
             else:
                 try:
-                    page = self.decode_body()
+                    page = self.decode_page()
                 except DecodingError as e:
                     self.send_error(400, explain=str(e))
                     return
