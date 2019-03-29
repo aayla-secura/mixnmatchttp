@@ -22,6 +22,7 @@ from mixnmatchttp.handlers import BaseHTTPRequestHandler, \
         AuthHTTPRequestHandler, CachingHTTPRequestHandler, \
         ProxyingHTTPRequestHandler
 from mixnmatchttp.servers import ThreadingHttpServer
+from mixnmatchttp import endpoints
 from http.server import HTTPServer
 
 logger = logging.getLogger('CORS Http Server')
@@ -35,6 +36,7 @@ class DebugStreamHandler(logging.StreamHandler):
 class CORSHttpsServer(AuthHTTPRequestHandler,
         CachingHTTPRequestHandler, ProxyingHTTPRequestHandler):
 
+    _endpoints = endpoints.Endpoints(login={}) # accept GET only
     def authenticate(self):
         # dummy authentication
         return True
