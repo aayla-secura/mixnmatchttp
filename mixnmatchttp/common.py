@@ -85,19 +85,18 @@ def abspath_up_to_nth(path, n=1):
     if path[-1] != '/':
         path += '/'
 
-    curr_index = 0
-    skip = path.find('/')
+    curr_index = skip = path.find('/')
     root = path[: skip if skip != -1 else None]
     while skip != -1:
-        curr_index += skip + 1
         curr_abs = abspath(path[:curr_index])
         curr_abs_parts = list(filter(None, curr_abs.split('/')))
         # filter because leading or trailing / will result in ''
         # items
         if len(curr_abs_parts) == n:
             return '/'.join(filter(None, [curr_abs,
-                path[curr_index:pathlen]]))
+                path[curr_index+1:pathlen]]))
         skip = path[curr_index+1:].find('/')
+        curr_index += skip + 1
 
     return ''
 
