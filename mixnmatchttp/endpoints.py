@@ -8,8 +8,10 @@ from builtins import str
 from future import standard_library
 standard_library.install_aliases()
 import logging
+from functools import partial
+from wrapt import ObjectProxy
 
-from .common import abspath, abspath_up_to_nth, DictNoClobber
+from .common import iter_abspath, DictNoClobber
 
 ARGS_OPTIONAL = '?' # 0 or 1
 ARGS_ANY = '*'      # any number
@@ -20,188 +22,394 @@ _logger = logging.getLogger(__name__)
 ######################### EXCEPTIONS ########################
 
 class EndpointError(Exception):
-    '''Base class for exceptions related to the special endpoints'''
+    '''Base class for exceptions related creation of endpoints'''
+
     pass
 
-class NotAnEndpointError(EndpointError):
+class EndpointTooDeepError(EndpointError):
+    '''Exception raised when an endpoint is too deep in the hierarchy'''
+    def __init__(self, root):
+        super(EndpointTooDeepError, self).__init__(
+                "{}'s level is too deep.".format(root))
+
+class EndpointParseError(Exception):
+    '''Base class for exceptions related parsing of endpoints'''
+
+    pass
+
+class NotAnEndpointError(EndpointParseError):
     '''Exception raised when the root path is unknown'''
 
     def __init__(self, root):
-        super(NotAnEndpointError, self).__init__('{} is not special.'.format(root))
+        super(NotAnEndpointError, self).__init__(
+                '{} is not special.'.format(root))
 
-class MethodNotAllowedError(EndpointError):
+class MethodNotAllowedError(EndpointParseError):
     '''Exception raised when the request method is not allowed'''
 
     def __init__(self):
-        super(MethodNotAllowedError, self).__init__('Method not allowed.')
+        super(MethodNotAllowedError, self).__init__(
+                'Method not allowed.')
 
-class MissingArgsError(EndpointError):
+class MissingArgsError(EndpointParseError):
     '''Exception raised when a required argument is not given'''
 
     def __init__(self):
-        super(MissingArgsError, self).__init__('Missing required argument.')
+        super(MissingArgsError, self).__init__(
+                'Missing required argument.')
 
-class ExtraArgsError(EndpointError):
+class ExtraArgsError(EndpointParseError):
     '''Exception raised when extra arguments are given'''
 
-    def __init__(self, args):
-        super(ExtraArgsError, self).__init__('Extra arguments: {}.'.format(args))
+    def __init__(self, nargs):
+        super(ExtraArgsError, self).__init__(
+                'Extra arguments: {}.'.format(nargs))
 
 ############################################################
 
-class Subpoint(DictNoClobber):
-    _default = {
-            'allowed_methods': {'GET'},
-            'args': 0,
-            'raw_args': False,
-            }
-
-    def __init__(self, *args, **kwargs):
-        super(Subpoint, self).__init__(self._default)
-        _logger.debug('Setting defaults for subpoint, then {}, {}'.format(args, kwargs))
-        self.update(*args, **kwargs)
-
-    def __setitem__(self, key, item):
-        if key == 'allowed_methods':
-            item |= {'HEAD', 'OPTIONS'}
-        super(Subpoint, self).__setitem__(key, item)
-
 class Endpoint(DictNoClobber):
-    def __init__(self, *args, **kwargs):
-        super(Endpoint, self).__init__(*args, **kwargs)
-        _logger.debug('Setting default subpoint')
-        self.setdefault('', Subpoint())
-        _logger.debug('List of subpoints: {}'.format(list(self.keys())))
-
-    def __setitem__(self, key, item):
-        super(Endpoint, self).__setitem__(key, Subpoint(item))
-
-    def has(self, sub=''):
-        try:
-            self[sub]
-        except KeyError:
-            return False
-
-        return True
-
-class Endpoints(DictNoClobber):
     '''Special endpoints
     
-    Format for endpoints:
-    '<root>': {
-            '<subpoint>': {
-                'allowed_methods': {'<method1>', ...}, # GET, POST, etc
-                'args': <number>|ARGS_*, # how many args,
-                                         # only reliable if
-                                         # raw_args is False
-                'raw_args': True|False,  # should we avoid
-                                         # canonicalizing args
-                }
-            }
+    The Endpoint constructor has the same signature as for
+    a dictionary. For example you can define the endpoints like so:
+        _endpoints = endpoints.Endpoints(
+                some_sub={
+                    '$allowed_methods': {'GET', 'POST'},
+                    '$nargs': 1,
+                    'some_sub_sub': {
+                        '$nargs': endpoints.ARGS_ANY,
+                        '$raw_args': True, # don't canonicalize path
+                        }
+                    },
+                )
+    Any keyword arguments or dictionary keys starting with
+    $ correspond to an attribute (without the $). All other keyword
+    arguments/keys become subpoints of the parent; their value
+    should be either another Endpoint (in which case it is copied),
+    or a plain dictionary.
+    All child endpoints are enabled by default. The root endpoint is
+    disabled by default; if you want it enabled, either manually
+    change the 'disabled' attribute, or construct it like so:
+        _endpoints = endpoint.Endpoints({
+            'some_sub': { ... },
+            '$disabled': False,
+            })
+    or like so:
+        _endpoints = endpoint.Endpoints({
+            '$disabled': False,
+            },
+            some_sub={ ... }
+            )
     
-    'allowed_methods: <set>, defaults to {'GET'}
-    'args': <number>|ARGS_*, defaults to 0
-    'raw_args': <bool>, defaults to False
+    Recognized attributes:
+        disabled: <bool>, defaults to True for the root, False otherwise
+        allowed_methods: <set>, defaults to {'GET'}
+        nargs: <number>|ARGS_*, defaults to 0
+        raw_args: <bool>, defaults to False
+
+    The class attribute _max_level defines the maximum depth of the
+    endpoint hierarchy, and defaults to 20.
     '''
 
+    _max_level = 20
+    __curr_level = -1
+
+    @property
+    def disabled(self):
+        '''Returns whether endpoint is disabled
+        
+        If not explicitly set, returns True. This should only happen
+        for the root endpoint.'''
+
+        try:
+            return self._disabled
+        except AttributeError:
+            return True
+
+    @disabled.setter
+    def disabled(self, value):
+        '''Sets the endpoint's disabled attribute'''
+
+        self._disabled = bool(value)
+
+    def __init__(self, *args, **kwargs):
+        self.allowed_methods = {'GET'}
+        self.nargs = 0
+        self.raw_args = False
+
+        try:
+            self.__class__.__curr_level += 1
+            super(Endpoint, self).__init__(*args, **kwargs)
+            _logger.debug('Level: {}; list of subpoints: {}'.format(
+                self.__curr_level, list(self.keys())))
+            self.__class__.__curr_level -= 1
+        except Exception as e:
+            self.__class__.__curr_level = -1
+            raise e
+
+        if self.raw_args and self.nargs not in [ARGS_ANY, ARGS_REQUIRED]:
+            _logger.warning(('Endpoint requires raw ' +
+                'arguments, but is sensitive to the number ' +
+                'of arguments; not reliable!'))
+        if self.raw_args and self.keys():
+            raise EndpointError(
+                    "Endpoints expecting raw arguments cannot have subpoints.")
+
+    def __setattr__(self, attr, value):
+        if attr == 'allowed_methods':
+            value |= {'HEAD', 'OPTIONS'}
+        super(Endpoint, self).__setattr__(attr, value)
+
     def __setitem__(self, key, item):
-        _logger.debug('Creating endpoint {}'.format(key))
-        super(Endpoints, self).__setitem__(key, Endpoint(item))
+        if self.__curr_level == self._max_level:
+            raise EndpointTooDeepError(key)
+        if not key:
+            raise ValueError('Endpoint must be non-empty')
 
-    def has(self, root, sub=''):
-        _logger.debug('Checking if {}[{}] exists'.format(root, sub))
-        _logger.debug('List of roots: {}'.format(list(self.keys())))
-        try:
-            _logger.debug('List of {} keys: {}'.format(root, list(self[root].keys())))
-        except KeyError:
-            pass
-        try:
-            self[root][sub]
-        except KeyError:
-            return False
+        if key[0] == '$':
+            _logger.debug(
+                    'Endpoint special key {}, setting as attribute'.format(key))
+            getattr(self, key[1:]) # raise an exception if
+                                   # attribute is unknown
+            setattr(self, key[1:], item)
+        else:
+            _logger.debug('Creating endpoint {}'.format(key))
+            if isinstance(item, Endpoint):
+                super(Endpoint, self).__setitem__(key, item.copy())
+            else:
+                super(Endpoint, self).__setitem__(key, Endpoint(item))
 
-        return True
+            # Enable the subpoint, disabled was explicitly set
+            try:
+                self[key]._disabled
+            except AttributeError:
+                _logger.debug('Enabling endpoint {}'.format(key))
+                self[key]._disabled = False
 
-    def parse(self, path, command):
+    def parse(self, httpreq):
         '''Selects an endpoint for the path
         
-        Returns (root, sub, args) if an endpoint, or raises an
-        exception:
+            httpreq: an instance of BaseHTTPRequestHandler
+        
+        If httpreq.raw_pathname resolves to an enpoint's path, returns
+        a ParsedEndpoint initialized with the following attributes:
+            httpreq: same as passed to this method
+            handler: partial of the httpreq's method called
+                'do_{root}' or 'do_default'; the first argument will be ep
+            root: longest path of the endpoint corresponding to a defined handler
+            sub: rest of the path of the endpoint
+            args: everything following the endpoint's path (/root/sub/)
+            argslen: actual number of arguments it was called with
+        For example if an endpoint /cache/new/static accepts arguments,
+        and httpreq has a method do_cache, but not
+        do_cache_new_static, and not do_cache_new, a request for
+        /cache/new/static/page will set ep.root to 'cache', ep.sub to
+        'new/static', ep.handler to partial(httpreq.do_cache, ep),
+        ep.args to 'page', and ep.argslen to 1.
+        
+        If path doesn't resolve to an enpoint's path raises an exception:
             NotAnEndpointError
             MethodNotAllowedError
             MissingArgsError
             ExtraArgsError
         '''
 
+        path = httpreq.raw_pathname
         if not path or path[0] != '/':
             raise ValueError('Path for endpoint parsing must begin with a /')
 
-        # we don't yet know if the endpoints or subpoint wants the
-        # arguments raw or canonicalized. So we check the first
-        # absolute segment
-        # if it's an endpoint which expects raw arguments, we're done
-        root, sub, args = self._parse_raw(abspath_up_to_nth(path, 1))
-        if not root:
-            # otherwise check for the second abs segment
-            _logger.debug('Checking if subpoint takes raw args')
-            root, sub, args = self._parse_raw(abspath_up_to_nth(path, 2))
+        # we don't yet know if the endpoint wants the arguments raw or
+        # canonicalized. So we check each absolute segment; if it's an
+        # endpoint remember it, check next
+        _logger.debug('Checking if endpoint takes raw arguments')
+        ep = None
+        handler = httpreq.do_default
+        root = sub = args = ''
+        for curr_path, curr_args in iter_abspath(path):
+            _logger.debug('Current abspath segment: {}'.format(curr_path))
+            curr_ep, curr_handler, curr_root, curr_sub = \
+                    self._select_handler(curr_path, httpreq)
 
-        if root:
-            _logger.debug(('Parsed endpoint with raw args: root: {}, ' +
-                'sub: {}, args: {}').format(root, sub, args))
-            if self[root][sub]['args'] not in \
-                [ARGS_ANY, ARGS_REQUIRED]:
-                _logger.warning(('Endpoint {} requires non-canonical ' +
-                    'arguments, but is sensitive to the number ' +
-                    'of arguments; not reliable!').format(root))
-        else:
-            # finally canonicalize the whole path and take the root
-            # endpoint and subpoint from there
-            root, sub, args = _unpacker(
-                    *abspath(path).lstrip('/').split('/', 2))
-            _logger.debug(('Parsed endpoint: root: {}, sub: {}, args: {}'
-                ).format(root, sub, args))
+            if curr_ep is None:
+                _logger.debug('No match on this level')
+                continue
 
-        if not self.has(root, sub):
-            args = '/'.join(filter(None, [sub, args])) # consume the sub into args
-            sub = ''
+            ep = curr_ep
+            handler = curr_handler
+            root = curr_root
+            sub = curr_sub
+            args = curr_args
+            _logger.debug(
+                    'Match on this level: root: {}, sub: {}, args: {}'.format(
+                        root, sub, args))
 
-        if not self.has(root):
-            raise NotAnEndpointError(root)
+            if ep.raw_args:
+                _logger.debug('{}({}) is "raw"; done'.format(root, sub))
+                break # don't inspect rest of path
+
+        if ep is None or ep.disabled:
+            if ep is not None:
+                _logger.debug('{} is disabled'.format(root))
+            raise NotAnEndpointError(path)
+
+        # either entire canonical path resolved to an endpoint, or
+        # part of it resolved to an endpoint expecting raw arguments;
+        # either way, we're done
+        args_arr = list(filter(None, args.split('/')))
+
+        ep = ParsedEndpoint(ep,
+                httpreq,
+                handler,
+                root,
+                sub,
+                args,
+                len(args_arr))
 
         _logger.debug(
-                'API call: root: {}, sub: {}, args: {}'.format(
-                    root, sub, args))
+                'API call: {}, root: {}, sub: {}, {} args: {}'.format(
+                    ep, ep.root, ep.sub, ep.argslen, ep.args))
 
-        args_arr = list(filter(None, args.split('/')))
-        endpoint = self[root]
-        if endpoint[sub]['args'] == ARGS_ANY:
+        if ep.nargs == ARGS_ANY:
             pass
-        elif endpoint[sub]['args'] == ARGS_REQUIRED:
-            if not args:
+        elif ep.nargs == ARGS_REQUIRED:
+            if not ep.args:
                 raise MissingArgsError
-        elif endpoint[sub]['args'] == ARGS_OPTIONAL:
-            if len(args_arr) > 1:
+        elif ep.nargs == ARGS_OPTIONAL:
+            if ep.argslen > 1:
                 raise ExtraArgsError('/'.join(args_arr[1:]))
-        elif len(args_arr) > endpoint[sub]['args']:
+        elif ep.argslen > ep.nargs:
             raise ExtraArgsError('/'.join(
-                args_arr[endpoint[sub]['args']:]))
-        elif len(args_arr) < endpoint[sub]['args']:
+                args_arr[ep.nargs:]))
+        elif ep.argslen < ep.nargs:
             raise MissingArgsError
 
-        if command not in endpoint[sub]['allowed_methods']:
+        if httpreq.command not in ep.allowed_methods:
             raise MethodNotAllowedError
 
-        return root, sub, args
+        return ep
 
-    def _parse_raw(self, path):
-        root, sub, args = _unpacker(*path.lstrip('/').split('/', 2))
-        if self.has(root, sub) and \
-                self[root][sub]['raw_args']:
-            return root, sub, args
+    def iter_path(self, path):
+        '''Returns a generator for list(endpoints, curr_path) for each path segment
+        
+        path must be canonical (no double //, no ./ or ../).
+        '''
 
-        return '', '', ''
+        _logger.debug('Getting endpoints from path {}'.format(path))
+        ep = self
+        curr_path = ''
+        pref = ''
+        if path[0] == '/':
+            pref = '/'
+            path = path[1:]
+        suf = ''
+        if path[-1] == '/':
+            suf = '/'
+            path = path[:-1]
+        for p in path.split('/'):
+            curr_path += '/' + p
+            _logger.debug(
+                    'Current list of subpoints: {}; trying {}'.format(
+                        list(ep.keys()), p))
+            try:
+                ep = ep[p]
+            except KeyError:
+                return
+            yield ep, pref + curr_path[1:] + suf
 
-def _unpacker(root, sub='',args=''):
-    # handle case of not enough / in path during splitting
-    return root, sub, args
+        _logger.debug('Final: {}'.format(pref + curr_path[1:] + suf))
+
+    def get_from_path(self, path, httpreq=None):
+        '''Returns an endpoint with the given path or None
+        
+        path must be canonical (no double //, no ./ or ../).
+        '''
+
+        for ep, ep_path in self.iter_path(path):
+            _logger.debug('{} is an endpoint'.format(ep_path))
+            if ep_path == path:
+                return ep
+
+        return None
+
+    def _select_handler(self, path, httpreq):
+        '''Selects the endpoint and handler for the given path
+        
+            path: <str>, the path to be parsed
+            httpreq: an instance of BaseHTTPRequestHandler
+        
+        path must be canonical (no double //, no ./ or ../).
+        
+        Returns (ep, handler, root, sub) where
+            ep: the last defined endpoint along the given path, e.g.
+                if there's an endpoint at /a/b/c and it has no
+                children, it will be selected for all paths beginning
+                with /a/b/c
+            handler: httpreq's endpoint handler with the most specific
+                path matching the given path, e.g. if there's a handler 
+                do_a_b but not do_a_b_*, do_a_b will be selected for
+                all endpoints starting with /a/b; if no matching
+                handler is defined, do_default is returned
+            root: the beginning of the path which matched a handler,
+                e.g. /a/b if do_a_b is defined, or '' if no matching
+                handler
+            sub: the rest of the path after root/ (leading / is
+                stripped)
+        '''
+
+        ep = handler = None
+        ep_path = root = sub = ''
+        _logger.debug('Iterating over path {}'.format(path))
+        for ep, ep_path in self.iter_path(path):
+            _logger.debug('{} is an endpoint'.format(ep_path))
+            try:
+                curr_handler = getattr(
+                        httpreq, 'do' + ep_path.replace('/', '_'))
+            except AttributeError:
+                _logger.debug('No handler for {}'.format(ep_path))
+            else:
+                _logger.debug('Found handler for {}'.format(ep_path))
+                root = ep_path
+                handler = curr_handler
+        
+        # skip leading slash of sub
+        sub = path[len(root)+1:]
+
+        if ep_path and ep_path != path and not ep.raw_args:
+            # there was an endpoint corresponding to part, but not
+            # the entire path, and it does not accept raw arguments
+            return None, None, '', ''
+
+        if handler is None:
+            handler = httpreq.do_default
+        return ep, handler, root, sub
+
+class ParsedEndpoint(ObjectProxy):
+    '''An instance of an Endpoint which has been parsed
+    
+    The following additional attributes are defined as given to the
+    constructor:
+        httpreq: the instance of BaseHTTPRequestHandler which it was
+            parsed from
+        handler: partial of the httpreq's method called 'do_{root}' or
+            'do_default'; the first argument will be ep
+        root: longest path of the endpoint corresponding to a defined handler
+        sub: rest of the path of the endpoint
+        args: everything following the endpoint's path (/root/sub/)
+        argslen: number of path components in args
+    '''
+
+    def __init__(self, endpoint, httpreq, handler, root, sub, args, argslen):
+        if not isinstance(endpoint, Endpoint):
+            raise TypeError('ParsedEndpoint must be initialized from an Endpoint')
+
+        super(ParsedEndpoint, self).__init__(endpoint.copy())
+        self.httpreq = httpreq
+        self.handler = partial(handler, self)
+        self.root = root
+        self.sub = sub
+        self.args = args
+        self.argslen = argslen
+
+    def __repr__(self):
+        # ObjectProxy's repr doesn't call wrapped's __repr__
+        return self.__wrapped__.__repr__()

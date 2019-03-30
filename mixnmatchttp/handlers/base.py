@@ -33,25 +33,23 @@ def methodhandler(realhandler, self, args, kwargs):
     '''
 
     _logger.debug('INIT for method handler')
+    _logger.debug('Path is {}'.format(self.path))
 
-    # split query from pathname
+    # split query from pathname and decode them
+    #TODO other encodings??
     # take only the first set of parameters (i.e. everything
     # between the first ? and the subsequent / or #
     m = re.match('(/[^\?]*)(?:\?([^/#]*))?(.*)', self.path)
-    query_str = m.group(2) if m.group(2) else ''
-    self._BaseHTTPRequestHandler__pathname = m.group(1) + m.group(3)
+    query_str = urllib.parse.unquote_plus(m.group(2)) if m.group(2) else ''
+    self._BaseHTTPRequestHandler__raw_pathname = \
+            self._BaseHTTPRequestHandler__pathname = \
+            urllib.parse.unquote_plus(m.group(1) + m.group(3))
 
-    # decode path
-    #TODO other encodings??
-    _logger.debug('Path is {}'.format(self.pathname))
-    self._BaseHTTPRequestHandler__pathname = urllib.parse.unquote_plus(
-            self.pathname)
     _logger.debug('Decoded path is {}'.format(self.pathname))
-    assert self.pathname[0] == '/'
-    # canonicalize it
-    raw_path = self.pathname
+    # canonicalize the path
     self._BaseHTTPRequestHandler__pathname = abspath(self.pathname)
     _logger.debug('Real path is {}'.format(self.pathname))
+    assert self.pathname[0] == '/'
 
     # save query parameters
     self._BaseHTTPRequestHandler__query = param_dict(query_str, itemsep='&',
@@ -79,8 +77,7 @@ def methodhandler(realhandler, self, args, kwargs):
 
     # check if it's a special endpoint
     try:
-        root, sub, args = self.endpoints.parse(
-                raw_path, self.command)
+        ep = self.endpoints.parse(self)
     except endpoints.NotAnEndpointError as e:
         _logger.debug('{}'.format(str(e)))
         realhandler()
@@ -92,16 +89,13 @@ def methodhandler(realhandler, self, args, kwargs):
         self.send_error(404, explain=str(e))
     else:
         self._BaseHTTPRequestHandler__allowed_methods = \
-                self.endpoints[root][sub]['allowed_methods']
+                ep.allowed_methods
         if self.command == 'OPTIONS':
             _logger.debug('Doing OPTIONS')
             realhandler()
         else:
             _logger.debug('Calling endpoint handler')
-            handler = getattr(self, 'do_' + root)
-            # don't check here, let it raise Exception if no
-            # such handler
-            handler(sub, args)
+            ep.handler()
 
 ######################### EXCEPTIONS ########################
 
@@ -135,23 +129,29 @@ class BaseMeta(type):
         # every child gets it's own class attribute for _endpoints,
         # _template_pages and _templates, which combines all parents'
         # attributes
-        if '_endpoints' not in attrs:
-            new_class._endpoints = endpoints.Endpoints()
-        if '_template_pages' not in attrs:
-            new_class._template_pages = DictNoClobber()
-        if '_templates' not in attrs:
-            new_class._templates = DictNoClobber()
+        required_classes = {
+                '_endpoints': endpoints.Endpoint,
+                '_template_pages': DictNoClobber,
+                '_templates': DictNoClobber,
+                }
         for attr in ['_endpoints', '_template_pages', '_templates']:
             for bc in bases[::-1]:
                 if hasattr(bc, attr):
-                    getattr(new_class, attr).update_noclob(getattr(bc, attr))
+                    try:
+                        dic = getattr(new_class, attr)
+                    except AttributeError:
+                        dic = required_classes[attr]()
+                        setattr(new_class, attr, dic)
+                    if not isinstance(dic, required_classes[attr]):
+                        dic = required_classes[attr](dic)
+                    dic.update_noclob(getattr(bc, attr))
             _logger.debug('Final {} for {}: {}'.format(
                 attr, name, list(getattr(new_class, attr).keys())))
 
         return new_class
 
 class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequestHandler, object)):
-    _endpoints = endpoints.Endpoints()
+    _endpoints = endpoints.Endpoint()
     _template_pages = DictNoClobber(
         default={
             'data': '''
@@ -171,7 +171,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         )
     _templates = DictNoClobber()
 
-    # copy the class attributes to instance ones, since Endpoints and
+    # copy the class attributes to instance ones, since Endpoint and
     # dicts are mutable
     # the alternative solution of setting it in __init__ would require
     # checking if such an attribute already exists (set by a child
@@ -232,6 +232,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
     def __init__(self, *args, **kwargs):
         _logger.debug('INIT for {}'.format(self))
         self.__pathname = ''
+        self.__raw_pathname = ''
         self.__query = dict()
         self.__can_read_body = True
         self.__body = None
@@ -239,6 +240,12 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         self.__params = None
         self.__allowed_methods = None
         super(BaseHTTPRequestHandler, self).__init__(*args, **kwargs)
+
+    @property
+    def raw_pathname(self):
+        '''Property for the request's pathname before canonicalization'''
+
+        return self.__raw_pathname
 
     @property
     def pathname(self):
@@ -396,7 +403,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
     def send_response_default(self, *args, **kwargs):
         '''Alias for send_response_empty at the moment'''
 
-        return self.send_response_empty()
+        return self.send_response_empty(*args, **kwargs)
 
     def send_response_empty(self, code=200, headers={}):
         '''Send an empty response
@@ -582,6 +589,11 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
             super(BaseHTTPRequestHandler, self).send_error(code, message=message, explain=explain)
         except TypeError:
             super(BaseHTTPRequestHandler, self).send_error(code, message=message)
+
+    def do_default(self, ep):
+        '''Default handler for endpoints'''
+
+        self.send_response_default()
 
     @methodhandler
     def do_GET(self):

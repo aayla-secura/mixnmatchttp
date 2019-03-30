@@ -27,7 +27,7 @@ VERBOSITY=2 # max level printed
 
 SESSION=$(xxd -p -l 10 </dev/urandom)
 HOST='http://localhost:58080'
-TESTS_ALL=(auth proxy cache endpoints template misc)
+TESTS_ALL=(auth proxy cache endpoints templates misc)
 
 ############################################################
 ######################### TESTS ############################
@@ -40,18 +40,20 @@ function test_auth {
   req -eh "^HTTP/1\.[01] 200" GET /foo/topsecret/ # /topsecret is not relative
 
   req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" GET /dummylogin
-  req -eb "default:  \(\)" GET /secret/
+  req -eb "This is do_GET for  @  \(\)" GET /secret/
 
-  req -i -eh "^Set-Cookie: *SESSION=[^\w]" GET /logout # should clear the session on the
-                                                   # server, but not in client, since
-                                                   # session is read-only here
+  req -i -eh "^Set-Cookie: *SESSION=[^\w]" \
+    GET /logout # should clear the session on the server, but not in client,
+                # since session is read-only here
   req -eh "^HTTP/1\.[01] 401" GET /secret/ # old cookie, should be invalid
 
   req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" GET /dummylogin # re-login
-  req -eb "default:  \(\)" GET /secret/
-  req -i -eh "^Set-Cookie: *SESSION=[a-f0-9]" GET /dummylogin # re-login should clear the old cookie (set above)
-                                                     # do not remember the new one
-  req -eh "^HTTP/1\.[01] 401" GET /secret/ # request secret with the old cookie, should fail
+  req -eb "This is do_GET for  @  \(\)" GET /secret/
+  req -i -eh "^Set-Cookie: *SESSION=[a-f0-9]" \
+    GET /dummylogin # re-login should clear the old cookie (set above) do not
+                    # remember the new one
+  req -eh "^HTTP/1\.[01] 401" \
+    GET /secret/ # request secret with the old cookie, should fail
   req -i -w -eh "^Set-Cookie: *SESSION=[^\w]" GET /logout
 
   req -eh "^HTTP/1\.[01] 401" POST /login # no credentials
@@ -60,13 +62,32 @@ function test_auth {
   req -eh "^HTTP/1\.[01] 401" GET /secret/
   req -w -eh "^HTTP/1\.[01] 401" POST /login username=foo # no password
   req -eh "^HTTP/1\.[01] 401" GET /secret/
-  req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" POST /login username=foo password=bar
-  req -eb "default:  \(\)" GET /secret/
-  req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" -f POST /login username=foo password=bar
-  req -eb "default:  \(\)" GET /secret/
-  req -w -eh "^HTTP/1\.[01] 401" POST /login username=bla password= # user has no password, should not have been created
-  req -w -eh "^HTTP/1\.[01] 401" POST /login username=baz password= # user has no password, should not have been created
-  req -w -eh "^HTTP/1\.[01] 401" POST /login username=foobar  # user has weak password, should not have been created
+  req -w -eh "^HTTP/1\.[01] 401" \
+    POST /login username=bla password= # user has no password,
+                                       # should not have been created
+  req -w -eh "^HTTP/1\.[01] 401" POST /login username=baz password= # as above
+  req -w -eh "^HTTP/1\.[01] 401" \
+    POST /login username=foobar # user has weak password,
+                                # should not have been created
+
+  req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" \
+    POST /login username=foo password=bar
+  req -eb "This is do_GET for  @  \(\)" GET /secret/
+  req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" -f \
+    POST /login username=foo password=bar
+  req -eb "This is do_GET for  @  \(\)" GET /secret/
+
+  req -w -eh "^HTTP/1\.[01] 401" \
+    POST /changepwd username=foo new_password=barbaz
+  req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" \
+    POST /changepwd username=foo password=bar new_password=barbaz
+  req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" -f \
+    POST /changepwd username=foo password=barbaz new_password=foobar
+  req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" \
+    POST /changepwd username=foo password=foobar new_password=foobaz
+  req -w -eh "^HTTP/1\.[01] 401" \
+    POST /login username=foo password=bar # old password
+  req POST /changepwd username=foo password=foobaz new_password=bar
 }
 
 ############################################################
@@ -162,14 +183,23 @@ function test_endpoints {
   req -i -eh "^HTTP/1\.[01] 200" -eh "^Content-Length: *0" \
     OPTIONS /test/post_one/foo
 
-  req -eb "test:  \(\)" GET /test/
-  req -eb "test: post_one \(foo\)" POST /test/post_one/foo
-  req -eb "test: get_opt \(\)" GET /test/get_opt
-  req -eb "test: get_opt \(\)" GET /test/get_opt/
-  req -eb "test: get_opt \(foo\)" GET /test/get_opt/foo
-  req -eb "test: get_any \(\)" GET /test/get_any/
-  req -eb "test: get_any \(foo/bar/baz\)" GET /test/get_any/foo/bar/baz
-  req -eb "test: get_req \(foo/bar/baz\)" GET /test/get_req/foo/bar/baz
+  req -eb "This is do_GET for  @  \(\)" GET /
+  req -eb "This is do_deep for /deep @  \(\)" GET /deep/
+  req -eb "This is do_deep for /deep @ 1 \(\)" GET /deep/1
+  req -eb "This is do_deep for /deep @ 1/2 \(\)" GET /deep/1/2
+  req -eb "This is do_deep for /deep @ 1/2/3 \(\)" GET /deep/1/2/3
+  req -eb "This is do_deep_1_2_4 for /deep/1/2/4 @  \(\)" GET /deep/1/2/4
+  req -eb "This is do_default for  @ test \(\)" GET /test/
+  req -eb "This is do_default for  @ test \(\)" GET /a/../test/
+  req -eb "This is do_default for  @ test \(\)" GET /test/a/../
+  req -eb "This is do_default for  @ test/post_one \(foo\)" POST /test/post_one/foo
+  req -eb "This is do_default for  @ test/post_one \(foo\)" POST /test/post_one/a/../foo
+  req -eb "This is do_default for  @ test/get_opt \(\)" GET /test/get_opt
+  req -eb "This is do_default for  @ test/get_opt \(\)" GET /test/get_opt/
+  req -eb "This is do_default for  @ test/get_opt \(foo\)" GET /test/get_opt/foo
+  req -eb "This is do_default for  @ test/get_any \(\)" GET /test/get_any/
+  req -eb "This is do_default for  @ test/get_any \(foo/bar/baz\)" GET /test/get_any/foo/bar/baz
+  req -eb "This is do_default for  @ test/get_req \(foo/bar/baz\)" GET /test/get_req/foo/bar/baz
 
   req GET /test/modtest # modifies the default subpoint for /test to require 1 arg
   # req -eb "Error code explanation: 404 - Extra arguments: foo" \
@@ -178,10 +208,10 @@ function test_endpoints {
 }
 
 ############################################################
-function test_template {
+function test_templates {
   log INFO "-------------------- TEMPLATES TESTS --------------------"
-  req -eb "test:  \(\)" GET /test/
-  req -eb "default:  \(\)" GET /foo/
+  req -eb "This is do_default for  @ test \(\)" GET /test/
+  req -eb "This is do_GET for  @  \(\)" GET /foo/
 }
 
 ############################################################
@@ -191,9 +221,10 @@ function test_misc {
   req -i -eh "^Cache-Control: *no-cache, *no-store, *must-revalidate" GET /foo
   req -i -uh "^Cache-Control: *no-cache, *no-store, *must-revalidate" GET /foo.js
 
-  req -eb "test:  \(\)" GET //test/
-  req -eb "test:  \(\)" GET /foo/../test/
-  req -eb "test:  \(\)" GET /foo%2f../test/
+  req -eb "This is do_default for  @ test \(\)" GET //test/
+  req -eb "This is do_default for  @ test \(\)" GET /foo/../test/
+  req -eb "This is do_default for  @ test \(\)" GET /foo%2f../test/
+  req -i -eh "^Location: *//foo\?bar" GET /foo%2f%2e.%2fgoto%2f//foo%3fbar?baz
 }
 
 ############################################################

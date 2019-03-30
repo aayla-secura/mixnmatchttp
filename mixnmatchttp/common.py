@@ -66,19 +66,27 @@ def abspath(path):
     return os.path.abspath(prefix + path).replace(
             '//','/')[len(prefix):]
 
-def abspath_up_to_nth(path, n=1):
-    '''Canonicalize the path segment by segment
+def iter_abspath_up_to_nth(path, n=1, join=False):
+    '''Canonicalize the path up to the first n segments
     
     Leading slash is preserved if present, but is not required.
-    Returns the path canonicalized to the first n segments, followed
-    by the rest of the segments.
-    Stop as soon as we have n non-empty segments, i.e.
-    /../foo/../bar/./baz/./ will return /foo/../bar/./baz/./ for n=1,
-    but /bar/baz/./ for n=2. If we never reach n, return ''
+    Returns a generator for a list of canonicalized versions of path
+    up to the first n segments, followed by the rest of the segments.
+    For example /../foo/../bar/./baz/./ will result in
+    [('/foo', '../bar/./baz/./'), ('/bar', './baz/./'), ('/bar', 'baz/./')]
+    for n=1, and [('/bar/baz', './'), ('/bar/baz', '')] for n=2. If we
+    never reach n segments, nothing is yielded.
+    
+    If join is True, the canonicalized part (with n segments) and the
+    rest is joined. This will result in ['/bar/baz/./', '/bar/baz']
+    for n=2.
     '''
 
     if not path:
-        return ''
+        return
+
+    if n <= 0:
+        raise ValueError('Number of path segments must be positive')
 
     # temporarily add a trailing /
     pathlen = len(path)
@@ -93,12 +101,29 @@ def abspath_up_to_nth(path, n=1):
         # filter because leading or trailing / will result in ''
         # items
         if len(curr_abs_parts) == n:
-            return '/'.join(filter(None, [curr_abs,
-                path[curr_index+1:pathlen]]))
+            if join:
+                yield '/'.join(filter(None, [curr_abs,
+                    path[curr_index+1:pathlen]]))
+            else:
+                yield curr_abs, path[curr_index+1:pathlen]
         skip = path[curr_index+1:].find('/')
         curr_index += skip + 1
 
-    return ''
+def iter_abspath(path, start_n=1, join=False):
+    '''Canonicalize the path segment by segment
+    
+    Returns a generator for a list of iter_abspath_up_to_nth results
+    for all n's starting at start_n.
+    '''
+
+    while True:
+        done = True
+        for result in iter_abspath_up_to_nth(path, start_n):
+            done = False
+            yield result
+        if done:
+            return
+        start_n += 1
 
 def param_dict(s, itemsep=' *; *', valsep='=', values_are_opt=False):
     '''Returns a dictionary of keys/values from the string s

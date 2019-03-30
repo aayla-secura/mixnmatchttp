@@ -52,20 +52,16 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
     _secrets = () # immutable
     _userfile = None
     _is_SSL = False
+    _cookie_name = 'SESSION'
     _cookie_len = 20
     _min_pwdlen = 10
     _max_sessions = 10
-    _endpoints = endpoints.Endpoints(
+    _endpoints = endpoints.Endpoint(
             changepwd={
-                '': {
-                    'args': endpoints.ARGS_OPTIONAL,
-                    'allowed_methods': {'POST'},
-                    },
+                '$allowed_methods': {'POST'},
                 },
             login={
-                '': {
-                    'allowed_methods': {'POST'},
-                    },
+                '$allowed_methods': {'POST'},
                 },
             logout={ },
             )
@@ -80,7 +76,33 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
         # SimpleHTTPRequestHandler's __init__ processes the request
         # and calls the handlers
         self.load_users()
+        self.__cookie = None
         super(AuthHTTPRequestHandler, self).__init__(*args, **kwargs)
+
+    def set_cookie(self, cookie=None):
+        '''Saves the cookie to be sent with this response
+        
+        If cookie is None, creates a new session.'''
+
+        if cookie is None:
+            cookie = self.new_session()
+        flags = '{}HttpOnly'.format(
+                'Secure; ' if self._is_SSL else '')
+        self.__cookie = '{}={}; path=/; {}'.format(
+                self._cookie_name, cookie, flags)
+
+    def clear_cookie(self):
+        '''Sets an empty cookie to be sent with this response
+        
+        Also invalidates the session.'''
+
+        self.rm_session()
+        self.__cookie = '{}='.format(self._cookie_name)
+
+    def end_headers(self):
+        if self.__cookie is not None:
+            self.send_header('Set-Cookie', self.__cookie)
+        super(AuthHTTPRequestHandler, self).end_headers()
 
     def denied(self):
         '''Returns 401 if resource is secret and authentication is invalid'''
@@ -111,9 +133,9 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
             session = None
         else:
             try:
-                session = cookies['SESSION']
+                session = cookies[self._cookie_name]
             except KeyError:
-                _logger.debug('No SESSION cookie given')
+                _logger.debug('No {} cookie given'.format(self._cookie_name))
                 session = None
             else:
                 _logger.debug('Cookie is {}valid'.format(
@@ -131,8 +153,9 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
             pass
 
     def new_session(self):
-        '''Generates a new SESSION cookie'''
+        '''Invalidate old session and generates a new session cookie'''
 
+        self.rm_session()
         cookie = '{:02x}'.format(randint(0, 2**(4*self._cookie_len)-1))
         if len(self.__sessions) >= self._max_sessions:
             # remove a third of the oldest sessions
@@ -185,7 +208,7 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
     def password_ok(self, password):
         '''Simple password policy; only checks the length'''
 
-        return len(password) >= self._min_pwdlen
+        return password and len(password) >= self._min_pwdlen
 
     def create_user(self, username, password):
         '''Creates a user with a given password
@@ -227,39 +250,36 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
 
         self.__users[username] = password
 
-    def do_changepwd(self, sub, args):
+    def do_changepwd(self, ep):
         '''Changes the password for the given username'''
 
-        username = self.get_param('username')
-        if username and args and username != args:
-            self.send_error(400, explain='Multiple usernames given')
-        if not username:
-            username = args
-
-        password = self.get_param('password')
-        new_password = self.get_param('new_password')
         if self.authenticate():
+            username = self.get_param('username')
+            new_password = self.get_param('new_password')
             try:
                 self.change_password(username, new_password)
-            except (NoSuchUserError, InvalidUsernameError) as e:
+            except (BadPasswordError, NoSuchUserError, InvalidUsernameError) as e:
                 self.send_error(400, explain=str(e))
-        self.do_login('', '')
+                return
+            self.set_cookie()
+            self.send_response_goto()
+        else:
+            self.clear_cookie()
+            self.send_error(401, explain='Username or password is wrong')
 
-    def do_logout(self, sub, args):
+    def do_logout(self, ep):
         '''Clears the cookie from the browser and the saved sessions'''
 
-        self.rm_session()
-        self.send_response_goto(headers={'Set-Cookie': 'SESSION='})
+        self.clear_cookie()
+        self.send_response_goto('')
 
-    def do_login(self, sub, args):
+    def do_login(self, ep):
         '''Issues a random cookie and saves it'''
 
-        self.rm_session()
         if self.authenticate():
-            cookie = self.new_session()
-            self.send_response_goto(headers={'Set-Cookie':
-                'SESSION={}; path=/; {}HttpOnly'.format(
-                    cookie, ('Secure; ' if self._is_SSL else ''))
-                })
+            self.set_cookie()
+            self.send_response_goto()
         else:
-            self.send_error(401, explain='Username or password is wrong')
+            self.clear_cookie()
+            self.send_error(401,
+                    explain='Username or password is wrong')

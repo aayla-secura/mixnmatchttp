@@ -16,19 +16,15 @@ _logger = logging.getLogger(__name__)
 
 class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
     cache = cache.Cache()
-    _endpoints = endpoints.Endpoints(
+    _endpoints = endpoints.Endpoint(
             echo={
-                '': {
-                    'allowed_methods': {'POST'},
-                    },
+                '$allowed_methods': {'POST'},
                 },
             cache={
-                '': {
-                    'allowed_methods': {'GET', 'POST'},
-                    'args': 1,
-                    },
-                'clear': {
-                    'args': endpoints.ARGS_OPTIONAL,
+                '$allowed_methods': {'GET', 'POST'},
+                '$nargs': 1,
+                '$clear': {
+                    '$nargs': endpoints.ARGS_OPTIONAL,
                     },
                 'new': { },
                 },
@@ -81,7 +77,7 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
 
         return {'data': body, 'type': page_ctype}
 
-    def do_echo(self, sub, args):
+    def do_echo(self, ep):
         '''Decodes the request and returns it as the response body'''
 
         try:
@@ -91,40 +87,46 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
             return
         self.render(page)
 
-    def do_cache(self, sub, name):
-        '''Saves, retrieves or clears a cached page'''
+    def do_cache_clear(self, ep):
+        '''Clears a cached page'''
 
+        name = ep.args
         if not name:
-            name = None # cache.clear expects non-empty or None, not ''
+            # empty name should clear all pages; cache.clear will only
+            # clear all pages if name is None and not if it's ''
+            name = None
+        self.cache.clear(name)
+        self.send_response_empty(204)
 
-        if sub == 'clear':
-            self.cache.clear(name)
-            self.send_response_empty(204)
-        elif sub == 'new':
-            self.render({
-                'data': '{}'.format(
-                    uuid.uuid4()).encode('utf-8'),
-                'type': 'text/plain'})
-        else:
-            assert not sub # did we forget to handle a command
+    def do_cache_new(self, ep):
+        '''Generates a new UUID'''
 
-            if self.command == 'GET':
-                try:
-                    page = self.cache.get(name)
-                except (cache.PageClearedError, cache.PageNotCachedError) as e:
-                    self.send_error(500, explain=str(e))
-                else:
-                    self.render(page)
+        self.render({
+            'data': '{}'.format(
+                uuid.uuid4()).encode('utf-8'),
+            'type': 'text/plain'})
 
+    def do_cache(self, ep):
+        '''Saves or retrieves a cached page'''
+
+        name = ep.args
+        if self.command == 'GET':
+            try:
+                page = self.cache.get(name)
+            except (cache.PageClearedError, cache.PageNotCachedError) as e:
+                self.send_error(500, explain=str(e))
             else:
-                try:
-                    page = self.decode_page()
-                except DecodingError as e:
-                    self.send_error(400, explain=str(e))
-                    return
-                try:
-                    self.cache.save(name, page)
-                except cache.CacheError as e:
-                    self.send_error(500, explain=str(e))
-                else:
-                    self.send_response_empty(204)
+                self.render(page)
+
+        else:
+            try:
+                page = self.decode_page()
+            except DecodingError as e:
+                self.send_error(400, explain=str(e))
+                return
+            try:
+                self.cache.save(name, page)
+            except cache.CacheError as e:
+                self.send_error(500, explain=str(e))
+            else:
+                self.send_response_empty(204)

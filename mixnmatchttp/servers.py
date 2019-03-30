@@ -7,7 +7,7 @@ standard_library.install_aliases()
 import http.server
 from socketserver import ThreadingMixIn
 
-class ThreadingHttpServer(ThreadingMixIn, http.server.HTTPServer):
+class ThreadingHTTPServer(ThreadingMixIn, http.server.HTTPServer):
     '''Multi-threaded HTTPServer'''
 
     pass

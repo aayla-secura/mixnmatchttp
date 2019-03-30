@@ -18,85 +18,14 @@ import sys
 import argparse
 import urllib
 
-from mixnmatchttp.handlers import BaseHTTPRequestHandler, \
-        AuthHTTPRequestHandler, CachingHTTPRequestHandler, \
-        ProxyingHTTPRequestHandler
-from mixnmatchttp.servers import ThreadingHttpServer
-from mixnmatchttp import endpoints
-from http.server import HTTPServer
-
-logger = logging.getLogger('CORS Http Server')
-
 class DebugStreamHandler(logging.StreamHandler):
     def emit(self, record):
         if not record.levelno == logging.DEBUG:
             return
         super(DebugStreamHandler, self).emit(record)
 
-class CORSHttpsServer(AuthHTTPRequestHandler,
-        CachingHTTPRequestHandler, ProxyingHTTPRequestHandler):
-
-    _endpoints = endpoints.Endpoints(login={}) # accept GET only
-    def authenticate(self):
-        # dummy authentication
-        return True
-
-    def no_cache(self):
-        return (not re.search('/jquery-[0-9\.]+(\.min)?\.js',
-                self.pathname)) or super(CORSHttpsServer, self).no_cache()
-
-def new_server(clsname, cors, headers, is_SSL, secrets, userfile):
-    def send_custom_headers(self):
-
-        for h in headers:
-            self.send_header(*re.split(': *', h, maxsplit=1))
-
-        # CORS, request path takes precedence
-        # use origins=&creds=0 to disable CORS for this request
-        allowed_origins = self.get_param('origin')
-        if allowed_origins is None:
-            allowed_origins = ', '.join(cors['origins'])
-        allowed_origins = urllib.parse.unquote_plus(allowed_origins)
-        if allowed_origins == '{ECHO}':
-            allowed_origins = self.headers.get('Origin')
-            if not allowed_origins: allowed_origins = '*'
-
-        allowed_headers = ''
-        if cors['headers']:
-            allowed_headers = ', '.join(cors['headers'])
-
-        allowed_methods = self.allowed_methods
-        if not allowed_methods and cors['methods']:
-            allowed_methods = cors['methods']
-        if allowed_methods:
-            allowed_methods = ', '.join(allowed_methods)
-
-        allow_creds = self.get_param('creds')
-        try:
-            allow_creds = bool(int(allow_creds))
-        except (ValueError,TypeError):
-            # invalid or missing param
-            allow_creds = cors['creds']
-
-        if allowed_origins:
-            self.send_header('Access-Control-Allow-Origin',
-                allowed_origins)
-        if allowed_headers:
-            self.send_header('Access-Control-Allow-Headers',
-                allowed_headers)
-        if allowed_methods:
-            self.send_header('Access-Control-Allow-Methods',
-                allowed_methods)
-        if allow_creds:
-            self.send_header('Access-Control-Allow-Credentials',
-                'true')
-
-    return type(clsname, (CORSHttpsServer,), {
-        '_is_SSL': is_SSL,
-        '_secrets': tuple(filter(None, secrets)),
-        '_userfile': userfile,
-        'send_custom_headers': send_custom_headers})
-
+# Configure logging before importing mixnmatchttp
+logger = logging.getLogger('CORS HTTP Server')
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -177,9 +106,8 @@ if __name__ == "__main__":
             default=logging.INFO, action='store_const',
             const=logging.DEBUG,
             help='''Enable debugging output.''')
-    misc_parser.add_argument('-t', '--multithread', dest='srv_cls',
-            default=HTTPServer, action='store_const',
-            const=ThreadingHttpServer,
+    misc_parser.add_argument('-t', '--multithread', dest='multithread',
+            default=False, action='store_true',
             help='''Enable multi-threading support. EXPERIMENTAL! The
             cache has not been implemented in an MT safe way yet.''')
     args = parser.parse_args()
@@ -200,8 +128,83 @@ if __name__ == "__main__":
     if args.port is None:
         args.port = 58443 if args.ssl else 58080
 
-    httpd = args.srv_cls((args.address, args.port),
-            new_server('CORSHttpsServerCustom', {
+from mixnmatchttp.handlers import BaseHTTPRequestHandler, \
+        AuthHTTPRequestHandler, CachingHTTPRequestHandler, \
+        ProxyingHTTPRequestHandler
+from mixnmatchttp.servers import ThreadingHTTPServer
+from mixnmatchttp import endpoints
+from http.server import HTTPServer
+
+class CORSHTTPSServer(AuthHTTPRequestHandler,
+        CachingHTTPRequestHandler, ProxyingHTTPRequestHandler):
+
+    _endpoints = endpoints.Endpoint(login={})
+    def authenticate(self):
+        # dummy authentication
+        return True
+
+    def no_cache(self):
+        return (not re.search('/jquery-[0-9\.]+(\.min)?\.js',
+                self.pathname)) or super(CORSHTTPSServer, self).no_cache()
+
+def new_server(clsname, cors, headers, is_SSL, secrets, userfile):
+    def send_custom_headers(self):
+
+        for h in headers:
+            self.send_header(*re.split(': *', h, maxsplit=1))
+
+        # CORS, request path takes precedence
+        # use origins=&creds=0 to disable CORS for this request
+        allowed_origins = self.get_param('origin')
+        if allowed_origins is None:
+            allowed_origins = ', '.join(cors['origins'])
+        allowed_origins = urllib.parse.unquote_plus(allowed_origins)
+        if allowed_origins == '{ECHO}':
+            allowed_origins = self.headers.get('Origin')
+            if not allowed_origins: allowed_origins = '*'
+
+        allowed_headers = ''
+        if cors['headers']:
+            allowed_headers = ', '.join(cors['headers'])
+
+        allowed_methods = self.allowed_methods
+        if not allowed_methods and cors['methods']:
+            allowed_methods = cors['methods']
+        if allowed_methods:
+            allowed_methods = ', '.join(allowed_methods)
+
+        allow_creds = self.get_param('creds')
+        try:
+            allow_creds = bool(int(allow_creds))
+        except (ValueError,TypeError):
+            # invalid or missing param
+            allow_creds = cors['creds']
+
+        if allowed_origins:
+            self.send_header('Access-Control-Allow-Origin',
+                allowed_origins)
+        if allowed_headers:
+            self.send_header('Access-Control-Allow-Headers',
+                allowed_headers)
+        if allowed_methods:
+            self.send_header('Access-Control-Allow-Methods',
+                allowed_methods)
+        if allow_creds:
+            self.send_header('Access-Control-Allow-Credentials',
+                'true')
+
+    return type(clsname, (CORSHTTPSServer,), {
+        '_is_SSL': is_SSL,
+        '_secrets': tuple(filter(None, secrets)),
+        '_userfile': userfile,
+        'send_custom_headers': send_custom_headers})
+
+if __name__ == "__main__":
+    srv_cls = HTTPServer
+    if args.multithread:
+        srv_cls = ThreadingHTTPServer
+    httpd = srv_cls((args.address, args.port),
+            new_server('CORSHTTPSServerCustom', {
                     'origins': args.allowed_origins,
                     'methods': args.allowed_methods,
                     'headers': args.allowed_headers,
@@ -219,4 +222,4 @@ if __name__ == "__main__":
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
-        httpd.socket.close()
+        httpd.server_close()

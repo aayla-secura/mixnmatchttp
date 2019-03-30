@@ -17,21 +17,19 @@ from .base import BaseHTTPRequestHandler
 _logger = logging.getLogger(__name__)
 
 class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
-    _endpoints = endpoints.Endpoints(
+    _endpoints = endpoints.Endpoint(
             goto={
                 # call it as /goto?{params for this server}/{URI-decoded address};
                 # include the ? after /goto even if not giving parameters,
                 # otherwise any parameters in the address would be
                 # consumed
-                '': {
-                    'allowed_methods': {'GET', 'POST', 'PUT', 'PATCH', 'DELETE'},
-                    'args': endpoints.ARGS_ANY,
-                    'raw_args': True,
-                    },
+                '$allowed_methods': {'GET', 'POST', 'PUT', 'PATCH', 'DELETE'},
+                '$nargs': endpoints.ARGS_ANY,
+                '$raw_args': True,
                 },
             )
 
-    def do_goto(self, sub, args):
+    def do_goto(self, ep):
         '''Redirects to the path following /goto/
         
         If the path does not include a domain, it is taken from the
@@ -44,12 +42,12 @@ class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
         '''
 
         # check if path includes domain
-        if re.match('(https?:)?//[^/]', args):
-            self.send_response_goto(code=307, url=args)
+        if re.match('(https?:)?//[^/]', ep.args):
+            self.send_response_goto(code=307, url=ep.args)
             return
 
         def send_redir(host, proto='', pref='', **kwargs):
-            if args[:1] == '/':
+            if ep.args[:1] == '/':
                 # relative to root => ignore prefix path
                 pref = ''
             elif pref[-1:] != '/':
@@ -57,7 +55,7 @@ class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
                 pref += '/'
             if proto and proto[-1] != ':':
                 proto += ':'
-            path = ''.join([proto, '//', host, pref, args])
+            path = ''.join([proto, '//', host, pref, ep.args])
             _logger.debug('Redirecting to {}'.format(path))
             self.send_response_goto(code=307, url=path)
 
