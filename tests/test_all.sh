@@ -24,6 +24,7 @@ WARNING=1
 ERROR=0
 PROMPT=-1   # always print
 VERBOSITY=2 # max level printed
+PYVER=2     # default guess is server runs python2
 
 SESSION=$(xxd -p -l 10 </dev/urandom)
 HOST='http://localhost:58080'
@@ -112,20 +113,20 @@ function test_proxy {
 ############################################################
 function test_cache {
   log INFO "-------------------- CACHE TESTS --------------------"
-  # req -eb "Error code explanation: 500 - This page has not been cached yet" \
   req -eh "^HTTP/1\.[01] 500" \
+    -3eb "Error code explanation: 500 - This page has not been cached yet" \
     GET /cache/"${SESSION}" # SESSION will do as it's re-generated each time the script is run
-  # req -eb "Error code explanation: 400 - Cannot load parameters from request" \
   req -eh "^HTTP/1\.[01] 400" \
+    -3eb "Error code explanation: 400 - Cannot load parameters from request" \
     -f POST /cache/"${SESSION}"
-  # req -eb "Error code explanation: 400 - Cannot load parameters from request" \
   req -eh "^HTTP/1\.[01] 400" \
+    -3eb "Error code explanation: 400 - Cannot load parameters from request" \
     -f POST /echo
-  # req -eb "Error code explanation: 400 - No \"data\" parameter present" \
   req -eh "^HTTP/1\.[01] 400" \
+    -3eb "Error code explanation: 400 - No \"data\" parameter present" \
     -f POST /cache/"${SESSION}" type="text/plain"
-  # req -eb "Error code explanation: 400 - No \"data\" parameter present" \
   req -eh "^HTTP/1\.[01] 400" \
+    -3eb "Error code explanation: 400 - No \"data\" parameter present" \
     -f POST /echo type="text/plain"
 
   req -eh "^HTTP/1\.[01] 204" \
@@ -135,8 +136,8 @@ function test_cache {
   req -i -eh "^HTTP/1\.[01] 200" -eh "Content-Type: *text/plain" -eb "foo" \
     -f POST /echo data=foo type="text/foo"
 
-  # req -eb "Error code explanation: 500 - Cannot overwrite page, choose a different name" \
   req -eh "^HTTP/1\.[01] 500" \
+    -3eb "Error code explanation: 500 - Cannot overwrite page, choose a different name" \
     -f POST /cache/"${SESSION}" data=bar type="text/foo"
   req -eb "foo" \
     GET /cache/"${SESSION}" # data should not have been overwritten
@@ -147,38 +148,38 @@ function test_cache {
     GET /cache/"${SESSION}.2"
   req -i -eh "^Content-Type: *text/html" \
     -f POST /echo data=foo type="text/html"
-  # req -eb "Error code explanation: 400 - Cannot Base64 decode request data" \
   req -eh "^HTTP/1\.[01] 400" \
+    -3eb "Error code explanation: 400 - Cannot Base64 decode request data" \
     POST /echo data=foo type="text/html" # send it as JSON, but not encoded
 }
 
 ############################################################
 function test_endpoints {
   log INFO "-------------------- MISC ENDPOINTS TESTS --------------------"
-  # req -eb "Error code explanation: 404 - Extra arguments: foo" \
   req -eh "^HTTP/1\.[01] 404" \
+    -3eb "Error code explanation: 404 - Extra arguments: foo" \
     GET /test/foo
-  # req -eb "Error code explanation: 404 - Missing required argument" \
   req -eh "^HTTP/1\.[01] 404" \
+    -3eb "Error code explanation: 404 - Missing required argument" \
     POST /test/post_one
-  # req -eb "Error code explanation: 404 - Extra arguments: bar" \
   req -eh "^HTTP/1\.[01] 404" \
+    -3eb "Error code explanation: 404 - Extra arguments: bar" \
     POST /test/post_one/foo/bar
-  # req -eb "Error code explanation: 404 - Missing required argument" \
   req -eh "^HTTP/1\.[01] 404" \
+    -3eb "Error code explanation: 404 - Missing required argument" \
     GET /test/get_req
-  # req -eb "Error code explanation: 404 - Missing required argument" \
   req -eh "^HTTP/1\.[01] 404" \
+    -3eb "Error code explanation: 404 - Missing required argument" \
     GET /test/get_req/
-  # req -eb "Error code explanation: 404 - Extra arguments: bar" \
   req -eh "^HTTP/1\.[01] 404" \
+    -3eb "Error code explanation: 404 - Extra arguments: bar" \
     GET /test/get_opt/foo/bar
 
-  # req -eb "Error code explanation: 405 - Specified method is invalid for this resource" \
   req -i -eh "^HTTP/1\.[01] 405" -eh "^Allow:" \
+    -3eb "Error code explanation: 405 - Specified method is invalid for this resource" \
     GET /test/post_one/foo
-  # req -eb "Error code explanation: 405 - Specified method is invalid for this resource" \
   req -i -eh "^HTTP/1\.[01] 405" -eh "^Allow:" \
+    -3eb "Error code explanation: 405 - Specified method is invalid for this resource" \
     POST /test/get_opt/foo
   req -i -eh "^HTTP/1\.[01] 200" -eh "^Content-Length: *0" -eh "^Allow:" \
     OPTIONS /test/post_one/foo
@@ -202,8 +203,8 @@ function test_endpoints {
   req -eb "This is do_default for  @ test/get_req \(foo/bar/baz\)" GET /test/get_req/foo/bar/baz
 
   req GET /test/modtest # modifies the default subpoint for /test to require 1 arg
-  # req -eb "Error code explanation: 404 - Extra arguments: foo" \
   req -eh "^HTTP/1\.[01] 404" \
+    -3eb "Error code explanation: 404 - Extra arguments: foo" \
     GET /test/foo # should not take effect, i.e. it should still accept no args as before
 }
 
@@ -247,17 +248,28 @@ function req {
     httpargs=() pathset=0 sesstype="--session-read-only" printtype
   while [[ $# -gt 0 ]] ; do
     case "$1" in
-      -e|-eh|-eb|-u|-uh|-ub)
+      -e|-eh|-eb|-u|-uh|-ub|-2e|-2eh|-2eb|-2u|-2uh|-2ub|-3e|-3eh|-3eb|-3u|-3uh|-3ub)
         # match regex $2 in whole response (-e), headers only (-eh) or body only (-eb)
         # must not match regex $2 in whole response (-u), headers only (-uh) or body only (-ub)
-        matchtype="${1:1:1}"
-        [[ "${matchtype}" == "e" ]] && matchtype="" || matchtype="un"
-        currprinttype="${1:2}"
-        [[ -z "${currprinttype}" ]] && currprinttype="hb"
-        currvar_n="${matchtype}expected_${currprinttype}"
-        log DEBUG "Adding '$2' to ${currvar_n}"
-        typeset "${currvar_n}=${!currvar_n:+${!currvar_n}\n}$2"
-        printtype="${printtype/${currprinttype}/}${currprinttype}"
+        # if preceded by 2 or 3 only match if the server is running this python version
+        opt="${1:1}"
+        ver="${PYVER}"
+        if [[ "${opt:0:1}" =~ ^[23] ]] ; then
+          ver="${opt:0:1}"
+          opt="${opt:1}"
+        fi
+        if [[ "${ver}" -eq "${PYVER}" ]] ; then
+          matchtype="${opt:0:1}"
+          [[ "${matchtype}" == "e" ]] && matchtype="" || matchtype="un"
+          currprinttype="${opt:1}"
+          [[ -z "${currprinttype}" ]] && currprinttype="hb"
+          currvar_n="${matchtype}expected_${currprinttype}"
+          log DEBUG "Adding '$2' to ${currvar_n}"
+          typeset "${currvar_n}=${!currvar_n:+${!currvar_n}\n}$2"
+          printtype="${printtype/${currprinttype}/}${currprinttype}"
+        else
+          log DEBUG "Skipping '$2' for python${PYVER}"
+        fi
         shift
         ;;
       -i)
@@ -391,7 +403,6 @@ while [[ $# -gt 0 ]] ; do
   case "$1" in
     -d)
       VERBOSITY="${DEBUG}"
-      shift
       ;;
     -H)
       HOST="$2"
@@ -401,6 +412,9 @@ while [[ $# -gt 0 ]] ; do
       [[ "${TESTS-x}" == "x" ]] && TESTS=()
       TESTS=("${TESTS[@]}" "$2")
       shift
+      ;;
+    -2|-3)
+      PYVER="${1:1:1}"
       ;;
     -*)
       log ERROR "Unknown option '$1'"
@@ -418,6 +432,7 @@ if [[ "${TESTS-x}" == "x" ]] ; then
   TESTS=("${TESTS_ALL[@]}")
 fi
 
+log INFO "Assuming server runs python${PYVER}"
 for t in "${TESTS[@]}" ; do
   if ! is_valid_test "$t"; then
     log ERROR "Invalid test '$t'"
