@@ -163,15 +163,13 @@ def new_server(clsname, cors, headers, is_SSL, secrets, userfile):
             allowed_origins = self.headers.get('Origin')
             if not allowed_origins: allowed_origins = '*'
 
-        allowed_headers = ''
+        allowed_headers = None
         if cors['headers']:
             allowed_headers = ', '.join(cors['headers'])
 
-        allowed_methods = self.allowed_methods
-        if not allowed_methods and cors['methods']:
-            allowed_methods = cors['methods']
-        if allowed_methods:
-            allowed_methods = ', '.join(allowed_methods)
+        allowed_methods = None
+        if cors['methods']:
+            allowed_methods = ', '.join(cors['methods'])
 
         allow_creds = self.get_param('creds')
         try:
