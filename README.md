@@ -13,12 +13,13 @@ Request handlers define special endpoints and/or templates as class attributes.
 
 Endpoints are the RESTful API of the server. A request which does not map to an
 endpoint is treated as a request for a file or directory (Python's http server
-handles it). A request which does map to an endpoint will call an endpoint
-handler: a method of your class by the name `do_{underscope-separated path}`
-with "path" being the most-specific (longest) path for which a method is
-defined. E.g.  `/foo/bar/baz` will try to call `do_foo_bar_baz`, then
-`do_foo_bar`, then `do_foo`, and finally `do_default`. `do_default` is defined
-in `BaseHTTPRequestHandler` but your class may want to override it.
+handles it, unless your class overrides the `do_(GET|POST|...)` methods).
+A request which does map to an endpoint will call an endpoint handler: a method
+of your class by the name `do_{underscope-separated path}` with "path" being
+the most-specific (longest) path for which a method is defined. E.g.
+`/foo/bar/baz` will try to call `do_foo_bar_baz`, then `do_foo_bar`, then
+`do_foo`, and finally `do_default`. `do_default` is defined in
+`BaseHTTPRequestHandler` but your class may want to override it.
 
 Template pages are parametrized response bodies. Templates specify a template
 page to be used with and give a dictionary of parameters and values to use with
@@ -52,7 +53,7 @@ a dictionary, or any type which has a dictionary-like interface, and
 `BaseHTTPRequestHandler`'s meta class will convert them to the appropriate
 class.
 
-For example you can define the endpoints like so:
+For example you can define endpoints like so:
 
 ```python
 class MyHandler(BaseHTTPRequestHandler):
@@ -102,11 +103,13 @@ class MyHandler(BaseHTTPRequestHandler):
             }
 ```
 
+
 Any keyword arguments or dictionary keys starting with `$` correspond to an
-attribute (without the `$`) which specifies how an endpoint can be called. All
-other keyword arguments/keys become subpoints of the parent. Their value should
-be another `Endpoint` (or any dictionary-like object). Default endpoint
-attributes are:
+attribute (without the `$`) which specifies how an endpoint can be called.
+All other keyword arguments/keys become child endpoints of the parent; their
+value should be another `Endpoint` (or any dictionary-like object).
+
+Default endpoint attributes are:
 
 ```python
 disabled=False|True     # specifies if the enpoint cannot be called directly;
@@ -117,12 +120,13 @@ nargs=0                 # how many slash-separated arguments the endpoint can ta
                         #   mixnmatchttp.endpoints.ARGS_OPTIONAL for 0 or 1
                         #   mixnmatchttp.endpoints.ARGS_ANY      for any number
                         #   mixnmatchttp.endpoints.ARGS_REQUIRED for 1 or more
-raw_args=False          # whether arguments should be canonicalized,
-                        # e.g. /foo/..//bar/./baz will be turned to /bar/baz
+                        # !!only reliable if raw_args is False!!
+raw_args=False          # whether arguments should not be canonicalized,
+                        # e.g. /foo/..//bar/./baz will not be turned to /bar/baz
 ```
 
 Child endpoints are enabled by default, the root endpoint is disabled by
-default; if you want it enabled, either manually change the 'disabled'
+default; if you want it enabled, either manually change the `disabled`
 attribute, or construct it like so:
 
 ```python
@@ -134,7 +138,7 @@ class MyHandler(BaseHTTPRequestHandler):
         }
 ```
 
-## Parsing endpoints
+## Handling parsed endpoints
 
 When a path resolves to an endpoint, `ep`, the corresponding endpoint handler
 (`do_???`) will be passed a single argument:
@@ -142,9 +146,9 @@ a `mixnmatchttp.endpoints.ParsedEndpoint` (inherits from
 `mixnmatchttp.endpoints.Endpoint`) initialized from the original `ep` with the
 following additional attributes:
 
-  * `httpreq`: the instance of `BaseHTTPRequestHandler` which was passed to `Endpoint.parse`
+  * `httpreq`: the instance of `BaseHTTPRequestHandler` for this request
   * `handler`: partial of the `httpreq`'s method selected as a handler, with the
-    first argument will be the ParsedEndpoint
+    first argument being the `ParsedEndpoint` itself
   * `root`: longest path of the endpoint (with a leading `/`) corresponding to
     a defined handler, i.e.  if the path is `/foo/bar` and `do_foo` is
     selected, `root` will be `/foo`; if using `do_default`, `root` is empty (`''`).
@@ -238,9 +242,10 @@ class MyHandler(BaseHTTPRequestHandler):
                 {'root': ep.root, 'sub': ep.sub, 'args': ep.args})
         self.render(page)
 
+    # Don't forget this decorator!
     @methodhandler
     def do_GET(self):
-        # Do something here
+        # Do something here, then call parent's undecorated method
         super().do_GET.__wrapped__()
 
     def denied(self):
