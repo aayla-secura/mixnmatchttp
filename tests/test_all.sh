@@ -175,12 +175,12 @@ function test_endpoints {
     GET /test/get_opt/foo/bar
 
   # req -eb "Error code explanation: 405 - Specified method is invalid for this resource" \
-  req -eh "^HTTP/1\.[01] 405" \
+  req -i -eh "^HTTP/1\.[01] 405" -eh "^Allow:" \
     GET /test/post_one/foo
   # req -eb "Error code explanation: 405 - Specified method is invalid for this resource" \
-  req -eh "^HTTP/1\.[01] 405" \
+  req -i -eh "^HTTP/1\.[01] 405" -eh "^Allow:" \
     POST /test/get_opt/foo
-  req -i -eh "^HTTP/1\.[01] 200" -eh "^Content-Length: *0" \
+  req -i -eh "^HTTP/1\.[01] 200" -eh "^Content-Length: *0" -eh "^Allow:" \
     OPTIONS /test/post_one/foo
 
   req -eb "This is do_GET for  @  \(\)" GET /

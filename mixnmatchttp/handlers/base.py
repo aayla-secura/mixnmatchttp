@@ -58,8 +58,8 @@ def methodhandler(realhandler, self, args, kwargs):
 
     self._BaseHTTPRequestHandler__can_read_body = True
     self._BaseHTTPRequestHandler__body = None
-    self._BaseHTTPRequestHandler__allowed_methods = None # use default
     self._BaseHTTPRequestHandler__read_body()
+    self.allowed_methods = None # Endpoint.parse may set it
 
     # save content-type and body parameters
     try:
@@ -88,8 +88,6 @@ def methodhandler(realhandler, self, args, kwargs):
         _logger.debug('{}'.format(str(e)))
         self.send_error(404, explain=str(e))
     else:
-        self._BaseHTTPRequestHandler__allowed_methods = \
-                ep.allowed_methods
         if self.command == 'OPTIONS':
             _logger.debug('Doing OPTIONS')
             realhandler()
@@ -238,7 +236,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         self.__body = None
         self.__ctype = None
         self.__params = None
-        self.__allowed_methods = None
+        self.allowed_methods = None
         super(BaseHTTPRequestHandler, self).__init__(*args, **kwargs)
 
     @property
@@ -279,12 +277,6 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         '''Property for the request's body parameters'''
 
         return self.__params
-
-    @property
-    def allowed_methods(self):
-        '''Property for the request's allowed methods'''
-
-        return self.__allowed_methods
 
     @property
     def query(self):
@@ -576,6 +568,8 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
 
         self.send_custom_headers()
         self.send_cache_control()
+        if self.allowed_methods is not None:
+            self.send_header('Allow', ','.join(self.allowed_methods))
         super(BaseHTTPRequestHandler, self).end_headers()
 
     def send_error(self, code, message=None, explain=None):

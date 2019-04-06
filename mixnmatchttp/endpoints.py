@@ -207,11 +207,17 @@ class Endpoint(DictNoClobber):
         'new/static', ep.handler to partial(httpreq.do_cache, ep),
         ep.args to 'page', and ep.argslen to 1.
         
-        If path doesn't resolve to an enpoint's path raises an exception:
-            NotAnEndpointError
+        This method will also set httpreq.allowed_methods to a set of
+        allowed HTTP methods if httpreq.command is OPTIONS or some
+        method that's not allowed for this endpoint.
+
+        If path does resolve to an enpoint's path but the
+        request is not allowed for some reason, raises an exception:
             MethodNotAllowedError
             MissingArgsError
             ExtraArgsError
+        If path doesn't resolve to an enpoint's path raises an exception:
+            NotAnEndpointError
         '''
 
         path = httpreq.raw_pathname
@@ -283,6 +289,8 @@ class Endpoint(DictNoClobber):
         elif ep.argslen < ep.nargs:
             raise MissingArgsError
 
+        if httpreq.command not in ep.allowed_methods - {'OPTIONS'}:
+            httpreq.allowed_methods = ep.allowed_methods
         if httpreq.command not in ep.allowed_methods:
             raise MethodNotAllowedError
 
