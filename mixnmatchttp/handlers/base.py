@@ -2,10 +2,7 @@
 from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
-from builtins import dict
-from builtins import super
-from builtins import int
-from builtins import str
+from builtins import *
 from future import standard_library
 standard_library.install_aliases()
 import logging
@@ -105,8 +102,7 @@ class UnsupportedOperationError(PageReadError):
     '''Exception raised when request body is read more than once'''
 
     def __init__(self):
-        super(UnsupportedOperationError, self).__init__(
-            'Cannot read body data again, buffer not seekable')
+        super().__init__('Cannot read body data again, buffer not seekable')
 
 class DecodingError(PageReadError):
     '''Exception raised when cannot decode sent data'''
@@ -120,7 +116,7 @@ class BaseMeta(type):
     '''
 
     def __new__(cls, name, bases, attrs):
-        new_class = super(BaseMeta, cls).__new__(cls, name, bases, attrs)
+        new_class = super().__new__(cls, name, bases, attrs)
 
         _logger.debug('New class {}; has _endpoints: {}; bases: {}'.format(
             name, '_endpoints' in attrs, [b.__name__ for b in bases]))
@@ -237,7 +233,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         self.__ctype = None
         self.__params = None
         self.allowed_methods = None
-        super(BaseHTTPRequestHandler, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     @property
     def raw_pathname(self):
@@ -570,7 +566,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         self.send_cache_control()
         if self.allowed_methods is not None:
             self.send_header('Allow', ','.join(self.allowed_methods))
-        super(BaseHTTPRequestHandler, self).end_headers()
+        super().end_headers()
 
     def send_error(self, code, message=None, explain=None):
         '''Calls parent's send_error with the correct signature
@@ -580,9 +576,9 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         '''
 
         try:
-            super(BaseHTTPRequestHandler, self).send_error(code, message=message, explain=explain)
+            super().send_error(code, message=message, explain=explain)
         except TypeError:
-            super(BaseHTTPRequestHandler, self).send_error(code, message=message)
+            super().send_error(code, message=message)
 
     def do_default(self, ep):
         '''Default handler for endpoints'''
@@ -593,13 +589,13 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
     def do_GET(self):
         '''Decorated by methodhandler'''
 
-        super(BaseHTTPRequestHandler, self).do_GET()
+        super().do_GET()
 
     @methodhandler
     def do_POST(self):
         '''Decorated by methodhandler'''
 
-        super(BaseHTTPRequestHandler, self).do_GET()
+        super().do_GET()
 
     @methodhandler
     def do_OPTIONS(self):
@@ -611,4 +607,4 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
     def do_HEAD(self):
         '''Decorated by methodhandler'''
 
-        super(BaseHTTPRequestHandler, self).do_HEAD()
+        super().do_HEAD()

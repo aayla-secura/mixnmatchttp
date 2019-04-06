@@ -5,10 +5,7 @@
 from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
-from builtins import super
-from builtins import int
-from builtins import filter
-from builtins import str
+from builtins import *
 from future import standard_library
 standard_library.install_aliases()
 import logging
@@ -22,7 +19,7 @@ class DebugStreamHandler(logging.StreamHandler):
     def emit(self, record):
         if not record.levelno == logging.DEBUG:
             return
-        super(DebugStreamHandler, self).emit(record)
+        super().emit(record)
 
 # Configure logging before importing mixnmatchttp
 logger = logging.getLogger('CORS HTTP Server')
@@ -139,7 +136,7 @@ class CORSHTTPSServer(AuthHTTPRequestHandler,
         CachingHTTPRequestHandler, ProxyingHTTPRequestHandler):
     def no_cache(self):
         return (not re.search('/jquery-[0-9\.]+(\.min)?\.js',
-                self.pathname)) or super(CORSHTTPSServer, self).no_cache()
+                self.pathname)) or super().no_cache()
 
 def new_server(clsname, cors, headers, is_SSL, secrets, userfile):
     def send_custom_headers(self):

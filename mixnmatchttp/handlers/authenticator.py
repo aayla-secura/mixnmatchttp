@@ -2,8 +2,7 @@ from __future__ import division
 #  from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import absolute_import
-from builtins import int
-from builtins import str
+from builtins import *
 from future import standard_library
 standard_library.install_aliases()
 import logging
@@ -24,29 +23,25 @@ class UserAlreadyExistsError(AuthError):
     '''Exception raised when a user is created with an existing username'''
 
     def __init__(self, username):
-        super(UserAlreadyExistsError, self).__init__(
-            'User {} already exists'.format(username))
+        super().__init__('User {} already exists'.format(username))
 
 class NoSuchUserError(AuthError):
     '''Exception raised when a non-existend user is accessed'''
 
     def __init__(self, username):
-        super(NoSuchUserError, self).__init__(
-            'No such user {}'.format(username))
+        super().__init__('No such user {}'.format(username))
 
 class InvalidUsernameError(AuthError):
     '''Exception raised when a user is created with an invalid username'''
 
     def __init__(self, username):
-        super(InvalidUsernameError, self).__init__(
-            'Invalid username {}'.format(username))
+        super().__init__('Invalid username {}'.format(username))
 
 class BadPasswordError(AuthError):
     '''Exception raised when new password is invalid'''
 
     def __init__(self, username):
-        super(BadPasswordError, self).__init__(
-            'Bad password for user {}'.format(username))
+        super().__init__('Bad password for user {}'.format(username))
 
 class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
     _secrets = () # immutable
@@ -77,7 +72,7 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
         # and calls the handlers
         self.load_users()
         self.__cookie = None
-        super(AuthHTTPRequestHandler, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def set_cookie(self, cookie=None):
         '''Saves the cookie to be sent with this response
@@ -102,7 +97,7 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
     def end_headers(self):
         if self.__cookie is not None:
             self.send_header('Set-Cookie', self.__cookie)
-        super(AuthHTTPRequestHandler, self).end_headers()
+        super().end_headers()
 
     def denied(self):
         '''Returns 401 if resource is secret and authentication is invalid'''
@@ -110,7 +105,7 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
         if self.is_secret() and \
              self.get_session() not in self.__sessions:
             return (401,)
-        return super(AuthHTTPRequestHandler, self).denied()
+        return super().denied()
 
     def is_secret(self):
         '''Returns whether path requires authentication'''

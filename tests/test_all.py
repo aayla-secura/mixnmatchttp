@@ -3,9 +3,7 @@
 from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
-from builtins import super
-from builtins import int
-from builtins import filter
+from builtins import *
 from future import standard_library
 standard_library.install_aliases()
 import logging
@@ -19,7 +17,7 @@ class DebugStreamHandler(logging.StreamHandler):
     def emit(self, record):
         if not record.levelno == logging.DEBUG:
             return
-        super(DebugStreamHandler, self).emit(record)
+        super().emit(record)
 
 logger = logging.getLogger('Test HTTP Server')
 if __name__ == "__main__":
@@ -158,11 +156,11 @@ class TestHTTPRequestHandler(AuthHTTPRequestHandler,
             # return args are passed to BaseHTTPRequestHandler.send_error
             # in that order; both messages are optional
             return (403, None, 'Access denied')
-        return super(TestHTTPRequestHandler, self).denied()
+        return super().denied()
 
     def no_cache(self):
       '''Only allow caching of scripts'''
-      return (not self.pathname.endswith('.js')) or super(TestHTTPRequestHandler, self).no_cache()
+      return (not self.pathname.endswith('.js')) or super().no_cache()
 
     @methodhandler
     def do_GET(self):

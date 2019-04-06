@@ -164,6 +164,8 @@ Some methods that you may want to override, as well as implementing a custom
 endpoint and template, are shown below for `MyHandler`:
 
 ```python
+from future import standard_library
+standard_library.install_aliases()
 import re
 import ssl
 from http.server import HTTPServer
@@ -248,7 +250,7 @@ class MyHandler(BaseHTTPRequestHandler):
     @methodhandler
     def do_GET(self):
         # Do something here, then call parent's undecorated method
-        super().do_GET.__wrapped__()
+        super(MyHandler, self).do_GET.__wrapped__()
 
     def denied(self):
         '''Deny access to /forbidden'''

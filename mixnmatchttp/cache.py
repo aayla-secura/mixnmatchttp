@@ -4,9 +4,7 @@
 from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
-from builtins import super
-from builtins import object
-from builtins import str
+from builtins import *
 from future import standard_library
 standard_library.install_aliases()
 import logging
@@ -23,21 +21,19 @@ class PageNotCachedError(CacheError):
     '''Exception raised when a non-existent page is requested'''
 
     def __init__(self):
-        super(PageNotCachedError, self).__init__(
-            'This page has not been cached yet.')
+        super().__init__('This page has not been cached yet.')
 
 class PageClearedError(CacheError):
     '''Exception raised when a deleted page is requested'''
 
     def __init__(self):
-        super(PageClearedError, self).__init__(
-            'This page has been cleared.')
+        super().__init__('This page has been cleared.')
 
 class CacheMemoryError(CacheError):
     '''Exception raised when max data already stored in cache'''
 
     def __init__(self):
-        super(CacheMemoryError, self).__init__(
+        super().__init__(
             'Cannot save any more pages, call /cache/clear or' +
             '/cache/clear/{page_name}')
 
@@ -45,7 +41,7 @@ class CacheOverwriteError(CacheError):
     '''Exception raised when attempted overwriting of page'''
 
     def __init__(self):
-        super(CacheOverwriteError, self).__init__(
+        super().__init__(
             'Cannot overwrite page, choose a different name')
 
 ############################################################

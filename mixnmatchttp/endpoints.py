@@ -2,9 +2,7 @@
 from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
-from builtins import super
-from builtins import filter
-from builtins import str
+from builtins import *
 from future import standard_library
 standard_library.install_aliases()
 import logging
@@ -29,8 +27,7 @@ class EndpointError(Exception):
 class EndpointTooDeepError(EndpointError):
     '''Exception raised when an endpoint is too deep in the hierarchy'''
     def __init__(self, root):
-        super(EndpointTooDeepError, self).__init__(
-                "{}'s level is too deep.".format(root))
+        super().__init__("{}'s level is too deep.".format(root))
 
 class EndpointParseError(Exception):
     '''Base class for exceptions related parsing of endpoints'''
@@ -41,29 +38,25 @@ class NotAnEndpointError(EndpointParseError):
     '''Exception raised when the root path is unknown'''
 
     def __init__(self, root):
-        super(NotAnEndpointError, self).__init__(
-                '{} is not special.'.format(root))
+        super().__init__('{} is not special.'.format(root))
 
 class MethodNotAllowedError(EndpointParseError):
     '''Exception raised when the request method is not allowed'''
 
     def __init__(self):
-        super(MethodNotAllowedError, self).__init__(
-                'Method not allowed.')
+        super().__init__('Method not allowed.')
 
 class MissingArgsError(EndpointParseError):
     '''Exception raised when a required argument is not given'''
 
     def __init__(self):
-        super(MissingArgsError, self).__init__(
-                'Missing required argument.')
+        super().__init__('Missing required argument.')
 
 class ExtraArgsError(EndpointParseError):
     '''Exception raised when extra arguments are given'''
 
     def __init__(self, nargs):
-        super(ExtraArgsError, self).__init__(
-                'Extra arguments: {}.'.format(nargs))
+        super().__init__('Extra arguments: {}.'.format(nargs))
 
 ############################################################
 
@@ -139,7 +132,7 @@ class Endpoint(DictNoClobber):
 
         try:
             self.__class__.__curr_level += 1
-            super(Endpoint, self).__init__(*args, **kwargs)
+            super().__init__(*args, **kwargs)
             _logger.debug('Level: {}; list of subpoints: {}'.format(
                 self.__curr_level, list(self.keys())))
             self.__class__.__curr_level -= 1
@@ -158,7 +151,7 @@ class Endpoint(DictNoClobber):
     def __setattr__(self, attr, value):
         if attr == 'allowed_methods':
             value |= {'HEAD', 'OPTIONS'}
-        super(Endpoint, self).__setattr__(attr, value)
+        super().__setattr__(attr, value)
 
     def __setitem__(self, key, item):
         if self.__curr_level == self._max_level:
@@ -175,9 +168,9 @@ class Endpoint(DictNoClobber):
         else:
             _logger.debug('Creating endpoint {}'.format(key))
             if isinstance(item, Endpoint):
-                super(Endpoint, self).__setitem__(key, item.copy())
+                super().__setitem__(key, item.copy())
             else:
-                super(Endpoint, self).__setitem__(key, Endpoint(item))
+                super().__setitem__(key, Endpoint(item))
 
             # Enable the subpoint, disabled was explicitly set
             try:
