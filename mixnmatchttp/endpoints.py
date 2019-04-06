@@ -195,7 +195,7 @@ class Endpoint(DictNoClobber):
         a ParsedEndpoint initialized with the following attributes:
             httpreq: same as passed to this method
             handler: partial of the httpreq's method called
-                'do_{root}' or 'do_default'; the first argument will be ep
+                'do_{root}' or 'do_default'; the first argument will be the ParsedEndpoint
             root: longest path of the endpoint corresponding to a defined handler
             sub: rest of the path of the endpoint
             args: everything following the endpoint's path (/root/sub/)
@@ -391,7 +391,7 @@ class ParsedEndpoint(ObjectProxy):
         httpreq: the instance of BaseHTTPRequestHandler which it was
             parsed from
         handler: partial of the httpreq's method called 'do_{root}' or
-            'do_default'; the first argument will be ep
+            'do_default'; the first argument will be the ParsedEndpoint
         root: longest path of the endpoint corresponding to a defined handler
         sub: rest of the path of the endpoint
         args: everything following the endpoint's path (/root/sub/)

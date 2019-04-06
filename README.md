@@ -24,7 +24,8 @@ page to be used with and give a dictionary of parameters and values to use with
 the template. Each parameter value may also contain dynamic parameters, which
 are given to the `BaseHTTPRequestHandler.page_from_template` method, which
 constructs the final page.
-You can inherit from one or more of the handlers. Each parent's
+
+You can inherit from one or more of the `*HTTPRequestHandlers`. Each parent's
 endpoints/templates will be copied to, without overwriting, your child class'
 endpoints/templates.
 
@@ -120,6 +121,20 @@ either manually change the 'disabled' attribute, or construct it like so:
         '$disabled': False,
         })
 ```
+
+When a path resolves to an endpoint, `ep`, the corresponding endpoint handler
+(`do_???`) will be passed a single argument: a `ParsedEndpoint` initialized
+from the original `ep` with the following attributes:
+
+  * `httpreq`: the instance of `BaseHTTPRequestHandler` which was passed to `Endpoint.parse`
+  * `handler`: partial of the `httpreq`'s method selected as a handler, with the
+    first argument will be the ParsedEndpoint
+  * `root`: longest path of the endpoint (with a leading `/`) corresponding to
+    a defined handler, i.e.  if the path is `/foo/bar` and `do_foo` is
+    selected, `root` will be `/foo`; if using `do_default`, `root` is empty (`''`).
+  * `sub`: rest of the path of the endpoint without a leading `/`, e.g. `bar` or `foo/bar`
+  * `args`: everything following the endpoint's path without a leading `/`
+  * `argslen`: the number of arguments it was called with (length of array from `/` separated `args`)
 
 ## Implementing a server
 
@@ -252,11 +267,11 @@ if __name__ == "__main__":
         httpd.server_close()
 ```
 
-  * A request for `/debug/sub/..//foo/../bar/./baz` will call `self.do_debug` with arguments `(MyHandler._endpoints.debug, '..//foo/../bar/./baz')`. `self.command` will give the HTTP method.
-  * A request for `/debug/foo/../bar` will canonicalize the path to `/debug/bar` (since `raw_args` for `/debug` is `False`) call `do_debug` with arguments `(MyHandler._endpoints.debug, 'bar')`.
+  * A request for `/debug/sub/..//foo/../bar/./baz` will call `self.do_debug` with a copy of `MyHandler._endpoints['debug']['sub']`. `self.command` will give the HTTP method.
+  * A request for `/debug/foo/../bar` will canonicalize the path to `/debug/bar` (since `raw_args` for `/debug` is `False`) call `do_debug` with a copy of `MyHandler._endpoints['debug']`.
   * A request for `/debug/../bar` will raise `mixnmatchttp.endpoints.NotAnEndpointError` since the path will be canonicalized (as above) and result in `/bar`, and `bar` is not a valid endpoint.
   * A `POST` request for `/foobar` will raise `mixnmatchttp.endpoints.MethodNotAllowedError` since `/foobar` only allows HTTP `GET`.
-  * A request for `/debug/../foobar` will call parent's `do_default` with arguments `(MyHandler._endpoints.foobar, '')`.
+  * A request for `/debug/../foobar` will call parent's `do_default` with a copy of `MyHandler._endpoints['foobar']`.
   * A request for `/debug/foo/bar` will raise `mixnmatchttp.endpoints.ExtraArgsError` since `/debug` expect exactly one argument.
   * A request for `/debug` will raise `mixnmatchttp.endpoints.MissingArgsError` since `/debug` expect exactly one argument.
   * A request for `/refreshme` will render a page which refreshes every 30 seconds (default).
