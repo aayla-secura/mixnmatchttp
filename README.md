@@ -2,22 +2,23 @@
 
 `mixnmatchttp` is a modular HTTP/S server based on [Python's http
 server](https://docs.python.org/3/library/http.server.html) that lets you "mix
-'n' match" various functionalities. It defines several handlers, which are
-wrappers around `http.server.SimpleHTTPRequestHandler`, as well as
+'n' match" various functionalities. It defines several request handlers, which
+are wrappers around `http.server.SimpleHTTPRequestHandler`, as well as
 a `ThreadingHTTPServer` which can be used in place of Python's
 `http.server.HTTPServer` for multi-threading support.
 
 # Quick start
 
-Handlers define special endpoints and/or templates as class attributes.
+Request handlers define special endpoints and/or templates as class attributes.
 
 Endpoints are the RESTful API of the server. A request which does not map to an
 endpoint is treated as a request for a file or directory (Python's http server
-handles it). A request which does map to an endpoint will call a method of your
-class by the name `do_{underscope-separated path}` with the most-specific
-(longest) path for which a handler is defined. E.g. `/foo/bar/baz` will try to
-call `do_foo_bar_baz`, then `do_foo_bar`, then `do_foo`, and finally
-`do_default`.
+handles it). A request which does map to an endpoint will call an endpoint
+handler: a method of your class by the name `do_{underscope-separated path}`
+with "path" being the most-specific (longest) path for which a method is
+defined. E.g.  `/foo/bar/baz` will try to call `do_foo_bar_baz`, then
+`do_foo_bar`, then `do_foo`, and finally `do_default`. `do_default` is defined
+in `BaseHTTPRequestHandler` but your class may want to override it.
 
 Template pages are parametrized response bodies. Templates specify a template
 page to be used with and give a dictionary of parameters and values to use with
@@ -29,6 +30,8 @@ You can inherit from one or more of the `*HTTPRequestHandlers`. Each parent's
 endpoints/templates will be copied to, without overwriting, your child class'
 endpoints/templates.
 
+---
+
 **Important notes:**
 
   * If you need to override any of the HTTP method handlers (e.g. `do_GET`),
@@ -38,6 +41,8 @@ endpoints/templates.
     `__wrapped__` attribute, as shown in the demo.
 
 ---
+
+## Defining endpoints
 
 Endpoints, templates and template pages constructors have the same signature as
 for a dictionary. Endpoints are of type `mixnmatchttp.endpoints.Endpoint`,
@@ -50,6 +55,7 @@ class.
 For example you can define the endpoints like so:
 
 ```python
+class MyHandler(BaseHTTPRequestHandler):
     _endpoints = mixnmatchttp.endpoints.Endpoint(
             some_sub={
                 '$allowed_methods': {'GET', 'POST'},
@@ -65,6 +71,7 @@ For example you can define the endpoints like so:
 or like so:
 
 ```python
+class MyHandler(BaseHTTPRequestHandler):
     _endpoints = mixnmatchttp.endpoints.Endpoint({
             'some_sub': {
                 '$allowed_methods': {'GET', 'POST'},
@@ -81,6 +88,7 @@ or like so:
 or like so:
 
 ```python
+class MyHandler(BaseHTTPRequestHandler):
     _endpoints = {
             'some_sub': {
                 '$allowed_methods': {'GET', 'POST'},
@@ -95,36 +103,44 @@ or like so:
 ```
 
 Any keyword arguments or dictionary keys starting with `$` correspond to an
-attribute (without the `$`). All other keyword arguments/keys become subpoints
-of the parent. Their value should be another Endpoint (or any dictionary-like
-object). Default Endpoint attributes are:
+attribute (without the `$`) which specifies how an endpoint can be called. All
+other keyword arguments/keys become subpoints of the parent. Their value should
+be another `Endpoint` (or any dictionary-like object). Default endpoint
+attributes are:
 
 ```python
-  disabled=False          # says whether the enpoint can be called directly;
-                          # False for child endpoints but True for root endpoint
-  allowed_methods={'GET'} # a set of allowed HTTP methods
-  nargs=0                 # how many slash-separated arguments the endpoint can take;
-                          # can be a number of any of:
-                          #   mixnmatchttp.endpoints.ARGS_OPTIONAL for 0 or 1
-                          #   mixnmatchttp.endpoints.ARGS_ANY      for any number
-                          #   mixnmatchttp.endpoints.ARGS_REQUIRED for 1 or more
-  raw_args=False          # whether arguments should be canonicalized,
-                          # e.g. /foo/..//bar/./baz will be turned to /bar/baz
+disabled=False|True     # specifies if the enpoint cannot be called directly;
+                        # False for child endpoints but True for root endpoint
+allowed_methods={'GET'} # a set of allowed HTTP methods; OPTIONS is always allowed
+nargs=0                 # how many slash-separated arguments the endpoint can take;
+                        # can be a number of any of:
+                        #   mixnmatchttp.endpoints.ARGS_OPTIONAL for 0 or 1
+                        #   mixnmatchttp.endpoints.ARGS_ANY      for any number
+                        #   mixnmatchttp.endpoints.ARGS_REQUIRED for 1 or more
+raw_args=False          # whether arguments should be canonicalized,
+                        # e.g. /foo/..//bar/./baz will be turned to /bar/baz
 ```
 
-However, the root endpoint is disabled by default; if you want it enabled,
-either manually change the 'disabled' attribute, or construct it like so:
+Child endpoints are enabled by default, the root endpoint is disabled by
+default; if you want it enabled, either manually change the 'disabled'
+attribute, or construct it like so:
 
 ```python
-    _endpoints = mixnmatchttp.endpoints.Endpoint({
+class MyHandler(BaseHTTPRequestHandler):
+    _endpoints = {
         'some_sub': { ... },
-        '$disabled': False,
-        })
+        '$disabled': False, # a request for / will now call do_ or do_default
+                            # instead of do_(GET|POST|...)
+        }
 ```
+
+## Parsing endpoints
 
 When a path resolves to an endpoint, `ep`, the corresponding endpoint handler
-(`do_???`) will be passed a single argument: a `ParsedEndpoint` initialized
-from the original `ep` with the following attributes:
+(`do_???`) will be passed a single argument:
+a `mixnmatchttp.endpoints.ParsedEndpoint` (inherits from
+`mixnmatchttp.endpoints.Endpoint`) initialized from the original `ep` with the
+following additional attributes:
 
   * `httpreq`: the instance of `BaseHTTPRequestHandler` which was passed to `Endpoint.parse`
   * `handler`: partial of the `httpreq`'s method selected as a handler, with the
@@ -136,7 +152,7 @@ from the original `ep` with the following attributes:
   * `args`: everything following the endpoint's path without a leading `/`
   * `argslen`: the number of arguments it was called with (length of array from `/` separated `args`)
 
-## Implementing a server
+## Example: Implementing a server
 
 Some methods that you may want to override, as well as implementing a custom
 endpoint and template, are shown below for `MyHandler`:
