@@ -306,10 +306,12 @@ if __name__ == "__main__":
 
 Implements username:password authentication via form or JSON `POST` request. Has configurable file paths/endpoints for which authentication is required.
 
-  * `POST /login`: Issues a `SESSION` cookie if username and password is valid
+If no file containing username:password is set (as a `_userfile` class attribute), it implements dummy authentication (all logins succeed).
+
+  * `GET|POST /login`: Issues a `SESSION` cookie if username and password is valid
     - Supported URL parameters:
       + `goto`: Redirect to this URL
-    - Required body parameters:
+    - Required body or URL parameters (unless no userfile was given, in which case it always authenticates):
       + `username`: Username (duh)
       + `password`: Password (duh)
     - Response codes:
@@ -325,10 +327,10 @@ Implements username:password authentication via form or JSON `POST` request. Has
     - Response codes:
       + `200 OK`: Empty body
       + `302 Found`: Location is as requested via the `goto` parameter
-  * `POST /changepwd`: Changes the password for a given username
+  * `GET|POST /changepwd`: Changes the password for a given username
     - Supported URL parameters:
       + `goto`: Redirect to this URL
-    - Required body parameters:
+    - Required body or URL parameters:
       + `username`: Username (duh)
       + `password`: Current password
       + `new_password`: New password (duh)

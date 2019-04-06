@@ -58,10 +58,10 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
     _max_sessions = 10
     _endpoints = endpoints.Endpoint(
             changepwd={
-                '$allowed_methods': {'POST'},
+                '$allowed_methods': {'GET', 'POST'},
                 },
             login={
-                '$allowed_methods': {'POST'},
+                '$allowed_methods': {'GET', 'POST'},
                 },
             logout={ },
             )
@@ -192,6 +192,9 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
 
     def authenticate(self):
         '''Returns True or False if username:password is valid'''
+
+        if not self._userfile:
+            return True
 
         username = self.get_param('username')
         password = self.get_param('password')

@@ -137,12 +137,6 @@ from http.server import HTTPServer
 
 class CORSHTTPSServer(AuthHTTPRequestHandler,
         CachingHTTPRequestHandler, ProxyingHTTPRequestHandler):
-
-    _endpoints = endpoints.Endpoint(login={})
-    def authenticate(self):
-        # dummy authentication
-        return True
-
     def no_cache(self):
         return (not re.search('/jquery-[0-9\.]+(\.min)?\.js',
                 self.pathname)) or super(CORSHTTPSServer, self).no_cache()
