@@ -131,6 +131,8 @@ class TestHTTPRequestHandler(AuthHTTPRequestHandler,
         # modify endpoint, should affect only current request
         self.endpoints['test'] = {}
         self.endpoints['test'].args = 1
+        # set a header just for this request
+        self.headers_to_send['X-Mod'] = 'Test'
         self.do_GET.__wrapped__()
 
     @endpoint_debug_handler

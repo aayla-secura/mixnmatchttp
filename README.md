@@ -35,8 +35,6 @@ endpoints/templates.
 
 **Important notes:**
 
-  * An `OPTIONS` HTTP request is always handled by `do_OPTIONS` even if the
-    path is for an endpoint.
   * If you need to override any of the HTTP method handlers (e.g. `do_GET`),
     you must decorate them with `mixnmatchttp.handlers.base.methodhandler`, as
     shown in the demo below. And if you need to call any of the parent's HTTP
@@ -116,7 +114,8 @@ Default endpoint attributes are:
 ```python
 disabled=False|True     # specifies if the enpoint cannot be called directly;
                         # False for child endpoints but True for root endpoint
-allowed_methods={'GET'} # a set of allowed HTTP methods; OPTIONS is always allowed
+allowed_methods={'GET'} # a set of allowed HTTP methods; HEAD is added to the
+                        # set if 'GET' is present
 nargs=0                 # how many slash-separated arguments the endpoint can take;
                         # can be a number of any of:
                         #   mixnmatchttp.endpoints.ARGS_OPTIONAL for 0 or 1
@@ -242,6 +241,8 @@ class MyHandler(BaseHTTPRequestHandler):
 
     def do_debug(self, ep):
         '''Handler for the endpoint /debug'''
+        # set a header just for this request
+        self.headers_to_send['X-Debug'] = 'Foo'
         page = self.page_from_template(self.templates['debug'],
                 {'root': ep.root, 'sub': ep.sub, 'args': ep.args})
         self.render(page)

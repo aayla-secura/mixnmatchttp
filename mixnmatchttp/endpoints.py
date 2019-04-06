@@ -41,9 +41,14 @@ class NotAnEndpointError(EndpointParseError):
         super().__init__('{} is not special.'.format(root))
 
 class MethodNotAllowedError(EndpointParseError):
-    '''Exception raised when the request method is not allowed'''
+    '''Exception raised when the request method is not allowed
+    
+    Will have an "allowed_methods" attribute containing a set of
+    allowed HTTP methods for this endpoint.
+    '''
 
-    def __init__(self):
+    def __init__(self, allowed_methods):
+        self.allowed_methods = allowed_methods
         super().__init__('Method not allowed.')
 
 class MissingArgsError(EndpointParseError):
@@ -149,8 +154,8 @@ class Endpoint(DictNoClobber):
                     "Endpoints expecting raw arguments cannot have subpoints.")
 
     def __setattr__(self, attr, value):
-        if attr == 'allowed_methods':
-            value |= {'HEAD', 'OPTIONS'}
+        if attr == 'allowed_methods' and 'GET' in value:
+            value |= {'HEAD'}
         super().__setattr__(attr, value)
 
     def __setitem__(self, key, item):
@@ -200,10 +205,6 @@ class Endpoint(DictNoClobber):
         'new/static', ep.handler to partial(httpreq.do_cache, ep),
         ep.args to 'page', and ep.argslen to 1.
         
-        This method will also set httpreq.allowed_methods to a set of
-        allowed HTTP methods if httpreq.command is OPTIONS or some
-        method that's not allowed for this endpoint.
-
         If path does resolve to an enpoint's path but the
         request is not allowed for some reason, raises an exception:
             MethodNotAllowedError
@@ -282,10 +283,8 @@ class Endpoint(DictNoClobber):
         elif ep.argslen < ep.nargs:
             raise MissingArgsError
 
-        if httpreq.command not in ep.allowed_methods - {'OPTIONS'}:
-            httpreq.allowed_methods = ep.allowed_methods
         if httpreq.command not in ep.allowed_methods:
-            raise MethodNotAllowedError
+            raise MethodNotAllowedError(ep.allowed_methods)
 
         return ep
 

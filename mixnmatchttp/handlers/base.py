@@ -56,7 +56,7 @@ def methodhandler(realhandler, self, args, kwargs):
     self._BaseHTTPRequestHandler__can_read_body = True
     self._BaseHTTPRequestHandler__body = None
     self._BaseHTTPRequestHandler__read_body()
-    self.allowed_methods = None # Endpoint.parse may set it
+    self.headers_to_send = {}
 
     # save content-type and body parameters
     try:
@@ -80,17 +80,18 @@ def methodhandler(realhandler, self, args, kwargs):
         realhandler()
     except endpoints.MethodNotAllowedError as e:
         _logger.debug('{}'.format(str(e)))
-        self.send_error(405)
-    except (endpoints.MissingArgsError, endpoints.ExtraArgsError) as e:
-        _logger.debug('{}'.format(str(e)))
-        self.send_error(404, explain=str(e))
-    else:
+        self.headers_to_send = {'Allow': ','.join(e.allowed_methods)}
         if self.command == 'OPTIONS':
             _logger.debug('Doing OPTIONS')
             realhandler()
         else:
-            _logger.debug('Calling endpoint handler')
-            ep.handler()
+            self.send_error(405)
+    except (endpoints.MissingArgsError, endpoints.ExtraArgsError) as e:
+        _logger.debug('{}'.format(str(e)))
+        self.send_error(404, explain=str(e))
+    else:
+        _logger.debug('Calling endpoint handler')
+        ep.handler()
 
 ######################### EXCEPTIONS ########################
 
@@ -232,7 +233,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         self.__body = None
         self.__ctype = None
         self.__params = None
-        self.allowed_methods = None
+        self.headers_to_send = {}
         super().__init__(*args, **kwargs)
 
     @property
@@ -560,12 +561,18 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
             return data.decode('utf-8', errors='backslashreplace')
 
     def end_headers(self):
-        '''Calls send_custom_headers'''
+        '''Sends all custom headers and calls end_headers
+        
+        Calls send_custom_headers, send_cache_control and sends this
+        requests's headers_to_send
+        '''
 
+        _logger.debug(
+                'Sending final headers; this request has {}'.format(
+                    self.headers_to_send))
+        self.send_headers(self.headers_to_send)
         self.send_custom_headers()
         self.send_cache_control()
-        if self.allowed_methods is not None:
-            self.send_header('Allow', ','.join(self.allowed_methods))
         super().end_headers()
 
     def send_error(self, code, message=None, explain=None):

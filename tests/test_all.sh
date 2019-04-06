@@ -202,7 +202,8 @@ function test_endpoints {
   req -eb "This is do_default for  @ test/get_any \(foo/bar/baz\)" GET /test/get_any/foo/bar/baz
   req -eb "This is do_default for  @ test/get_req \(foo/bar/baz\)" GET /test/get_req/foo/bar/baz
 
-  req GET /test/modtest # modifies the default subpoint for /test to require 1 arg
+  req -i -eh "^X-Mod: *Test" \
+    GET /modtest # modifies the default subpoint for /test to require 1 arg
   req -eh "^HTTP/1\.[01] 404" \
     -3eb "Error code explanation: 404 - Extra arguments: foo" \
     GET /test/foo # should not take effect, i.e. it should still accept no args as before
