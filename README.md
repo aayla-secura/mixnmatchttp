@@ -99,16 +99,16 @@ of the parent. Their value should be another Endpoint (or any dictionary-like
 object). Default Endpoint attributes are:
 
 ```python
-  disabled=False # says whether the enpoint can be called directly; False for
-                 # child endpoints but True for root endpoint
+  disabled=False          # says whether the enpoint can be called directly;
+                          # False for child endpoints but True for root endpoint
   allowed_methods={'GET'} # a set of allowed HTTP methods
-  nargs=0        # how many slash-separated arguments the endpoint can take;
-                 # can be a number of any of:
-                 #   mixnmatchttp.endpoints.ARGS_OPTIONAL for  0 or 1
-                 #   mixnmatchttp.endpoints.ARGS_ANY      for  any number
-                 #   mixnmatchttp.endpoints.ARGS_REQUIRED for  1 or more
-  raw_args=False # whether arguments should be canonicalized,
-                 # e.g. /foo/..//bar/./baz will be turned to /bar/baz
+  nargs=0                 # how many slash-separated arguments the endpoint can take;
+                          # can be a number of any of:
+                          #   mixnmatchttp.endpoints.ARGS_OPTIONAL for 0 or 1
+                          #   mixnmatchttp.endpoints.ARGS_ANY      for any number
+                          #   mixnmatchttp.endpoints.ARGS_REQUIRED for 1 or more
+  raw_args=False          # whether arguments should be canonicalized,
+                          # e.g. /foo/..//bar/./baz will be turned to /bar/baz
 ```
 
 However, the root endpoint is disabled by default; if you want it enabled,
