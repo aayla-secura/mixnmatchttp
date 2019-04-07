@@ -119,8 +119,8 @@ class BaseMeta(type):
     def __new__(cls, name, bases, attrs):
         new_class = super().__new__(cls, name, bases, attrs)
 
-        _logger.debug('New class {}; has _endpoints: {}; bases: {}'.format(
-            name, '_endpoints' in attrs, [b.__name__ for b in bases]))
+        _logger.debug('New class {}; bases: {}'.format(
+            name, [b.__name__ for b in bases]))
         # every child gets it's own class attribute for _endpoints,
         # _template_pages and _templates, which combines all parents'
         # attributes
@@ -130,15 +130,19 @@ class BaseMeta(type):
                 '_templates': DictNoClobber,
                 }
         for attr in ['_endpoints', '_template_pages', '_templates']:
+            try:
+                dic = getattr(new_class, attr)
+            except AttributeError:
+                dic = required_classes[attr]()
+                _logger.debug('Initialized blank {}'.format(attr))
+            if not isinstance(dic, required_classes[attr]):
+                _logger.debug('Converting {} to {}'.format(
+                    attr, required_classes[attr].__name__))
+                dic = required_classes[attr](dic)
+            setattr(new_class, attr, dic)
+
             for bc in bases[::-1]:
                 if hasattr(bc, attr):
-                    try:
-                        dic = getattr(new_class, attr)
-                    except AttributeError:
-                        dic = required_classes[attr]()
-                        setattr(new_class, attr, dic)
-                    if not isinstance(dic, required_classes[attr]):
-                        dic = required_classes[attr](dic)
                     dic.update_noclob(getattr(bc, attr))
             _logger.debug('Final {} for {}: {}'.format(
                 attr, name, list(getattr(new_class, attr).keys())))
