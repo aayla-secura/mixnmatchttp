@@ -24,11 +24,6 @@ class EndpointError(Exception):
 
     pass
 
-class EndpointTooDeepError(EndpointError):
-    '''Exception raised when an endpoint is too deep in the hierarchy'''
-    def __init__(self, root):
-        super().__init__("{}'s level is too deep.".format(root))
-
 class EndpointParseError(Exception):
     '''Base class for exceptions related parsing of endpoints'''
 
@@ -104,13 +99,7 @@ class Endpoint(DictNoClobber):
         allowed_methods: <set>, defaults to {'GET'}
         nargs: <number>|ARGS_*, defaults to 0
         raw_args: <bool>, defaults to False
-
-    The class attribute _max_level defines the maximum depth of the
-    endpoint hierarchy, and defaults to 20.
     '''
-
-    _max_level = 20
-    __curr_level = -1
 
     @property
     def disabled(self):
@@ -135,15 +124,9 @@ class Endpoint(DictNoClobber):
         self.nargs = 0
         self.raw_args = False
 
-        try:
-            self.__class__.__curr_level += 1
-            super().__init__(*args, **kwargs)
-            _logger.debug('Level: {}; list of subpoints: {}'.format(
-                self.__curr_level, list(self.keys())))
-            self.__class__.__curr_level -= 1
-        except Exception as e:
-            self.__class__.__curr_level = -1
-            raise e
+        super().__init__(*args, **kwargs)
+        _logger.debug('list of subpoints: {}'.format(
+            list(self.keys())))
 
         if self.raw_args and self.nargs not in [ARGS_ANY, ARGS_REQUIRED]:
             _logger.warning(('Endpoint requires raw ' +
@@ -159,8 +142,6 @@ class Endpoint(DictNoClobber):
         super().__setattr__(attr, value)
 
     def __setitem__(self, key, item):
-        if self.__curr_level == self._max_level:
-            raise EndpointTooDeepError(key)
         if not key:
             raise ValueError('Endpoint must be non-empty')
 
