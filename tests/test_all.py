@@ -113,18 +113,14 @@ class TestHTTPRequestHandler(AuthHTTPRequestHandler,
         testtemplate={
             'fields': {
                 'BODY': 'This is $handler for $root @ $sub ($args)',
-            },
+                },
             'page': 'testpage'
-        },
-    )
+            },
+        )
 
     def do_dummylogin(self, ep):
-        self.rm_session()
-        cookie = self.new_session()
-        self.send_response_goto(headers={'Set-Cookie':
-            'SESSION={}; path=/; {}HttpOnly'.format(
-                cookie, ('Secure; ' if self._is_SSL else ''))
-            })
+        self.set_cookie()
+        self.send_response_goto()
         
     @endpoint_debug_handler
     def do_modtest(self, ep):
