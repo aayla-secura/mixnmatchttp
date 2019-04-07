@@ -8,41 +8,94 @@ standard_library.install_aliases()
 import os.path
 import re
 from collections import UserDict
+try:
+    # python2
+    from collections import _abcoll
+except ImportError:
+    # python3
+    from collections import abc as _abcoll
 import logging
 
 _logger = logging.getLogger(__name__)
 
 class DictNoClobber(UserDict, object):
+    @staticmethod
+    def __update(callback, *args, **kwargs):
+        '''Iterates over items in the first argument, then keywords
+        
+        Calls callback with two arguments: key, value.'''
+
+        if len(args) > 1:
+            raise TypeError('expected at most 1 arguments, got %d' % len(args))
+        if args:
+            other = args[0]
+            if isinstance(other, _abcoll.Mapping):
+                for key in other:
+                    callback(key, other[key])
+            elif hasattr(other, "keys"):
+                for key in other.keys():
+                    callback(key, other[key])
+            else:
+                for key, value in other:
+                    callback(key, value)
+        for key, value in kwargs.items():
+            callback(key, value)
+
     # python2's UserDict.update does not call __setitem__,
     # __getitem__, etc; so override it here to explicitly access the
-    # keys using the [] operator (as python3's UserDict.update does)
+    # keys using the [] operator (as python3's UserDict.update does).
+    # Also python2's UserDict.update accepts the deprecated dict
+    # argument; remove it--this update behaves like python3's
+    # UserDict.update
     def update(*args, **kwargs):
+        '''Updates using items in the first argument, then keywords'''
+
         if not args:
             raise TypeError("descriptor 'update' of 'UserDict' object "
                             "needs an argument")
         self = args[0]
         args = args[1:]
-        if len(args) > 1:
-            raise TypeError('expected at most 1 arguments, got %d' % len(args))
-        if args:
-            other = args[0]
-        elif 'dict' in kwargs:
-            other = kwargs.pop('dict')
-            import warnings
-            warnings.warn("Passing 'dict' as keyword argument is deprecated",
-                          PendingDeprecationWarning, stacklevel=2)
-        else:
-            other = None
-        if other is None:
-            other = kwargs
-        for k, v in other.items():
-            self[k] = v
+        self.__update(self.__setitem__, *args, **kwargs)
 
-    def update_noclob(self, *args, **kwargs):
+    def update_noclob(*args, **kwargs):
         '''Updates without overwriting existing keys'''
 
-        d = dict(*args, **kwargs)
-        self.update({k:v for k,v in d.items() if k not in self.keys()})
+        if not args:
+            raise TypeError("descriptor 'update' of 'UserDict' object "
+                            "needs an argument")
+        self = args[0]
+        args = args[1:]
+        self.__update(self.setdefault, *args, **kwargs)
+
+    def keys(self):
+        '''Returns a set-like object providing a view on the keys'''
+
+        try:
+            # python2
+            return self.data.viewkeys()
+        except AttributeError:
+            # python3
+            return super().keys()
+
+    def values(self):
+        '''Returns a set-like object providing a view on the values'''
+
+        try:
+            # python2
+            return self.data.viewvalues()
+        except AttributeError:
+            # python3
+            return super().values()
+
+    def items(self):
+        '''Returns a set-like object providing a view on the items'''
+
+        try:
+            # python2
+            return self.data.viewitems()
+        except AttributeError:
+            # python3
+            return super().items()
 
 def abspath(path):
     '''Canonicalize the path segment by segment

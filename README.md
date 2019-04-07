@@ -112,18 +112,18 @@ value should be another `Endpoint` (or any dictionary-like object).
 Default endpoint attributes are:
 
 ```python
-disabled=False|True     # specifies if the enpoint cannot be called directly;
-                        # False for child endpoints but True for root endpoint
-allowed_methods={'GET'} # a set of allowed HTTP methods; HEAD is added to the
-                        # set if 'GET' is present
-nargs=0                 # how many slash-separated arguments the endpoint can take;
-                        # can be a number of any of:
-                        #   mixnmatchttp.endpoints.ARGS_OPTIONAL for 0 or 1
-                        #   mixnmatchttp.endpoints.ARGS_ANY      for any number
-                        #   mixnmatchttp.endpoints.ARGS_REQUIRED for 1 or more
-                        # !!only reliable if raw_args is False!!
-raw_args=False          # whether arguments should not be canonicalized,
-                        # e.g. /foo/..//bar/./baz will not be turned to /bar/baz
+disabled=False|True            # specifies if the enpoint cannot be called directly;
+                               # False for child endpoints but True for root endpoint
+allowed_methods={'GET','HEAD'} # a set of allowed HTTP methods; HEAD is added to the
+                               # set if 'GET' is present
+nargs=0                        # how many slash-separated arguments the endpoint can take;
+                               # can be a number of any of:
+                               #   mixnmatchttp.endpoints.ARGS_OPTIONAL for 0 or 1
+                               #   mixnmatchttp.endpoints.ARGS_ANY      for any number
+                               #   mixnmatchttp.endpoints.ARGS_REQUIRED for 1 or more
+                               # !!only reliable if raw_args is False!!
+raw_args=False                 # whether arguments should not be canonicalized,
+                               # e.g. /foo/..//bar/./baz will not be turned to /bar/baz
 ```
 
 Child endpoints are enabled by default, the root endpoint is disabled by
