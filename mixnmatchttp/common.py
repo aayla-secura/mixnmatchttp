@@ -16,7 +16,15 @@ except ImportError:
     from collections import abc as _abcoll
 import logging
 
-_logger = logging.getLogger(__name__)
+__all__ = [
+        'DictNoClobber',
+        'abspath',
+        'iter_abspath_up_to_nth',
+        'iter_abspath',
+        'param_dict',
+        ]
+
+logger = logging.getLogger(__name__)
 
 class DictNoClobber(UserDict, object):
     @staticmethod
@@ -196,5 +204,5 @@ def param_dict(s, itemsep=' *; *', valsep='=', values_are_opt=False):
     except ValueError:
         pass
 
-    _logger.debug('Got params from {}: {}'.format(s, params))
+    logger.debug('Got params from {}: {}'.format(s, params))
     return params

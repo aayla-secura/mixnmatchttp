@@ -18,7 +18,16 @@ from future.utils import with_metaclass
 from .. import endpoints
 from ..common import abspath, param_dict, DictNoClobber
 
-_logger = logging.getLogger(__name__)
+__all__ = [
+        'methodhandler',
+        'PageReadError',
+        'UnsupportedOperationError',
+        'DecodingError',
+        'BaseMeta',
+        'BaseHTTPRequestHandler',
+        ]
+
+logger = logging.getLogger(__name__)
 
 @decorator
 def methodhandler(realhandler, self, args, kwargs):
@@ -29,8 +38,8 @@ def methodhandler(realhandler, self, args, kwargs):
     Calls the endpoint's handler or the HTTP method handler
     '''
 
-    _logger.debug('INIT for method handler')
-    _logger.debug('Path is {}'.format(self.path))
+    logger.debug('INIT for method handler')
+    logger.debug('Path is {}'.format(self.path))
 
     # split query from pathname and decode them
     #TODO other encodings??
@@ -42,16 +51,16 @@ def methodhandler(realhandler, self, args, kwargs):
             self._BaseHTTPRequestHandler__pathname = \
             urllib.parse.unquote_plus(m.group(1) + m.group(3))
 
-    _logger.debug('Decoded path is {}'.format(self.pathname))
+    logger.debug('Decoded path is {}'.format(self.pathname))
     # canonicalize the path
     self._BaseHTTPRequestHandler__pathname = abspath(self.pathname)
-    _logger.debug('Real path is {}'.format(self.pathname))
+    logger.debug('Real path is {}'.format(self.pathname))
     assert self.pathname[0] == '/'
 
     # save query parameters
     self._BaseHTTPRequestHandler__query = param_dict(query_str, itemsep='&',
             values_are_opt=True)
-    _logger.debug('Query params are {}'.format(self.query))
+    logger.debug('Query params are {}'.format(self.query))
 
     self._BaseHTTPRequestHandler__can_read_body = True
     self._BaseHTTPRequestHandler__body = None
@@ -76,21 +85,21 @@ def methodhandler(realhandler, self, args, kwargs):
     try:
         ep = self.endpoints.parse(self)
     except endpoints.NotAnEndpointError as e:
-        _logger.debug('{}'.format(str(e)))
+        logger.debug('{}'.format(str(e)))
         realhandler()
     except endpoints.MethodNotAllowedError as e:
-        _logger.debug('{}'.format(str(e)))
+        logger.debug('{}'.format(str(e)))
         self.headers_to_send = {'Allow': ','.join(e.allowed_methods)}
         if self.command == 'OPTIONS':
-            _logger.debug('Doing OPTIONS')
+            logger.debug('Doing OPTIONS')
             realhandler()
         else:
             self.send_error(405)
     except (endpoints.MissingArgsError, endpoints.ExtraArgsError) as e:
-        _logger.debug('{}'.format(str(e)))
+        logger.debug('{}'.format(str(e)))
         self.send_error(404, explain=str(e))
     else:
-        _logger.debug('Calling endpoint handler')
+        logger.debug('Calling endpoint handler')
         ep.handler()
 
 ######################### EXCEPTIONS ########################
@@ -119,7 +128,7 @@ class BaseMeta(type):
     def __new__(cls, name, bases, attrs):
         new_class = super().__new__(cls, name, bases, attrs)
 
-        _logger.debug('New class {}; bases: {}'.format(
+        logger.debug('New class {}; bases: {}'.format(
             name, [b.__name__ for b in bases]))
         # every child gets it's own class attribute for _endpoints,
         # _template_pages and _templates, which combines all parents'
@@ -134,9 +143,9 @@ class BaseMeta(type):
                 dic = getattr(new_class, attr)
             except AttributeError:
                 dic = required_classes[attr]()
-                _logger.debug('Initialized blank {}'.format(attr))
+                logger.debug('Initialized blank {}'.format(attr))
             if not isinstance(dic, required_classes[attr]):
-                _logger.debug('Converting {} to {}'.format(
+                logger.debug('Converting {} to {}'.format(
                     attr, required_classes[attr].__name__))
                 dic = required_classes[attr](dic)
             setattr(new_class, attr, dic)
@@ -144,7 +153,7 @@ class BaseMeta(type):
             for bc in bases[::-1]:
                 if hasattr(bc, attr):
                     dic.update_noclob(getattr(bc, attr))
-            _logger.debug('Final {} for {}: {}'.format(
+            logger.debug('Final {} for {}: {}'.format(
                 attr, name, list(getattr(new_class, attr).keys())))
 
         return new_class
@@ -229,7 +238,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         self._template_pages = value
 
     def __init__(self, *args, **kwargs):
-        _logger.debug('INIT for {}'.format(self))
+        logger.debug('INIT for {}'.format(self))
         self.__pathname = ''
         self.__raw_pathname = ''
         self.__query = dict()
@@ -262,7 +271,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         try:
             body = self.__body.decode('utf-8')
         except UnicodeDecodeError:
-            _logger.debug('Errors decoding request body')
+            logger.debug('Errors decoding request body')
             body = self.__body.decode('utf-8',
                     errors='backslashreplace')
         return body
@@ -310,7 +319,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         post_data defaults to the request body
         '''
 
-        _logger.debug('Loading parameters from form body')
+        logger.debug('Loading parameters from form body')
         if post_data is None:
             post_data = self.body
         req_params = param_dict(post_data, itemsep='&')
@@ -325,7 +334,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         post_data defaults to the request body
         '''
 
-        _logger.debug('Loading parameters from JSON body')
+        logger.debug('Loading parameters from JSON body')
         if post_data is None:
             post_data = self.body
         try:
@@ -423,7 +432,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
     def show(self):
         '''Logs the request'''
 
-        _logger.info('''
+        logger.info('''
 ----- Request Start ----->
 
 {}
@@ -443,7 +452,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         '''
 
         self.send_response(code)
-        self.send_header('Content-type', page['type'])
+        self.send_header('Content-Type', page['type'])
         self.send_header('Content-Length', len(page['data']))
         self.send_headers(headers)
         self.end_headers()
@@ -455,13 +464,13 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         try:
             page = self._template_pages[template['page']].copy()
         except KeyError:
-            _logger.debug('Using default template page')
+            logger.debug('Using default template page')
             page = self._template_pages['default'].copy()
 
         try:
             fields = template['fields']
         except KeyError:
-            _logger.debug('No fields for template')
+            logger.debug('No fields for template')
             fields = {}
 
         page['data'] = Template(page['data']).safe_substitute(fields)
@@ -478,7 +487,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         try:
             page['data'] = page['data'].encode('utf-8')
         except UnicodeEncodeError:
-            _logger.debug('Errors encoding page body')
+            logger.debug('Errors encoding page body')
             page['data'] = page['data'].encode('utf-8',
                     errors='backslashreplace')
 
@@ -490,7 +499,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         methodhandler calls this and it cannot be called again
         '''
 
-        _logger.debug('Decoding body')
+        logger.debug('Decoding body')
         if not self.__can_read_body:
             raise UnsupportedOperationError
 
@@ -501,7 +510,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         else:
             self.__body = self.rfile.read(length)
 
-        _logger.debug('Read {} bytes from body'.format(len(self.__body)))
+        logger.debug('Read {} bytes from body'.format(len(self.__body)))
         self.__can_read_body = False
 
     def __decode_body(self):
@@ -527,12 +536,12 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         elif ctype == 'application/x-www-form-urlencoded':
             param_loader = self.form_params
         else:
-            _logger.debug("Don't know how to read body parameters")
+            logger.debug("Don't know how to read body parameters")
             param_loader = lambda: {}
 
         self.__params = param_loader()
         self.__ctype = ctype
-        _logger.debug('Request parameters: {}'.format(self.__params))
+        logger.debug('Request parameters: {}'.format(self.__params))
 
     @staticmethod
     def url_data(data_enc):
@@ -561,7 +570,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         try:
             return data.decode('utf-8')
         except UnicodeDecodeError:
-            _logger.debug('Errors decoding base64 data')
+            logger.debug('Errors decoding base64 data')
             return data.decode('utf-8', errors='backslashreplace')
 
     def end_headers(self):
@@ -571,7 +580,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         requests's headers_to_send
         '''
 
-        _logger.debug(
+        logger.debug(
                 'Sending final headers; this request has {}'.format(
                     self.headers_to_send))
         self.send_headers(self.headers_to_send)

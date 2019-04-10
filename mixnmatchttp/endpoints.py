@@ -15,7 +15,21 @@ ARGS_OPTIONAL = '?' # 0 or 1
 ARGS_ANY = '*'      # any number
 ARGS_REQUIRED = '+' # 1 or more
 
-_logger = logging.getLogger(__name__)
+__all__ = [
+        'ARGS_OPTIONAL',
+        'ARGS_ANY',
+        'ARGS_REQUIRED',
+        'EndpointError',
+        'EndpointParseError',
+        'NotAnEndpointError',
+        'MethodNotAllowedError',
+        'MissingArgsError',
+        'ExtraArgsError',
+        'Endpoint',
+        'ParsedEndpoint',
+        ]
+
+logger = logging.getLogger(__name__)
 
 ######################### EXCEPTIONS ########################
 
@@ -114,10 +128,10 @@ class Endpoint(DictNoClobber):
                 }
 
         super().__init__(*args, **kwargs)
-        _logger.debug('list of subpoints: {}'.format(list(self.keys())))
+        logger.debug('list of subpoints: {}'.format(list(self.keys())))
 
         if self.raw_args and self.nargs not in [ARGS_ANY, ARGS_REQUIRED]:
-            _logger.warning(('Endpoint requires raw ' +
+            logger.warning(('Endpoint requires raw ' +
                 'arguments, but is sensitive to the number ' +
                 'of arguments; not reliable!'))
         if self.raw_args and self.keys():
@@ -149,13 +163,13 @@ class Endpoint(DictNoClobber):
             raise ValueError('Endpoint must be non-empty')
 
         if key[0] == '$':
-            _logger.debug(
+            logger.debug(
                     'Endpoint special key {}, setting as attribute'.format(key))
             getattr(self, key[1:]) # raise an exception if
                                    # attribute is unknown
             setattr(self, key[1:], item)
         else:
-            _logger.debug('Creating endpoint {}'.format(key))
+            logger.debug('Creating endpoint {}'.format(key))
             if isinstance(item, Endpoint):
                 super().__setitem__(key, item.copy())
             else:
@@ -234,7 +248,7 @@ class Endpoint(DictNoClobber):
         try:
             self.__getattribute__(attr)
         except AttributeError:
-            _logger.debug('Setting {} to default ({})'.format(
+            logger.debug('Setting {} to default ({})'.format(
                 attr, default))
             if default is None:
                 try:
@@ -278,12 +292,12 @@ class Endpoint(DictNoClobber):
 
         def __setdefaultitem(key, value):
             if key[0] == '$':
-                _logger.debug(
+                logger.debug(
                         'Updating without clobbering: attr {}={}'.format(
                             key[1:], value))
                 self.setdefaultattr(key[1:], value)
             else:
-                _logger.debug(
+                logger.debug(
                         'Updating without clobbering: key {}={}'.format(
                             key, value))
                 self.setdefault(key, value)
@@ -337,17 +351,17 @@ class Endpoint(DictNoClobber):
         # we don't yet know if the endpoint wants the arguments raw or
         # canonicalized. So we check each absolute segment; if it's an
         # endpoint remember it, check next
-        _logger.debug('Checking if endpoint takes raw arguments')
+        logger.debug('Checking if endpoint takes raw arguments')
         ep = None
         handler = httpreq.do_default
         root = sub = args = ''
         for curr_path, curr_args in iter_abspath(path):
-            _logger.debug('Current abspath segment: {}'.format(curr_path))
+            logger.debug('Current abspath segment: {}'.format(curr_path))
             curr_ep, curr_handler, curr_root, curr_sub = \
                     self._select_handler(curr_path, httpreq)
 
             if curr_ep is None:
-                _logger.debug('No match on this level')
+                logger.debug('No match on this level')
                 continue
 
             ep = curr_ep
@@ -355,17 +369,17 @@ class Endpoint(DictNoClobber):
             root = curr_root
             sub = curr_sub
             args = curr_args
-            _logger.debug(
+            logger.debug(
                     'Match on this level: root: {}, sub: {}, args: {}'.format(
                         root, sub, args))
 
             if ep.raw_args:
-                _logger.debug('{}({}) is "raw"; done'.format(root, sub))
+                logger.debug('{}({}) is "raw"; done'.format(root, sub))
                 break # don't inspect rest of path
 
         if ep is None or ep.disabled:
             if ep is not None:
-                _logger.debug('{} is disabled'.format(root))
+                logger.debug('{} is disabled'.format(root))
             raise NotAnEndpointError(path)
 
         # either entire canonical path resolved to an endpoint, or
@@ -381,7 +395,7 @@ class Endpoint(DictNoClobber):
                 args,
                 len(args_arr))
 
-        _logger.debug(
+        logger.debug(
                 'API call: {}, root: {}, sub: {}, {} args: {}'.format(
                     ep, ep.root, ep.sub, ep.argslen, ep.args))
 
@@ -410,7 +424,7 @@ class Endpoint(DictNoClobber):
         path must be canonical (no double //, no ./ or ../).
         '''
 
-        _logger.debug('Getting endpoints from path {}'.format(path))
+        logger.debug('Getting endpoints from path {}'.format(path))
         ep = self
         curr_path = ''
         pref = ''
@@ -423,7 +437,7 @@ class Endpoint(DictNoClobber):
             path = path[:-1]
         for p in path.split('/'):
             curr_path += '/' + p
-            _logger.debug(
+            logger.debug(
                     'Current list of subpoints: {}; trying {}'.format(
                         list(ep.keys()), p))
             try:
@@ -432,7 +446,7 @@ class Endpoint(DictNoClobber):
                 return
             yield ep, pref + curr_path[1:] + suf
 
-        _logger.debug('Final: {}'.format(pref + curr_path[1:] + suf))
+        logger.debug('Final: {}'.format(pref + curr_path[1:] + suf))
 
     def get_from_path(self, path, httpreq=None):
         '''Returns an endpoint with the given path or None
@@ -441,7 +455,7 @@ class Endpoint(DictNoClobber):
         '''
 
         for ep, ep_path in self.iter_path(path):
-            _logger.debug('{} is an endpoint'.format(ep_path))
+            logger.debug('{} is an endpoint'.format(ep_path))
             if ep_path == path:
                 return ep
 
@@ -474,16 +488,16 @@ class Endpoint(DictNoClobber):
 
         ep = handler = None
         ep_path = root = sub = ''
-        _logger.debug('Iterating over path {}'.format(path))
+        logger.debug('Iterating over path {}'.format(path))
         for ep, ep_path in self.iter_path(path):
-            _logger.debug('{} is an endpoint'.format(ep_path))
+            logger.debug('{} is an endpoint'.format(ep_path))
             try:
                 curr_handler = getattr(
                         httpreq, 'do' + ep_path.replace('/', '_'))
             except AttributeError:
-                _logger.debug('No handler for {}'.format(ep_path))
+                logger.debug('No handler for {}'.format(ep_path))
             else:
-                _logger.debug('Found handler for {}'.format(ep_path))
+                logger.debug('Found handler for {}'.format(ep_path))
                 root = ep_path
                 handler = curr_handler
         

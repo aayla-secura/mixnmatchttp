@@ -12,7 +12,11 @@ import mimetypes
 from .. import endpoints,cache
 from .base import BaseHTTPRequestHandler, DecodingError
 
-_logger = logging.getLogger(__name__)
+__all__ = [
+        'CachingHTTPRequestHandler',
+        ]
+
+logger = logging.getLogger(__name__)
 
 class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
     cache = cache.Cache()
@@ -56,7 +60,7 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
             body_enc = self.params['data']
         except KeyError:
             raise DecodingError('No "data" parameter present!')
-        _logger.debug('Encoded body: {}'.format(body_enc))
+        logger.debug('Encoded body: {}'.format(body_enc))
 
         try:
             page_ctype = type_decoder(self.params['type']).split(';',1)[0]
@@ -65,15 +69,15 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
         except (KeyError, ValueError):
             page_ctype = 'text/plain'
         else:
-            _logger.debug('Content-Type: {}'.format(page_ctype))
+            logger.debug('Content-Type: {}'.format(page_ctype))
 
         try:
             body = data_decoder(body_enc).encode('utf-8')
         except UnicodeEncodeError:
-            _logger.debug('Errors encoding request data')
+            logger.debug('Errors encoding request data')
             body = data_decoder(body_enc).encode('utf-8',
                     errors='backslashreplace')
-        _logger.debug('Decoded body: {}'.format(body))
+        logger.debug('Decoded body: {}'.format(body))
 
         return {'data': body, 'type': page_ctype}
 

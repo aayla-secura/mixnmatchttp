@@ -13,7 +13,16 @@ from .. import endpoints
 from ..common import param_dict
 from .base import BaseHTTPRequestHandler, DecodingError
 
-_logger = logging.getLogger(__name__)
+__all__ = [
+        'AuthError',
+        'UserAlreadyExistsError',
+        'NoSuchUserError',
+        'InvalidUsernameError',
+        'BadPasswordError',
+        'AuthHTTPRequestHandler',
+        ]
+
+logger = logging.getLogger(__name__)
 
 class AuthError(Exception):
     '''Base class for exceptions related to request body read'''
@@ -110,9 +119,9 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
     def is_secret(self):
         '''Returns whether path requires authentication'''
 
-        _logger.debug('{} secrets'.format(len(self._secrets)))
+        logger.debug('{} secrets'.format(len(self._secrets)))
         for s in self._secrets:
-            _logger.debug('{} is secret'.format(s))
+            logger.debug('{} is secret'.format(s))
             if re.search('{}{}(/|$)'.format(
                 ('^' if s[0] == '/' else '(/|^)'), s), self.pathname):
                 return True
@@ -124,16 +133,16 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
 
         cookies = param_dict(self.headers.get('Cookie'))
         if not cookies:
-            _logger.debug('No cookies given')
+            logger.debug('No cookies given')
             session = None
         else:
             try:
                 session = cookies[self._cookie_name]
             except KeyError:
-                _logger.debug('No {} cookie given'.format(self._cookie_name))
+                logger.debug('No {} cookie given'.format(self._cookie_name))
                 session = None
             else:
-                _logger.debug('Cookie is {}valid'.format(
+                logger.debug('Cookie is {}valid'.format(
                     '' if session in self.__sessions else 'not '))
 
         return session
@@ -154,7 +163,7 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
         cookie = '{:02x}'.format(randint(0, 2**(4*self._cookie_len)-1))
         if len(self.__sessions) >= self._max_sessions:
             # remove a third of the oldest sessions
-            _logger.debug('Purging old sessions')
+            logger.debug('Purging old sessions')
             del self.__sessions[int(self._max_sessions/3):]
         self.__sessions.append(cookie)
         return cookie
@@ -178,7 +187,7 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
                     self.create_user(username, password)
                 except (UserAlreadyExistsError, InvalidUsernameError,
                         BadPasswordError) as e:
-                    _logger.debug('{}'.format(str(e)))
+                    logger.debug('{}'.format(str(e)))
 
     def purge_users(self, filename):
         '''Deletes all users from memory'''
@@ -195,7 +204,7 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
         password = self.get_param('password')
         try:
             if self.__users[username] != password:
-                _logger.debug(
+                logger.debug(
                         'Wrong password for user {}'.format(username))
                 raise ValueError
         except (KeyError, ValueError):

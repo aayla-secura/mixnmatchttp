@@ -9,7 +9,16 @@ from future import standard_library
 standard_library.install_aliases()
 import logging
 
-_logger = logging.getLogger(__name__)
+__all__ = [
+        'CacheError',
+        'PageNotCachedError',
+        'PageClearedError',
+        'CacheMemoryError',
+        'CacheOverwriteError',
+        'Cache',
+        ]
+
+logger = logging.getLogger(__name__)
 
 ######################### EXCEPTIONS ########################
 
@@ -69,15 +78,15 @@ class Cache(object):
         try:
             self.__pages[name]
         except KeyError:
-            _logger.debug('Caching page "{}"'.format(name))
+            logger.debug('Caching page "{}"'.format(name))
             self.__pages[name] = page
             self.__size += len(page['data'])
-            _logger.debug('Cache size is: {}'.format(self.size))
+            logger.debug('Cache size is: {}'.format(self.size))
         else:
             raise CacheOverwriteError
 
     def get(self, name):
-        _logger.debug('Trying to get page "{}"'.format(name))
+        logger.debug('Trying to get page "{}"'.format(name))
         try:
             page = self.__pages[name]
         except KeyError:
@@ -100,7 +109,7 @@ class Cache(object):
         else:
             to_clear = [name]
 
-        _logger.debug('Clearing from cache: {}'.format(
+        logger.debug('Clearing from cache: {}'.format(
             ', '.join(to_clear)))
 
         for key in to_clear:
@@ -108,7 +117,7 @@ class Cache(object):
                 self.__size -= len(self.__pages[key]['data'])
             self.__pages[key] = None
 
-        _logger.debug('Cache size is: {}'.format(self.size))
+        logger.debug('Cache size is: {}'.format(self.size))
         assert self.__size >= 0
 
     @property

@@ -12,7 +12,11 @@ from .. import endpoints
 from ..common import param_dict
 from .base import BaseHTTPRequestHandler
 
-_logger = logging.getLogger(__name__)
+__all__ = [
+        'ProxyingHTTPRequestHandler',
+        ]
+
+logger = logging.getLogger(__name__)
 
 class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
     _endpoints = endpoints.Endpoint(
@@ -54,7 +58,7 @@ class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
             if proto and proto[-1] != ':':
                 proto += ':'
             path = ''.join([proto, '//', host, pref, ep.args])
-            _logger.debug('Redirecting to {}'.format(path))
+            logger.debug('Redirecting to {}'.format(path))
             self.send_response_goto(code=307, url=path)
 
         fwd = dict()
@@ -69,7 +73,7 @@ class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
                         ]))[0]).groupdict()
         except (IndexError, AttributeError):
             # otherwise check X-Forwarded-*
-            _logger.debug('Checking Origin and X-Forwarded-*')
+            logger.debug('Checking Origin and X-Forwarded-*')
             try:
                 fwd['host'] = list(filter(None, [
                     self.headers.get('X-Forwarded-Host'),
@@ -77,7 +81,7 @@ class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
                     ]))[0]
             except IndexError:
                 # otherwise check Forwarded
-                _logger.debug('Checking Forwarded')
+                logger.debug('Checking Forwarded')
                 fwdstr = self.headers.get( 'Forwarded')
                 if fwdstr is None:
                     fwdstr = ''
@@ -89,8 +93,8 @@ class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
                     fwd['proto'] = ''
 
         try:
-            _logger.debug('fwd: {}'.format(fwd))
+            logger.debug('fwd: {}'.format(fwd))
             send_redir(**fwd)
         except TypeError:
-            _logger.debug("Couldn't figure out host to redirect to...")
+            logger.debug("Couldn't figure out host to redirect to...")
             self.send_response_default()
