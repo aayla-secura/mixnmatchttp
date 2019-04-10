@@ -3,6 +3,7 @@
 !README*.md
 !LICENSE
 !setup.py
+!demo.py
 !mixnmatchttp
 !mixnmatchttp/**
 !demos
@@ -10,6 +11,8 @@
 !tests
 !tests/**
 tests/mixnmatchttp
+tests/mixnmatchttp_local
+demos/mixnmatchttp
 .DS_Store
 __pycache__
 *.pyc
