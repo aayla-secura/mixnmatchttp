@@ -163,6 +163,11 @@ Some methods that you may want to override, as well as implementing a custom
 endpoint and template, are shown below for `MyHandler`:
 
 ```python
+#  from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from builtins import *
 from future import standard_library
 standard_library.install_aliases()
 import re
@@ -223,7 +228,7 @@ class MyHandler(BaseHTTPRequestHandler):
         },
         debug={
             'fields':{
-                'CONTENT':'You called endpoint $root ($sub) ($args)',
+                'CONTENT':'${info}You called endpoint $root ($sub) ($args)',
             },
             'page': 'simpletxt',
         },
@@ -247,11 +252,18 @@ class MyHandler(BaseHTTPRequestHandler):
                 {'root': ep.root, 'sub': ep.sub, 'args': ep.args})
         self.render(page)
 
+    def do_default(self, ep):
+        '''Default endpoints handler'''
+        page = self.page_from_template(self.templates['debug'],
+                {'info': 'This is do_default. ',
+                    'root': ep.root, 'sub': ep.sub, 'args': ep.args})
+        self.render(page)
+
     # Don't forget this decorator!
     @methodhandler
     def do_GET(self):
         # Do something here, then call parent's undecorated method
-        super(MyHandler, self).do_GET.__wrapped__()
+        super().do_GET.__wrapped__()
 
     def denied(self):
         '''Deny access to /forbidden'''
@@ -259,11 +271,11 @@ class MyHandler(BaseHTTPRequestHandler):
             # return args are passed to BaseHTTPRequestHandler.send_error
             # in that order; both messages are optional
             return (403, None, 'Access denied')
-        return super(MyHandler, self).denied()
+        return super().denied()
 
     def no_cache(self):
       '''Only allow caching of scripts'''
-      return (not self.pathname.endswith('.js')) or super(MyHandler, self).no_cache()
+      return (not self.pathname.endswith('.js')) or super().no_cache()
 
     def send_custom_headers(self):
       '''Send our custom headers'''
@@ -293,11 +305,11 @@ if __name__ == "__main__":
         httpd.server_close()
 ```
 
-  * A request for `/debug/sub/..//foo/../bar/./baz` will call `self.do_debug` with a copy of `MyHandler._endpoints['debug']['sub']`. `self.command` will give the HTTP method.
-  * A request for `/debug/foo/../bar` will canonicalize the path to `/debug/bar` (since `raw_args` for `/debug` is `False`) call `do_debug` with a copy of `MyHandler._endpoints['debug']`.
+  * A request for `/debug/sub/..//foo/../bar/./baz` will call `self.do_debug` with `ep`, a copy of `MyHandler._endpoints['debug']['sub']`. `ep.root` will be "debug", `ep.sub` will be "sub", `ep.args` will be "..//foo/../bar/./baz". `self.command` will give the HTTP method.
+  * A request for `/debug/foo/../bar` will canonicalize the path to `/debug/bar` (since `raw_args` for `/debug` is `False`) call `do_debug` with `ep`, a copy of `MyHandler._endpoints['debug']`. `ep.root` will be "debug", `ep.sub` will be "", `ep.args` will be "bar".
   * A request for `/debug/../bar` will raise `mixnmatchttp.endpoints.NotAnEndpointError` since the path will be canonicalized (as above) and result in `/bar`, and `bar` is not a valid endpoint.
   * A `POST` request for `/foobar` will raise `mixnmatchttp.endpoints.MethodNotAllowedError` since `/foobar` only allows HTTP `GET`.
-  * A request for `/debug/../foobar` will call parent's `do_default` with a copy of `MyHandler._endpoints['foobar']`.
+  * A request for `/debug/../foobar` will call parent's `do_default` with `ep`, a copy of `MyHandler._endpoints['foobar']`. `ep.root` will be "", `ep.sub` will be "foobar", `ep.args` will be "".
   * A request for `/debug/foo/bar` will raise `mixnmatchttp.endpoints.ExtraArgsError` since `/debug` expect exactly one argument.
   * A request for `/debug` will raise `mixnmatchttp.endpoints.MissingArgsError` since `/debug` expect exactly one argument.
   * A request for `/refreshme` will render a page which refreshes every 30 seconds (default).
