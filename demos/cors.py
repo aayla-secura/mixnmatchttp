@@ -22,7 +22,9 @@ class DebugStreamHandler(logging.StreamHandler):
         super().emit(record)
 
 # Configure logging before importing mixnmatchttp
-logger = logging.getLogger('CORS HTTP Server')
+# name has to be mixnmatchttp so that our handlers handle messages
+# from that package
+logger = logging.getLogger('mixnmatchttp')
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -109,6 +111,8 @@ if __name__ == "__main__":
             cache has not been implemented in an MT safe way yet.''')
     args = parser.parse_args()
 
+    formatter = logging.Formatter(
+            fmt='%(name)s [%(threadName)s]: %(message)s')
     if args.logfile is None:
         hnOUT = logging.StreamHandler(sys.stdout)
         hnOUT.setLevel(logging.INFO)
@@ -116,11 +120,14 @@ if __name__ == "__main__":
         hnDBG.setLevel(logging.DEBUG)
         handlers = [hnOUT, hnDBG]
     else:
-        logkwargs = {'filename': args.logfile}
-        handlers = [logging.FileHandler(args.logfile)]
-    logging.basicConfig(level=args.loglevel,
-            format='%(name)s [%(threadName)s]: %(message)s',
-            handlers=handlers)
+        hnFILE = logging.FileHandler(args.logfile)
+        hnFILE.setLevel(args.loglevel)
+        handlers = [hnFILE]
+
+    for h in handlers:
+        h.setFormatter(formatter)
+        logger.addHandler(h)
+    logger.setLevel(args.loglevel)
 
     if args.port is None:
         args.port = 58443 if args.ssl else 58080
@@ -208,6 +215,12 @@ if __name__ == "__main__":
                 keyfile=args.keyfile,
                 certfile=args.certfile,
                 server_side=True)
+
+    url = '{proto}://{addr}:{port}'.format(
+            proto='https' if args.ssl else 'http',
+            addr=args.address,
+            port=args.port)
+    logger.info('Starting server on {}'.format(url))
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

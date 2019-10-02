@@ -17,6 +17,7 @@ BEGIN {
   print "| :------------------: | :--------------------: | :---------: | :---------: | :-------------: | :-------------: | :---------: | :---------: |"
 }
 /[^ ]/ {
+  sub("\r", "", $0)
   # look for first non-blank line after start
   if (newReq) {
     newReq=0 
@@ -26,24 +27,25 @@ BEGIN {
       mArr)
     if (requested) {
       method=mArr[1]
-      if (mArr[2] == mArr[5]) {
-        origin="{ECHO}"
-      } else {
-        origin=gensub(/%3a/, ":", "g", tolower(mArr[2]))
-        origin=gensub(/%2f/, "/", "g", origin)
+      allowOrigin=gensub(/%3a/, ":", "g", tolower(mArr[2]))
+      allowOrigin=gensub(/%2f/, "/", "g", allowOrigin)
+      reqOrigin=gensub(/%3a/, ":", "g", tolower(mArr[5]))
+      reqOrigin=gensub(/%2f/, "/", "g", reqOrigin)
+      if (allowOrigin == reqOrigin) {
+        allowOrigin="{ECHO}"
       }
-      if (debug > 1) { print "DEBUG: origin: " origin }
-      creds=mArr[3]
+      if (debug > 1) { print "DEBUG: allowOrigin: " allowOrigin }
+      allowCreds=mArr[3]
       exfMethod=mArr[4]
     } else {
       exfiltrated=match($0,
         /^POST \/sop\/getSecret.html\?.*&allowOrigin=([^&]*)&allowCreds=([01])&method=([^&]+)&via=([^&]+) HTTP\/[0-9\.]+$/,
         mArr)
       if (exfiltrated) {
-        origin=gensub(/%3a/, ":", "g", tolower(mArr[1]))
-        origin=gensub(/%2f/, "/", "g", origin)
-        if (debug > 1) { print "DEBUG: origin: " origin }
-        creds=mArr[2]
+        allowOrigin=gensub(/%3a/, ":", "g", tolower(mArr[1]))
+        allowOrigin=gensub(/%2f/, "/", "g", allowOrigin)
+        if (debug > 1) { print "DEBUG: allowOrigin: " allowOrigin }
+        allowCreds=mArr[2]
         method=mArr[3]
         exfMethod=mArr[4]
       }
@@ -67,10 +69,13 @@ BEGIN {
     if (debug > 1) { print "DEBUG: " $0 }
     sendsOrigin="Y"
   }
-  # look for the Host after exfiltration and compare to origin (which is allowed)
+  # look for the Host after exfiltration and compare to allowOrigin
   if (exfiltrated && match($0, /^Host: *(.*)/, mArr)) {
-    if (mArr[1] == gensub(/https?:\/\//, "", "1", origin)) {
-      origin="{ECHO}" # clearly shows when the origin is allowed in the table
+    if (debug > 1) {
+      print "DEBUG: Comparing reqOrigin " mArr[1] " to allowOrigin " gensub(/^https?:\/\//, "", "1", allowOrigin)
+    }
+    if (mArr[1] == gensub(/^https?:\/\//, "", "1", allowOrigin)) {
+      allowOrigin="{ECHO}" # clearly shows when the allowOrigin is allowed in the table
     }
   }
   # look for the User-Agent
@@ -167,8 +172,8 @@ BEGIN {
 }
 /^----- Request Start ----->/ {
   newReq=1
-  origin=""
-  creds=""
+  allowOrigin=""
+  allowCreds=""
   sendsOrigin=""
   method=""
   preflight=""
@@ -181,13 +186,13 @@ BEGIN {
 /^<----- Request End -----/ {
 
   if (requested || exfiltrated) {
-    id=ua "@" origin "@" creds "@" method "@" exfMethod
+    id=ua "@" allowOrigin "@" allowCreds "@" method "@" exfMethod
     if (preflight) {
       result[id]["preflight"]=preflight (cookie ? " (with Cookie)" : "")
     } else if (requested) {
       result[id]["ua"]=ua
-      result[id]["origin"]=origin
-      result[id]["creds"]=creds
+      result[id]["allowOrigin"]=allowOrigin
+      result[id]["allowCreds"]=allowCreds
       result[id]["sendsOrigin"]=sendsOrigin
       result[id]["method"]=method " (via " exfMethod ")"
       result[id]["cookie"]=cookie
@@ -212,7 +217,7 @@ BEGIN {
 }
 END {
   for (id in result) {
-    printf "| %-20s | %-22s | %-11s | %-11s | %-15s | %-15s | %-11s | %-11s |\n", result[id]["ua"], result[id]["method"], result[id]["origin"], result[id]["creds"], result[id]["sendsOrigin"], result[id]["preflight"], result[id]["cookie"], result[id]["read"]
+    printf "| %-20s | %-22s | %-11s | %-11s | %-15s | %-15s | %-11s | %-11s |\n", result[id]["ua"], result[id]["method"], result[id]["allowOrigin"], result[id]["allowCreds"], result[id]["sendsOrigin"], result[id]["preflight"], result[id]["cookie"], result[id]["read"]
   }
 }
 ' "${REQFILE}" > "${TMPFILE}"

@@ -154,7 +154,7 @@ function setOriginMapping(map, append) {
   }
 };
 
-function getReqOrigin() {
+function getTargetOrigin() {
   // check host, hostname and port URL parameters in this order;
   // otherwise check _ORIGIN_MAPPING
 
