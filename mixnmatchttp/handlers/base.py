@@ -392,7 +392,9 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
             url = self.get_param('goto')
         if url is not None:
             self.send_response(code)
-            self.send_header('Location', urllib.parse.unquote_plus(url))
+            logger.debug('Redirecting to {}'.format(url))
+            #  it's already been decoded once
+            self.send_header('Location', url)
         else:
             self.send_response(200)
         self.send_headers(headers)
