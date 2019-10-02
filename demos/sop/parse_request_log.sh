@@ -13,8 +13,25 @@ DEBUG=0
 ${AWK} -v debug=${DEBUG} '
 BEGIN {
   IGNORECASE=1
-  printf "| %-20s | %-22s | %-11s | %-11s | %-15s | %-15s | %-11s | %-11s |\n", "BROWSER", "METHOD", "ORIGIN", "CREDENTIALS", "SENDS ORIGIN", "PREFLIGHT", "COOKIE", "READ BY JS"
-  print "| :------------------: | :--------------------: | :---------: | :---------: | :-------------: | :-------------: | :---------: | :---------: |"
+  colwidths[1]=20
+  colwidths[2]=26
+  colwidths[3]=11
+  colwidths[4]=11
+  colwidths[5]=15
+  colwidths[6]=15
+  colwidths[7]=11
+  colwidths[8]=11
+  fmtHdr=""
+  hdrSep=""
+  for (i in colwidths) {
+    fmtHdr=fmtHdr "| %-" colwidths[i] "s "
+    hdrSep=hdrSep "| :" gensub(/ /, "-", "g", sprintf("%-" colwidths[i]-2 "s", "")) ": "
+  }
+  fmtHdr=fmtHdr "|\n"
+  hdrSep=hdrSep "|\n"
+  printf fmtHdr, "BROWSER", "METHOD", "ORIGIN", "CREDENTIALS", "SENDS ORIGIN", "PREFLIGHT", "COOKIE", "READ BY JS"
+
+  print hdrSep
 }
 /[^ ]/ {
   sub("\r", "", $0)
@@ -217,7 +234,7 @@ BEGIN {
 }
 END {
   for (id in result) {
-    printf "| %-20s | %-22s | %-11s | %-11s | %-15s | %-15s | %-11s | %-11s |\n", result[id]["ua"], result[id]["method"], result[id]["allowOrigin"], result[id]["allowCreds"], result[id]["sendsOrigin"], result[id]["preflight"], result[id]["cookie"], result[id]["read"]
+    printf fmtHdr, result[id]["ua"], result[id]["method"], result[id]["allowOrigin"], result[id]["allowCreds"], result[id]["sendsOrigin"], result[id]["preflight"], result[id]["cookie"], result[id]["read"]
   }
 }
 ' "${REQFILE}" > "${TMPFILE}"
