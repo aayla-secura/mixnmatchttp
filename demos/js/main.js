@@ -298,7 +298,9 @@ function getData(baseReqURL, baseSendURL, callback, exfMethods) {
       {http: 'GET', ctx: '2D', cors: ''},
       {http: 'GET', ctx: '2D', cors: 'CORS'},
       {http: 'GET', ctx: 'Bitmap', cors: ''},
-      {http: 'GET', ctx: 'Bitmap', cors: 'CORS'}
+      {http: 'GET', ctx: 'Bitmap', cors: 'CORS'},
+      {http: 'GET', ctx: '2D via Bitmap', cors: ''},
+      {http: 'GET', ctx: '2D via Bitmap', cors: 'CORS'}
     ]
   };
   corsCombos = [
@@ -457,17 +459,6 @@ function getDataViaCanvas(reqURL, methods, sendURL, callback) {
   var useXOrigin = Boolean(methods['cors']);
   var canvasCtx = methods['ctx'] || '2d';
   canvasCtx = canvasCtx.toLowerCase();
-  if (canvasCtx !== '2d' && canvasCtx !== 'bitmap') {
-    logToPage('Unsupported canvas context ' + canvasCtx, null, null, logId);
-  }
-
-  var logId = 'log_' + rand(); // unique log ID for each request
-  var renderers = {};
-  if (useXOrigin) {
-    logToPage('Embedding in a ' + canvasCtx + ' canvas (with crossorigin) ' + reqURL, null, null, logId);
-  } else {
-    logToPage('Embedding in a ' + canvasCtx + ' canvas ' + reqURL, null, null, logId);
-  }
 
   var data = null;
   var callbackWrapper = function () {
@@ -494,6 +485,17 @@ function getDataViaCanvas(reqURL, methods, sendURL, callback) {
     return can;
   };
 
+  var exportBitmap = function (image, do_ctx) {
+    createImageBitmap(image, 0, 0, 100, 100).then(function(bmap) {
+      var can = newCanvasForImg(image);
+      do_ctx(can, bmap);
+      exportCanvas.call(can);
+    }, function(err) {
+      throw err; // let the surrounding code handle this
+    });
+  };
+
+  var renderers = {};
   renderers['2d'] = function () {
     //DEBUG if (this == window){logToPage('this is window', CSS['red'], null, logId);return}
     // the onload handler of <img> fires too soon in IE9 so we call it from
@@ -511,20 +513,31 @@ function getDataViaCanvas(reqURL, methods, sendURL, callback) {
   renderers['bitmap'] = getTryHandlerWrapper(function () {
     //DEBUG if (this == window){logToPage('this is window', CSS['red'], null, logId);return}
     var image = this;
-    createImageBitmap(this, 0, 0, 100, 100).then(function(bmap) {
-      var can = newCanvasForImg(image);
+    exportBitmap(image, function(can, bmap) {
       var ctx = can.getContext('bitmaprenderer');
       ctx.transferFromImageBitmap(bmap);
-      exportCanvas.call(can);
-    }, function(err) {
-      throw err; // let the surrounding code handle this
+    });
+  }, null, callbackWrapper);
+  renderers['2d via bitmap'] = getTryHandlerWrapper(function () {
+    //DEBUG if (this == window){logToPage('this is window', CSS['red'], null, logId);return}
+    var image = this;
+    exportBitmap(image, function(can, bmap) {
+      var ctx = can.getContext('2d');
+      ctx.drawImage(bmap, 0, 0);
     });
   }, null, callbackWrapper);
 
+  var logId = 'log_' + rand(); // unique log ID for each request
+  if (! renderers[canvasCtx]) {
+    logToPage('Unsupported canvas context ' + canvasCtx, null, null, logId);
+  }
+
   if (useXOrigin) {
+    logToPage('Embedding in a ' + canvasCtx + ' canvas (with crossorigin) ' + reqURL, null, null, logId);
     var img = addElement('img', {crossorigin: 'use-credentials',
       src: reqURL, style: CSS['hidden']}, null, renderers[canvasCtx], callbackWrapper);
   } else {
+    logToPage('Embedding in a ' + canvasCtx + ' canvas ' + reqURL, null, null, logId);
     var img = addElement('img', {
       src: reqURL, style: CSS['hidden']}, null, renderers[canvasCtx], callbackWrapper);
   }
