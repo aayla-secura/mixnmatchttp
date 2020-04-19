@@ -257,6 +257,8 @@ function logToConsole(msg) {
 };
 
 function getData(baseReqURL, baseSendURL, callback, exfMethods) {
+  //TODO add test for <link rel="import" href="...">
+  // data via this.import.body or this.import.children
   var currOrigin = getCurrOrigin();
   function genReqSendURLs(origin, creds, methods, via) {
     var creds = (creds ? '1' : '0');
