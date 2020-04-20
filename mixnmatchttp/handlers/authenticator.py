@@ -111,7 +111,7 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
     def denied(self):
         '''Returns 401 if resource is secret and authentication is invalid'''
 
-        if self.is_secret() and \
+        if self.pathname != '/login' and self.is_secret() and \
              self.get_session() not in self.__sessions:
             return (401,)
         return super().denied()
