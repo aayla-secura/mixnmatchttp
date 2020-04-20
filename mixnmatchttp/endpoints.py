@@ -383,7 +383,7 @@ class Endpoint(DictNoClobber):
         Or if /employee/*/dept/*/location is an endpoint and httpreq
         has a method do_employee_dept_location, then a request for
         /employee/jsmith/dept/it/location will set ep.root to
-        /employee/jsmith/dept/it/location, ep.sub to '', ep.args to
+        /employee/dept/location, ep.sub to '', ep.args to
         '', ep.argslen to 0, ep.params['employee'] to 'jsmith', and
         ep.params['dept'] to 'it'
         
