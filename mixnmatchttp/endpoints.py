@@ -6,6 +6,7 @@ from builtins import *
 from future import standard_library
 standard_library.install_aliases()
 import logging
+import re
 from functools import partial
 from wrapt import ObjectProxy
 
@@ -108,11 +109,35 @@ class Endpoint(DictNoClobber):
             some_sub={ ... }
             )
     
+    Endpoint names shouldn't have underscores, we don't handle them
+    well, so expect unexpected behaviour.
+    An endpoint's name can be a '*', in which case it is treated as
+    a variable. It will match anything and the actual match will be
+    available in a dictionary passed to the endpoint handler, see
+    documentation on Endpoint.parse. The dictionary key defaults to
+    the parent's name, but can be overridden with the '$varname'
+    attribute (useful for consecutive variable endpoints). For
+    example:
+        _endpoints = endpoints.Endpoints(
+                person={
+                    '$allowed_methods': {'GET', 'POST'},
+                    '*': {
+                        '$varname': 'username',
+                        }
+                    },
+                )
+    will look for a method do_person_ (a '*' is treated as an empty
+    component in the method name search), and if not found, then
+    do_person. The endpoint passed to the handler will have
+    params['username'] set to the match path component.
+    
     Recognized attributes:
         disabled: <bool>, defaults to True for the root, False otherwise
         allowed_methods: <set>, defaults to {'GET'}
         nargs: <number>|ARGS_*, defaults to 0
         raw_args: <bool>, defaults to False
+        varname: <string>, only for wildcards, defaults to parent's
+                 name
     Attempting to set another attribute (a key beginning with $) will
     result in AttributeError. If you want to add additional
     attributes, add them as keys to the instance's _defaultattrs
@@ -121,12 +146,18 @@ class Endpoint(DictNoClobber):
 
     def __init__(self, *args, **kwargs):
         self._defaultattrs = {
-                'disabled': True,
+                'name': None,  # for internal user
+                'parent': None,  # for internal user
+                'disabled': True,  # True for root only
                 'allowed_methods': {'GET', 'HEAD'},
                 'nargs': 0,
                 'raw_args': False,
+                'varname': '',
                 }
 
+        # Set the name of the endpoint before initializing, so that
+        # its children have access to it
+        setattr(self, 'name', kwargs.pop('$name', None))
         super().__init__(*args, **kwargs)
         logger.debug('list of subpoints: {}'.format(list(self.keys())))
 
@@ -150,6 +181,7 @@ class Endpoint(DictNoClobber):
         return (dict(self.items()) == dict(other.items()) and \
                 self.getattrs(with_defaults=True).items() \
                 == other.getattrs(with_defaults=True).items())
+
     def __ne__(self, other):
         return not self.__eq__(other)
 
@@ -173,10 +205,22 @@ class Endpoint(DictNoClobber):
             if isinstance(item, Endpoint):
                 super().__setitem__(key, item.copy())
             else:
-                super().__setitem__(key, Endpoint(item))
+                super().__setitem__(key, Endpoint(
+                    item, **{'$name': key}))
 
             # Enable the endpoint, unless disabled is explicitly set
             self[key]._defaultattrs['disabled'] = False
+            # Save the parent
+            #  self[key]._defaultattrs['parent'] = self
+            setattr(self[key], 'parent', self)
+            # For variable endpoints, set the default varname to the
+            # parent's name
+            if key == '*':
+                self[key]._defaultattrs['varname'] = \
+                    self.getattr('name') # will be None for root
+                logger.debug('Endpoint {} is variable ({})'.format(
+                    key, self.getattr('name')))
+            logger.debug('Endpoint {} done'.format(key))
 
     def __getattr__(self, attr):
         return self._getattr(attr, None, True)
@@ -328,12 +372,20 @@ class Endpoint(DictNoClobber):
             sub: rest of the path of the endpoint
             args: everything following the endpoint's path (/root/sub/)
             argslen: actual number of arguments it was called with
+            params: a dictionary of all parameters for the full path;
+                  each key defaults to the parent's name
         For example if an endpoint /cache/new/static accepts arguments,
         and httpreq has a method do_cache, but not
         do_cache_new_static, and not do_cache_new, a request for
         /cache/new/static/page will set ep.root to 'cache', ep.sub to
         'new/static', ep.handler to partial(httpreq.do_cache, ep),
         ep.args to 'page', and ep.argslen to 1.
+        Or if /employee/*/dept/*/location is an endpoint and httpreq
+        has a method do_employee_dept_location, then a request for
+        /employee/jsmith/dept/it/location will set ep.root to
+        /employee/jsmith/dept/it/location, ep.sub to '', ep.args to
+        '', ep.argslen to 0, ep.params['employee'] to 'jsmith', and
+        ep.params['dept'] to 'it'
         
         If path does resolve to an enpoint's path but the
         request is not allowed for some reason, raises an exception:
@@ -355,9 +407,10 @@ class Endpoint(DictNoClobber):
         ep = None
         handler = httpreq.do_default
         root = sub = args = ''
+        params = {}
         for curr_path, curr_args in iter_abspath(path):
             logger.debug('Current abspath segment: {}'.format(curr_path))
-            curr_ep, curr_handler, curr_root, curr_sub = \
+            curr_ep, curr_handler, curr_root, curr_sub, curr_params = \
                     self._select_handler(curr_path, httpreq)
 
             if curr_ep is None:
@@ -369,9 +422,11 @@ class Endpoint(DictNoClobber):
             root = curr_root
             sub = curr_sub
             args = curr_args
+            params = curr_params
             logger.debug(
-                    'Match on this level: root: {}, sub: {}, args: {}'.format(
-                        root, sub, args))
+                    ('Match on this level: root: {}, sub: {}, '
+                     'args: {}, params: {}').format(
+                        root, sub, args, params))
 
             if ep.raw_args:
                 logger.debug('{}({}) is "raw"; done'.format(root, sub))
@@ -387,17 +442,13 @@ class Endpoint(DictNoClobber):
         # either way, we're done
         args_arr = list(filter(None, args.split('/')))
 
-        ep = ParsedEndpoint(ep,
-                httpreq,
-                handler,
-                root,
-                sub,
-                args,
-                len(args_arr))
+        ep = ParsedEndpoint(ep, httpreq, handler, root,
+                            sub, args, len(args_arr), params)
 
-        logger.debug(
-                'API call: {}, root: {}, sub: {}, {} args: {}'.format(
-                    ep, ep.root, ep.sub, ep.argslen, ep.args))
+        logger.debug(('API call: {}, root: {}, sub: {}, '
+                      '{} args: {}, params: {}').format(
+                          ep, ep.root, ep.sub,
+                          ep.argslen, ep.args, ep.params))
 
         if ep.nargs == ARGS_ANY:
             pass
@@ -443,7 +494,10 @@ class Endpoint(DictNoClobber):
             try:
                 ep = ep[p]
             except KeyError:
-                return
+                try:
+                    ep = ep['*']
+                except KeyError:
+                    return
             yield ep, pref + curr_path[1:] + suf
 
         logger.debug('Final: {}'.format(pref + curr_path[1:] + suf))
@@ -460,6 +514,21 @@ class Endpoint(DictNoClobber):
                 return ep
 
         return None
+
+    def to_path(self):
+        def _append_handler_name(ep, so_far=''):
+            try:
+                ep.parent
+            except AttributeError:
+                return so_far
+            if ep.name == '*':
+                this_name = ''
+            else:
+                this_name = '/' + ep.name
+            return _append_handler_name(
+                ep.parent, '{}{}'.format(this_name, so_far))
+
+        return _append_handler_name(self)
 
     def _select_handler(self, path, httpreq):
         '''Selects the endpoint and handler for the given path
@@ -484,34 +553,40 @@ class Endpoint(DictNoClobber):
                 handler
             sub: the rest of the path after root/ (leading / is
                 stripped)
+            params: a dictionary of all parameters for the full path;
+                each key defaults to the parent's name
         '''
 
         ep = handler = None
         ep_path = root = sub = ''
+        params = {}
         logger.debug('Iterating over path {}'.format(path))
         for ep, ep_path in self.iter_path(path):
             logger.debug('{} is an endpoint'.format(ep_path))
+            if ep.name == '*':
+                params[ep.varname] = ep_path.split('/')[-1]
             try:
-                curr_handler = getattr(
-                        httpreq, 'do' + ep_path.replace('/', '_'))
+                curr_handler = getattr(httpreq, 
+                        'do' + ep.to_path().replace('/', '_'))
             except AttributeError:
                 logger.debug('No handler for {}'.format(ep_path))
             else:
                 logger.debug('Found handler for {}'.format(ep_path))
-                root = ep_path
+                root = ep.to_path()
                 handler = curr_handler
-        
+
         # skip leading slash of sub
-        sub = path[len(root)+1:]
+        if ep is not None:
+            sub = ep.to_path()[len(root)+1:]
 
         if ep_path and ep_path != path and not ep.raw_args:
             # there was an endpoint corresponding to part, but not
             # the entire path, and it does not accept raw arguments
-            return None, None, '', ''
+            return None, None, '', '', {}
 
         if handler is None:
             handler = httpreq.do_default
-        return ep, handler, root, sub
+        return ep, handler, root, sub, params
 
 class ParsedEndpoint(ObjectProxy):
     '''An instance of an Endpoint which has been parsed
@@ -526,9 +601,11 @@ class ParsedEndpoint(ObjectProxy):
         sub: rest of the path of the endpoint
         args: everything following the endpoint's path (/root/sub/)
         argslen: number of path components in args
+        params: a dictionary of all parameters for the full path
     '''
 
-    def __init__(self, endpoint, httpreq, handler, root, sub, args, argslen):
+    def __init__(self, endpoint, httpreq, handler, root, sub,
+                 args, argslen, params):
         if not isinstance(endpoint, Endpoint):
             raise TypeError('ParsedEndpoint must be initialized from an Endpoint')
 
@@ -539,6 +616,7 @@ class ParsedEndpoint(ObjectProxy):
         self.sub = sub
         self.args = args
         self.argslen = argslen
+        self.params = params
 
     def __repr__(self):
         # ObjectProxy's repr doesn't call wrapped's __repr__

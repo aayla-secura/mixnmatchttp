@@ -19,6 +19,15 @@ class MyHandler(BaseHTTPRequestHandler):
             refreshme={
                 '$nargs': endpoints.ARGS_OPTIONAL,
                 },
+            parameter={
+                    '$nargs': 1, # this way /parameter will return "missing arg"
+                    # '$disabled': True, # this way /parameter will be
+                                         # treated by the GET handler
+                '*': {
+                    '$nargs': 1,
+                    'special': {}, # will use do_parameter__special handler
+                    },
+                },
             debug={
                 # these are for when /debug is called
                 '$allowed_methods': {'GET', 'POST'},
@@ -27,16 +36,23 @@ class MyHandler(BaseHTTPRequestHandler):
                     # these are for when /debug/sub is called
                     '$nargs': endpoints.ARGS_ANY,
                     '$raw_args': True, # don't canonicalize rest of path
-                    }
+                    },
+                '*': {
+                    'debug': {
+                        '*': {
+                            '$varname': 'debug2'
+                            },
+                        },
+                    },
                 },
             )
     _template_pages = DictNoClobber(
         simpletxt={
-            'data':'$CONTENT',
-            'type':'text/html'
+            'data': '$CONTENT',
+            'type': 'text/html'
             },
         simplehtml={
-            'data':'''
+            'data': '''
     <!DOCTYPE html>
     <html>
     <head>
@@ -49,21 +65,22 @@ class MyHandler(BaseHTTPRequestHandler):
     </body>
     </html>
     ''',
-            'type':'text/html'
+            'type': 'text/html'
             },
         )
     _templates = DictNoClobber(
         refresh={
-            'fields':{
-                'HEAD':'<meta http-equiv="refresh" content="${interval}">',
-                'TITLE':'Example',
-                'BODY':'<h1>Example page, will refresh every ${interval}s.</h1>',
+            'fields': {
+                'HEAD': '<meta http-equiv="refresh" content="${interval}">',
+                'TITLE': 'Example',
+                'BODY': '<h1>Example page, will refresh every ${interval}s.</h1>',
             },
             'page': 'simplehtml',
         },
         debug={
-            'fields':{
-                'CONTENT':'${info}You called endpoint $root ($sub) ($args)',
+            'fields': {
+                'CONTENT': ('${info}You called endpoint $root, '
+                            'sub = $sub, args = $args, params = $params'),
             },
             'page': 'simpletxt',
         },
@@ -79,19 +96,31 @@ class MyHandler(BaseHTTPRequestHandler):
                 {'interval': interval})
         self.render(page)
 
+    def do_parameter(self, ep):
+        self.render({'data': (
+                            '{} = {}'.format(ep.params['parameter'], ep.args)
+                        ).encode('utf-8'),
+                     'type': 'text/plain'})
+
+    def do_parameter_special(self, ep):
+        self.render({'data': b'A very special parameter!',
+                     'type': 'text/plain'})
+
     def do_debug(self, ep):
         '''Handler for the endpoint /debug'''
         # set a header just for this request
         self.headers_to_send['X-Debug'] = 'Foo'
         page = self.page_from_template(self.templates['debug'],
-                {'root': ep.root, 'sub': ep.sub, 'args': ep.args})
+                {'info': '', 'root': ep.root, 'sub': ep.sub,
+                 'args': ep.args, 'params': ep.params})
         self.render(page)
 
     def do_default(self, ep):
         '''Default endpoints handler'''
         page = self.page_from_template(self.templates['debug'],
                 {'info': 'This is do_default. ',
-                    'root': ep.root, 'sub': ep.sub, 'args': ep.args})
+                 'root': ep.root, 'sub': ep.sub, 'args': ep.args,
+                 'params': ep.params})
         self.render(page)
 
     # Don't forget this decorator!

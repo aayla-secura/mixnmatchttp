@@ -21,6 +21,9 @@ the most-specific (longest) path for which a method is defined. E.g.
 `do_foo`, and finally `do_default`. `do_default` is defined in
 `BaseHTTPRequestHandler` but your class may want to override it.
 
+Endpoints can also be variable, or parametrized, e.g. `/person/{name}/age`,
+where `{name}` can be anything. This maps to a handler `do_person_age`.
+
 Template pages are parametrized response bodies. Templates specify a template
 page to be used with and give a dictionary of parameters and values to use with
 the template. Each parameter value may also contain dynamic parameters, which
@@ -124,6 +127,8 @@ nargs=0                        # how many slash-separated arguments the endpoint
                                # !!only reliable if raw_args is False!!
 raw_args=False                 # whether arguments should not be canonicalized,
                                # e.g. /foo/..//bar/./baz will not be turned to /bar/baz
+varname=None                   # the name of the parameter to record, default is parent
+                               # endpoint's name; only valid for parametrized endpoints
 ```
 
 Child endpoints are enabled by default, the root endpoint is disabled by
@@ -156,6 +161,7 @@ following additional attributes:
   * `sub`: rest of the path of the endpoint without a leading `/`, e.g. `bar` or `foo/bar`
   * `args`: everything following the endpoint's path without a leading `/`
   * `argslen`: the number of arguments it was called with (length of array from `/` separated `args`)
+  * `params`: a dictionary with parameters from endpoint mapped to the path
 
 ## Example: Implementing a server
 
@@ -184,6 +190,15 @@ class MyHandler(BaseHTTPRequestHandler):
             refreshme={
                 '$nargs': endpoints.ARGS_OPTIONAL,
                 },
+            parameter={
+                    '$nargs': 1, # this way /parameter will return "missing arg"
+                    # '$disabled': True, # this way /parameter will be
+                                         # treated by the GET handler
+                '*': {
+                    '$nargs': 1,
+                    'special': {}, # will use do_parameter__special handler
+                    },
+                },
             debug={
                 # these are for when /debug is called
                 '$allowed_methods': {'GET', 'POST'},
@@ -192,16 +207,23 @@ class MyHandler(BaseHTTPRequestHandler):
                     # these are for when /debug/sub is called
                     '$nargs': endpoints.ARGS_ANY,
                     '$raw_args': True, # don't canonicalize rest of path
-                    }
+                    },
+                '*': {
+                    'debug': {
+                        '*': {
+                            '$varname': 'debug2'
+                            },
+                        },
+                    },
                 },
             )
     _template_pages = DictNoClobber(
         simpletxt={
-            'data':'$CONTENT',
-            'type':'text/html'
+            'data': '$CONTENT',
+            'type': 'text/html'
             },
         simplehtml={
-            'data':'''
+            'data': '''
     <!DOCTYPE html>
     <html>
     <head>
@@ -214,21 +236,22 @@ class MyHandler(BaseHTTPRequestHandler):
     </body>
     </html>
     ''',
-            'type':'text/html'
+            'type': 'text/html'
             },
         )
     _templates = DictNoClobber(
         refresh={
-            'fields':{
-                'HEAD':'<meta http-equiv="refresh" content="${interval}">',
-                'TITLE':'Example',
-                'BODY':'<h1>Example page, will refresh every ${interval}s.</h1>',
+            'fields': {
+                'HEAD': '<meta http-equiv="refresh" content="${interval}">',
+                'TITLE': 'Example',
+                'BODY': '<h1>Example page, will refresh every ${interval}s.</h1>',
             },
             'page': 'simplehtml',
         },
         debug={
-            'fields':{
-                'CONTENT':'${info}You called endpoint $root ($sub) ($args)',
+            'fields': {
+                'CONTENT': ('$info You called endpoint $root, '
+                            'sub = $sub, args = $args, params = $params'),
             },
             'page': 'simpletxt',
         },
@@ -244,19 +267,31 @@ class MyHandler(BaseHTTPRequestHandler):
                 {'interval': interval})
         self.render(page)
 
+    def do_parameter(self, ep):
+        self.render({'data': (
+                            '{} = {}'.format(ep.params['parameter'], ep.args)
+                        ).encode('utf-8'),
+                     'type': 'text/plain'})
+
+    def do_parameter_special(self, ep):
+        self.render({'data': b'A very special parameter!',
+                     'type': 'text/plain'})
+
     def do_debug(self, ep):
         '''Handler for the endpoint /debug'''
         # set a header just for this request
         self.headers_to_send['X-Debug'] = 'Foo'
         page = self.page_from_template(self.templates['debug'],
-                {'root': ep.root, 'sub': ep.sub, 'args': ep.args})
+                {'info': '', 'root': ep.root, 'sub': ep.sub,
+                 'args': ep.args, 'params': ep.params})
         self.render(page)
 
     def do_default(self, ep):
         '''Default endpoints handler'''
         page = self.page_from_template(self.templates['debug'],
                 {'info': 'This is do_default. ',
-                    'root': ep.root, 'sub': ep.sub, 'args': ep.args})
+                 'root': ep.root, 'sub': ep.sub, 'args': ep.args,
+                 'params': ep.params})
         self.render(page)
 
     # Don't forget this decorator!
@@ -312,6 +347,10 @@ if __name__ == "__main__":
   * A request for `/debug/../foobar` will call parent's `do_default` with `ep`, a copy of `MyHandler._endpoints['foobar']`. `ep.root` will be "", `ep.sub` will be "foobar", `ep.args` will be "".
   * A request for `/debug/foo/bar` will raise `mixnmatchttp.endpoints.ExtraArgsError` since `/debug` expect exactly one argument.
   * A request for `/debug` will raise `mixnmatchttp.endpoints.MissingArgsError` since `/debug` expect exactly one argument.
+  * A request for `/debug/bla/debug/foo` will call `do_debug` with `ep`, a copy of `MyHandler._endpoints['debug']['*']['debug']['*']`. `ep.root` will be "debug", `ep.sub` will be "debug", `ep.args` will be "", and `ep.params` will be `{'debug': 'bla', 'debug2': 'foo'}`.
+  * A request for `/parameter` or `/parameter/foo` will also raise `mixnmatchttp.endpoints.MissingArgsError`
+  * A request for `/parameter/foo/bar` will call `do_parameter` with `ep`, a copy of `MyHandler._endpoints['parameter']['*']`. `ep.root` will be "/parameter", `ep.sub` will be "foo", `ep.args` will be "" and `params['parameter']` will be "foo". The page will display "foo = bar"
+  * A request for `/parameter/foo/special` will call `do_parameter_special` with `ep`, a copy of `MyHandler._endpoints['parameter']['*']['special']`. `ep.root` will be "/parameter/foo/special", `ep.sub` will be "", `ep.args` will be "" and `params['parameter']` will be "foo". The page will display "A very special parameter!"
   * A request for `/refreshme` will render a page which refreshes every 30 seconds (default).
   * A request for `/refreshme/5` will render a page which refreshes every 5 seconds.
 
