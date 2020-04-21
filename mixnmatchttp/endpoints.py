@@ -366,8 +366,12 @@ class Endpoint(DictNoClobber):
         If httpreq.raw_pathname resolves to an enpoint's path, returns
         a ParsedEndpoint initialized with the following attributes:
             httpreq: same as passed to this method
-            handler: partial of the httpreq's method called
-                'do_{root}' or 'do_default'; the first argument will be the ParsedEndpoint
+            handler: partial of the selected httpreq's method with the
+                the first argument will be the ParsedEndpoint
+                the most specific handler for the endpoint's path is
+                used, or do_default if none found. E.g. for an
+                endpoint /foo/bar/baz, first do_foo_bar_baz is looked
+                for, then do_foo_bar, then do_foo, finally do_default
             root: longest path of the endpoint corresponding to a defined handler
             sub: rest of the path of the endpoint
             args: everything following the endpoint's path (/root/sub/)
@@ -544,10 +548,10 @@ class Endpoint(DictNoClobber):
                 children, it will be selected for all paths beginning
                 with /a/b/c
             handler: httpreq's endpoint handler with the most specific
-                path matching the given path, e.g. if there's a handler 
-                do_a_b but not do_a_b_*, do_a_b will be selected for
-                all endpoints starting with /a/b; if no matching
-                handler is defined, do_default is returned
+                path matching the given path and method, e.g. if
+                there's a handler do_a_b but not do_a_b_*, do_a_b will
+                be selected for all endpoints starting with /a/b; if
+                no matching handler is defined, do_default is returned
             root: the beginning of the path which matched a handler,
                 e.g. /a/b if do_a_b is defined, or '' if no matching
                 handler

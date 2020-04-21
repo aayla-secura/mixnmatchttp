@@ -86,21 +86,21 @@ def methodhandler(realhandler, self, args, kwargs):
         ep = self.endpoints.parse(self)
     except endpoints.NotAnEndpointError as e:
         logger.debug('{}'.format(str(e)))
-        realhandler()
+        realhandler(*args, **kwargs)
     except endpoints.MethodNotAllowedError as e:
         logger.debug('{}'.format(str(e)))
         self.headers_to_send = {'Allow': ','.join(e.allowed_methods)}
         if self.command == 'OPTIONS':
             logger.debug('Doing OPTIONS')
-            realhandler()
+            realhandler(*args, **kwargs)
         else:
             self.send_error(405)
     except (endpoints.MissingArgsError, endpoints.ExtraArgsError) as e:
         logger.debug('{}'.format(str(e)))
-        self.send_error(404, explain=str(e))
+        self.send_error(400, explain=str(e))
     else:
         logger.debug('Calling endpoint handler')
-        ep.handler()
+        ep.handler(*args, **kwargs)
 
 ######################### EXCEPTIONS ########################
 
