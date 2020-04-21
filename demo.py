@@ -7,6 +7,14 @@ from future import standard_library
 standard_library.install_aliases()
 import re
 import ssl
+import logging
+import sys
+
+hnOUT = logging.StreamHandler(sys.stdout)
+pkglogger = logging.getLogger('mixnmatchttp')
+pkglogger.addHandler(hnOUT)
+#  pkglogger.setLevel(logging.DEBUG)
+
 from http.server import HTTPServer
 from mixnmatchttp.servers import ThreadingHTTPServer
 from mixnmatchttp import endpoints
@@ -31,8 +39,7 @@ class MyHandler(BaseHTTPRequestHandler):
             debug={
                 # these are for when /debug is called
                 '$allowed_methods': {'GET', 'POST'},
-                '$nargs': 1,
-                'sub': { # will use do_debug handler
+                'sub': { # will use do_*debug handler
                     # these are for when /debug/sub is called
                     '$nargs': endpoints.ARGS_ANY,
                     '$raw_args': True, # don't canonicalize rest of path
@@ -107,11 +114,20 @@ class MyHandler(BaseHTTPRequestHandler):
                      'type': 'text/plain'})
 
     def do_debug(self, ep):
-        '''Handler for the endpoint /debug'''
+        '''Handler for non-POST to the endpoint /debug'''
         # set a header just for this request
         self.headers_to_send['X-Debug'] = 'Foo'
         page = self.page_from_template(self.templates['debug'],
                 {'info': '', 'root': ep.root, 'sub': ep.sub,
+                 'args': ep.args, 'params': ep.params})
+        self.render(page)
+
+    def do_POST_debug(self, ep):
+        '''Handler for POST to the endpoint /debug'''
+        # set a header just for this request
+        self.headers_to_send['X-Debug'] = 'Foo'
+        page = self.page_from_template(self.templates['debug'],
+                {'info': 'POST! ', 'root': ep.root, 'sub': ep.sub,
                  'args': ep.args, 'params': ep.params})
         self.render(page)
 

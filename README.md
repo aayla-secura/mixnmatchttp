@@ -15,11 +15,14 @@ Endpoints are the RESTful API of the server. A request which does not map to an
 endpoint is treated as a request for a file or directory (Python's http server
 handles it, unless your class overrides the `do_(GET|POST|...)` methods).
 A request which does map to an endpoint will call an endpoint handler: a method
-of your class by the name `do_{underscope-separated path}` with "path" being
-the most-specific (longest) path for which a method is defined. E.g.
-`/foo/bar/baz` will try to call `do_foo_bar_baz`, then `do_foo_bar`, then
-`do_foo`, and finally `do_default`. `do_default` is defined in
-`BaseHTTPRequestHandler` but your class may want to override it.
+of your class by the name `do_[{HTTP method}]_{underscope-separated path}`
+with "path" being the most-specific (longest) path for which a method is
+defined and the HTTP method part being optional. Handlers are looked from
+most specific to less specific. E.g. a GET to `/foo/bar/baz` will look for
+`do_GET_foo_bar_baz`, then `do_foo_bar_baz`, then `do_GET_foo_bar`, then
+`do_foo_bar`, then `do_GET_FOO`, then `do_foo`, and finally `do_default`.
+`do_default` is defined in `BaseHTTPRequestHandler` but your class may want
+to override it.
 
 Endpoints can also be variable, or parametrized, e.g. `/person/{name}/age`,
 where `{name}` can be anything. This maps to a handler `do_person_age`.
@@ -202,8 +205,7 @@ class MyHandler(BaseHTTPRequestHandler):
             debug={
                 # these are for when /debug is called
                 '$allowed_methods': {'GET', 'POST'},
-                '$nargs': 1,
-                'sub': { # will use do_debug handler
+                'sub': { # will use do_*debug handler
                     # these are for when /debug/sub is called
                     '$nargs': endpoints.ARGS_ANY,
                     '$raw_args': True, # don't canonicalize rest of path
@@ -278,11 +280,20 @@ class MyHandler(BaseHTTPRequestHandler):
                      'type': 'text/plain'})
 
     def do_debug(self, ep):
-        '''Handler for the endpoint /debug'''
+        '''Handler for non-POST to the endpoint /debug'''
         # set a header just for this request
         self.headers_to_send['X-Debug'] = 'Foo'
         page = self.page_from_template(self.templates['debug'],
                 {'info': '', 'root': ep.root, 'sub': ep.sub,
+                 'args': ep.args, 'params': ep.params})
+        self.render(page)
+
+    def do_POST_debug(self, ep):
+        '''Handler for POST to the endpoint /debug'''
+        # set a header just for this request
+        self.headers_to_send['X-Debug'] = 'Foo'
+        page = self.page_from_template(self.templates['debug'],
+                {'info': 'POST! ', 'root': ep.root, 'sub': ep.sub,
                  'args': ep.args, 'params': ep.params})
         self.render(page)
 
@@ -346,9 +357,8 @@ if __name__ == "__main__":
   * A `POST` request for `/foobar` will raise `mixnmatchttp.endpoints.MethodNotAllowedError` since `/foobar` only allows HTTP `GET`.
   * A request for `/debug/../foobar` will call parent's `do_default` with `ep`, a copy of `MyHandler._endpoints['foobar']`. `ep.root` will be "", `ep.sub` will be "foobar", `ep.args` will be "".
   * A request for `/debug/foo/bar` will raise `mixnmatchttp.endpoints.ExtraArgsError` since `/debug` expect exactly one argument.
-  * A request for `/debug` will raise `mixnmatchttp.endpoints.MissingArgsError` since `/debug` expect exactly one argument.
   * A request for `/debug/bla/debug/foo` will call `do_debug` with `ep`, a copy of `MyHandler._endpoints['debug']['*']['debug']['*']`. `ep.root` will be "debug", `ep.sub` will be "debug", `ep.args` will be "", and `ep.params` will be `{'debug': 'bla', 'debug2': 'foo'}`.
-  * A request for `/parameter` or `/parameter/foo` will also raise `mixnmatchttp.endpoints.MissingArgsError`
+  * A request for `/parameter` or `/parameter/foo` will raise `mixnmatchttp.endpoints.MissingArgsError` since `/foo` expect exactly one argument.
   * A request for `/parameter/foo/bar` will call `do_parameter` with `ep`, a copy of `MyHandler._endpoints['parameter']['*']`. `ep.root` will be "/parameter", `ep.sub` will be "foo", `ep.args` will be "" and `params['parameter']` will be "foo". The page will display "foo = bar"
   * A request for `/parameter/foo/special` will call `do_parameter_special` with `ep`, a copy of `MyHandler._endpoints['parameter']['*']['special']`. `ep.root` will be "/parameter/foo/special", `ep.sub` will be "", `ep.args` will be "" and `params['parameter']` will be "foo". The page will display "A very special parameter!"
   * A request for `/refreshme` will render a page which refreshes every 30 seconds (default).

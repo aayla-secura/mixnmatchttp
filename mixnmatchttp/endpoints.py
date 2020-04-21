@@ -110,7 +110,11 @@ class Endpoint(DictNoClobber):
             )
     
     Endpoint names shouldn't have underscores, we don't handle them
-    well, so expect unexpected behaviour.
+    well, so expect unexpected behaviour. TODO maybe?
+    Note also that endpoints are treated as case-insensitive, and the
+    handler should assume the path is all lowercase, i.e. /FoO/BAR
+    should be handled by do_{METHOD}_foo_bar
+    
     An endpoint's name can be a '*', in which case it is treated as
     a variable. It will match anything and the actual match will be
     available in a dictionary passed to the endpoint handler, see
@@ -126,10 +130,10 @@ class Endpoint(DictNoClobber):
                         }
                     },
                 )
-    will look for a method do_person_ (a '*' is treated as an empty
-    component in the method name search), and if not found, then
-    do_person. The endpoint passed to the handler will have
-    params['username'] set to the match path component.
+    will look for a method do_{METHOD}_person or do_person (a variable
+    path component is discarded when selecting a handler name).
+    The endpoint passed to the handler will have params['username']
+    set to the match path component.
     
     Recognized attributes:
         disabled: <bool>, defaults to True for the root, False otherwise
@@ -368,16 +372,19 @@ class Endpoint(DictNoClobber):
             httpreq: same as passed to this method
             handler: partial of the selected httpreq's method with the
                 the first argument will be the ParsedEndpoint
-                the most specific handler for the endpoint's path is
-                used, or do_default if none found. E.g. for an
-                endpoint /foo/bar/baz, first do_foo_bar_baz is looked
-                for, then do_foo_bar, then do_foo, finally do_default
-            root: longest path of the endpoint corresponding to a defined handler
+                the most specific handler for the endpoint's path and
+                request method is used, or do_default if none found.
+                E.g. for a GET to an endpoint /foo/bar/baz, first
+                do_GET_foo_bar_baz is looked for, then do_foo_bar_baz,
+                then do_GET_foo_bar, then do_foo_bar, then do_GET_foo,
+                then do_foo, finally do_default
+            root: longest path of the endpoint corresponding to
+                a defined handler
             sub: rest of the path of the endpoint
             args: everything following the endpoint's path (/root/sub/)
             argslen: actual number of arguments it was called with
             params: a dictionary of all parameters for the full path;
-                  each key defaults to the parent's name
+                each key defaults to the parent's name
         For example if an endpoint /cache/new/static accepts arguments,
         and httpreq has a method do_cache, but not
         do_cache_new_static, and not do_cache_new, a request for
@@ -496,7 +503,7 @@ class Endpoint(DictNoClobber):
                     'Current list of subpoints: {}; trying {}'.format(
                         list(ep.keys()), p))
             try:
-                ep = ep[p]
+                ep = ep[p.lower()]
             except KeyError:
                 try:
                     ep = ep['*']
@@ -569,13 +576,27 @@ class Endpoint(DictNoClobber):
             logger.debug('{} is an endpoint'.format(ep_path))
             if ep.name == '*':
                 params[ep.varname] = ep_path.split('/')[-1]
+            try_path = ep.to_path().replace('/', '_')
             try:
-                curr_handler = getattr(httpreq, 
-                        'do' + ep.to_path().replace('/', '_'))
+                curr_handler = getattr(
+                    httpreq, 'do_{}{}'.format(httpreq.command,
+                                              try_path))
             except AttributeError:
-                logger.debug('No handler for {}'.format(ep_path))
+                logger.debug(
+                    'No {} handler for {}'.format(httpreq.command,
+                                                  ep_path))
+                try:
+                    curr_handler = getattr(
+                        httpreq, 'do{}'.format(try_path))
+                except AttributeError:
+                    logger.debug('No handler for {}'.format(ep_path))
+                else:
+                    logger.debug('Found handler for {}'.format(ep_path))
+                    root = ep.to_path()
+                    handler = curr_handler
             else:
-                logger.debug('Found handler for {}'.format(ep_path))
+                logger.debug('Found {} handler for {}'.format(
+                    httpreq.command, ep_path))
                 root = ep.to_path()
                 handler = curr_handler
 
