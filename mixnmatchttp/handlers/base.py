@@ -10,6 +10,7 @@ import http.server
 import re
 import urllib
 import json
+from json import JSONDecodeError
 import base64, binascii
 from wrapt import decorator
 from string import Template
@@ -303,7 +304,9 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
 
         if dic is None:
             dic = self.__query
-            dic.update(self.__params)
+            if isinstance(self.__params, dict):
+                # for JSON data, it could be a list
+                dic.update(self.__params)
         try:
             value = dic[parname]
         except KeyError:
