@@ -536,22 +536,22 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         raises DecodingError on failure
         '''
 
-        ctype = self.headers.get('Content-Type')
-        try:
-            ctype = ctype.split(';',1)[0]
-        except AttributeError:
-            # No Content-Type
-            if self.__body:
+        if not self.__body:
+            param_loader = lambda: {}
+            ctype = None
+        else:
+            ctype = self.headers.get('Content-Type')
+            if ctype is None:
                 raise DecodingError(
                     'Missing Content-Type with non-empty body')
-            ctype = None
-        if ctype in ['application/json', 'text/json']:
-            param_loader = self.JSON_params
-        elif ctype == 'application/x-www-form-urlencoded':
-            param_loader = self.form_params
-        else:
-            logger.debug("Don't know how to read body parameters")
-            param_loader = lambda: {}
+            ctype = ctype.split(';',1)[0]
+            if ctype in ['application/json', 'text/json']:
+                param_loader = self.JSON_params
+            elif ctype == 'application/x-www-form-urlencoded':
+                param_loader = self.form_params
+            else:
+                logger.debug("Don't know how to read body parameters")
+                param_loader = lambda: {}
 
         self.__params = param_loader()
         self.__ctype = ctype
