@@ -463,11 +463,13 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         self.end_headers()
         self.wfile.write(page['data'])
 
-    def send_as_json(self, obj, indent=None, code=200, headers={}):
+    def send_as_json(self, obj,
+                     serializer=None, indent=None, code=200, headers={}):
         '''Sends an object as a JSON response'''
 
         self.render({
-            'data': json.dumps(obj, indent=indent).encode('utf-8'),
+            'data': json.dumps(
+                obj, default=serializer, indent=indent).encode('utf-8'),
             'type': 'application/json'})
 
     def page_from_template(self, template, dynfields={}):
