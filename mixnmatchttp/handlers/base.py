@@ -84,7 +84,7 @@ def methodhandler(realhandler, self, args, kwargs):
 
     # check if it's a special endpoint
     try:
-        ep = self.endpoints.parse(self)
+        self.ep = self.endpoints.parse(self)
     except endpoints.NotAnEndpointError as e:
         logger.debug('{}'.format(str(e)))
         realhandler(*args, **kwargs)
@@ -101,7 +101,7 @@ def methodhandler(realhandler, self, args, kwargs):
         self.send_error(400, explain=str(e))
     else:
         logger.debug('Calling endpoint handler')
-        ep.handler(*args, **kwargs)
+        self.ep.handler(*args, **kwargs)
 
 ######################### EXCEPTIONS ########################
 
@@ -614,7 +614,7 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         except TypeError:
             super().send_error(code, message=message)
 
-    def do_default(self, ep):
+    def do_default(self):
         '''Default handler for endpoints'''
 
         self.send_response_default()

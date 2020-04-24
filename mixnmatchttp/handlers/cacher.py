@@ -81,7 +81,7 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
 
         return {'data': body, 'type': page_ctype}
 
-    def do_echo(self, ep):
+    def do_echo(self):
         '''Decodes the request and returns it as the response body'''
 
         try:
@@ -91,10 +91,10 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
             return
         self.render(page)
 
-    def do_cache_clear(self, ep):
+    def do_cache_clear(self):
         '''Clears a cached page'''
 
-        name = ep.args
+        name = self.ep.args
         if not name:
             # empty name should clear all pages; cache.clear will only
             # clear all pages if name is None and not if it's ''
@@ -102,7 +102,7 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
         self.cache.clear(name)
         self.send_response_empty(204)
 
-    def do_cache_new(self, ep):
+    def do_cache_new(self):
         '''Generates a new UUID'''
 
         self.render({
@@ -110,10 +110,10 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
                 uuid.uuid4()).encode('utf-8'),
             'type': 'text/plain'})
 
-    def do_cache(self, ep):
+    def do_cache(self):
         '''Saves or retrieves a cached page'''
 
-        name = ep.args
+        name = self.ep.args
         if self.command == 'GET':
             try:
                 page = self.cache.get(name)

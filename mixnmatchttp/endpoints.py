@@ -7,7 +7,6 @@ from future import standard_library
 standard_library.install_aliases()
 import logging
 import re
-from functools import partial
 from wrapt import ObjectProxy
 
 from .common import iter_abspath, DictNoClobber
@@ -370,8 +369,7 @@ class Endpoint(DictNoClobber):
         If httpreq.raw_pathname resolves to an enpoint's path, returns
         a ParsedEndpoint initialized with the following attributes:
             httpreq: same as passed to this method
-            handler: partial of the selected httpreq's method with the
-                the first argument will be the ParsedEndpoint
+            handler: the selected httpreq's method;
                 the most specific handler for the endpoint's path and
                 request method is used, or do_default if none found.
                 E.g. for a GET to an endpoint /foo/bar/baz, first
@@ -389,8 +387,8 @@ class Endpoint(DictNoClobber):
         and httpreq has a method do_cache, but not
         do_cache_new_static, and not do_cache_new, a request for
         /cache/new/static/page will set ep.root to 'cache', ep.sub to
-        'new/static', ep.handler to partial(httpreq.do_cache, ep),
-        ep.args to 'page', and ep.argslen to 1.
+        'new/static', ep.handler to httpreq.do_cache, ep.args to
+        'page', and ep.argslen to 1.
         Or if /employee/*/dept/*/location is an endpoint and httpreq
         has a method do_employee_dept_location, then a request for
         /employee/jsmith/dept/it/location will set ep.root to
@@ -620,8 +618,7 @@ class ParsedEndpoint(ObjectProxy):
     constructor:
         httpreq: the instance of BaseHTTPRequestHandler which it was
             parsed from
-        handler: partial of the httpreq's method called 'do_{root}' or
-            'do_default'; the first argument will be the ParsedEndpoint
+        handler: the httpreq's method called 'do_{root}' or 'do_default'
         root: longest path of the endpoint corresponding to a defined handler
         sub: rest of the path of the endpoint
         args: everything following the endpoint's path (/root/sub/)
@@ -636,7 +633,7 @@ class ParsedEndpoint(ObjectProxy):
 
         super(ParsedEndpoint, self).__init__(endpoint.copy())
         self.httpreq = httpreq
-        self.handler = partial(handler, self)
+        self.handler = handler
         self.root = root
         self.sub = sub
         self.args = args

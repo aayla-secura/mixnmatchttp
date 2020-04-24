@@ -156,8 +156,7 @@ a `mixnmatchttp.endpoints.ParsedEndpoint` (inherits from
 following additional attributes:
 
   * `httpreq`: the instance of `BaseHTTPRequestHandler` for this request
-  * `handler`: partial of the `httpreq`'s method selected as a handler, with the
-    first argument being the `ParsedEndpoint` itself
+  * `handler`: the `httpreq`'s method selected as a handler
   * `root`: longest path of the endpoint (with a leading `/`) corresponding to
     a defined handler, i.e.  if the path is `/foo/bar` and `do_foo` is
     selected, `root` will be `/foo`; if using `do_default`, `root` is empty (`''`).
@@ -181,6 +180,7 @@ from future import standard_library
 standard_library.install_aliases()
 import re
 import ssl
+
 from http.server import HTTPServer
 from mixnmatchttp.servers import ThreadingHTTPServer
 from mixnmatchttp import endpoints
@@ -252,15 +252,15 @@ class MyHandler(BaseHTTPRequestHandler):
         },
         debug={
             'fields': {
-                'CONTENT': ('$info You called endpoint $root, '
+                'CONTENT': ('${info}You called endpoint $root, '
                             'sub = $sub, args = $args, params = $params'),
             },
             'page': 'simpletxt',
         },
     )
 
-    def do_refreshme(self, ep):
-        interval = ep.args
+    def do_refreshme(self):
+        interval = self.ep.args
         if not interval:
             interval = '30'
 
@@ -269,40 +269,41 @@ class MyHandler(BaseHTTPRequestHandler):
                 {'interval': interval})
         self.render(page)
 
-    def do_parameter(self, ep):
+    def do_parameter(self):
         self.render({'data': (
-                            '{} = {}'.format(ep.params['parameter'], ep.args)
+                            '{} = {}'.format(self.ep.params['parameter'],
+                                             self.ep.args)
                         ).encode('utf-8'),
                      'type': 'text/plain'})
 
-    def do_parameter_special(self, ep):
+    def do_parameter_special(self):
         self.render({'data': b'A very special parameter!',
                      'type': 'text/plain'})
 
-    def do_debug(self, ep):
+    def do_debug(self):
         '''Handler for non-POST to the endpoint /debug'''
         # set a header just for this request
         self.headers_to_send['X-Debug'] = 'Foo'
         page = self.page_from_template(self.templates['debug'],
-                {'info': '', 'root': ep.root, 'sub': ep.sub,
-                 'args': ep.args, 'params': ep.params})
+                {'info': '', 'root': self.ep.root, 'sub': self.ep.sub,
+                 'args': self.ep.args, 'params': self.ep.params})
         self.render(page)
 
-    def do_POST_debug(self, ep):
+    def do_POST_debug(self):
         '''Handler for POST to the endpoint /debug'''
         # set a header just for this request
         self.headers_to_send['X-Debug'] = 'Foo'
         page = self.page_from_template(self.templates['debug'],
-                {'info': 'POST! ', 'root': ep.root, 'sub': ep.sub,
-                 'args': ep.args, 'params': ep.params})
+                {'info': 'POST! ', 'root': self.ep.root, 'sub': self.ep.sub,
+                 'args': self.ep.args, 'params': self.ep.params})
         self.render(page)
 
-    def do_default(self, ep):
+    def do_default(self):
         '''Default endpoints handler'''
         page = self.page_from_template(self.templates['debug'],
                 {'info': 'This is do_default. ',
-                 'root': ep.root, 'sub': ep.sub, 'args': ep.args,
-                 'params': ep.params})
+                 'root': self.ep.root, 'sub': self.ep.sub,
+                 'args': self.ep.args, 'params': self.ep.params})
         self.render(page)
 
     # Don't forget this decorator!

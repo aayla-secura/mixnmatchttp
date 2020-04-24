@@ -257,7 +257,7 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
 
         self.__users[username] = password
 
-    def do_changepwd(self, ep):
+    def do_changepwd(self):
         '''Changes the password for the given username'''
 
         if self.authenticate():
@@ -274,13 +274,13 @@ class AuthHTTPRequestHandler(BaseHTTPRequestHandler):
             self.clear_cookie()
             self.send_error(401, explain='Username or password is wrong')
 
-    def do_logout(self, ep):
+    def do_logout(self):
         '''Clears the cookie from the browser and the saved sessions'''
 
         self.clear_cookie()
         self.send_response_goto('')
 
-    def do_login(self, ep):
+    def do_login(self):
         '''Issues a random cookie and saves it'''
 
         if self.authenticate():

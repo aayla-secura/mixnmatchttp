@@ -31,7 +31,7 @@ class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
                 },
             )
 
-    def do_goto(self, ep):
+    def do_goto(self):
         '''Redirects to the path following /goto/
         
         If the path does not include a domain, it is taken from the
@@ -44,12 +44,12 @@ class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
         '''
 
         # check if path includes domain
-        if re.match('(https?:)?//[^/]', ep.args):
-            self.send_response_goto(code=307, url=ep.args)
+        if re.match('(https?:)?//[^/]', self.ep.args):
+            self.send_response_goto(code=307, url=self.ep.args)
             return
 
         def send_redir(host, proto='', pref='', **kwargs):
-            if ep.args[:1] == '/':
+            if self.ep.args[:1] == '/':
                 # relative to root => ignore prefix path
                 pref = ''
             elif pref[-1:] != '/':
@@ -57,7 +57,7 @@ class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
                 pref += '/'
             if proto and proto[-1] != ':':
                 proto += ':'
-            path = ''.join([proto, '//', host, pref, ep.args])
+            path = ''.join([proto, '//', host, pref, self.ep.args])
             logger.debug('Redirecting to {}'.format(path))
             self.send_response_goto(code=307, url=path)
 
