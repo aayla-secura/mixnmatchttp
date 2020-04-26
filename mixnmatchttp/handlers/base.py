@@ -8,6 +8,10 @@ standard_library.install_aliases()
 import logging
 import http.server
 import re
+import os
+from datetime import datetime
+import shutil
+import mimetypes
 import urllib
 import json
 from json import JSONDecodeError
@@ -462,6 +466,43 @@ class BaseHTTPRequestHandler(with_metaclass(BaseMeta, http.server.SimpleHTTPRequ
         self.send_headers(headers)
         self.end_headers()
         self.wfile.write(page['data'])
+
+    def send_file(self, path=None, as_attachment=False):
+        '''Sends the file given in path
+
+        - path defaults to the URL (minus the leading / of course)
+        - If as_attachment is True, we add Content-Disposition:
+          attachment
+        '''
+
+        if path is None:
+            path = self.pathname[1:]
+        try:
+            f = open(path, 'rb')
+        except FileNotFoundError:
+            self.send_error(404)
+            return
+        except PermissionError:
+            self.send_error(403)
+            return
+        fs = os.fstat(f.fileno())
+        self.send_response(200)
+        ctype = mimetypes.guess_type(path)[0]
+        if ctype is None:
+            ctype = 'application/octet-stream'
+        self.send_header('Content-Type', ctype)
+        self.send_header('Content-Length', str(fs.st_size))
+        self.send_header(
+            'Last-Modified',
+            datetime.utcfromtimestamp(fs.st_mtime).strftime(
+                '%Y-%m-%d %H:%M:%S UTC'))
+        disposition = 'filename={}'.format(os.path.basename(f.name))
+        if as_attachment:
+            disposition = 'attachment; {}'.format(disposition)
+        self.send_header('Content-Disposition', disposition)
+        self.end_headers()
+        shutil.copyfileobj(f, self.wfile)
+        f.close()
 
     def send_as_json(self, obj,
                      serializer=None, indent=None, code=200, headers={}):
