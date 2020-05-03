@@ -189,10 +189,10 @@ def new_server(clsname, cors, headers, is_SSL, secrets, userfile):
             self.send_header('Access-Control-Allow-Credentials',
                 'true')
 
+    AuthHTTPRequestHandler.load_users_from_file(userfile)
     return type(clsname, (CORSHTTPSServer,), {
         '_is_SSL': is_SSL,
         '_secrets': tuple(filter(None, secrets)),
-        '_userfile': userfile,
         'send_custom_headers': send_custom_headers})
 
 if __name__ == "__main__":

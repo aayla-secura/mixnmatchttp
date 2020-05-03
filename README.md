@@ -367,7 +367,7 @@ if __name__ == "__main__":
 
 # Handlers
 
-## AuthHTTPRequestHandler
+## AuthCookieHTTPRequestHandler
 
 Implements username:password authentication via form or JSON `POST` request. Has configurable file paths/endpoints for which authentication is required.
 
@@ -385,7 +385,7 @@ If no file containing username:password is set (as a `_userfile` class attribute
       + `302 Found`: Location is as requested via the `goto` parameter
     - Notes:
       + Sessions are forgotten on the server side upon restart
-      + Cookies are issued with the `HttpOnly` flag, and if over SSL with the `Secure` flag as well
+      + Cookies are issued with the `HttpOnly` flag, and if over SSL with the `Secure` flag as well; Can optionally set SameSite
   * `GET /logout`: Clears the `SESSION` cookie from the browser and the server
     - Supported URL parameters:
       + `goto`: Redirect to this URL
