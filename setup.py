@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='mixnmatchttp',
-    version='0.2a-r1',
+    version='1.0beta',
     url='https://github.com/aayla-secura/mixnmatchttp',
     author='AaylaSecura1138',
     author_email='aayla.secura.1138@gmail.com',
@@ -22,10 +22,15 @@ setup(
         "Programming Language :: Python :: 3.7",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
-        ],
+    ],
     packages=find_packages(),
     install_requires=[
         'future>=0.12',
         'wrapt>=1',
-        ],
+    ],
+    extras_require={
+        'unix_pwd': ['passlib>=1.7.2'],
+        'scrypt': ['passlib>=1.7.2', 'scrypt>=0.8.3'],
+        'bcrypt': ['passlib>=1.7.2', 'bcrypt>=3.1.4'],
+    },
     zip_safe=False)

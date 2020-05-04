@@ -5,6 +5,8 @@ from __future__ import absolute_import
 from builtins import *
 from future import standard_library
 standard_library.install_aliases()
+from future.utils import with_metaclass
+
 import logging
 import re
 from random import randint
@@ -14,10 +16,15 @@ try:
 except ImportError:
     # python3
     from collections import abc as _abcoll
+import hashlib
+try:
+    from passlib import hash as unix_hash
+except ImportError:
+    pass  # it's an optional feature
 
 from .. import endpoints
 from ..common import param_dict, date_from_timestamp, curr_timestamp
-from .base import BaseHTTPRequestHandler
+from .base import BaseMeta, BaseHTTPRequestHandler
 
 __all__ = [
     'AuthError',
@@ -25,7 +32,13 @@ __all__ = [
     'NoSuchUserError',
     'InvalidUsernameError',
     'BadPasswordError',
-    'AuthHTTPRequestHandler',
+    'BaseAuthHTTPRequestHandlerMeta',
+    'BaseAuthHTTPRequestHandler',
+    'BaseAuthCookieHTTPRequestHandler',
+    'BaseAuthJWTHTTPRequestHandler',
+    'BaseAuthInMemoryHTTPRequestHandler',
+    'AuthCookieHTTPRequestHandler',
+    'AuthJWTHTTPRequestHandler',
 ]
 
 logger = logging.getLogger(__name__)
@@ -47,7 +60,7 @@ class NoSuchUserError(AuthError):
         super().__init__('No such user {}'.format(username))
 
 class InvalidUsernameError(AuthError):
-    '''Exception raised when a user is created with an invalid username'''
+    '''Exception raised when an invalid username is created'''
 
     def __init__(self, username):
         super().__init__('Invalid username {}'.format(username))
@@ -58,13 +71,101 @@ class BadPasswordError(AuthError):
     def __init__(self, username):
         super().__init__('Bad password for user {}'.format(username))
 
-class BaseAuthHTTPRequestHandler(BaseHTTPRequestHandler):
+class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
+    '''Metaclass to check validity of class attributes'''
+
+    def __new__(cls, name, bases, attrs):
+        def isoneof(val, sequence):
+            return val in sequence
+
+        try:
+            strtypes = basestring
+        except NameError:  # python3
+            strtypes = (str, bytes)
+        requirements = {
+            '_pwd_hash_type': (isoneof, [
+                None,
+                'md5',
+                'sha1',
+                'sha256',
+                'sha512',
+                'md5_crypt',
+                'sha1_crypt',
+                'sha256_crypt',
+                'sha512_crypt',
+                'bcrypt',
+                'scrypt']),
+            '_SameSite': (isoneof, [None, 'lax', 'strict']),
+            '_secrets': (isinstance,
+                         (_abcoll.Sequence, _abcoll.Mapping)),
+            '_pwd_min_len': (isinstance, int),
+            '_pwd_min_charsets': (isinstance, int),
+            '_jwt_lifetime': (isinstance, int),
+            '_refresh_token_lifetime': (isinstance, int),
+            '_is_SSL': (isinstance, bool),
+            '_cookie_name': (isinstance, strtypes),
+            '_cookie_len': (isinstance, int)}
+
+        for key, value in attrs.items():
+            if key in requirements:
+                checker, req = requirements[key]
+                if not checker(value, req):
+                    raise TypeError('{} must be {}{}'.format(
+                        key,
+                        'one of ' if isinstance(req, list) else '',
+                        req))
+            if key == '_pwd_hash_type':
+                if value is not None and value.endswith('crypt'):
+                    try:
+                        unix_hash
+                    except NameError:
+                        raise ImportError(
+                            'The passlib module is required for '
+                            'unix hashes (*crypt)')
+                    if value == 'bcrypt':
+                        try:
+                            import bcrypt
+                        except ImportError:
+                            raise ImportError(
+                                'The bcrypt module is required for '
+                                'bcrypt hashes')
+                    elif value == 'scrypt':
+                        try:
+                            hashlib.scrypt
+                        except AttributeError:  # python2
+                            try:
+                                import scrypt
+                            except ImportError:
+                                raise ImportError(
+                                    'The scrypt module is required '
+                                    'for scrypt hashes')
+
+        return super().__new__(cls, name, bases, attrs)
+
+class BaseAuthHTTPRequestHandler(
+    with_metaclass(BaseAuthHTTPRequestHandlerMeta,
+                   BaseHTTPRequestHandler, object)):
+    '''Implements authentication in an abstract way
+
+    Incomplete, must be inherited, and the child class must define
+    methods for storing/getting/updating users and sessions as well as
+    creating and sending tokens.
+    '''
+
     # _secrets can be either an iterable of absolute or relative paths
     # which require any authentication (deprecated), or a more
     # fine-grained filter: a dictionary where each key is a regex for
     # {method} {path} and each value is a list of allowed usernames
-    _secrets = ()
-    _min_pwdlen = 10  # TODO complexity
+    _secrets = {}
+    _pwd_min_len = 10
+    _pwd_min_charsets = 3
+    # Supported _pwd_hash_type values are:
+    # unsalted ones:
+    #   md5, sha1, sha256, sha512
+    # salted ones (UNIX passwords):
+    #   md5_crypt, sha1_crypt, sha256_crypt, sha512_crypt, bcrypt,
+    #   scrypt
+    _pwd_hash_type = None
     _endpoints = endpoints.Endpoint(
         changepwd={
             '$allowed_methods': {'GET', 'POST'},
@@ -74,10 +175,6 @@ class BaseAuthHTTPRequestHandler(BaseHTTPRequestHandler):
         },
         logout={},
     )
-    __users = {}  # username-password key-value
-    # in __sessions, each key is a session token, each value is
-    # a dictionary of user={username} and expiry={timestamp}
-    __sessions = {}
 
     def __init__(self, *args, **kwargs):
         # parent's __init__ must be called at the end, since
@@ -86,43 +183,7 @@ class BaseAuthHTTPRequestHandler(BaseHTTPRequestHandler):
         self.prune_old_sessions()
         super().__init__(*args, **kwargs)
 
-    def denied(self):
-        '''Returns 401 if resource is secret and no authentication'''
-
-        if self.pathname != '/login' and not self.is_authorized():
-            return (401,)
-        return super().denied()
-
-    def is_authorized(self):
-        '''Returns True or False if request is authorized'''
-
-        user = self.get_logged_in_user()
-        if isinstance(self._secrets, _abcoll.Sequence):
-            return self._is_authorized_plain(user)
-        for regex, users in self._secrets.items():
-            logger.debug('{} is allowed for {}'.format(regex, users))
-            if re.search(regex, '{} {}'.format(
-                    self.command, self.pathname)):
-                if user in users:
-                    return True
-                return False
-        return True  # not authentication required
-
-    def _is_authorized_plain(self, user):
-        logger.warning(
-            'Using an iterable for _secrets is deprecated. Use '
-            'a dictionary of "{method} {path}" [{users}] instead.')
-        for s in self._secrets:
-            logger.debug('{} is secret'.format(s))
-            if re.search('{}{}(/|$)'.format(
-                ('^' if s[0] == '/' else '(/|^)'),
-                    s), self.pathname):
-                if user is None:
-                    return False
-                return True
-        return True  # not authentication required
-
-    def get_session(self):
+    def get_current_session(self):
         '''Should return the session token in the request
 
         Child class should implement
@@ -139,7 +200,7 @@ class BaseAuthHTTPRequestHandler(BaseHTTPRequestHandler):
         raise NotImplementedError
 
     def set_session(self, user, session, expiry):
-        '''Ensures the token is sent in the response
+        '''Should ensure the token is sent in the response
 
         Child class should implement
         '''
@@ -147,7 +208,25 @@ class BaseAuthHTTPRequestHandler(BaseHTTPRequestHandler):
         raise NotImplementedError
 
     def unset_session(self, user, session):
-        '''Ensures the token is cleared client-side
+        '''Should ensure the token is cleared client-side
+
+        Child class should implement
+        '''
+
+        raise NotImplementedError
+
+    @classmethod
+    def get_all_sessions(cls):
+        '''Should return a list of (user, token, expiry)
+
+        Child class should implement
+        '''
+
+        raise NotImplementedError
+
+    @classmethod
+    def get_user_password(cls, user):
+        '''Should return the user for the given session
 
         Child class should implement
         '''
@@ -156,55 +235,43 @@ class BaseAuthHTTPRequestHandler(BaseHTTPRequestHandler):
 
     @classmethod
     def get_user_from_session(cls, session):
-        '''Returns the user for the given session
+        '''Should return the user for the given session
 
-        Child class may override this to implement DB access.
+        Child class should implement
         '''
 
-        try:
-            return cls.__sessions[session]['user']
-        except KeyError:
-            return None
+        raise NotImplementedError
 
     @classmethod
     def add_session(cls, user, session, expiry):
-        '''Records the session
+        '''Should record the session
 
-        Child class may override this to implement DB access.
+        Child class should implement
         '''
 
-        logger.debug('Session {} expires at {}'.format(
-            session, expiry))
-        cls.__sessions[session] = {
-            'user': user,
-            'expiry': expiry}
+        raise NotImplementedError
 
-    def rm_session(self):
-        '''Invalidate the session server-side
+    @classmethod
+    def rm_session(cls, user, session):
+        '''Deletes the session
 
-        Child class may override this to implement DB access.
+        Child class should implement
         '''
 
-        session = self.get_session()
-        user = self.get_logged_in_user()
-        try:
-            del self.__sessions[session]
-        except KeyError:
-            return
-        self.unset_session(user, session)
-
-    def new_session(self, user):
-        '''Invalidate the old session and generate a new one'''
-
-        self.rm_session()
-        session, expiry = self.new_session_token(user)
-        self.add_session(user, session, expiry)
-        self.set_session(user, session, expiry)
-        return session
+        raise NotImplementedError
 
     @classmethod
     def new_session_token(cls, user):
-        '''Should return a tuple of new session token, expiry
+        '''Should return a tuple of new session (token, expiry)
+
+        Child class should implement
+        '''
+
+        raise NotImplementedError
+
+    @classmethod
+    def session_exists(cls, session, user=None):
+        '''Should return True or False is session exists
 
         Child class should implement
         '''
@@ -213,20 +280,100 @@ class BaseAuthHTTPRequestHandler(BaseHTTPRequestHandler):
 
     @classmethod
     def user_exists(cls, user):
-        '''Returns True or False if user exists
+        '''Should return True or False if user exists
 
-        Child class may override this to implement DB access.
+        Child class should implement
         '''
 
-        return user in cls.__users
+        raise NotImplementedError
 
     @classmethod
-    def load_users_from_file(cls, userfile):
+    def _create_user(cls, username, password):
+        '''Should create a new user with the given password
+
+        Should return True on success and False otherwise
+        Child class should implement
+        '''
+
+        raise NotImplementedError
+
+    @classmethod
+    def _change_password(cls, username, password):
+        '''Should set the password of username (no check)
+
+        Should return True on success and False otherwise
+        Child class should implement
+        '''
+
+        raise NotImplementedError
+
+    def denied(self):
+        '''Returns 401 if resource is secret and no authentication'''
+
+        if self.pathname != '/login' and not self.is_authorized():
+            return (401,)
+        return super().denied()
+
+    def is_authorized(self):
+        '''Returns True or False if request is authorized'''
+
+        user = self.get_logged_in_user()
+        if isinstance(self.__class__._secrets, _abcoll.Sequence):
+            return self._is_authorized_plain(user)
+        for regex, users in self.__class__._secrets.items():
+            logger.debug('{} is allowed for {}'.format(regex, users))
+            if re.search(regex, '{} {}'.format(
+                    self.command, self.pathname)):
+                if user in users:
+                    return True
+                return False
+        return True  # not authentication required
+
+    def _is_authorized_plain(self, user):
+        logger.warning(
+            'Using an iterable for _secrets is deprecated. Use '
+            'a dictionary of "{method} {path}" [{users}] instead.')
+        for s in self.__class__._secrets:
+            logger.debug('{} is secret'.format(s))
+            if re.search('{}{}(/|$)'.format(
+                ('^' if s[0] == '/' else '(/|^)'),
+                    s), self.pathname):
+                if user is None:
+                    return False
+                return True
+        return True  # not authentication required
+
+    def expire_session(self):
+        '''Invalidate the session server-side'''
+
+        session = self.get_current_session()
+        user = self.get_logged_in_user()
+        self.rm_session(user, session)
+        self.unset_session(user, session)
+
+    def new_session(self, user):
+        '''Invalidate the old session and generate a new one'''
+
+        self.expire_session()
+        session, expiry = self.new_session_token(user)
+        if expiry:
+            logger.debug('Session {} expires at {}'.format(
+                session, expiry))
+        self.add_session(user, session, expiry)
+        self.set_session(user, session, expiry)
+        return session
+
+    @classmethod
+    def load_users_from_file(cls, userfile, plaintext=True):
         '''Adds users from the userfile
 
-        userfile can be a string (filename) or a file handle
-        - The file contains one username:password per line.
-        - Neither username, nor password can be empty.
+        - userfile can be a string (filename) or a file handle
+          - The file contains one username:password per line.
+          - Neither username, nor password can be empty.
+        - If plaintext is True, then the password is checked against
+          the policy and hashed according to the _pwd_hash_type class
+          attribute; otherwise it is saved as is (the hashing
+          algorithm must correspond to _pwd_hash_type)
         '''
 
         ufile = userfile
@@ -238,74 +385,70 @@ class BaseAuthHTTPRequestHandler(BaseHTTPRequestHandler):
                 username, _, password = \
                     line.rstrip('\n').rstrip('\r').partition(':')
                 try:
-                    cls.create_user(username, password)
+                    cls.create_user(username, password,
+                                    plaintext=plaintext)
                 except (UserAlreadyExistsError, InvalidUsernameError,
                         BadPasswordError) as e:
-                    logger.debug('{}'.format(str(e)))
+                    logger.error('{}'.format(str(e)))
 
     @classmethod
     def prune_old_sessions(cls):
-        '''Remove expired sessions'''
+        '''Remove expired sessions
+
+        Child class may override this to implement DB access.
+        '''
 
         logger.debug('Pruning old sessions')
-        sessions = cls.__sessions.keys()
+        sessions = cls.get_all_sessions()
         for s in sessions:
-            exp = cls.__sessions[s]['expiry']
+            (user, tok, exp) = s
             if exp is not None and exp <= curr_timestamp():
-                logger.debug('Removing session {}'.format(s))
-                del cls.__sessions[s]
+                logger.debug('Removing session {}'.format(tok))
+                cls.rm_session(user, tok)
 
     @classmethod
-    def create_user(cls, username, password):
+    def create_user(cls, username, password, plaintext=True):
         '''Creates a user with the given password
 
         Returns True on success, False otherwise
+        - If plaintext is True, then the password is checked against
+          the policy and hashed according to the _pwd_hash_type class
+          attribute; otherwise it is saved as is (the hashing
+          algorithm must correspond to _pwd_hash_type)
         '''
 
-        logger.debug('Creating user {}:{}'.format(
-            username, password))
         if not username:
             raise InvalidUsernameError(username)
         if cls.user_exists(username):
             raise UserAlreadyExistsError(username)
-        if not cls.is_password_good(password):
-            raise BadPasswordError(username)
+        if plaintext:
+            if not cls.password_is_strong(password):
+                raise BadPasswordError(username)
+            password = cls.transform_password(password)
+        logger.debug('Creating user {}:{}'.format(
+            username, password))
         return cls._create_user(username, password)
 
     @classmethod
-    def change_password(cls, username, password):
+    def change_password(cls, username, password, plaintext=True):
         '''Changes the password of username. In memory only!
 
         Returns True on success, False otherwise
+        - If plaintext is True, then the password is checked against
+          the policy and hashed according to the _pwd_hash_type class
+          attribute; otherwise it is saved as is (the hashing
+          algorithm must correspond to _pwd_hash_type)
         '''
 
         if not cls.user_exists(username):
             raise NoSuchUserError(username)
-        if not cls.is_password_good(password):
-            raise BadPasswordError(username)
+        if plaintext:
+            if not cls.password_is_strong(password):
+                raise BadPasswordError(username)
+            password = cls.transform_password(password)
+        logger.debug('Changing password for user {}:{}'.format(
+            username, password))
         return cls._change_password(username, password)
-
-    @classmethod
-    def _create_user(cls, username, password):
-        '''Creates a new user with the given password
-
-        Returns True
-        Child class may override this to implement DB access.
-        '''
-
-        cls.__users[username] = password
-        return True
-
-    @classmethod
-    def _change_password(cls, username, password):
-        '''Sets the password of username (no check)
-
-        Returns True
-        Child class may override this to implement DB access.
-        '''
-
-        cls.__users[username] = password
-        return True
 
     def authenticate(self):
         '''Returns True or False if username:password is valid
@@ -315,44 +458,159 @@ class BaseAuthHTTPRequestHandler(BaseHTTPRequestHandler):
 
         username = self.get_param('username')
         password = self.get_param('password')
-        return self.is_password_correct(username, password)
+        return self.credentials_are_correct(username, password)
 
     @classmethod
-    def is_password_correct(cls, username, password):
+    def credentials_are_correct(cls, username, password):
         '''Returns True or False if username:password is valid
 
         Child class may override this to implement DB access.
         '''
 
-        try:
-            if cls.__users[username] == password:
-                return True
-        except KeyError:
+        if not cls.user_exists(username):
             logger.debug(
                 'No such user {}'.format(username))
             return False
-
-        logger.debug(
-            'Wrong password for user {}'.format(username))
-        return False
+        if not cls.verify_password(username, password):
+            logger.debug(
+                'Wrong password for user {}'.format(username))
+            return False
+        return True
 
     @classmethod
-    def is_password_good(cls, password):
-        '''Simple password policy; only checks the length'''
+    def verify_password(cls, user, password):
+        '''Returns True or False if user's password is as given
 
-        return password and len(password) >= cls._min_pwdlen
+        Uses the algorithm is given in _pwd_hash_type (class attribute)
+        '''
+
+        curr_password = cls.get_user_password(user)
+        if cls._pwd_hash_type is None:
+            return curr_password == password
+        verifier = getattr(
+            cls, '_verify_password_{}'.format(
+                cls._pwd_hash_type))
+        return verifier(plain=password, hashed=curr_password)
+
+    @classmethod
+    def transform_password(cls, password):
+        '''Returns the password hashed according to the setting
+
+        Uses the algorithm is given in _pwd_hash_type (class attribute)
+        '''
+
+        if cls._pwd_hash_type is None:
+            return password
+        transformer = getattr(
+            cls, '_transform_password_{}'.format(
+                cls._pwd_hash_type))
+        return transformer(password)
+
+    @staticmethod
+    def _verify_password_md5_crypt(plain, hashed):
+        return unix_hash.md5_crypt.verify(plain, hashed)
+
+    @staticmethod
+    def _verify_password_sha1_crypt(plain, hashed):
+        return unix_hash.sha1_crypt.verify(plain, hashed)
+
+    @staticmethod
+    def _verify_password_sha256_crypt(plain, hashed):
+        return unix_hash.sha256_crypt.verify(plain, hashed)
+
+    @staticmethod
+    def _verify_password_sha512_crypt(plain, hashed):
+        return unix_hash.sha512_crypt.verify(plain, hashed)
+
+    @staticmethod
+    def _verify_password_bcrypt(plain, hashed):
+        return unix_hash.bcrypt.verify(plain, hashed)
+
+    @staticmethod
+    def _verify_password_scrypt(plain, hashed):
+        return unix_hash.scrypt.verify(plain, hashed)
+
+    @staticmethod
+    def _verify_password_md5(plain, hashed):
+        return hashlib.md5(
+            plain.encode('utf-8')).hexdigest() == hashed
+
+    @staticmethod
+    def _verify_password_sha1(plain, hashed):
+        return hashlib.sha1(
+            plain.encode('utf-8')).hexdigest() == hashed
+
+    @staticmethod
+    def _verify_password_sha256(plain, hashed):
+        return hashlib.sha256(
+            plain.encode('utf-8')).hexdigest() == hashed
+
+    @staticmethod
+    def _verify_password_sha512(plain, hashed):
+        return hashlib.sha512(
+            plain.encode('utf-8')).hexdigest() == hashed
+
+    @staticmethod
+    def _transform_password_md5_crypt(password):
+        return unix_hash.md5_crypt.hash(password)
+
+    @staticmethod
+    def _transform_password_sha1_crypt(password):
+        return unix_hash.sha1_crypt.hash(password)
+
+    @staticmethod
+    def _transform_password_sha256_crypt(password):
+        return unix_hash.sha256_crypt.hash(password)
+
+    @staticmethod
+    def _transform_password_sha512_crypt(password):
+        return unix_hash.sha512_crypt.hash(password)
+
+    @staticmethod
+    def _transform_password_bcrypt(password):
+        return unix_hash.bcrypt.hash(password)
+
+    @staticmethod
+    def _transform_password_scrypt(password):
+        return unix_hash.scrypt.hash(password)
+
+    @staticmethod
+    def _transform_password_md5(password):
+        return hashlib.md5(password.encode('utf-8')).hexdigest()
+
+    @staticmethod
+    def _transform_password_sha1(password):
+        return hashlib.sha1(password.encode('utf-8')).hexdigest()
+
+    @staticmethod
+    def _transform_password_sha256(password):
+        return hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+    @staticmethod
+    def _transform_password_sha512(password):
+        return hashlib.sha512(password.encode('utf-8')).hexdigest()
+
+    @classmethod
+    def password_is_strong(cls, password):
+        '''Returns True or False if password conforms to policy'''
+
+        return (password is not None
+                and len(password) >= cls._pwd_min_len
+                and num_charsets(password) >= cls._pwd_min_charsets)
 
     def do_changepwd(self):
         '''Changes the password for the given username'''
 
         if not self.authenticate():
-            self.send_error(401, explain='Username or password is wrong')
+            self.send_error(
+                401, explain='Username or password is wrong')
             return
 
         username = self.get_param('username')
         new_password = self.get_param('new_password')
         try:
-            self.change_password(username, new_password)
+            self.change_password(username, new_password,
+                                 plaintext=True)
         except (BadPasswordError, NoSuchUserError,
                 InvalidUsernameError) as e:
             self.send_error(400, explain=str(e))
@@ -368,34 +626,82 @@ class BaseAuthHTTPRequestHandler(BaseHTTPRequestHandler):
             self.new_session(username)
             self.send_response_goto()
         else:
-            self.rm_session()
+            self.expire_session()
             self.send_error(
                 401, explain='Username or password is wrong')
 
     def do_logout(self):
-        '''Clears the cookie from the browser and the saved sessions'''
+        '''Clears the cookie from the browser and saved sessions'''
 
-        self.rm_session()
+        self.expire_session()
         self.send_response_goto()
 
-class AuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
-    '''username:password authentication and cookie-based session'''
+class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
+    '''Implements cookie-based authentication
+
+    Incomplete, must be inherited, and the child class must define
+    methods for storing/getting/updating users and sessions.
+    '''
 
     _is_SSL = False  # sets the Secure cookie flag if True
     _cookie_name = 'SESSION'
     _cookie_len = 20
-    _cookie_lifetime = None  # in seconds; if unset, it's a session cookie
+    _cookie_lifetime = None  # in seconds; if None---session cookie
     _SameSite = None  # can be 'lax' or 'strict'
 
     def __init__(self, *args, **kwargs):
-        self.__cookie = None
+        self.__class__.__cookie = None
         super().__init__(*args, **kwargs)
 
+    def get_current_session(self):
+        '''Returns the session cookie'''
+
+        cookies = param_dict(self.headers.get('Cookie'))
+        if not cookies:
+            logger.debug('No cookies given')
+            session = None
+        else:
+            try:
+                session = cookies[self.__class__._cookie_name]
+            except KeyError:
+                logger.debug('No {} cookie given'.format(
+                    self.__class__._cookie_name))
+                session = None
+            else:
+                logger.debug('Cookie is {}valid'.format(
+                    '' if self.session_exists(session) else 'not '))
+
+        return session
+
     def get_logged_in_user(self):
-        session = self.get_session()
+        session = self.get_current_session()
         if session is None:
             return None
         return self.get_user_from_session(session)
+
+    def set_session(self, user, session, expiry):
+        '''Saves the cookie to be sent with this response'''
+
+        flags = '{}{}HttpOnly; '.format(
+            'Secure; ' if self.__class__._is_SSL else '',
+            'SameSite={}; '.format(self.__class__._SameSite)
+            if self.__class__._SameSite is not None else '')
+        if expiry is not None:
+            expiry = 'Expires={}; '.format(date_from_timestamp(
+                expiry))
+        self.__class__.__cookie = \
+            '{name}={value}; path=/; {expiry}{flags}'.format(
+                name=self.__class__._cookie_name,
+                value=session,
+                expiry=expiry,
+                flags=flags)
+
+    def unset_session(self, user=None, session=None):
+        '''Sets an empty cookie to be sent with this response'''
+
+        expiry = 'Expires={}'.format(date_from_timestamp(0))
+        self.__class__.__cookie = '{name}=; path=/; {expiry}'.format(
+            name=self.__class__._cookie_name, expiry=expiry)
 
     @classmethod
     def new_session_token(cls, user):
@@ -405,68 +711,136 @@ class AuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         return ('{:02x}'.format(
             randint(0, 2**(4 * cls._cookie_len) - 1)), expiry)
 
-    def get_session(self):
-        '''Returns the session cookie'''
-
-        cookies = param_dict(self.headers.get('Cookie'))
-        if not cookies:
-            logger.debug('No cookies given')
-            session = None
-        else:
-            try:
-                session = cookies[self._cookie_name]
-            except KeyError:
-                logger.debug('No {} cookie given'.format(
-                    self._cookie_name))
-                session = None
-            else:
-                logger.debug('Cookie is {}valid'.format(
-                    '' if session in
-                    self._BaseAuthHTTPRequestHandler__sessions
-                    else 'not '))
-
-        return session
-
-    def set_session(self, user, session, expiry):
-        '''Saves the cookie to be sent with this response'''
-
-        flags = '{}{}HttpOnly; '.format(
-            'Secure; ' if self._is_SSL else '',
-            'SameSite={}; '.format(
-                self._SameSite) if self._SameSite is not None else '')
-        if expiry is not None:
-            expiry = 'Expires={}; '.format(date_from_timestamp(
-                expiry))
-        self.__cookie = \
-            '{name}={value}; path=/; {expiry}{flags}'.format(
-                name=self._cookie_name,
-                value=session,
-                expiry=expiry,
-                flags=flags)
-
-    def unset_session(self, user=None, session=None):
-        '''Sets an empty cookie to be sent with this response'''
-
-        expiry = 'Expires={}'.format(date_from_timestamp(0))
-        self.__cookie = '{name}=; path=/; {expiry}'.format(
-            name=self._cookie_name, expiry=expiry)
-
     def end_headers(self):
-        if self.__cookie is not None:
-            self.send_header('Set-Cookie', self.__cookie)
+        if self.__class__.__cookie is not None:
+            self.send_header('Set-Cookie', self.__class__.__cookie)
         super().end_headers()
 
-class AuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
-    '''username:password authentication and token-based session'''
+class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
+    '''Implements JWT-based authentication with refresh tokens
+
+    Incomplete, must be inherited, and the child class must define
+    methods for storing/getting/updating users and sessions.
+    '''
 
     _jwt_lifetime = 15  # in minutes
     _refresh_token_lifetime = 1440  # in minutes
     pass
 
-class AuthHTTPRequestHandler(AuthCookieHTTPRequestHandler):
+class BaseAuthInMemoryHTTPRequestHandler(BaseAuthHTTPRequestHandler):
+    '''Implements in-memory storage of users and sessions
+
+    Incomplete, must be inherited, and the child class must define
+    methods for creating and sending tokens.
+    '''
+
+    __users = {}  # username-password key-value
+    # in __sessions, each key is a session token, each value is
+    # a dictionary of user={username} and expiry={timestamp}
+    __sessions = {}
+
     def __init__(self, *args, **kargs):
-        logger.warning(
-            'AuthHTTPRequestHandler is deprecated. '
-            'Use AuthCookie HTTPRequestHandler or '
-            'AuthJWTHTTPRequestHandler instead.')
         super().__init__(*args, **kargs)
+
+    @classmethod
+    def get_all_sessions(cls):
+        '''Returns a list of (user, token, expiry)'''
+
+        return [(None, t, s['expiry'])
+                for t, s in cls.__sessions.items()]
+
+    @classmethod
+    def get_user_password(cls, user):
+        '''Returns the user for the given session'''
+
+        try:
+            return cls.__users[user]
+        except KeyError:
+            return None
+
+    @classmethod
+    def get_user_from_session(cls, session):
+        '''Returns the user for the given session'''
+
+        try:
+            return cls.__sessions[session]['user']
+        except KeyError:
+            return None
+
+    @classmethod
+    def add_session(cls, user, session, expiry):
+        '''Records the session'''
+
+        cls.__sessions[session] = {
+            'user': user,
+            'expiry': expiry}
+
+    @classmethod
+    def rm_session(cls, user, session):
+        '''Deletes the session'''
+
+        try:
+            del cls.__sessions[session]
+        except KeyError:
+            pass
+
+    @classmethod
+    def session_exists(cls, session, user=None):
+        '''Returns True or False is session exists
+
+        - If user is given, it checks if the session belongs to that
+          username
+        '''
+
+        try:
+            u = cls.__sessions[session]
+        except KeyError:
+            return False
+        if user is not None and user != u:
+            return False
+        return True
+
+    @classmethod
+    def user_exists(cls, user):
+        '''Returns True or False if user exists'''
+
+        return user in cls.__users
+
+    @classmethod
+    def _create_user(cls, username, password):
+        '''Creates a new user with the given password
+
+        Returns True
+        '''
+
+        cls.__users[username] = password
+        return True
+
+    @classmethod
+    def _change_password(cls, username, password):
+        '''Sets the password of username (no check)
+
+        Returns True
+        '''
+
+        cls.__users[username] = password
+        return True
+
+class AuthCookieHTTPRequestHandler(
+        BaseAuthInMemoryHTTPRequestHandler,
+        BaseAuthCookieHTTPRequestHandler):
+    pass
+
+class AuthJWTHTTPRequestHandler(
+        BaseAuthInMemoryHTTPRequestHandler,
+        BaseAuthJWTHTTPRequestHandler):
+    pass
+
+def num_charsets(arg):
+    charsets = ['a-z', 'A-Z', '0-9']
+    charsets += ['^{}'.format(''.join(charsets))]
+    num = 0
+    for c in charsets:
+        if re.search('[{}]'.format(c), arg):
+            num += 1
+    return num

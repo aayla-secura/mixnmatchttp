@@ -7,7 +7,7 @@ __all__ = [
         ]
 
 import logging
-try:  # Python 2.7+
+try:  # python2.7 and above
     from logging import NullHandler
 except ImportError:
     class NullHandler(logging.Handler):

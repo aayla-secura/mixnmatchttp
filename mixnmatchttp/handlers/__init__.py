@@ -5,14 +5,16 @@ from __future__ import absolute_import
 from future import standard_library
 standard_library.install_aliases()
 from .base import BaseHTTPRequestHandler, methodhandler
-from .authenticator import AuthHTTPRequestHandler
+from .authenticator import AuthCookieHTTPRequestHandler, \
+    AuthJWTHTTPRequestHandler
 from .cacher import CachingHTTPRequestHandler
 from .proxy import ProxyingHTTPRequestHandler
 
 __all__ = [
         'methodhandler',
         'BaseHTTPRequestHandler',
-        'AuthHTTPRequestHandler',
+        'AuthCookieHTTPRequestHandler',
+        'AuthJWTHTTPRequestHandler',
         'CachingHTTPRequestHandler',
         'ProxyingHTTPRequestHandler',
         ]

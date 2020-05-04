@@ -371,6 +371,8 @@ if __name__ == "__main__":
 
 Implements username:password authentication via form or JSON `POST` request. Has configurable file paths/endpoints for which authentication is required.
 
+This class is meant as a simple example of storing users and sessions in memory. It's recommended you implement your own class that inherits BaseAuthCookieHTTPRequestHandler and that defines the relevant methods to save, retrieve and update users and sessions.
+
 If no file containing username:password is set (as a `_userfile` class attribute), it implements dummy authentication (all logins succeed).
 
   * `GET|POST /login`: Issues a `SESSION` cookie if username and password is valid

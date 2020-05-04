@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # TO DO:
 #  - colorful log
+
 #  from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import division
@@ -133,13 +134,13 @@ if __name__ == "__main__":
         args.port = 58443 if args.ssl else 58080
 
 from mixnmatchttp.handlers import BaseHTTPRequestHandler, \
-        AuthHTTPRequestHandler, CachingHTTPRequestHandler, \
+        AuthCookieHTTPRequestHandler, CachingHTTPRequestHandler, \
         ProxyingHTTPRequestHandler
 from mixnmatchttp.servers import ThreadingHTTPServer
 from mixnmatchttp import endpoints
 from http.server import HTTPServer
 
-class CORSHTTPSServer(AuthHTTPRequestHandler,
+class CORSHTTPSServer(AuthCookieHTTPRequestHandler,
         CachingHTTPRequestHandler, ProxyingHTTPRequestHandler):
     def no_cache(self):
         return (not re.search('/jquery-[0-9\.]+(\.min)?\.js',
@@ -189,11 +190,12 @@ def new_server(clsname, cors, headers, is_SSL, secrets, userfile):
             self.send_header('Access-Control-Allow-Credentials',
                 'true')
 
-    AuthHTTPRequestHandler.load_users_from_file(userfile)
-    return type(clsname, (CORSHTTPSServer,), {
+    new_class = type(clsname, (CORSHTTPSServer,), {
         '_is_SSL': is_SSL,
         '_secrets': tuple(filter(None, secrets)),
         'send_custom_headers': send_custom_headers})
+    new_class.load_users_from_file(userfile)
+    return new_class
 
 if __name__ == "__main__":
     srv_cls = HTTPServer
