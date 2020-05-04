@@ -15,6 +15,7 @@ except ImportError:
     # python3
     from collections import abc as _abcoll
 import logging
+from datetime import datetime
 
 __all__ = [
         'DictNoClobber',
@@ -206,3 +207,13 @@ def param_dict(s, itemsep=' *; *', valsep='=', values_are_opt=False):
 
     logger.debug('Got params from {}: {}'.format(s, params))
     return params
+
+def curr_timestamp():
+    return float(datetime.now().strftime('%s'))
+
+def date_from_timestamp(ts, relative=False):
+    ts = float(ts)  # support strings
+    if relative:
+        ts += float(datetime.now().strftime('%s'))
+    return datetime.utcfromtimestamp(ts).strftime(
+        '%a, %d %b %Y %H:%M:%S GMT')
