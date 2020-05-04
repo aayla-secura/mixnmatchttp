@@ -14,7 +14,10 @@ import shutil
 import mimetypes
 import urllib
 import json
-from json import JSONDecodeError
+try:  # python3
+    from json import JSONDecodeError
+except ImportError:  # python2
+    JSONDecodeError = ValueError
 import base64, binascii
 from wrapt import decorator
 from string import Template
