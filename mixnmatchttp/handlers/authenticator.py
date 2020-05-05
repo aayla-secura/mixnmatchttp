@@ -10,6 +10,7 @@ from future.utils import with_metaclass
 import logging
 import re
 from random import randint
+from collections import OrderedDict
 try:
     # python2
     from collections import _abcoll
@@ -150,11 +151,47 @@ class BaseAuthHTTPRequestHandler(
     methods for storing/getting/updating users and sessions as well as
     creating and sending tokens.
     Class attributes:
-    - _secrets: can be either an iterable of absolute or relative
-      paths which require any authentication (deprecated), or a more
-      fine-grained filter: a dictionary where each key is a regex for
-      {method} {path} and each value is a list of allowed usernames.
-      Default is {}.
+    - _secrets: can be either:
+      1) A simple filter: an iterable of absolute or relative paths
+         which require authentication:
+         - A path filter that begins with / is matched at the
+           beginning of the request path and must match until the end
+           or until another /
+         - Otherwise, the path filter is matched as a path component
+           (i.e. following a /) and again must match until the end
+           or until another /
+         - If no value in the list of path filters matches the
+           requested path, then anyone is granted access. Otherwise,
+           only authenticated users are granted access.
+      2) A more fine-grained filter: an OrderedDict (or equivalently,
+         a list of two-item tuples) where each key is a regex for
+         {method} {path} and each value is a list of allowed users.
+         A user is one of:
+           - a literal username, optionally preceded by '!' (to
+             negate or deny access)
+           - None (anyone, including unauthenticated)
+           - '*' (any authenticated user)
+         - If no value in the list of secret path regexes matches the
+           requested path, then anyone is granted access. Otherwise,
+           the first (in order) regex that matched the requested path
+           determines if the user is allowed or not:
+           - It is denied explicitly if !{user} is given in the list
+             of users
+           - It is denied implicitly if the user is not in the list
+             and neither is '*' or None.
+         Example:
+        _secrets = [
+            # all authenticated users, except service, can access /foo
+            ('^[A-Z]+ /foo(/|$)', ['*', '!service']),
+            # only admin can POST (POST /foo is still allowed for all
+            # other than service
+            ('^POST ', ['admin']),
+            # anyone can fetch /bar
+            ('^GET /bar(/|$)', [None]),
+            # require authentication for all other pages
+            ('.*', ['*']),
+        ]
+      Default _secrets is [], i.e. no authentication required.
     - _pwd_min_len: Minimum length of passwords. Default is 10.
     - _pwd_min_charsets: Minimum number of character sets in
       passwords. Default is 3.
@@ -170,7 +207,7 @@ class BaseAuthHTTPRequestHandler(
       Default is None (plaintext).
     '''
 
-    _secrets = {}
+    _secrets = []
     _pwd_min_len = 10
     _pwd_min_charsets = 3
     _pwd_type = None
@@ -326,30 +363,46 @@ class BaseAuthHTTPRequestHandler(
         '''Returns True or False if request is authorized'''
 
         user = self.get_logged_in_user()
-        if isinstance(self.__class__._secrets, _abcoll.Sequence):
-            return self._is_authorized_plain(user)
-        for regex, users in self.__class__._secrets.items():
-            logger.debug('{} is allowed for {}'.format(regex, users))
-            if re.search(regex, '{} {}'.format(
-                    self.command, self.pathname)):
-                if user in users:
-                    return True
-                return False
-        return True  # not authentication required
+        checker = self._is_authorized_complex
+        secrets = self.__class__._secrets
+        requested = '{} {}'.format(self.command, self.pathname)
+        try:
+            secrets = OrderedDict(self.__class__._secrets)
+        except ValueError:
+            checker = self._is_authorized_plain
+            requested = self.pathname
+        return checker(requested, user, secrets)
 
-    def _is_authorized_plain(self, user):
-        logger.warning(
-            'Using an iterable for _secrets is deprecated. Use '
-            'a dictionary of "{method} {path}" [{users}] instead.')
-        for s in self.__class__._secrets:
+    @staticmethod
+    def _is_authorized_complex(cmd_path, user, secrets_map):
+        for regex, users in secrets_map.items():
+            logger.debug('{} is allowed for {}'.format(regex, users))
+            if re.search(regex, cmd_path):
+                if user is not None:
+                    if '!{}'.format(user) in users:
+                        logger.debug('Explicitly denied')
+                        return False
+                    if '*' in users:
+                        logger.debug('Implicitly allowed')
+                        return True
+                if user in users:
+                    logger.debug('Explicitly allowed')
+                    return True
+                logger.debug('Implicitly denied')
+                return False
+        return True
+
+    @staticmethod
+    def _is_authorized_plain(path, user, secrets_list):
+        if user is not None:
+            return True
+        for s in secrets_list:
             logger.debug('{} is secret'.format(s))
             if re.search('{}{}(/|$)'.format(
                 ('^' if s[0] == '/' else '(/|^)'),
-                    s), self.pathname):
-                if user is None:
-                    return False
-                return True
-        return True  # not authentication required
+                    s), path):
+                return False
+        return True
 
     def expire_session(self):
         '''Invalidate the session server-side'''
