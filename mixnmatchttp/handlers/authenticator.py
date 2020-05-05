@@ -78,23 +78,22 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
         def isoneof(val, sequence):
             return val in sequence
 
+        new_class = super().__new__(cls, name, bases, attrs)
+        pwd_types = [None]
+        prefT = '_transform_password_'
+        prefV = '_verify_password_'
+        for m in dir(new_class):
+            if callable(getattr(new_class, m)) \
+                    and m.startswith(prefT):
+                ptype = m[len(prefT):]
+                if hasattr(new_class, '{}{}'.format(prefV, ptype)):
+                    pwd_types.append(ptype)
         try:
             strtypes = basestring
         except NameError:  # python3
             strtypes = (str, bytes)
         requirements = {
-            '_pwd_hash_type': (isoneof, [
-                None,
-                'md5',
-                'sha1',
-                'sha256',
-                'sha512',
-                'md5_crypt',
-                'sha1_crypt',
-                'sha256_crypt',
-                'sha512_crypt',
-                'bcrypt',
-                'scrypt']),
+            '_pwd_type': (isoneof, pwd_types),
             '_SameSite': (isoneof, [None, 'lax', 'strict']),
             '_secrets': (isinstance,
                          (_abcoll.Sequence, _abcoll.Mapping)),
@@ -114,7 +113,7 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
                         key,
                         'one of ' if isinstance(req, list) else '',
                         req))
-            if key == '_pwd_hash_type':
+            if key == '_pwd_type':
                 if value is not None and value.endswith('crypt'):
                     try:
                         unix_hash
@@ -140,7 +139,7 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
                                     'The scrypt module is required '
                                     'for scrypt hashes')
 
-        return super().__new__(cls, name, bases, attrs)
+        return new_class
 
 class BaseAuthHTTPRequestHandler(
     with_metaclass(BaseAuthHTTPRequestHandlerMeta,
@@ -159,13 +158,15 @@ class BaseAuthHTTPRequestHandler(
     _secrets = {}
     _pwd_min_len = 10
     _pwd_min_charsets = 3
-    # Supported _pwd_hash_type values are:
+    # Supported _pwd_type values are:
     # unsalted ones:
     #   md5, sha1, sha256, sha512
     # salted ones (UNIX passwords):
     #   md5_crypt, sha1_crypt, sha256_crypt, sha512_crypt, bcrypt,
     #   scrypt
-    _pwd_hash_type = None
+    # If a child class wants to extend these, it should define
+    # _transform_password_{type} and _verify_password_{type}
+    _pwd_type = None
     _endpoints = endpoints.Endpoint(
         changepwd={
             '$allowed_methods': {'GET', 'POST'},
@@ -371,9 +372,9 @@ class BaseAuthHTTPRequestHandler(
           - The file contains one username:password per line.
           - Neither username, nor password can be empty.
         - If plaintext is True, then the password is checked against
-          the policy and hashed according to the _pwd_hash_type class
+          the policy and hashed according to the _pwd_type class
           attribute; otherwise it is saved as is (the hashing
-          algorithm must correspond to _pwd_hash_type)
+          algorithm must correspond to _pwd_type)
         '''
 
         ufile = userfile
@@ -412,9 +413,9 @@ class BaseAuthHTTPRequestHandler(
 
         Returns True on success, False otherwise
         - If plaintext is True, then the password is checked against
-          the policy and hashed according to the _pwd_hash_type class
+          the policy and hashed according to the _pwd_type class
           attribute; otherwise it is saved as is (the hashing
-          algorithm must correspond to _pwd_hash_type)
+          algorithm must correspond to _pwd_type)
         '''
 
         if not username:
@@ -435,9 +436,9 @@ class BaseAuthHTTPRequestHandler(
 
         Returns True on success, False otherwise
         - If plaintext is True, then the password is checked against
-          the policy and hashed according to the _pwd_hash_type class
+          the policy and hashed according to the _pwd_type class
           attribute; otherwise it is saved as is (the hashing
-          algorithm must correspond to _pwd_hash_type)
+          algorithm must correspond to _pwd_type)
         '''
 
         if not cls.user_exists(username):
@@ -481,29 +482,29 @@ class BaseAuthHTTPRequestHandler(
     def verify_password(cls, user, password):
         '''Returns True or False if user's password is as given
 
-        Uses the algorithm is given in _pwd_hash_type (class attribute)
+        Uses the algorithm is given in _pwd_type (class attribute)
         '''
 
         curr_password = cls.get_user_password(user)
-        if cls._pwd_hash_type is None:
+        if cls._pwd_type is None:
             return curr_password == password
         verifier = getattr(
             cls, '_verify_password_{}'.format(
-                cls._pwd_hash_type))
+                cls._pwd_type))
         return verifier(plain=password, hashed=curr_password)
 
     @classmethod
     def transform_password(cls, password):
         '''Returns the password hashed according to the setting
 
-        Uses the algorithm is given in _pwd_hash_type (class attribute)
+        Uses the algorithm is given in _pwd_type (class attribute)
         '''
 
-        if cls._pwd_hash_type is None:
+        if cls._pwd_type is None:
             return password
         transformer = getattr(
             cls, '_transform_password_{}'.format(
-                cls._pwd_hash_type))
+                cls._pwd_type))
         return transformer(password)
 
     @staticmethod
