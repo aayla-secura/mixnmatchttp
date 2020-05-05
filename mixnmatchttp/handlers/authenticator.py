@@ -149,23 +149,30 @@ class BaseAuthHTTPRequestHandler(
     Incomplete, must be inherited, and the child class must define
     methods for storing/getting/updating users and sessions as well as
     creating and sending tokens.
+    Class attributes:
+    - _secrets: can be either an iterable of absolute or relative
+      paths which require any authentication (deprecated), or a more
+      fine-grained filter: a dictionary where each key is a regex for
+      {method} {path} and each value is a list of allowed usernames.
+      Default is {}.
+    - _pwd_min_len: Minimum length of passwords. Default is 10.
+    - _pwd_min_charsets: Minimum number of character sets in
+      passwords. Default is 3.
+    - _pwd_type: the type (usually hash algorithm) to store passwords
+      in. Supported values are:
+         unsalted ones:
+           md5, sha1, sha256, sha512
+         salted ones (UNIX passwords):
+           md5_crypt, sha1_crypt, sha256_crypt, sha512_crypt, bcrypt,
+           scrypt
+      If a child class wants to extend these, it should define
+      _transform_password_{type} and _verify_password_{type}.
+      Default is None (plaintext).
     '''
 
-    # _secrets can be either an iterable of absolute or relative paths
-    # which require any authentication (deprecated), or a more
-    # fine-grained filter: a dictionary where each key is a regex for
-    # {method} {path} and each value is a list of allowed usernames
     _secrets = {}
     _pwd_min_len = 10
     _pwd_min_charsets = 3
-    # Supported _pwd_type values are:
-    # unsalted ones:
-    #   md5, sha1, sha256, sha512
-    # salted ones (UNIX passwords):
-    #   md5_crypt, sha1_crypt, sha256_crypt, sha512_crypt, bcrypt,
-    #   scrypt
-    # If a child class wants to extend these, it should define
-    # _transform_password_{type} and _verify_password_{type}
     _pwd_type = None
     _endpoints = endpoints.Endpoint(
         changepwd={

@@ -194,7 +194,8 @@ def new_server(clsname, cors, headers, is_SSL, secrets, userfile):
         '_is_SSL': is_SSL,
         '_secrets': tuple(filter(None, secrets)),
         'send_custom_headers': send_custom_headers})
-    new_class.load_users_from_file(userfile)
+    if userfile is not None:
+        new_class.load_users_from_file(userfile, plaintext=True)
     return new_class
 
 if __name__ == "__main__":
