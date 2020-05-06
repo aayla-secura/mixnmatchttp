@@ -314,7 +314,9 @@ class BaseAuthHTTPRequestHandler(
     def new_session_token(cls, user):
         '''Should return a tuple of new session (token, expiry)
 
-        expiry should be an int or float as seconds since Unix epoch
+        expiry should be one of:
+        1) an int or float as UTC seconds since Unix epoch
+        2) datetime object
         Child class should implement
         '''
 
