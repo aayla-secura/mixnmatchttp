@@ -249,7 +249,7 @@ class BaseAuthHTTPRequestHandler(
 
         raise NotImplementedError
 
-    def set_session(self, user, session, expiry):
+    def set_session(self, session, user, expiry):
         '''Should ensure the token is sent in the response
 
         Child class should implement
@@ -257,7 +257,7 @@ class BaseAuthHTTPRequestHandler(
 
         raise NotImplementedError
 
-    def unset_session(self, user, session):
+    def unset_session(self, session, user):
         '''Should ensure the token is cleared client-side
 
         Child class should implement
@@ -293,7 +293,7 @@ class BaseAuthHTTPRequestHandler(
         raise NotImplementedError
 
     @classmethod
-    def add_session(cls, user, session, expiry):
+    def add_session(cls, session, user, expiry):
         '''Should record the session
 
         Child class should implement
@@ -302,7 +302,7 @@ class BaseAuthHTTPRequestHandler(
         raise NotImplementedError
 
     @classmethod
-    def rm_session(cls, user, session):
+    def rm_session(cls, session, user):
         '''Deletes the session
 
         Child class should implement
@@ -321,7 +321,7 @@ class BaseAuthHTTPRequestHandler(
         raise NotImplementedError
 
     @classmethod
-    def session_exists(cls, session, user=None):
+    def session_exists(cls, session, user):
         '''Should return True or False is session exists
 
         Child class should implement
@@ -342,7 +342,6 @@ class BaseAuthHTTPRequestHandler(
     def _create_user(cls, username, password):
         '''Should create a new user with the given password
 
-        Should return True on success and False otherwise
         Child class should implement
         '''
 
@@ -352,7 +351,6 @@ class BaseAuthHTTPRequestHandler(
     def _change_password(cls, username, password):
         '''Should set the password of username (no check)
 
-        Should return True on success and False otherwise
         Child class should implement
         '''
 
@@ -415,8 +413,8 @@ class BaseAuthHTTPRequestHandler(
 
         session = self.get_current_session()
         user = self.get_logged_in_user()
-        self.rm_session(user, session)
-        self.unset_session(user, session)
+        self.rm_session(session, user)
+        self.unset_session(session, user)
 
     def new_session(self, user):
         '''Invalidate the old session and generate a new one'''
@@ -426,8 +424,8 @@ class BaseAuthHTTPRequestHandler(
         if expiry:
             logger.debug('Session {} expires at {}'.format(
                 session, expiry))
-        self.add_session(user, session, expiry)
-        self.set_session(user, session, expiry)
+        self.add_session(session, user, expiry)
+        self.set_session(session, user, expiry)
         return session
 
     @classmethod
@@ -468,16 +466,19 @@ class BaseAuthHTTPRequestHandler(
         logger.debug('Pruning old sessions')
         sessions = cls.get_all_sessions()
         for s in sessions:
-            (user, tok, exp) = s
-            if exp is not None and exp <= curr_timestamp(to_utc=True):
-                logger.debug('Removing session {}'.format(tok))
-                cls.rm_session(user, tok)
+            (user, token, expiry) = s
+            if expiry is not None:
+                if isinstance(expiry, datetime):
+                    expiry = datetime_to_timestamp(
+                        expiry, to_utc=True)
+                if expiry <= curr_timestamp(to_utc=True):
+                    logger.debug('Removing session {}'.format(token))
+                    cls.rm_session(token, user)
 
     @classmethod
     def create_user(cls, username, password, plaintext=True):
         '''Creates a user with the given password
 
-        Returns True on success, False otherwise
         - If plaintext is True, then the password is checked against
           the policy and hashed according to the _pwd_type class
           attribute; otherwise it is saved as is (the hashing
@@ -494,13 +495,12 @@ class BaseAuthHTTPRequestHandler(
             password = cls.transform_password(password)
         logger.debug('Creating user {}:{}'.format(
             username, password))
-        return cls._create_user(username, password)
+        cls._create_user(username, password)
 
     @classmethod
     def change_password(cls, username, password, plaintext=True):
         '''Changes the password of username. In memory only!
 
-        Returns True on success, False otherwise
         - If plaintext is True, then the password is checked against
           the policy and hashed according to the _pwd_type class
           attribute; otherwise it is saved as is (the hashing
@@ -515,7 +515,7 @@ class BaseAuthHTTPRequestHandler(
             password = cls.transform_password(password)
         logger.debug('Changing password for user {}:{}'.format(
             username, password))
-        return cls._change_password(username, password)
+        cls._change_password(username, password)
 
     def authenticate(self):
         '''Returns True or False if username:password is valid
@@ -736,7 +736,8 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
                 session = None
             else:
                 logger.debug('Cookie is {}valid'.format(
-                    '' if self.session_exists(session) else 'not '))
+                    '' if self.session_exists(
+                        session, None) else 'not '))
 
         return session
 
@@ -746,7 +747,7 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
             return None
         return self.get_user_from_session(session)
 
-    def set_session(self, user, session, expiry):
+    def set_session(self, session, user, expiry):
         '''Saves the cookie to be sent with this response'''
 
         flags = '{}{}HttpOnly; '.format(
@@ -760,7 +761,7 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
                 expiry=cookie_expflag(expiry),
                 flags=flags)
 
-    def unset_session(self, user=None, session=None):
+    def unset_session(self, session, user):
         '''Sets an empty cookie to be sent with this response'''
 
         self.__class__.__cookie = '{name}=; path=/; {expiry}'.format(
@@ -828,7 +829,7 @@ class BaseAuthInMemoryHTTPRequestHandler(BaseAuthHTTPRequestHandler):
             return None
 
     @classmethod
-    def add_session(cls, user, session, expiry):
+    def add_session(cls, session, user, expiry):
         '''Records the session'''
 
         cls.__sessions[session] = {
@@ -836,7 +837,7 @@ class BaseAuthInMemoryHTTPRequestHandler(BaseAuthHTTPRequestHandler):
             'expiry': expiry}
 
     @classmethod
-    def rm_session(cls, user, session):
+    def rm_session(cls, session, user):
         '''Deletes the session'''
 
         try:
@@ -845,7 +846,7 @@ class BaseAuthInMemoryHTTPRequestHandler(BaseAuthHTTPRequestHandler):
             pass
 
     @classmethod
-    def session_exists(cls, session, user=None):
+    def session_exists(cls, session, user):
         '''Returns True or False is session exists
 
         - If user is given, it checks if the session belongs to that
@@ -856,7 +857,7 @@ class BaseAuthInMemoryHTTPRequestHandler(BaseAuthHTTPRequestHandler):
             u = cls.__sessions[session]
         except KeyError:
             return False
-        if user is not None and user != u:
+        if user != u:
             return False
         return True
 
@@ -868,23 +869,15 @@ class BaseAuthInMemoryHTTPRequestHandler(BaseAuthHTTPRequestHandler):
 
     @classmethod
     def _create_user(cls, username, password):
-        '''Creates a new user with the given password
-
-        Returns True
-        '''
+        '''Creates a new user with the given password'''
 
         cls.__users[username] = password
-        return True
 
     @classmethod
     def _change_password(cls, username, password):
-        '''Sets the password of username (no check)
-
-        Returns True
-        '''
+        '''Sets the password of username (no check)'''
 
         cls.__users[username] = password
-        return True
 
 class AuthCookieHTTPRequestHandler(
         BaseAuthInMemoryHTTPRequestHandler,
@@ -906,11 +899,11 @@ def num_charsets(arg):
             num += 1
     return num
 
-def cookie_expflag(exp):
-    if exp is None:
+def cookie_expflag(expiry):
+    if expiry is None:
         return ''
     fmt = '%a, %d %b %Y %H:%M:%S GMT'
-    ts = exp
+    ts = expiry
     if isinstance(ts, datetime):
         ts = datetime_to_timestamp(ts, to_utc=True)
     return 'Expires={}; '.format(date_from_timestamp(
