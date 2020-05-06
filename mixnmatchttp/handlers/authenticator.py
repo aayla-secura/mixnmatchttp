@@ -359,7 +359,9 @@ class BaseAuthHTTPRequestHandler(
     def denied(self):
         '''Returns 401 if resource is secret and no authentication'''
 
-        if self.pathname != '/login' and not self.is_authorized():
+        if self.pathname != '/login' \
+                and self.pathname != '/logout' \
+                and not self.is_authorized():
             return (401,)
         return super().denied()
 
