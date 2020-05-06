@@ -15,15 +15,76 @@ except ImportError:
     # python3
     from collections import abc as _abcoll
 import logging
-from datetime import datetime
+from datetime import datetime, tzinfo, timedelta
+try:  # python3
+    from datetime import timezone
+except ImportError:  # python2
+    # taken from
+    # https://docs.python.org/2/library/datetime.html#datetime.tzinfo
+    import time
+
+    def _get_timezones():
+        ZEROTD = timedelta(0)
+        STDOFFSET = timedelta(seconds=-time.timezone)
+        if time.daylight:
+            DSTOFFSET = timedelta(seconds=-time.altzone)
+        else:
+            DSTOFFSET = STDOFFSET
+        DSTDIFF = DSTOFFSET - STDOFFSET
+
+        class UTCTimeZone(tzinfo):
+            def utcoffset(self, dt):
+                return ZEROTD
+
+            def tzname(self, dt):
+                return 'UTC'
+
+            def dst(self, dt):
+                return ZEROTD
+
+        class LocalTimeZone(tzinfo):
+            def utcoffset(self, dt):
+                if self._isdst(dt):
+                    return DSTOFFSET
+                else:
+                    return STDOFFSET
+
+            def dst(self, dt):
+                if self._isdst(dt):
+                    return DSTDIFF
+                else:
+                    return ZEROTD
+
+            def tzname(self, dt):
+                return time.tzname[self._isdst(dt)]
+
+            def _isdst(self, dt):
+                tt = (dt.year, dt.month, dt.day,
+                      dt.hour, dt.minute, dt.second,
+                      dt.weekday(), 0, 0)
+                stamp = time.mktime(tt)
+                tt = time.localtime(stamp)
+                return tt.tm_isdst > 0
+
+        return UTCTimeZone(), LocalTimeZone()
+
+    UTCTimeZone, LocalTimeZone = _get_timezones()
+
+else:
+    UTCTimeZone = timezone.utc
+    LocalTimeZone = datetime.now(tz=timezone.utc).astimezone().tzinfo
 
 __all__ = [
-        'DictNoClobber',
-        'abspath',
-        'iter_abspath_up_to_nth',
-        'iter_abspath',
-        'param_dict',
-        ]
+    'DictNoClobber',
+    'abspath',
+    'iter_abspath_up_to_nth',
+    'iter_abspath',
+    'param_dict',
+    'curr_timestamp',
+    'datetime_to_timestamp',
+    'datetime_from_timestamp',
+    'date_from_timestamp',
+]
 
 logger = logging.getLogger(__name__)
 
@@ -31,17 +92,18 @@ class DictNoClobber(UserDict, object):
     @staticmethod
     def __update(callback, *args, **kwargs):
         '''Iterates over items in the first argument, then keywords
-        
+
         Calls callback with two arguments: key, value.'''
 
         if len(args) > 1:
-            raise TypeError('expected at most 1 arguments, got %d' % len(args))
+            raise TypeError(
+                'expected at most 1 arguments, got %d' % len(args))
         if args:
             other = args[0]
             if isinstance(other, _abcoll.Mapping):
                 for key in other:
                     callback(key, other[key])
-            elif hasattr(other, "keys"):
+            elif hasattr(other, 'keys'):
                 for key in other.keys():
                     callback(key, other[key])
             else:
@@ -108,7 +170,7 @@ class DictNoClobber(UserDict, object):
 
 def abspath(path):
     '''Canonicalize the path segment by segment
-    
+
     Leading slash is preserved if present, but is not required.
     '''
 
@@ -124,11 +186,11 @@ def abspath(path):
     # beginning, since they may indicate a URI with a default
     # protocol; we explicitly remove them here
     return os.path.abspath(prefix + path).replace(
-            '//','/')[len(prefix):]
+        '//', '/')[len(prefix):]
 
 def iter_abspath_up_to_nth(path, n=1, join=False):
     '''Canonicalize the path up to the first n segments
-    
+
     Leading slash is preserved if present, but is not required.
     Returns a generator for a list of canonicalized versions of path
     up to the first n segments, followed by the rest of the segments.
@@ -136,7 +198,7 @@ def iter_abspath_up_to_nth(path, n=1, join=False):
     [('/foo', '../bar/./baz/./'), ('/bar', './baz/./'), ('/bar', 'baz/./')]
     for n=1, and [('/bar/baz', './'), ('/bar/baz', '')] for n=2. If we
     never reach n segments, nothing is yielded.
-    
+
     If join is True, the canonicalized part (with n segments) and the
     rest is joined. This will result in ['/bar/baz/./', '/bar/baz']
     for n=2.
@@ -162,16 +224,16 @@ def iter_abspath_up_to_nth(path, n=1, join=False):
         # items
         if len(curr_abs_parts) == n:
             if join:
-                yield '/'.join(filter(None, [curr_abs,
-                    path[curr_index+1:pathlen]]))
+                yield '/'.join(filter(
+                    None, [curr_abs, path[curr_index + 1:pathlen]]))
             else:
-                yield curr_abs, path[curr_index+1:pathlen]
-        skip = path[curr_index+1:].find('/')
+                yield curr_abs, path[curr_index + 1:pathlen]
+        skip = path[curr_index + 1:].find('/')
         curr_index += skip + 1
 
 def iter_abspath(path, start_n=1, join=False):
     '''Canonicalize the path segment by segment
-    
+
     Returns a generator for a list of iter_abspath_up_to_nth results
     for all n's starting at start_n.
     '''
@@ -187,7 +249,7 @@ def iter_abspath(path, start_n=1, join=False):
 
 def param_dict(s, itemsep=' *; *', valsep='=', values_are_opt=False):
     '''Returns a dictionary of keys/values from the string s
-    
+
     itemsep: regex for separating items
     valsep: literal string for separating key/value
     '''
@@ -208,12 +270,72 @@ def param_dict(s, itemsep=' *; *', valsep='=', values_are_opt=False):
     logger.debug('Got params from {}: {}'.format(s, params))
     return params
 
-def curr_timestamp():
-    return float(datetime.now().strftime('%s'))
+def curr_timestamp(to_utc=True):
+    '''Returns the current timestamp (in seconds since epoch)
 
-def date_from_timestamp(ts, relative=False):
+    - if to_utc is True it returns a timestamp in UTC timezone
+      (otherwise in the local timezone)
+    '''
+
+    tz = UTCTimeZone if to_utc else LocalTimeZone
+    return datetime_to_timestamp(datetime.now(tz=tz), to_utc=to_utc)
+
+def datetime_to_timestamp(dtime, to_utc=True):
+    '''Returns the timestamp (in seconds since epoch)
+
+    - if to_utc is True it returns the timestamp in UTC time,
+      otherwise in local time (if dtime is not timezone aware, we
+      assume it's in the local timezone)
+    '''
+
+    local_offset = datetime.now(tz=LocalTimeZone).utcoffset()
+    dtime_offset = dtime.utcoffset()
+    if dtime_offset is None:
+        dtime_offset = local_offset
+    if to_utc:
+        offset = -dtime_offset
+    else:
+        offset = -dtime_offset + local_offset
+    return float(dtime.strftime('%s')) + offset.total_seconds()
+
+def datetime_from_timestamp(ts,
+                            to_utc=True,
+                            from_utc=False,
+                            relative=False):
+    '''Returns the datetime from a timestamp
+
+    - if relative is True, the current timestamp is added
+    - from_utc determines if the timestamp is in UTC time; it's
+      ignored if relative is True.
+    - if to_utc is True it returns a datetime in UTC timezone
+      (otherwise in the local timezone)
+    '''
+
     ts = float(ts)  # support strings
     if relative:
-        ts += float(datetime.now().strftime('%s'))
-    return datetime.utcfromtimestamp(ts).strftime(
-        '%a, %d %b %Y %H:%M:%S GMT')
+        ts += curr_timestamp(to_utc=False)
+    elif from_utc:
+        ts += datetime.now(
+            tz=LocalTimeZone).utcoffset().total_seconds()
+    tz = UTCTimeZone if to_utc else LocalTimeZone
+    return datetime.fromtimestamp(ts, tz=tz)
+
+def date_from_timestamp(ts,
+                        to_utc=True,
+                        from_utc=False,
+                        datefmt='%a, %d %b %Y %H:%M:%S {{TZ}}',
+                        relative=False):
+    '''Returns the datetime from a timestamp
+
+    - if relative is True, the current timestamp is added
+    - from_utc determines if the timestamp is in UTC time; it's
+      ignored if relative is True.
+    - if to_utc is True it returns a date in UTC timezone
+      (otherwise in the local timezone)
+    - datefmt is the format; {{TZ}} is replaced by the timzone's name
+    '''
+
+    dtime = datetime_from_timestamp(
+        ts, to_utc=to_utc, from_utc=from_utc, relative=relative)
+    datefmt = datefmt.replace('{{TZ}}', dtime.tzname())
+    return dtime.strftime(datefmt)

@@ -1,3 +1,5 @@
+# TODO user roles support
+
 from __future__ import division
 #  from __future__ import unicode_literals
 from __future__ import print_function
@@ -10,6 +12,7 @@ from future.utils import with_metaclass
 import logging
 import re
 from random import randint
+from datetime import datetime
 from collections import OrderedDict
 try:
     # python2
@@ -24,7 +27,9 @@ except ImportError:
     pass  # it's an optional feature
 
 from .. import endpoints
-from ..common import param_dict, date_from_timestamp, curr_timestamp
+from ..common import param_dict, \
+    datetime_to_timestamp, date_from_timestamp, \
+    curr_timestamp, UTCTimeZone
 from .base import BaseMeta, BaseHTTPRequestHandler
 
 __all__ = [
@@ -309,6 +314,7 @@ class BaseAuthHTTPRequestHandler(
     def new_session_token(cls, user):
         '''Should return a tuple of new session (token, expiry)
 
+        expiry should be an int or float as seconds since Unix epoch
         Child class should implement
         '''
 
@@ -463,7 +469,7 @@ class BaseAuthHTTPRequestHandler(
         sessions = cls.get_all_sessions()
         for s in sessions:
             (user, tok, exp) = s
-            if exp is not None and exp <= curr_timestamp():
+            if exp is not None and exp <= curr_timestamp(to_utc=True):
                 logger.debug('Removing session {}'.format(tok))
                 cls.rm_session(user, tok)
 
@@ -747,28 +753,24 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
             'Secure; ' if self.__class__._is_SSL else '',
             'SameSite={}; '.format(self.__class__._SameSite)
             if self.__class__._SameSite is not None else '')
-        if expiry is not None:
-            expiry = 'Expires={}; '.format(date_from_timestamp(
-                expiry))
         self.__class__.__cookie = \
             '{name}={value}; path=/; {expiry}{flags}'.format(
                 name=self.__class__._cookie_name,
                 value=session,
-                expiry=expiry,
+                expiry=cookie_expflag(expiry),
                 flags=flags)
 
     def unset_session(self, user=None, session=None):
         '''Sets an empty cookie to be sent with this response'''
 
-        expiry = 'Expires={}'.format(date_from_timestamp(0))
         self.__class__.__cookie = '{name}=; path=/; {expiry}'.format(
-            name=self.__class__._cookie_name, expiry=expiry)
+            name=self.__class__._cookie_name, expiry=cookie_expflag(0))
 
     @classmethod
     def new_session_token(cls, user):
         expiry = cls._cookie_lifetime
         if expiry is not None:
-            expiry += curr_timestamp()
+            expiry += curr_timestamp(to_utc=True)
         return ('{:02x}'.format(
             randint(0, 2**(4 * cls._cookie_len) - 1)), expiry)
 
@@ -799,9 +801,6 @@ class BaseAuthInMemoryHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     # in __sessions, each key is a session token, each value is
     # a dictionary of user={username} and expiry={timestamp}
     __sessions = {}
-
-    def __init__(self, *args, **kargs):
-        super().__init__(*args, **kargs)
 
     @classmethod
     def get_all_sessions(cls):
@@ -897,6 +896,7 @@ class AuthJWTHTTPRequestHandler(
         BaseAuthJWTHTTPRequestHandler):
     pass
 
+
 def num_charsets(arg):
     charsets = ['a-z', 'A-Z', '0-9']
     charsets += ['^{}'.format(''.join(charsets))]
@@ -905,3 +905,14 @@ def num_charsets(arg):
         if re.search('[{}]'.format(c), arg):
             num += 1
     return num
+
+def cookie_expflag(exp):
+    if exp is None:
+        return ''
+    fmt = '%a, %d %b %Y %H:%M:%S GMT'
+    ts = exp
+    if isinstance(ts, datetime):
+        ts = datetime_to_timestamp(ts, to_utc=True)
+    return 'Expires={}; '.format(date_from_timestamp(
+        ts, relative=False, from_utc=True, to_utc=True,
+        datefmt=fmt))
