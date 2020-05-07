@@ -542,7 +542,7 @@ class BaseAuthHTTPRequestHandler(
     @classmethod
     def change_password(
             cls, user_or_username, password, plaintext=True):
-        '''Changes the password of username (no validation of current).
+        '''Changes the password of username (no validation of current)
 
         - user_or_username is an instance of User or a string
         - If plaintext is True, then the password is checked against
@@ -749,10 +749,6 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     _cookie_lifetime = None  # in seconds; if None---session cookie
     _SameSite = None  # can be 'lax' or 'strict'
 
-    def __init__(self, *args, **kwargs):
-        self.__class__.__cookie = None
-        super().__init__(*args, **kwargs)
-
     def get_current_token(self):
         '''Returns the session cookie'''
 
@@ -773,7 +769,7 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
             'Secure; ' if self.__class__._is_SSL else '',
             'SameSite={}; '.format(self.__class__._SameSite)
             if self.__class__._SameSite is not None else '')
-        self.__class__.__cookie = \
+        self.__cookie = \
             '{name}={value}; path=/; {expiry}{flags}'.format(
                 name=self.__class__._cookie_name,
                 value=session.token,
@@ -783,7 +779,7 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     def unset_session(self, session):
         '''Sets an empty cookie to be sent with this response'''
 
-        self.__class__.__cookie = '{name}=; path=/; {expiry}'.format(
+        self.__cookie = '{name}=; path=/; {expiry}'.format(
             name=self.__class__._cookie_name, expiry=cookie_expflag(0))
 
     @classmethod
@@ -798,8 +794,12 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
             expiry=expiry)
 
     def end_headers(self):
-        if self.__class__.__cookie is not None:
-            self.send_header('Set-Cookie', self.__class__.__cookie)
+        try:
+            self.__cookie
+        except AttributeError:
+            pass
+        else:
+            self.send_header('Set-Cookie', self.__cookie)
         super().end_headers()
 
 class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
@@ -884,6 +884,8 @@ class AuthJWTHTTPRequestHandler(
 
 
 def num_charsets(arg):
+    '''Returns the number of character sets in arg'''
+
     charsets = ['a-z', 'A-Z', '0-9']
     charsets += ['^{}'.format(''.join(charsets))]
     num = 0
@@ -893,6 +895,13 @@ def num_charsets(arg):
     return num
 
 def cookie_expflag(expiry):
+    '''Returns an "Expires={date} GMT" flag for cookies
+
+    - expiry should be one of:
+    1) an int or float as UTC seconds since Unix epoch
+    2) datetime object
+    '''
+
     if expiry is None:
         return ''
     fmt = '%a, %d %b %Y %H:%M:%S GMT'
