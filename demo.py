@@ -19,7 +19,7 @@ from http.server import HTTPServer
 from mixnmatchttp.servers import ThreadingHTTPServer
 from mixnmatchttp import endpoints
 from mixnmatchttp.handlers import BaseHTTPRequestHandler,methodhandler
-from mixnmatchttp.common import DictNoClobber
+from mixnmatchttp.utils import DictNoClobber
 
 class MyHandler(BaseHTTPRequestHandler):
     _endpoints = endpoints.Endpoint(

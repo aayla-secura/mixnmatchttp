@@ -122,8 +122,8 @@ class DictNoClobber(UserDict, object):
         '''Updates using items in the first argument, then keywords'''
 
         if not args:
-            raise TypeError("descriptor 'update' of 'UserDict' object "
-                            "needs an argument")
+            raise TypeError("descriptor 'update' of 'UserDict' "
+                            "object needs an argument")
         self = args[0]
         args = args[1:]
         self.__update(self.__setitem__, *args, **kwargs)
@@ -132,8 +132,8 @@ class DictNoClobber(UserDict, object):
         '''Updates without overwriting existing keys'''
 
         if not args:
-            raise TypeError("descriptor 'update' of 'UserDict' object "
-                            "needs an argument")
+            raise TypeError("descriptor 'update' of 'UserDict' "
+                            "object needs an argument")
         self = args[0]
         args = args[1:]
         self.__update(self.setdefault, *args, **kwargs)
@@ -195,7 +195,8 @@ def iter_abspath_up_to_nth(path, n=1, join=False):
     Returns a generator for a list of canonicalized versions of path
     up to the first n segments, followed by the rest of the segments.
     For example /../foo/../bar/./baz/./ will result in
-    [('/foo', '../bar/./baz/./'), ('/bar', './baz/./'), ('/bar', 'baz/./')]
+    [('/foo', '../bar/./baz/./'), ('/bar', './baz/./'),
+     ('/bar', 'baz/./')]
     for n=1, and [('/bar/baz', './'), ('/bar/baz', '')] for n=2. If we
     never reach n segments, nothing is yielded.
 

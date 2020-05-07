@@ -9,25 +9,25 @@ import logging
 import re
 from wrapt import ObjectProxy
 
-from .common import iter_abspath, DictNoClobber
+from .utils import iter_abspath, DictNoClobber
 
-ARGS_OPTIONAL = '?' # 0 or 1
-ARGS_ANY = '*'      # any number
-ARGS_REQUIRED = '+' # 1 or more
+ARGS_OPTIONAL = '?'  # 0 or 1
+ARGS_ANY = '*'       # any number
+ARGS_REQUIRED = '+'  # 1 or more
 
 __all__ = [
-        'ARGS_OPTIONAL',
-        'ARGS_ANY',
-        'ARGS_REQUIRED',
-        'EndpointError',
-        'EndpointParseError',
-        'NotAnEndpointError',
-        'MethodNotAllowedError',
-        'MissingArgsError',
-        'ExtraArgsError',
-        'Endpoint',
-        'ParsedEndpoint',
-        ]
+    'ARGS_OPTIONAL',
+    'ARGS_ANY',
+    'ARGS_REQUIRED',
+    'EndpointError',
+    'EndpointParseError',
+    'NotAnEndpointError',
+    'MethodNotAllowedError',
+    'MissingArgsError',
+    'ExtraArgsError',
+    'Endpoint',
+    'ParsedEndpoint',
+]
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +51,7 @@ class NotAnEndpointError(EndpointParseError):
 
 class MethodNotAllowedError(EndpointParseError):
     '''Exception raised when the request method is not allowed
-    
+
     Will have an "allowed_methods" attribute containing a set of
     allowed HTTP methods for this endpoint.
     '''
@@ -76,7 +76,7 @@ class ExtraArgsError(EndpointParseError):
 
 class Endpoint(DictNoClobber):
     '''Special endpoints
-    
+
     The Endpoint constructor has the same signature as for
     a dictionary. For example you can define the endpoints like so:
         _endpoints = endpoints.Endpoints(
@@ -107,13 +107,13 @@ class Endpoint(DictNoClobber):
             },
             some_sub={ ... }
             )
-    
+
     Endpoint names shouldn't have underscores, we don't handle them
     well, so expect unexpected behaviour. TODO maybe?
     Note also that endpoints are treated as case-insensitive, and the
     handler should assume the path is all lowercase, i.e. /FoO/BAR
     should be handled by do_{METHOD}_foo_bar
-    
+
     An endpoint's name can be a '*', in which case it is treated as
     a variable. It will match anything and the actual match will be
     available in a dictionary passed to the endpoint handler, see
@@ -133,9 +133,10 @@ class Endpoint(DictNoClobber):
     path component is discarded when selecting a handler name).
     The endpoint passed to the handler will have params['username']
     set to the match path component.
-    
+
     Recognized attributes:
-        disabled: <bool>, defaults to True for the root, False otherwise
+        disabled: <bool>, defaults to True for the root, False
+                  otherwise
         allowed_methods: <set>, defaults to {'GET'}
         nargs: <number>|ARGS_*, defaults to 0
         raw_args: <bool>, defaults to False
@@ -149,40 +150,42 @@ class Endpoint(DictNoClobber):
 
     def __init__(self, *args, **kwargs):
         self._defaultattrs = {
-                'name': None,  # for internal user
-                'parent': None,  # for internal user
-                'disabled': True,  # True for root only
-                'allowed_methods': {'GET', 'HEAD'},
-                'nargs': 0,
-                'raw_args': False,
-                'varname': '',
-                }
+            'name': None,  # for internal user
+            'parent': None,  # for internal user
+            'disabled': True,  # True for root only
+            'allowed_methods': {'GET', 'HEAD'},
+            'nargs': 0,
+            'raw_args': False,
+            'varname': '',
+        }
 
         # Set the name of the endpoint before initializing, so that
         # its children have access to it
         setattr(self, 'name', kwargs.pop('$name', None))
         super().__init__(*args, **kwargs)
-        logger.debug('list of subpoints: {}'.format(list(self.keys())))
+        logger.debug(
+            'list of subpoints: {}'.format(list(self.keys())))
 
-        if self.raw_args and self.nargs not in [ARGS_ANY, ARGS_REQUIRED]:
-            logger.warning(('Endpoint requires raw ' +
-                'arguments, but is sensitive to the number ' +
-                'of arguments; not reliable!'))
+        if self.raw_args and \
+                self.nargs not in [ARGS_ANY, ARGS_REQUIRED]:
+            logger.warning(('Endpoint requires raw '
+                            'arguments, but is sensitive to the '
+                            'number of arguments; not reliable!'))
         if self.raw_args and self.keys():
-            raise EndpointError(
-                    "Endpoints expecting raw arguments cannot have subpoints.")
+            raise EndpointError('Endpoints expecting raw arguments '
+                                'cannot have subpoints.')
 
     def __eq__(self, other):
         '''Compares endpoint to other taking into account attributes
-        
+
         Attributes which have not been explicitly set are also
         compared.
         '''
 
         if not isinstance(other, Endpoint):
             return NotImplemented
-        return (dict(self.items()) == dict(other.items()) and \
-                self.getattrs(with_defaults=True).items() \
+        return (dict(self.items()) == dict(other.items()) and
+                self.getattrs(with_defaults=True).items()
                 == other.getattrs(with_defaults=True).items())
 
     def __ne__(self, other):
@@ -198,10 +201,10 @@ class Endpoint(DictNoClobber):
             raise ValueError('Endpoint must be non-empty')
 
         if key[0] == '$':
-            logger.debug(
-                    'Endpoint special key {}, setting as attribute'.format(key))
-            getattr(self, key[1:]) # raise an exception if
-                                   # attribute is unknown
+            logger.debug(('Endpoint special key {}, '
+                          'setting as attribute').format(key))
+            # raise an exception if attribute is unknown
+            getattr(self, key[1:])
             setattr(self, key[1:], item)
         else:
             logger.debug('Creating endpoint {}'.format(key))
@@ -220,7 +223,7 @@ class Endpoint(DictNoClobber):
             # parent's name
             if key == '*':
                 self[key]._defaultattrs['varname'] = \
-                    self.getattr('name') # will be None for root
+                    self.getattr('name')  # will be None for root
                 logger.debug('Endpoint {} is variable ({})'.format(
                     key, self.getattr('name')))
             logger.debug('Endpoint {} done'.format(key))
@@ -230,7 +233,7 @@ class Endpoint(DictNoClobber):
 
     def _getattr(self, attr, default=None, raise_None=False):
         '''Returns the given attribute, or the default value
-        
+
         If default is None, it is taked from the endpoint's defaults
         (_defaultattrs). If it is not found there then AttributeError
         is raised if raise_None is True, otherwise None is returned.
@@ -254,7 +257,7 @@ class Endpoint(DictNoClobber):
 
     def getattr(self, attr, default=None):
         '''Returns the given attribute, or the default value
-        
+
         If default is None, it is taked from the endpoint's defaults
         (_defaultattrs).
         '''
@@ -263,7 +266,7 @@ class Endpoint(DictNoClobber):
 
     def getattrs(self, with_defaults=False, as_keys=False):
         '''Returns a dictionary with all endpoint attributes.
-        
+
         By default only the attributes which have been explicitly set
         are returned. If with_defaults is True, then all attributes
         are returned.
@@ -286,8 +289,8 @@ class Endpoint(DictNoClobber):
         return attrs
 
     def setdefaultattr(self, attr, default=None):
-        '''Sets the given attribute if not already set to the default value
-        
+        '''Sets the given attribute if not already set
+
         If default is None, it is taked from the endpoint's defaults
         (_defaultattrs).
         '''
@@ -306,7 +309,7 @@ class Endpoint(DictNoClobber):
 
     def setdefaultattrs(self, defaults=None):
         '''Sets the given default value for each attribute in defaults
-        
+
         If defaults is None self._defaultattrs is used.
         '''
 
@@ -317,7 +320,7 @@ class Endpoint(DictNoClobber):
 
     def update(self, *args, **kwargs):
         '''Updates using items in the first argument, then keywords
-        
+
         Special keywords (starting with $) are recognized as usual.
         '''
 
@@ -331,7 +334,7 @@ class Endpoint(DictNoClobber):
 
     def update_noclob(self, *args, **kwargs):
         '''Updates without overwriting existing keys or attributes
-        
+
         Special keywords (starting with $) are recognized as usual. If
         the corresponding attribute has not been explicitly, it is
         overriden.
@@ -340,18 +343,18 @@ class Endpoint(DictNoClobber):
         def __setdefaultitem(key, value):
             if key[0] == '$':
                 logger.debug(
-                        'Updating without clobbering: attr {}={}'.format(
-                            key[1:], value))
+                    'Updating without clobbering: attr {}={}'.format(
+                        key[1:], value))
                 self.setdefaultattr(key[1:], value)
             else:
                 logger.debug(
-                        'Updating without clobbering: key {}={}'.format(
-                            key, value))
+                    'Updating without clobbering: key {}={}'.format(
+                        key, value))
                 self.setdefault(key, value)
 
         if args and isinstance(args[0], Endpoint):
-            self._DictNoClobber__update(__setdefaultitem,
-                    args[0].getattrs(as_keys=True))
+            self._DictNoClobber__update(
+                __setdefaultitem, args[0].getattrs(as_keys=True))
         self._DictNoClobber__update(__setdefaultitem, *args, **kwargs)
 
     def clear(self):
@@ -363,9 +366,9 @@ class Endpoint(DictNoClobber):
 
     def parse(self, httpreq):
         '''Selects an endpoint for the path
-        
+
             httpreq: an instance of BaseHTTPRequestHandler
-        
+
         If httpreq.raw_pathname resolves to an enpoint's path, returns
         a ParsedEndpoint initialized with the following attributes:
             httpreq: same as passed to this method
@@ -379,12 +382,13 @@ class Endpoint(DictNoClobber):
             root: longest path of the endpoint corresponding to
                 a defined handler
             sub: rest of the path of the endpoint
-            args: everything following the endpoint's path (/root/sub/)
+            args: everything following the endpoint's path
+                (/root/sub/)
             argslen: actual number of arguments it was called with
             params: a dictionary of all parameters for the full path;
                 each key defaults to the parent's name
-        For example if an endpoint /cache/new/static accepts arguments,
-        and httpreq has a method do_cache, but not
+        For example if an endpoint /cache/new/static accepts
+        arguments, and httpreq has a method do_cache, but not
         do_cache_new_static, and not do_cache_new, a request for
         /cache/new/static/page will set ep.root to 'cache', ep.sub to
         'new/static', ep.handler to httpreq.do_cache, ep.args to
@@ -395,19 +399,21 @@ class Endpoint(DictNoClobber):
         /employee/dept/location, ep.sub to '', ep.args to
         '', ep.argslen to 0, ep.params['employee'] to 'jsmith', and
         ep.params['dept'] to 'it'
-        
+
         If path does resolve to an enpoint's path but the
         request is not allowed for some reason, raises an exception:
             MethodNotAllowedError
             MissingArgsError
             ExtraArgsError
-        If path doesn't resolve to an enpoint's path raises an exception:
+        If path doesn't resolve to an enpoint's path raises an
+        exception:
             NotAnEndpointError
         '''
 
         path = httpreq.raw_pathname
         if not path or path[0] != '/':
-            raise ValueError('Path for endpoint parsing must begin with a /')
+            raise ValueError(
+                'Path for endpoint parsing must begin with a /')
 
         # we don't yet know if the endpoint wants the arguments raw or
         # canonicalized. So we check each absolute segment; if it's an
@@ -418,9 +424,11 @@ class Endpoint(DictNoClobber):
         root = sub = args = ''
         params = {}
         for curr_path, curr_args in iter_abspath(path):
-            logger.debug('Current abspath segment: {}'.format(curr_path))
-            curr_ep, curr_handler, curr_root, curr_sub, curr_params = \
-                    self._select_handler(curr_path, httpreq)
+            logger.debug(
+                'Current abspath segment: {}'.format(curr_path))
+            curr_ep, curr_handler, curr_root, \
+                curr_sub, curr_params = \
+                self._select_handler(curr_path, httpreq)
 
             if curr_ep is None:
                 logger.debug('No match on this level')
@@ -433,13 +441,14 @@ class Endpoint(DictNoClobber):
             args = curr_args
             params = curr_params
             logger.debug(
-                    ('Match on this level: root: {}, sub: {}, '
-                     'args: {}, params: {}').format(
-                        root, sub, args, params))
+                ('Match on this level: root: {}, sub: {}, '
+                 'args: {}, params: {}').format(
+                     root, sub, args, params))
 
             if ep.raw_args:
-                logger.debug('{}({}) is "raw"; done'.format(root, sub))
-                break # don't inspect rest of path
+                logger.debug(
+                    '{}({}) is "raw"; done'.format(root, sub))
+                break  # don't inspect rest of path
 
         if ep is None or ep.disabled:
             if ep is not None:
@@ -479,8 +488,8 @@ class Endpoint(DictNoClobber):
         return ep
 
     def iter_path(self, path):
-        '''Returns a generator for list(endpoints, curr_path) for each path segment
-        
+        '''Generator for list(endpoints, curr_path) for each segment
+
         path must be canonical (no double //, no ./ or ../).
         '''
 
@@ -498,8 +507,8 @@ class Endpoint(DictNoClobber):
         for p in path.split('/'):
             curr_path += '/' + p
             logger.debug(
-                    'Current list of subpoints: {}; trying {}'.format(
-                        list(ep.keys()), p))
+                'Current list of subpoints: {}; trying {}'.format(
+                    list(ep.keys()), p))
             try:
                 ep = ep[p.lower()]
             except KeyError:
@@ -513,7 +522,7 @@ class Endpoint(DictNoClobber):
 
     def get_from_path(self, path, httpreq=None):
         '''Returns an endpoint with the given path or None
-        
+
         path must be canonical (no double //, no ./ or ../).
         '''
 
@@ -541,12 +550,12 @@ class Endpoint(DictNoClobber):
 
     def _select_handler(self, path, httpreq):
         '''Selects the endpoint and handler for the given path
-        
+
             path: <str>, the path to be parsed
             httpreq: an instance of BaseHTTPRequestHandler
-        
+
         path must be canonical (no double //, no ./ or ../).
-        
+
         Returns (ep, handler, root, sub) where
             ep: the last defined endpoint along the given path, e.g.
                 if there's an endpoint at /a/b/c and it has no
@@ -589,7 +598,8 @@ class Endpoint(DictNoClobber):
                 except AttributeError:
                     logger.debug('No handler for {}'.format(ep_path))
                 else:
-                    logger.debug('Found handler for {}'.format(ep_path))
+                    logger.debug(
+                        'Found handler for {}'.format(ep_path))
                     root = ep.to_path()
                     handler = curr_handler
             else:
@@ -600,7 +610,7 @@ class Endpoint(DictNoClobber):
 
         # skip leading slash of sub
         if ep is not None:
-            sub = ep.to_path()[len(root)+1:]
+            sub = ep.to_path()[len(root) + 1:]
 
         if ep_path and ep_path != path and not ep.raw_args:
             # there was an endpoint corresponding to part, but not
@@ -613,13 +623,15 @@ class Endpoint(DictNoClobber):
 
 class ParsedEndpoint(ObjectProxy):
     '''An instance of an Endpoint which has been parsed
-    
+
     The following additional attributes are defined as given to the
     constructor:
         httpreq: the instance of BaseHTTPRequestHandler which it was
             parsed from
-        handler: the httpreq's method called 'do_{root}' or 'do_default'
-        root: longest path of the endpoint corresponding to a defined handler
+        handler: the httpreq's method called 'do_{root}' or
+            'do_default'
+        root: longest path of the endpoint corresponding to a defined
+            handler
         sub: rest of the path of the endpoint
         args: everything following the endpoint's path (/root/sub/)
         argslen: number of path components in args
@@ -629,7 +641,8 @@ class ParsedEndpoint(ObjectProxy):
     def __init__(self, endpoint, httpreq, handler, root, sub,
                  args, argslen, params):
         if not isinstance(endpoint, Endpoint):
-            raise TypeError('ParsedEndpoint must be initialized from an Endpoint')
+            raise TypeError(
+                'ParsedEndpoint must be initialized from an Endpoint')
 
         super(ParsedEndpoint, self).__init__(endpoint.copy())
         self.httpreq = httpreq

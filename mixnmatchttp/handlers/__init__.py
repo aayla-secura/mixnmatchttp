@@ -11,10 +11,10 @@ from .cacher import CachingHTTPRequestHandler
 from .proxy import ProxyingHTTPRequestHandler
 
 __all__ = [
-        'methodhandler',
-        'BaseHTTPRequestHandler',
-        'AuthCookieHTTPRequestHandler',
-        'AuthJWTHTTPRequestHandler',
-        'CachingHTTPRequestHandler',
-        'ProxyingHTTPRequestHandler',
-        ]
+    'methodhandler',
+    'BaseHTTPRequestHandler',
+    'AuthCookieHTTPRequestHandler',
+    'AuthJWTHTTPRequestHandler',
+    'CachingHTTPRequestHandler',
+    'ProxyingHTTPRequestHandler',
+]

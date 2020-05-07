@@ -9,34 +9,34 @@ import logging
 import uuid
 import mimetypes
 
-from .. import endpoints,cache
+from .. import endpoints, cache
 from .base import BaseHTTPRequestHandler, DecodingError
 
 __all__ = [
-        'CachingHTTPRequestHandler',
-        ]
+    'CachingHTTPRequestHandler',
+]
 
 logger = logging.getLogger(__name__)
 
 class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
     cache = cache.Cache()
     _endpoints = endpoints.Endpoint(
-            echo={
-                '$allowed_methods': {'POST'},
-                },
-            cache={
-                '$allowed_methods': {'GET', 'POST'},
-                '$nargs': 1,
-                '$clear': {
-                    '$nargs': endpoints.ARGS_OPTIONAL,
-                    },
-                'new': { },
-                },
-            )
+        echo={
+            '$allowed_methods': {'POST'},
+        },
+        cache={
+            '$allowed_methods': {'GET', 'POST'},
+            '$nargs': 1,
+            '$clear': {
+                '$nargs': endpoints.ARGS_OPTIONAL,
+            },
+            'new': {},
+        },
+    )
 
     def decode_page(self):
         '''Decodes the request which contains a page
-        
+
         It must contain the following parameters:
             - data: the content of the page
             - type: the content type
@@ -63,7 +63,8 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
         logger.debug('Encoded body: {}'.format(body_enc))
 
         try:
-            page_ctype = type_decoder(self.params['type']).split(';',1)[0]
+            page_ctype = type_decoder(
+                self.params['type']).split(';', 1)[0]
             if page_ctype not in mimetypes.types_map.values():
                 raise ValueError('Unsupported Content-type')
         except (KeyError, ValueError):
@@ -75,8 +76,8 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
             body = data_decoder(body_enc).encode('utf-8')
         except UnicodeEncodeError:
             logger.debug('Errors encoding request data')
-            body = data_decoder(body_enc).encode('utf-8',
-                    errors='backslashreplace')
+            body = data_decoder(body_enc).encode(
+                'utf-8', errors='backslashreplace')
         logger.debug('Decoded body: {}'.format(body))
 
         return {'data': body, 'type': page_ctype}
@@ -117,7 +118,8 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
         if self.command == 'GET':
             try:
                 page = self.cache.get(name)
-            except (cache.PageClearedError, cache.PageNotCachedError) as e:
+            except (cache.PageClearedError,
+                    cache.PageNotCachedError) as e:
                 self.send_error(500, explain=str(e))
             else:
                 self.render(page)

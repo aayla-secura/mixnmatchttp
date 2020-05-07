@@ -9,31 +9,32 @@ import logging
 import re
 
 from .. import endpoints
-from ..common import param_dict
+from ..utils import param_dict
 from .base import BaseHTTPRequestHandler
 
 __all__ = [
-        'ProxyingHTTPRequestHandler',
-        ]
+    'ProxyingHTTPRequestHandler',
+]
 
 logger = logging.getLogger(__name__)
 
 class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
     _endpoints = endpoints.Endpoint(
-            goto={
-                # call it as /goto?{params for this server}/{URI-decoded address};
-                # include the ? after /goto even if not giving parameters,
-                # otherwise any parameters in the address would be
-                # consumed
-                '$allowed_methods': {'GET', 'POST', 'PUT', 'PATCH', 'DELETE'},
-                '$nargs': endpoints.ARGS_ANY,
-                '$raw_args': True,
-                },
-            )
+        goto={
+            # call it as /goto?{params for this server}/{URI-decoded
+            # address}; include the ? after /goto even if not giving
+            # parameters, otherwise any parameters in the address
+            # would be consumed
+            '$allowed_methods': {
+                'GET', 'POST', 'PUT', 'PATCH', 'DELETE'},
+            '$nargs': endpoints.ARGS_ANY,
+            '$raw_args': True,
+        },
+    )
 
     def do_goto(self):
         '''Redirects to the path following /goto/
-        
+
         If the path does not include a domain, it is taken from the
         following headers, in this order:
         - Referer
@@ -53,7 +54,8 @@ class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
                 # relative to root => ignore prefix path
                 pref = ''
             elif pref[-1:] != '/':
-                # otherwise make sure there's a trailing slash for prefix
+                # otherwise make sure there's a trailing slash for
+                # prefix
                 pref += '/'
             if proto and proto[-1] != ':':
                 proto += ':'
@@ -66,11 +68,11 @@ class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
         try:
             # a valid Origin shouldn't have a path, but nevermind
             fwd = re.match(
-                    '^(?P<proto>https?:|)//(?P<host>[^/]+)(?P<pref>/?.*)',
-                    list(filter(None, [
-                        self.headers.get('Referer'),
-                        self.headers.get('Origin'),
-                        ]))[0]).groupdict()
+                '^(?P<proto>https?:|)//(?P<host>[^/]+)(?P<pref>/?.*)',
+                list(filter(None, [
+                    self.headers.get('Referer'),
+                    self.headers.get('Origin'),
+                ]))[0]).groupdict()
         except (IndexError, AttributeError):
             # otherwise check X-Forwarded-*
             logger.debug('Checking Origin and X-Forwarded-*')
@@ -78,11 +80,11 @@ class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
                 fwd['host'] = list(filter(None, [
                     self.headers.get('X-Forwarded-Host'),
                     self.headers.get('X-Forwarded-For')
-                    ]))[0]
+                ]))[0]
             except IndexError:
                 # otherwise check Forwarded
                 logger.debug('Checking Forwarded')
-                fwdstr = self.headers.get( 'Forwarded')
+                fwdstr = self.headers.get('Forwarded')
                 if fwdstr is None:
                     fwdstr = ''
                 fwd = param_dict(fwdstr.replace('for=', 'host='))

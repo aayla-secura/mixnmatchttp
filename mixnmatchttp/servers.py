@@ -9,8 +9,8 @@ import http.server
 from socketserver import ThreadingMixIn
 
 __all__ = [
-        'ThreadingHTTPServer',
-        ]
+    'ThreadingHTTPServer',
+]
 
 class ThreadingHTTPServer(ThreadingMixIn, http.server.HTTPServer):
     '''Multi-threaded HTTPServer'''

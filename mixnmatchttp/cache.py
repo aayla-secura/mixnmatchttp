@@ -1,5 +1,6 @@
-#TODO
+# TODO
 #  - Multi-thread safety!
+
 #  from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import division
@@ -10,13 +11,13 @@ standard_library.install_aliases()
 import logging
 
 __all__ = [
-        'CacheError',
-        'PageNotCachedError',
-        'PageClearedError',
-        'CacheMemoryError',
-        'CacheOverwriteError',
-        'Cache',
-        ]
+    'CacheError',
+    'PageNotCachedError',
+    'PageClearedError',
+    'CacheMemoryError',
+    'CacheOverwriteError',
+    'Cache',
+]
 
 logger = logging.getLogger(__name__)
 
@@ -56,7 +57,7 @@ class CacheOverwriteError(CacheError):
 ############################################################
 
 class Cache(object):
-    __max_size = 2*1024*1024
+    __max_size = 2 * 1024 * 1024
 
     def __init__(self, max_size=None):
         if max_size is not None:
@@ -66,7 +67,7 @@ class Cache(object):
 
     def save(self, name, page):
         '''Saves the page to the cache
-        
+
         name is the alphanumeric identifier
         page is a dictionary with the following items:
             - data: the content of the page
@@ -102,10 +103,10 @@ class Cache(object):
             self.__pages[name]
         except KeyError:
             if name is None:
-                to_clear = [k for k,v in self.__pages.items() \
-                        if v is not None]
+                to_clear = [k for k, v in self.__pages.items()
+                            if v is not None]
             else:
-                return # no such cached page
+                return  # no such cached page
         else:
             to_clear = [name]
 

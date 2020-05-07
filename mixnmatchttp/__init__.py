@@ -2,9 +2,9 @@ from . import handlers
 from . import servers
 
 __all__ = [
-        'handlers',
-        'servers',
-        ]
+    'handlers',
+    'servers',
+]
 
 import logging
 try:  # python2.7 and above

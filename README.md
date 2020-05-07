@@ -54,7 +54,7 @@ endpoints/templates.
 Endpoints, templates and template pages constructors have the same signature as
 for a dictionary. Endpoints are of type `mixnmatchttp.endpoints.Endpoint`,
 while templates and template pages are of type
-`mixnmatchttp.common.DictNoClobber`. However, you can define them as
+`mixnmatchttp.utils.DictNoClobber`. However, you can define them as
 a dictionary, or any type which has a dictionary-like interface, and
 `BaseHTTPRequestHandler`'s meta class will convert them to the appropriate
 class.
@@ -185,7 +185,7 @@ from http.server import HTTPServer
 from mixnmatchttp.servers import ThreadingHTTPServer
 from mixnmatchttp import endpoints
 from mixnmatchttp.handlers import BaseHTTPRequestHandler,methodhandler
-from mixnmatchttp.common import DictNoClobber
+from mixnmatchttp.utils import DictNoClobber
 
 class MyHandler(BaseHTTPRequestHandler):
     _endpoints = endpoints.Endpoint(
