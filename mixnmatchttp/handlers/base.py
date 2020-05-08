@@ -14,6 +14,12 @@ import shutil
 import mimetypes
 import urllib
 import json
+try:
+    # python2
+    from collections import _abcoll
+except ImportError:
+    # python3
+    from collections import abc as _abcoll
 try:  # python3
     from json import JSONDecodeError
 except ImportError:  # python2
@@ -73,10 +79,7 @@ def methodhandler(realhandler, self, args, kwargs):
         query_str, itemsep='&', values_are_opt=True)
     logger.debug('Query params are {}'.format(self.query))
 
-    self._BaseHTTPRequestHandler__can_read_body = True
-    self._BaseHTTPRequestHandler__body = None
     self._BaseHTTPRequestHandler__read_body()
-    self.headers_to_send = {}
 
     # save content-type and body parameters
     try:
@@ -100,7 +103,7 @@ def methodhandler(realhandler, self, args, kwargs):
         realhandler(*args, **kwargs)
     except endpoints.MethodNotAllowedError as e:
         logger.debug('{}'.format(str(e)))
-        self.headers_to_send = {'Allow': ','.join(e.allowed_methods)}
+        self.save_header('Allow', ','.join(e.allowed_methods))
         if self.command == 'OPTIONS':
             logger.debug('Doing OPTIONS')
             realhandler(*args, **kwargs)
@@ -260,7 +263,7 @@ class BaseHTTPRequestHandler(with_metaclass(
         self.__body = None
         self.__ctype = None
         self.__params = None
-        self.headers_to_send = {}
+        self.__headers_to_send = {}
         super().__init__(*args, **kwargs)
 
     @property
@@ -391,10 +394,19 @@ class BaseHTTPRequestHandler(with_metaclass(
         pass
 
     def send_headers(self, headers):
-        '''Sends multiple headers'''
+        '''Sends multiple headers
+
+        headers is a dictionary of header names as keys; each value is
+        either a string, or a list of strings, in which case multiple
+        headers are sent (one for each value)
+        '''
 
         for h, v in headers.items():
-            self.send_header(h, v)
+            if isinstance(v, _abcoll.Iterable):
+                for i in v:
+                    self.send_header(h, i)
+            else:
+                self.send_header(h, v)
 
     def begin_response_goto(self, code=302, url=None, headers={}):
         '''Starts a redirection response
@@ -645,17 +657,35 @@ class BaseHTTPRequestHandler(with_metaclass(
             logger.debug('Errors decoding base64 data')
             return data.decode('utf-8', errors='backslashreplace')
 
+    def save_header(self, header, value, append=True):
+        '''Saves a header to be sent at the end
+
+        end_headers will send those.
+        - If append is True (default) a duplicate header may be added,
+          common with Set-Cookie. Otherwise the given header replaces
+          any currently saved ones by that name.
+        '''
+
+        new = []
+        if append:
+            new = \
+                self._BaseHTTPRequestHandler__headers_to_send.get(
+                    header, [])
+        new.append(value)
+        self._BaseHTTPRequestHandler__headers_to_send[header] = new
+
     def end_headers(self):
         '''Sends all custom headers and calls end_headers
 
         Calls send_custom_headers, send_cache_control and sends this
-        requests's headers_to_send
+        requests's __headers_to_send
         '''
 
         logger.debug(
             'Sending final headers; this request has {}'.format(
-                self.headers_to_send))
-        self.send_headers(self.headers_to_send)
+                self._BaseHTTPRequestHandler__headers_to_send))
+        self.send_headers(
+            self._BaseHTTPRequestHandler__headers_to_send)
         self.send_custom_headers()
         self.send_cache_control()
         super().end_headers()

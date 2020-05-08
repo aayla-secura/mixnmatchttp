@@ -28,7 +28,7 @@ except ImportError:
     pass  # it's an optional feature
 
 from .. import endpoints
-from ..common import param_dict, \
+from ..utils import param_dict, \
     datetime_to_timestamp, date_from_timestamp, \
     curr_timestamp, UTCTimeZone
 from .base import BaseMeta, BaseHTTPRequestHandler
@@ -769,18 +769,21 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
             'Secure; ' if self.__class__._is_SSL else '',
             'SameSite={}; '.format(self.__class__._SameSite)
             if self.__class__._SameSite is not None else '')
-        self.__cookie = \
+        cookie = \
             '{name}={value}; path=/; {expiry}{flags}'.format(
                 name=self.__class__._cookie_name,
                 value=session.token,
                 expiry=cookie_expflag(session.expiry),
                 flags=flags)
+        self.save_header('Set-Cookie', cookie)
 
     def unset_session(self, session):
         '''Sets an empty cookie to be sent with this response'''
 
-        self.__cookie = '{name}=; path=/; {expiry}'.format(
-            name=self.__class__._cookie_name, expiry=cookie_expflag(0))
+        cookie = '{name}=; path=/; {expiry}'.format(
+            name=self.__class__._cookie_name,
+            expiry=cookie_expflag(0))
+        self.save_header('Set-Cookie', cookie)
 
     @classmethod
     def generate_session(cls, user):
@@ -792,15 +795,6 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
                 randint(0, 2**(4 * cls._cookie_len) - 1)),
             user=user,
             expiry=expiry)
-
-    def end_headers(self):
-        try:
-            self.__cookie
-        except AttributeError:
-            pass
-        else:
-            self.send_header('Set-Cookie', self.__cookie)
-        super().end_headers()
 
 class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     '''Implements JWT-based authentication with refresh tokens

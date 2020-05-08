@@ -117,7 +117,7 @@ class MyHandler(BaseHTTPRequestHandler):
     def do_debug(self):
         '''Handler for non-POST to the endpoint /debug'''
         # set a header just for this request
-        self.headers_to_send['X-Debug'] = 'Foo'
+        self.save_header('X-Debug', 'Foo')
         page = self.page_from_template(self.templates['debug'],
                 {'info': '', 'root': self.ep.root, 'sub': self.ep.sub,
                  'args': self.ep.args, 'params': self.ep.params})
@@ -126,7 +126,7 @@ class MyHandler(BaseHTTPRequestHandler):
     def do_POST_debug(self):
         '''Handler for POST to the endpoint /debug'''
         # set a header just for this request
-        self.headers_to_send['X-Debug'] = 'Foo'
+        self.save_header('X-Debug', 'Foo')
         page = self.page_from_template(self.templates['debug'],
                 {'info': 'POST! ', 'root': self.ep.root, 'sub': self.ep.sub,
                  'args': self.ep.args, 'params': self.ep.params})
