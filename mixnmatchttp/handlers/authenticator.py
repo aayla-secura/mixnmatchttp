@@ -137,7 +137,7 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
             '_pwd_type': (isoneof, pwd_types),
             '_SameSite': (isoneof, [None, 'lax', 'strict']),
             '_secrets': (isinstance,
-                         (_abcoll.Sequence, _abcoll.Mapping)),
+                         (_abcoll.Iterable, _abcoll.Mapping)),
             '_pwd_min_len': (isinstance, int),
             '_pwd_min_charsets': (isinstance, int),
             '_jwt_lifetime': (isinstance, int),
