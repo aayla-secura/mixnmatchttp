@@ -103,7 +103,7 @@ class DictNoClobber(UserDict, object):
                 'expected at most 1 arguments, got %d' % len(args))
         if args:
             other = args[0]
-            if is_map_like(other):
+            if isinstance(other, _abcoll.Mapping):
                 for key in other:
                     callback(key, other[key])
             elif hasattr(other, 'keys'):
