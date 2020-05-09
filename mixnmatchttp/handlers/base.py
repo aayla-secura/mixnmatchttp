@@ -14,12 +14,6 @@ import shutil
 import mimetypes
 import urllib
 import json
-try:
-    # python2
-    from collections import _abcoll
-except ImportError:
-    # python3
-    from collections import abc as _abcoll
 try:  # python3
     from json import JSONDecodeError
 except ImportError:  # python2
@@ -31,7 +25,7 @@ from string import Template
 from future.utils import with_metaclass
 
 from .. import endpoints
-from ..utils import abspath, param_dict, DictNoClobber
+from ..utils import is_seq_like, abspath, param_dict, DictNoClobber
 
 __all__ = [
     'methodhandler',
@@ -402,7 +396,7 @@ class BaseHTTPRequestHandler(with_metaclass(
         '''
 
         for h, v in headers.items():
-            if isinstance(v, _abcoll.Iterable):
+            if is_seq_like(v):
                 for i in v:
                     self.send_header(h, i)
             else:

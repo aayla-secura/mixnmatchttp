@@ -15,12 +15,6 @@ import re
 from random import randint
 from datetime import datetime
 from collections import OrderedDict
-try:
-    # python2
-    from collections import _abcoll
-except ImportError:
-    # python3
-    from collections import abc as _abcoll
 import hashlib
 try:
     from passlib import hash as unix_hash
@@ -28,7 +22,7 @@ except ImportError:
     pass  # it's an optional feature
 
 from .. import endpoints
-from ..utils import param_dict, \
+from ..utils import is_seq_like, is_map_like, param_dict, \
     datetime_to_timestamp, date_from_timestamp, \
     curr_timestamp, UTCTimeZone
 from .base import BaseMeta, BaseHTTPRequestHandler
@@ -119,6 +113,12 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
         def isoneof(val, sequence):
             return val in sequence
 
+        def isanytrue(val, checkers):
+            for c in checkers:
+                if c(val):
+                    return True
+            return False
+
         new_class = super().__new__(cls, name, bases, attrs)
         pwd_types = [None]
         prefT = '_transform_password_'
@@ -136,8 +136,7 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
         requirements = {
             '_pwd_type': (isoneof, pwd_types),
             '_SameSite': (isoneof, [None, 'lax', 'strict']),
-            '_secrets': (isinstance,
-                         (_abcoll.Iterable, _abcoll.Mapping)),
+            '_secrets': (isanytrue, [is_seq_like, is_map_like]),
             '_pwd_min_len': (isinstance, int),
             '_pwd_min_charsets': (isinstance, int),
             '_jwt_lifetime': (isinstance, int),

@@ -76,6 +76,9 @@ else:
 
 __all__ = [
     'DictNoClobber',
+    'is_str_like',
+    'is_seq_like',
+    'is_map_like',
     'abspath',
     'iter_abspath_up_to_nth',
     'iter_abspath',
@@ -100,7 +103,7 @@ class DictNoClobber(UserDict, object):
                 'expected at most 1 arguments, got %d' % len(args))
         if args:
             other = args[0]
-            if isinstance(other, _abcoll.Mapping):
+            if is_map_like(other):
                 for key in other:
                     callback(key, other[key])
             elif hasattr(other, 'keys'):
@@ -167,6 +170,36 @@ class DictNoClobber(UserDict, object):
         except AttributeError:
             # python3
             return super().items()
+
+
+def is_str_like(val):
+    '''True if val can be converted to string straightforwardly
+
+    i.e. if it's a string, boolean or int
+    '''
+
+    num_types = (int, float, bool)
+    try:  # python2
+        str_types = (basestring,)
+    except NameError:  # python3
+        str_types = (str, bytes)
+    return isinstance(val, num_types + str_types)
+
+def is_seq_like(val):
+    '''True if val is an iterable (but not a string, or dict)
+
+    i.e. if it's a list, set, tuple, or some mutable sequence
+    '''
+
+    return isinstance(val, _abcoll.Iterable) \
+        and not is_str_like(val) \
+        and not is_map_like(val)
+
+def is_map_like(val):
+    '''True if val is like a dict (mapping)'''
+
+    # in python2 UserDict is not a child of Mapping
+    return isinstance(val, (_abcoll.Mapping, UserDict))
 
 def abspath(path):
     '''Canonicalize the path segment by segment
