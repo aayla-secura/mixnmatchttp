@@ -12,7 +12,6 @@ from future.utils import with_metaclass
 
 import logging
 import re
-from random import randint
 from datetime import datetime
 from collections import OrderedDict
 import hashlib
@@ -22,9 +21,9 @@ except ImportError:
     pass  # it's an optional feature
 
 from .. import endpoints
-from ..utils import is_seq_like, is_map_like, param_dict, \
-    datetime_to_timestamp, date_from_timestamp, \
-    curr_timestamp, UTCTimeZone
+from ..utils import is_str, is_seq_like, is_map_like, \
+    param_dict, datetime_to_timestamp, datetime_from_timestamp, \
+    date_from_timestamp, curr_timestamp, UTCTimeZone, randhex
 from .base import BaseMeta, BaseHTTPRequestHandler
 
 __all__ = [
@@ -33,7 +32,6 @@ __all__ = [
     'NoSuchUserError',
     'InvalidUsernameError',
     'BadPasswordError',
-    'BaseAuthHTTPRequestHandlerMeta',
     'BaseAuthHTTPRequestHandler',
     'BaseAuthCookieHTTPRequestHandler',
     'BaseAuthJWTHTTPRequestHandler',
@@ -107,9 +105,25 @@ class Session:
         return expiry <= curr_timestamp(to_utc=True)
 
 class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
-    '''Metaclass to check validity of class attributes'''
+    '''Metaclass for BaseAuthHTTPRequestHandler
+
+    Check the validity of class attributes and ensures the required
+    password hashing modules are present.
+    '''
 
     def __new__(cls, name, bases, attrs):
+        new_class = super().__new__(cls, name, bases, attrs)
+        for key, value in attrs.items():
+            new_class.__check_attr(key, value)
+        return new_class
+
+    def __setattr__(self, key, value):
+        self.__check_attr(key, value)
+        # super() doesn't work here in python 2, see:
+        # https://github.com/PythonCharmers/python-future/issues/267
+        super(self.__class__, self).__setattr__(key, value)
+
+    def __check_attr(cls, key, value):
         def isoneof(val, sequence):
             return val in sequence
 
@@ -119,67 +133,61 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
                     return True
             return False
 
-        new_class = super().__new__(cls, name, bases, attrs)
         pwd_types = [None]
         prefT = '_transform_password_'
         prefV = '_verify_password_'
-        for m in dir(new_class):
-            if callable(getattr(new_class, m)) \
+        for m in dir(cls):
+            if callable(getattr(cls, m)) \
                     and m.startswith(prefT):
                 ptype = m[len(prefT):]
-                if hasattr(new_class, '{}{}'.format(prefV, ptype)):
+                if hasattr(cls, '{}{}'.format(prefV, ptype)):
                     pwd_types.append(ptype)
-        try:
-            strtypes = basestring
-        except NameError:  # python3
-            strtypes = (str, bytes)
         requirements = {
             '_pwd_type': (isoneof, pwd_types),
-            '_SameSite': (isoneof, [None, 'lax', 'strict']),
             '_secrets': (isanytrue, [is_seq_like, is_map_like]),
             '_pwd_min_len': (isinstance, int),
             '_pwd_min_charsets': (isinstance, int),
+            '_is_SSL': (isinstance, bool),
+            '_cookie_name': (isanytrue, [is_str]),
+            '_cookie_len': (isinstance, int),
+            '_cookie_lifetime': (isinstance, (int, type(None))),
+            '_SameSite': (isoneof, [None, 'lax', 'strict']),
             '_jwt_lifetime': (isinstance, int),
             '_refresh_token_lifetime': (isinstance, int),
-            '_is_SSL': (isinstance, bool),
-            '_cookie_name': (isinstance, strtypes),
-            '_cookie_len': (isinstance, int)}
+        }
 
-        for key, value in attrs.items():
-            if key in requirements:
-                checker, req = requirements[key]
-                if not checker(value, req):
-                    raise TypeError('{} must be {}{}'.format(
-                        key,
-                        'one of ' if isinstance(req, list) else '',
-                        req))
-            if key == '_pwd_type':
-                if value is not None and value.endswith('crypt'):
+        if key in requirements:
+            checker, req = requirements[key]
+            if not checker(value, req):
+                raise TypeError('{} must be {}{}'.format(
+                    key,
+                    'one of ' if isinstance(req, list) else '',
+                    req))
+        if key == '_pwd_type':
+            if value is not None and value.endswith('crypt'):
+                try:
+                    unix_hash
+                except NameError:
+                    raise ImportError(
+                        'The passlib module is required for '
+                        'unix hashes (*crypt)')
+                if value == 'bcrypt':
                     try:
-                        unix_hash
-                    except NameError:
+                        import bcrypt
+                    except ImportError:
                         raise ImportError(
-                            'The passlib module is required for '
-                            'unix hashes (*crypt)')
-                    if value == 'bcrypt':
+                            'The bcrypt module is required for '
+                            'bcrypt hashes')
+                elif value == 'scrypt':
+                    try:
+                        hashlib.scrypt
+                    except AttributeError:  # python2
                         try:
-                            import bcrypt
+                            import scrypt
                         except ImportError:
                             raise ImportError(
-                                'The bcrypt module is required for '
-                                'bcrypt hashes')
-                    elif value == 'scrypt':
-                        try:
-                            hashlib.scrypt
-                        except AttributeError:  # python2
-                            try:
-                                import scrypt
-                            except ImportError:
-                                raise ImportError(
-                                    'The scrypt module is required '
-                                    'for scrypt hashes')
-
-        return new_class
+                                'The scrypt module is required '
+                                'for scrypt hashes')
 
 class BaseAuthHTTPRequestHandler(
     with_metaclass(BaseAuthHTTPRequestHandlerMeta,
@@ -299,6 +307,16 @@ class BaseAuthHTTPRequestHandler(
         raise NotImplementedError
 
     @classmethod
+    def generate_session(cls, user):
+        '''Should return a new Session
+
+        Child class should implement
+        '''
+
+        raise NotImplementedError
+
+    ################### Methods specific to storage type
+    @classmethod
     def find_session(cls, token):
         '''Should return the Session corresponding to the token
 
@@ -330,15 +348,6 @@ class BaseAuthHTTPRequestHandler(
         '''Should delete the Session
 
         session is guaranteed to exist
-        Child class should implement
-        '''
-
-        raise NotImplementedError
-
-    @classmethod
-    def generate_session(cls, user):
-        '''Should return a new Session
-
         Child class should implement
         '''
 
@@ -740,13 +749,22 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
 
     Incomplete, must be inherited, and the child class must define
     methods for storing/getting/updating users and sessions.
+    Class attributes:
+    - _is_SSL: sets the Secure cookie flag if True. Default is False.
+    - _cookie_name: the cookie name. Default is 'SESSION'.
+    - _cookie_len: Number of characters in the cookie (random hex).
+      Default is 20.
+    - _cookie_lifetime: Lifetime in seconds.
+      Default is None (session cookie)
+    - _SameSite: SameSite cookie flag. Can be 'lax' or 'strict'.
+      Default is None (do not set it).
     '''
 
-    _is_SSL = False  # sets the Secure cookie flag if True
+    _is_SSL = False
     _cookie_name = 'SESSION'
     _cookie_len = 20
-    _cookie_lifetime = None  # in seconds; if None---session cookie
-    _SameSite = None  # can be 'lax' or 'strict'
+    _cookie_lifetime = None
+    _SameSite = None
 
     def get_current_token(self):
         '''Returns the session cookie'''
@@ -754,11 +772,10 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         cookies = param_dict(self.headers.get('Cookie'))
         if not cookies:
             return None
-        else:
-            try:
-                token = cookies[self.__class__._cookie_name]
-            except KeyError:
-                return None
+        try:
+            token = cookies[self.__class__._cookie_name]
+        except KeyError:
+            return None
         return token
 
     def set_session(self, session):
@@ -786,12 +803,13 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
 
     @classmethod
     def generate_session(cls, user):
+        '''Returns a new Session'''
+
         expiry = cls._cookie_lifetime
         if expiry is not None:
             expiry += curr_timestamp(to_utc=True)
         return Session(
-            token='{:02x}'.format(
-                randint(0, 2**(4 * cls._cookie_len) - 1)),
+            token=randhex(cls._cookie_len),
             user=user,
             expiry=expiry)
 
@@ -863,16 +881,22 @@ class BaseAuthInMemoryHTTPRequestHandler(BaseAuthHTTPRequestHandler):
 
     @classmethod
     def update_user(cls, user, **kargs):
+        '''Does nothing'''
+
         pass
 
 class AuthCookieHTTPRequestHandler(
         BaseAuthInMemoryHTTPRequestHandler,
         BaseAuthCookieHTTPRequestHandler):
+    '''Cookie-based auth (in-memory storage)'''
+
     pass
 
 class AuthJWTHTTPRequestHandler(
         BaseAuthInMemoryHTTPRequestHandler,
         BaseAuthJWTHTTPRequestHandler):
+    '''JWT-based auth with refresh tokens (in-memory storage)'''
+
     pass
 
 
