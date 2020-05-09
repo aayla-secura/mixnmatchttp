@@ -244,25 +244,28 @@ class BaseAuthHTTPRequestHandler(
       passwords. Default is 3.
     - _pwd_type: the type (usually hash algorithm) to store passwords
       in. Supported values are:
-         unsalted ones:
-           md5, sha1, sha256, sha512
-         salted ones (UNIX passwords):
-           md5_crypt, sha1_crypt, sha256_crypt, sha512_crypt, bcrypt,
-           scrypt
+        unsalted ones:
+          md5, sha1, sha256, sha512
+        salted ones (UNIX passwords):
+          md5_crypt, sha1_crypt, sha256_crypt, sha512_crypt, bcrypt,
+          scrypt
       If a child class wants to extend these, it should define
       _transform_password_{type} and _verify_password_{type}.
       Default is None (plaintext).
-    - _always_prune_sessions: If True, it will search for and remove
-      expired sessions before every request. It checks if the
-      requested session is expired either way, and if it is, it
-      removes it.
+    - _prune_sessions_every: Minumum number of seconds, before we will
+      search for and remove expired sessions. It is checked before
+      every request, so if it is 0, then old sessions are searched for
+      before every request. If it is None, we never search for old
+      sessions. Either way, we check if the requested session is
+      expired either way, and if it is, it remove it.
     '''
 
     _secrets = []
     _pwd_min_len = 10
     _pwd_min_charsets = 3
     _pwd_type = None
-    _always_prune_sessions = True
+    _prune_sessions_every = 0
+    __last_prune = curr_timestamp()
     _endpoints = endpoints.Endpoint(
         changepwd={
             '$allowed_methods': {'GET', 'POST'},
@@ -277,10 +280,15 @@ class BaseAuthHTTPRequestHandler(
         # parent's __init__ must be called at the end, since
         # SimpleHTTPRequestHandler's __init__ processes the request
         # and calls the handlers
-        if self.__class__._always_prune_sessions:
-            self.prune_old_sessions()
+        if self.__class__._prune_sessions_every is not None:
+            next_check = self.__class__._prune_sessions_every \
+                + self.__class__.__last_prune
+            if next_check <= curr_timestamp():
+                self.prune_old_sessions()
+                self.__class__.__last_prune = curr_timestamp()
         super().__init__(*args, **kwargs)
 
+    ################### Methods specific to authentication type
     def get_current_token(self):
         '''Should return the current token
 
