@@ -5,7 +5,7 @@ from __future__ import absolute_import
 from builtins import *
 from future import standard_library
 standard_library.install_aliases()
-import os.path
+import os
 import re
 from collections import UserDict
 try:
@@ -76,9 +76,11 @@ else:
 
 __all__ = [
     'DictNoClobber',
+    'is_str',
     'is_str_like',
     'is_seq_like',
     'is_map_like',
+    'randhex',
     'abspath',
     'iter_abspath_up_to_nth',
     'iter_abspath',
@@ -172,18 +174,22 @@ class DictNoClobber(UserDict, object):
             return super().items()
 
 
+def is_str(val):
+    '''True if val is a string (including unicode or bytes)'''
+
+    try:  # python2
+        str_types = (basestring,)
+    except NameError:  # python3
+        str_types = (str, bytes)
+    return isinstance(val, str_types)
+
 def is_str_like(val):
     '''True if val can be converted to string straightforwardly
 
     i.e. if it's a string, boolean or int
     '''
 
-    num_types = (int, float, bool)
-    try:  # python2
-        str_types = (basestring,)
-    except NameError:  # python3
-        str_types = (str, bytes)
-    return isinstance(val, num_types + str_types)
+    return is_str(val) or isinstance(val, (int, float, bool))
 
 def is_seq_like(val):
     '''True if val is an iterable (but not a string, or dict)
@@ -200,6 +206,19 @@ def is_map_like(val):
 
     # in python2 UserDict is not a child of Mapping
     return isinstance(val, (_abcoll.Mapping, UserDict))
+
+def randhex(size):
+    '''Returns a random hex string of length size
+
+    The number of random bytes will be int(size / 2).
+    Read from urandom.
+    '''
+
+    res = os.urandom(int(size / 2))
+    try:  # python3
+        return res.hex()
+    except AttributeError:  # python2
+        return res.encode('hex')
 
 def abspath(path):
     '''Canonicalize the path segment by segment
