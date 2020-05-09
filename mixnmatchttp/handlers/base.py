@@ -136,6 +136,7 @@ class BaseMeta(type):
     '''
 
     def __new__(cls, name, bases, attrs):
+        # TODO check attributes set after class creation
         new_class = super().__new__(cls, name, bases, attrs)
 
         logger.debug('New class {}; bases: {}'.format(
