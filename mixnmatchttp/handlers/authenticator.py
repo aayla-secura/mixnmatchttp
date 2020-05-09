@@ -1,5 +1,5 @@
 # TODO user roles support
-# TODO check attributes set after class creation
+# TODO check if jwt is used and all modules are present
 
 from __future__ import division
 #  from __future__ import unicode_literals
@@ -15,10 +15,27 @@ import re
 from datetime import datetime
 from collections import OrderedDict
 import hashlib
+# optional features
 try:
     from passlib import hash as unix_hash
 except ImportError:
-    pass  # it's an optional feature
+    pass
+try:
+    import jwt
+except ImportError:
+    pass
+else:
+    from jwt.exceptions import \
+        InvalidTokenError as JWTInvalidTokenError
+try:
+    import cryptography
+except ImportError:
+    pass
+else:
+    from cryptography.hazmat.backends import \
+        default_backend as crypto_default_backend
+    from cryptography.hazmat.primitives.serialization import \
+        load_pem_private_key
 
 from .. import endpoints
 from ..utils import is_str, is_seq_like, is_map_like, \
@@ -153,7 +170,9 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
             '_cookie_lifetime': (isinstance, (int, type(None))),
             '_SameSite': (isoneof, [None, 'lax', 'strict']),
             '_jwt_lifetime': (isinstance, int),
+            '_send_new_refresh_token': (isinstance, bool),
             '_refresh_token_lifetime': (isinstance, int),
+            '_refresh_token_len': (isinstance, int),
         }
 
         if key in requirements:
@@ -197,6 +216,7 @@ class BaseAuthHTTPRequestHandler(
     Incomplete, must be inherited, and the child class must define
     methods for storing/getting/updating users and sessions as well as
     creating and sending tokens.
+
     Class attributes:
     - _secrets: can be either:
       1) A simple filter: an iterable of absolute or relative paths
@@ -389,6 +409,30 @@ class BaseAuthHTTPRequestHandler(
 
         raise NotImplementedError
 
+    def send_response_changepwd(self):
+        '''Sends the response to a change password request
+
+        Here we send send_response_goto, child class may override.
+        '''
+
+        self.send_response_goto()
+
+    def send_response_login(self):
+        '''Sends the response to a login request
+
+        Here we send send_response_goto, child class may override.
+        '''
+
+        self.send_response_goto()
+
+    def send_response_logout(self):
+        '''Sends the response to a logout request
+
+        Here we send send_response_goto, child class may override.
+        '''
+
+        self.send_response_goto()
+
     def denied(self):
         '''Returns 401 if resource is secret and no authentication'''
 
@@ -454,7 +498,11 @@ class BaseAuthHTTPRequestHandler(
     def get_current_session(self):
         '''Returns the current Session if still valid
 
-        If it has expired, it removes it and returns None
+        If it has expired, it removes it and returns None.
+        This implementation relies on the session token in the request
+        being saved by us. For authentication schemes which rely on
+        stateless tokens (e.g. JWT), override this method and return
+        a Session with a None token (but valid User and expiry).
         '''
 
         session = self.find_session(self.get_current_token())
@@ -467,13 +515,15 @@ class BaseAuthHTTPRequestHandler(
             self.rm_session(session)
             self.unset_session(session)
             return None
+        logger.debug('Found session for {}'.format(
+            session.user.username))
         return session
 
     def expire_current_session(self):
         '''Invalidates the session server-side'''
 
         session = self.get_current_session()
-        if session is None:
+        if session is None or session.token is None:
             return
         self.rm_session(session)
         self.unset_session(session)
@@ -521,10 +571,7 @@ class BaseAuthHTTPRequestHandler(
 
     @classmethod
     def prune_old_sessions(cls):
-        '''Removes expired sessions
-
-        Child class may override this to implement DB access.
-        '''
+        '''Removes expired sessions'''
 
         logger.debug('Pruning old sessions')
         sessions = cls.get_all_sessions()
@@ -732,7 +779,7 @@ class BaseAuthHTTPRequestHandler(
             self.send_error(400, explain=str(e))
             return
         self.new_session(user)
-        self.send_response_goto()
+        self.send_response_changepwd()
 
     def do_login(self):
         '''Issues a random cookie and saves it'''
@@ -744,19 +791,20 @@ class BaseAuthHTTPRequestHandler(
                 401, explain='Username or password is wrong')
             return
         self.new_session(user)
-        self.send_response_goto()
+        self.send_response_login()
 
     def do_logout(self):
         '''Clears the cookie from the browser and saved sessions'''
 
         self.expire_current_session()
-        self.send_response_goto()
+        self.send_response_logout()
 
 class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     '''Implements cookie-based authentication
 
     Incomplete, must be inherited, and the child class must define
     methods for storing/getting/updating users and sessions.
+
     Class attributes:
     - _is_SSL: sets the Secure cookie flag if True. Default is False.
     - _cookie_name: the cookie name. Default is 'SESSION'.
@@ -826,11 +874,274 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
 
     Incomplete, must be inherited, and the child class must define
     methods for storing/getting/updating users and sessions.
+
+    - A JSON response is sent to a /login or /changepwd with an
+      access_token (JWT) and a refresh_token.
+    - Defines a new endpoint: /refresh which takes a refresh_token
+      parameter and issues a new access_token. If the
+      _send_new_refresh_token class attribute is True, then a new
+      refresh_token is also sent with a /refresh (and the old one is
+      expired).
+    - If a refresh_token is given during /logout it is removed
+      server-side.
+
+    Class attributes:
+    - _jwt_lifetime: JWT lifetime in minutes. Default is 15.
+    - _send_new_refresh_token: Send a new refresh token after a JWT
+      refresh (/refresh request). Default is True.
+    - _refresh_token_lifetime: refresh token lifetime in minutes.
+        Default is 1440 (one day).
+    - _refresh_token_len: Number of characters in the refresh token
+      (random hex). Default is 100.
+    - _decode_opts: PyJWT options to pass to the decode method.
+      Default is:
+        {'verify_signature': True,
+         'require_exp': True,
+         'verify_exp': True}
+    - _algorithm: The algorithm to use. Default is 'HS256'.
+    - _enc_key: The key used to sign the JWT. A passphrase (for
+      symmetric algorithms) or a loaded and decrypted PEM private key
+      (for asymmetric algorithms).
+    - _dec_key: The key used to verify the JWT. The same passphrase as
+      _enc_key (for symmetric algorithms), or the corresponding public
+      key (for asymmetric algorithms).
+    You can load public/private keys from a file by calling the
+    set_JWT_keys class method.
     '''
 
-    _jwt_lifetime = 15  # in minutes
-    _refresh_token_lifetime = 1440  # in minutes
-    pass
+    _jwt_lifetime = 15
+    _send_new_refresh_token = True
+    _refresh_token_lifetime = 1440
+    _refresh_token_len = 100
+    _decode_opts = {
+        'verify_signature': True,
+        'require_exp': True,
+        'verify_exp': True}
+    _algorithm = 'HS256'
+    _enc_key = None
+    _dec_key = None
+    _endpoints = endpoints.Endpoint(
+        refresh={
+            '$allowed_methods': {'GET', 'POST'},
+        },
+        logout={
+            '$allowed_methods': {'GET', 'POST'},
+        },
+    )
+
+    #  def __init__(self, *args, **kargs):
+    #      pass  # XXX
+
+    @classmethod
+    def set_JWT_keys(cls,
+                     passphrase,
+                     algorithm=None,
+                     privkey=None,
+                     pubkey=None):
+        '''Set the passphrase or keys used to sign and verify JWTs
+
+        - algortihm: The JWT algorithm, e.g. HS256. If not supplied,
+          then it is taken from the _algorithm class attribute.
+          If it is supplied, it sets that class attribute.
+        - passphrase: The passphrase to use for symmetric algorithms,
+          or the passphrase to use to decrypt a private key file (when
+          loading it from a file). It must be supplied, even if the
+          given privkey is unencrypted (in which case passphrase must
+          be None).
+        - privkey: The private PEM key to use for signing the JWT. Only
+          for asymmetric algorithms. It can be a filename, an open file
+          handle, or an already decrypted PEM key (as a string, should
+          begin with "-----BEGIN"). It must be supplied asymmetric
+          algorithms.
+        - pubkey: The public PEM key to use for verifying the JWT
+          signature. It can be a filename, an open file handle, or a PEM
+          key (as a string, should begin with "-----BEGIN"). It must
+          be supplied for asymmetric algorithms.
+        '''
+
+        def load_privkey(fh):
+            _passphrase = passphrase
+            if not isinstance(_passphrase, bytes):
+                _passphrase = _passphrase.encode('utf-8')
+            return load_pem_private_key(
+                fh.read(),
+                password=_passphrase,
+                backend=crypto_default_backend())
+
+        def load_pubkey(fh):
+            return fh.read()
+
+        def load_key(arg, loader):
+            if is_str(arg):
+                if not arg.startswith('-----BEGIN'):
+                    with open(arg, 'rb') as f:
+                        return loader(f)
+            # it has to be an open file handle
+            return loader(f)
+
+        if algorithm is not None:
+            cls._algorithm = algorithm
+        if cls._algorithm.startswith('HS'):
+            # symmetric algorithm
+            setattr(cls, '_enc_key', passphrase)
+            setattr(cls, '_dec_key', passphrase)
+            return
+        # asymmetric algorithm
+        privkey_loaded = load_key(privkey, load_privkey)
+        pubkey_loaded = load_key(pubkey, load_pubkey)
+        setattr(cls, '_enc_key', privkey)
+        setattr(cls, '_dec_key', pubkey)
+
+    def send_response_changepwd(self):
+        '''Sends the response to a change password request
+
+        Here we send a new access_token and refresh_token.
+        '''
+
+        self.send_as_json()
+
+    def send_response_refresh(self):
+        '''Sends the response to a refresh request
+
+        Here we send a new access_token and possibly refresh_token.
+        '''
+
+        self.send_as_json()
+
+    def send_response_login(self):
+        '''Sends the response to a login request
+
+        Here we send a new access_token and refresh_token.
+        '''
+
+        self.send_as_json()
+
+    def denied(self):
+        '''Returns 401 if resource is secret and no authentication
+
+        Same as parent denied, but also whitelist /refresh endpoint.
+        '''
+
+        if self.pathname == '/refresh':
+            return None
+        return super().denied()
+
+    def get_current_session(self):
+        '''Returns a Session if the JWT or refresh_token is valid
+
+        - If a refresh_token is given (as it should to /refresh or
+          /logout), then the Session.token is set to it.
+        - Otherwise if the JWT is valid, Session.user and
+          Session.expiry are taken from it and Session.token will be
+          None.
+        - Otherwise returns None.
+        '''
+
+        # see if refresh token is given and still valid
+        session = super().get_current_session()
+        if session is not None:
+            return session  # OK
+        # check the JWT
+        jwtok = self._get_current_jwt()
+        if jwtok is None:
+            logger.debug('No JWT')
+            return None
+        jwtok_d = self._decode_jwt(jwtok)
+        if jwtok_d is None:
+            logger.debug('Invalid JWT')
+            return None
+        logger.debug('Found session for {}'.format(jwtok_d['sub']))
+        return Session(token=None,
+                       user=self.find_user(jwtok_d['sub']),
+                       expiry=datetime_from_timestamp(
+                           jwtok_d['exp'],
+                           relative=False,
+                           from_utc=False,
+                           to_utc=True))
+
+    def get_current_token(self):
+        '''Returns the refresh token'''
+
+        return self.get_param('refresh_token')
+
+    def set_session(self, session):
+        '''Saves a new JWT to be sent with this response'''
+
+        jwtok = self._get_new_jwt(session.user)
+        self.save_response_param('access_token', jwtok)
+        if session.token is not None:
+            self.save_response_param('refresh_token', session.token)
+
+    def unset_session(self, session):
+        '''Does nothing'''
+
+        pass
+
+    @classmethod
+    def generate_session(cls, user):
+        '''Returns a new Session; token is the refresh token'''
+
+        token = randhex(cls._refresh_token_len)
+        expiry = datetime_from_timestamp(
+            cls._refresh_token_lifetime * 60,
+            relative=True, to_utc=True)
+        return Session(
+            token=token,
+            user=user,
+            expiry=expiry)
+
+    @classmethod
+    def _get_new_jwt(cls, user):
+        now = datetime_from_timestamp(0, relative=True, to_utc=True)
+        exp = datetime_from_timestamp(
+            cls._jwt_lifetime * 60, relative=True, to_utc=True)
+        token_d = {
+            'sub': user.username,
+            'exp': exp,
+            'nbf': now,
+            'iat': exp}
+        return jwt.encode(token_d,
+                          cls._enc_key,
+                          algorithm=cls._algorithm).decode('utf-8')
+
+    def _get_current_jwt(self):
+        auth = self.headers.get('Authorization')
+        if not auth or not auth.startswith('Bearer '):
+            return None
+        return auth[len('Bearer '):]
+
+    @classmethod
+    def _decode_jwt(cls, token):
+        try:
+            res = jwt.decode(
+                token,
+                cls._dec_key,
+                algorithms=[cls._algorithm],
+                options=cls._decode_opts)
+        except JWTInvalidTokenError as e:
+            logger.debug(str(e))
+            return None
+        return res
+
+    def do_refresh(self):
+        '''Sends a new access_token
+
+        If the _send_new_refresh_token class attribute is True, then
+        a new refresh_token is also sent.
+        '''
+
+        # see if refresh token is given and still valid
+        session = super().get_current_session()
+        if session is None:
+            self.send_error(
+                401, explain='Missing or invalid refresh token')
+            return
+        if self.__class__._send_new_refresh_token:
+            session = self.new_session(session.user)
+            self.set_session(session)
+        else:
+            self.set_session(Session(user=session.user))
+        self.send_response_refresh()
 
 class BaseAuthInMemoryHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     '''Implements in-memory storage of users and sessions

@@ -33,5 +33,6 @@ setup(
         'unix_pwd': ['passlib>=1.7.2'],
         'scrypt': ['passlib>=1.7.2', 'scrypt>=0.8.3'],
         'bcrypt': ['passlib>=1.7.2', 'bcrypt>=3.1.4'],
+        'jwt': ['PyJWT[crypto]>=1.7.1'],
     },
     zip_safe=False)
