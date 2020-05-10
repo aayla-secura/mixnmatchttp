@@ -385,7 +385,7 @@ Implements username:password authentication via form or JSON `POST` request. Has
 
 These classes store users and sessions in memory via `BaseAuthInMemoryHTTPRequestHandler`. It's recommended you implement your own class that inherits `BaseAuthCookieHTTPRequestHandler` or `BaseAuthJWTHTTPRequestHandler` and that defines the relevant methods to save, retrieve and update users and sessions (see `BaseAuthInMemoryHTTPRequestHandler`).
 
-Users can be loaded from a file with the `load_users_from_file` method.
+Users can be loaded from a file with the `load_users_from_file` method. For JWT auth, a public/private key pair can be loaded with the `set_JWT_keys` method.
 
   * `GET|POST /login`: username and password authentication
     - Supported URL parameters:
