@@ -989,8 +989,8 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         # asymmetric algorithm
         privkey_loaded = load_key(privkey, load_privkey)
         pubkey_loaded = load_key(pubkey, load_pubkey)
-        setattr(cls, '_enc_key', privkey)
-        setattr(cls, '_dec_key', pubkey)
+        setattr(cls, '_enc_key', privkey_loaded)
+        setattr(cls, '_dec_key', pubkey_loaded)
 
     def send_response_changepwd(self):
         '''Sends the response to a change password request
