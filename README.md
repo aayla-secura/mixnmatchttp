@@ -379,33 +379,37 @@ if __name__ == '__main__':
 
 # Handlers
 
-## AuthCookieHTTPRequestHandler
+## AuthCookieHTTPRequestHandler and AuthJWTHTTPRequestHandler
 
 Implements username:password authentication via form or JSON `POST` request. Has configurable file paths/endpoints for which authentication is required.
 
-This class is meant as a simple example of storing users and sessions in memory. It's recommended you implement your own class that inherits BaseAuthCookieHTTPRequestHandler and that defines the relevant methods to save, retrieve and update users and sessions.
+These classes store users and sessions in memory via `BaseAuthInMemoryHTTPRequestHandler`. It's recommended you implement your own class that inherits `BaseAuthCookieHTTPRequestHandler` or `BaseAuthJWTHTTPRequestHandler` and that defines the relevant methods to save, retrieve and update users and sessions (see `BaseAuthInMemoryHTTPRequestHandler`).
 
-If no file containing username:password is set (as a `_userfile` class attribute), it implements dummy authentication (all logins succeed).
+Users can be loaded from a file with the `load_users_from_file` method.
 
-  * `GET|POST /login`: Issues a `SESSION` cookie if username and password is valid
+  * `GET|POST /login`: username and password authentication
     - Supported URL parameters:
       + `goto`: Redirect to this URL
     - Required body or URL parameters (unless no userfile was given, in which case it always authenticates):
       + `username`: Username (duh)
       + `password`: Password (duh)
     - Response codes:
-      + `200 OK`: Authentication successful; `SESSION` cookie is set
+      + `200 OK`: Authentication successful; issues a `SESSION` cookie or sends a JWT `access_token` and a randon `refresh_token`
       + `401 Unauthorized`: Username or password invalid;
-      + `302 Found`: Location is as requested via the `goto` parameter
+      + `302 Found`: (For cookies only) Location is as requested via the `goto` parameter
     - Notes:
-      + Sessions are forgotten on the server side upon restart
       + Cookies are issued with the `HttpOnly` flag, and if over SSL with the `Secure` flag as well; Can optionally set SameSite
-  * `GET /logout`: Clears the `SESSION` cookie from the browser and the server
+      + Cookie, JWT and refresh token lifetimes (as well as other settings) are configurable via class attributes, see pydoc.
+  * `GET|POST /logout`: Clears the `SESSION` cookie from the browser and the server (if using cookies), or removes the refresh token (if given)
     - Supported URL parameters:
       + `goto`: Redirect to this URL
+    - Optional body parameters (for JWT only):
+      + `refresh_token`: Current refresh token to be expired server-side
     - Response codes:
       + `200 OK`: Empty body
       + `302 Found`: Location is as requested via the `goto` parameter
+    - Notes:
+      + The `POST` method is supported only for JWT auth
   * `GET|POST /changepwd`: Changes the password for a given username
     - Supported URL parameters:
       + `goto`: Redirect to this URL
@@ -413,11 +417,12 @@ If no file containing username:password is set (as a `_userfile` class attribute
       + `username`: Username (duh)
       + `password`: Current password
       + `new_password`: New password (duh)
+    - Optional body parameters (for JWT only):
+      + `refresh_token`: Current refresh token to be expired server-side
     - Response codes:
-      + `200 OK`: Success; password is changed, current
-        `SESSION` is invalidated and a new `SESSION` cookie is set
+      + `200 OK`: Success; password is changed, current `SESSION` cookie or `refresh_token` is invalidated and a new session is given
       + `401 Unauthorized`: Username or password invalid
-      + `302 Found`: Location is as requested via the `goto` parameter
+      + `302 Found`: (For cookies only) Location is as requested via the `goto` parameter
 
 ## CachingHTTPRequestHandler
 
