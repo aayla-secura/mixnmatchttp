@@ -1,4 +1,3 @@
-# TODO user roles support
 # TODO check if jwt is used and all modules are present
 
 from __future__ import division
@@ -49,6 +48,8 @@ __all__ = [
     'NoSuchUserError',
     'InvalidUsernameError',
     'BadPasswordError',
+    'User',
+    'Session',
     'BaseAuthHTTPRequestHandler',
     'BaseAuthCookieHTTPRequestHandler',
     'BaseAuthJWTHTTPRequestHandler',
@@ -89,18 +90,44 @@ class BadPasswordError(AuthError):
 
 
 ############################################################
-class User:
+class BaseDict:
+    def __setattr__(self, key, val):
+        if not key.startswith('_'):
+            d = self.dict()
+            d[key] = val
+        super().__setattr__(key, val)
+
+    def dict(self, copy=False):
+        try:
+            self._dict_data
+        except AttributeError:
+            self._dict_data = {}
+        if copy:
+            return self._dict_data.copy()
+        else:
+            return self._dict_data
+
+class User(BaseDict):
     '''Abstract class for a user'''
 
-    # TODO roles
-    def __init__(self, username=None, password=None, **kargs):
+    def __init__(self,
+                 username=None,
+                 password=None,
+                 roles=None):
+        _roles = roles
+        if _roles is None:
+            _roles = []
         self.username = username
         self.password = password
+        self.roles = _roles
 
-class Session:
+class Session(BaseDict):
     '''Abstract class for a session'''
 
-    def __init__(self, user=None, token=None, expiry=None, **kargs):
+    def __init__(self,
+                 user=None,
+                 token=None,
+                 expiry=None):
         '''
         - user should be an instance of User
         - expiry should be one of:
@@ -232,27 +259,41 @@ class BaseAuthHTTPRequestHandler(
            only authenticated users are granted access.
       2) A more fine-grained filter: an OrderedDict (or equivalently,
          a list of two-item tuples) where each key is a regex for
-         {method} {path} and each value is a list of allowed users.
+         {method} {path} and each value is a list of allowed users or
+         roles (prefixed with '#').
          A user is one of:
            - a literal username, optionally preceded by '!' (to
              negate or deny access)
            - None (anyone, including unauthenticated)
            - '*' (any authenticated user)
+         A role is a literal role name prefixed by '#', e.g. '#admin',
+         optionally preceded by '!' (to negate access).
          - If no value in the list of secret path regexes matches the
            requested path, then anyone is granted access. Otherwise,
            the first (in order) regex that matched the requested path
            determines if the user is allowed or not:
+           - It is allowed explicitly if {user} is given in the list
+             of users or #{role} is given for any of the user's roles
            - It is denied explicitly if !{user} is given in the list
-             of users
+             of users or !#{role} is given for any of the user's roles
            - It is denied implicitly if the user is not in the list
-             and neither is '*' or None.
+             and neither is '*' or None, and neither is any of their
+             roles.
+           - Checks are in the following order:
+             - Allowed implicitly by None (unauth)
+             - Allowed explicitly by username
+             - Denied explicitly by username
+             - Allowed explicitly by role
+             - Denied explicitly by role
+             - Allowed implicitly by *
+             - Denied implicitly (none of the above)
          Example:
         _secrets = [
             # all authenticated users, except service, can access /foo
             ('^[A-Z]+ /foo(/|$)', ['*', '!service']),
-            # only admin can POST (POST /foo is still allowed for all
-            # other than service
-            ('^POST ', ['admin']),
+            # only users in the admin group can POST (POST /foo is
+            # still allowed for all other than service
+            ('^POST ', ['#admin']),
             # anyone can fetch /bar
             ('^GET /bar(/|$)', [None]),
             # require authentication for all other pages
@@ -447,8 +488,8 @@ class BaseAuthHTTPRequestHandler(
 
         session = self.get_current_session()
         checker = self._is_authorized_complex
-        secrets = self.__class__._secrets
         requested = '{} {}'.format(self.command, self.pathname)
+        secrets = self.__class__._secrets
         try:
             secrets = OrderedDict(self.__class__._secrets)
         except ValueError:
@@ -460,23 +501,29 @@ class BaseAuthHTTPRequestHandler(
 
     @staticmethod
     def _is_authorized_complex(cmd_path, user, secrets_map):
-        for regex, users in secrets_map.items():
-            logger.debug('{} is allowed for {}'.format(regex, users))
+        for regex, acls in secrets_map.items():
+            logger.debug('{} is allowed for {}'.format(regex, acls))
             if re.search(regex, cmd_path):
-                # TODO roles
-                if None in users:
+                if None in acls:
                     logger.debug('Anyone allowed')
                     return True
                 if user is None:
                     logger.debug('Unauth denied')
                     return False
-                if '!{}'.format(user.username) in users:
+                if '!{}'.format(user.username) in acls:
                     logger.debug('Explicitly denied')
                     return False
-                if user.username in users:
+                if user.username in acls:
                     logger.debug('Explicitly allowed')
                     return True
-                if '*' in users:
+                for r in user.roles:
+                    if '!#{}'.format(r) in acls:
+                        logger.debug('Explicitly denied by role')
+                        return False
+                    if '#{}'.format(r) in acls:
+                        logger.debug('Explicitly allowed by role')
+                        return True
+                if '*' in acls:
                     logger.debug('Implicitly allowed')
                     return True
                 logger.debug('Implicitly denied')
@@ -545,7 +592,8 @@ class BaseAuthHTTPRequestHandler(
         '''Adds users from the userfile
 
         - userfile can be a string (filename) or a file handle
-          - The file contains one username:password per line.
+          - The file contains one username:password[:roles] per line.
+          - If roles is given, it is comma-separated
           - Neither username, nor password can be empty.
         - If plaintext is True, then the password is checked against
           the policy and hashed according to the _pwd_type class
@@ -553,17 +601,21 @@ class BaseAuthHTTPRequestHandler(
           algorithm must correspond to _pwd_type)
         '''
 
+        def process_line(line):
+            user, pwd, roles, *_ = '{}::'.format(
+                line.rstrip('\n').rstrip('\r')).split(':')
+            return (user, pwd, [r.strip(' ')
+                                for r in roles.split(',') if r != ''])
+
         ufile = userfile
         if not hasattr(ufile, 'read'):
             # don't handle IOError here
             ufile = open(ufile, 'r')
         with ufile:
             for line in ufile:
-                # TODO roles
-                username, _, password = \
-                    line.rstrip('\n').rstrip('\r').partition(':')
+                username, password, roles = process_line(line)
                 try:
-                    cls.create_user(username, password,
+                    cls.create_user(username, password, roles=roles,
                                     plaintext=plaintext)
                 except (UserAlreadyExistsError, InvalidUsernameError,
                         BadPasswordError) as e:
@@ -581,8 +633,9 @@ class BaseAuthHTTPRequestHandler(
                 cls.rm_session(s)
 
     @classmethod
-    def create_user(cls, username, password, plaintext=True):
-        '''Creates a user with the given password
+    def create_user(
+            cls, username, password, roles=None, plaintext=True):
+        '''Creates a user with the given password and roles
 
         - If plaintext is True, then the password is checked against
           the policy and hashed according to the _pwd_type class
@@ -600,7 +653,8 @@ class BaseAuthHTTPRequestHandler(
             password = cls.transform_password(password)
         logger.debug('Creating user {}:{}'.format(
             username, password))
-        cls.add_user(User(username=username, password=password))
+        cls.add_user(User(
+            username=username, password=password, roles=roles))
 
     @classmethod
     def change_password(
