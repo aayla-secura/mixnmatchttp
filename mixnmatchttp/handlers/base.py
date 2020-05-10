@@ -259,6 +259,7 @@ class BaseHTTPRequestHandler(with_metaclass(
         self.__ctype = None
         self.__params = None
         self.__headers_to_send = {}
+        self.__params_to_send = {}
         super().__init__(*args, **kwargs)
 
     @property
@@ -385,7 +386,8 @@ class BaseHTTPRequestHandler(with_metaclass(
             self.send_header('Expires', '0')
 
     def send_custom_headers(self):
-        '''Child overrides this'''
+        '''Called from end_headers; child overrides this'''
+
         pass
 
     def send_headers(self, headers):
@@ -425,11 +427,12 @@ class BaseHTTPRequestHandler(with_metaclass(
 
     def send_response_goto(self, *args, **kwargs):
         '''begin_response_goto and end_response_default'''
+
         self.begin_response_goto(*args, **kwargs)
         self.end_response_default()
 
     def send_response_default(self, *args, **kwargs):
-        '''Alias for send_response_empty at the moment'''
+        '''Alias for send_response_empty; child class may override'''
 
         return self.send_response_empty(*args, **kwargs)
 
@@ -444,7 +447,7 @@ class BaseHTTPRequestHandler(with_metaclass(
         self.end_response_empty()
 
     def end_response_default(self):
-        '''Alias for end_response_empty at the moment'''
+        '''Alias for end_response_empty; child class may override'''
 
         return self.end_response_empty()
 
@@ -522,15 +525,22 @@ class BaseHTTPRequestHandler(with_metaclass(
         f.close()
 
     def send_as_json(self,
-                     obj,
+                     obj=None,
                      serializer=None,
                      indent=None,
                      code=200,
                      headers={}):
-        '''Sends an object as a JSON response'''
+        '''Sends an object as a JSON response
 
+        - If obj is None, then the parameters saved by
+          save_response_param will be sent.
+        '''
+
+        _obj = obj
+        if _obj is None:
+            _obj = self.__params_to_send
         self.render({
-            'data': json.dumps(obj,
+            'data': json.dumps(_obj,
                                default=serializer,
                                indent=indent).encode('utf-8'),
             'type': 'application/json'})
@@ -663,24 +673,39 @@ class BaseHTTPRequestHandler(with_metaclass(
 
         new = []
         if append:
-            new = \
-                self._BaseHTTPRequestHandler__headers_to_send.get(
-                    header, [])
+            new = self.__headers_to_send.get(header, [])
         new.append(value)
-        self._BaseHTTPRequestHandler__headers_to_send[header] = new
+        self.__headers_to_send[header] = new
+
+    def save_response_param(self, key, value, is_list=False):
+        '''Saves a key--value to be sent by send_as_json
+
+        - If is_list is True, then the key is saved as a list, i.e.
+          the first time key will be [value], and if key has already
+          been given, then value is appended.
+        '''
+
+        if not is_list:
+            self.__params_to_send[key] = value
+            return
+        if key not in self.__params_to_send:
+            self.__params_to_send[key] = []
+        elif not is_seq_like(self.__params_to_send[key]):
+            self.__params_to_send[key] = [
+                self.__params_to_send[key]]
+        self.__params_to_send[key].append(value)
 
     def end_headers(self):
         '''Sends all custom headers and calls end_headers
 
         Calls send_custom_headers, send_cache_control and sends this
-        requests's __headers_to_send
+        requests's saved headers (added by save_headers).
         '''
 
         logger.debug(
             'Sending final headers; this request has {}'.format(
-                self._BaseHTTPRequestHandler__headers_to_send))
-        self.send_headers(
-            self._BaseHTTPRequestHandler__headers_to_send)
+                self.__headers_to_send))
+        self.send_headers(self.__headers_to_send)
         self.send_custom_headers()
         self.send_cache_control()
         super().end_headers()
