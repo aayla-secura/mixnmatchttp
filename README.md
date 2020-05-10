@@ -426,6 +426,12 @@ Users can be loaded from a file with the `load_users_from_file` method. For JWT 
       + `302 Found`: Location is as requested via the `goto` parameter
     - Notes:
       + The `POST` method is supported only for JWT auth
+  * `GET|POST /authtoken`: Only for JWT; gets a new JWT
+    - Required body or URL parameters:
+      + `refresh_token`: The refresh token
+    - Response codes:
+      + `200 OK`: Success; a new `access_token` is returned and possibly a new `refresh_token`.
+      + `401 Unauthorized`: Refresh token missing or invalid
   * `GET|POST /changepwd`: Changes the password for a given username
     - Supported URL parameters:
       + `goto`: Redirect to this URL

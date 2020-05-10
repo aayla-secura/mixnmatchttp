@@ -877,10 +877,10 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
 
     - A JSON response is sent to a /login or /changepwd with an
       access_token (JWT) and a refresh_token.
-    - Defines a new endpoint: /refresh which takes a refresh_token
+    - Defines a new endpoint: /authtoken which takes a refresh_token
       parameter and issues a new access_token. If the
       _send_new_refresh_token class attribute is True, then a new
-      refresh_token is also sent with a /refresh (and the old one is
+      refresh_token is also sent with a /authtoken (and the old one is
       expired).
     - If a refresh_token is given during /logout it is removed
       server-side.
@@ -888,7 +888,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     Class attributes:
     - _jwt_lifetime: JWT lifetime in minutes. Default is 15.
     - _send_new_refresh_token: Send a new refresh token after a JWT
-      refresh (/refresh request). Default is True.
+      refresh (/authtoken request). Default is True.
     - _refresh_token_lifetime: refresh token lifetime in minutes.
         Default is 1440 (one day).
     - _refresh_token_len: Number of characters in the refresh token
@@ -921,7 +921,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     _enc_key = None
     _dec_key = None
     _endpoints = endpoints.Endpoint(
-        refresh={
+        authtoken={
             '$allowed_methods': {'GET', 'POST'},
         },
         logout={
@@ -948,15 +948,15 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
           loading it from a file). It must be supplied, even if the
           given privkey is unencrypted (in which case passphrase must
           be None).
-        - privkey: The private PEM key to use for signing the JWT. Only
-          for asymmetric algorithms. It can be a filename, an open file
-          handle, or an already decrypted PEM key (as a string, should
-          begin with "-----BEGIN"). It must be supplied asymmetric
-          algorithms.
+        - privkey: The private PEM key to use for signing the JWT.
+          Only for asymmetric algorithms. It can be a filename, an
+          open file handle, or an already decrypted PEM key (as
+          a string, should begin with "-----BEGIN"). It must be
+          supplied asymmetric algorithms.
         - pubkey: The public PEM key to use for verifying the JWT
-          signature. It can be a filename, an open file handle, or a PEM
-          key (as a string, should begin with "-----BEGIN"). It must
-          be supplied for asymmetric algorithms.
+          signature. It can be a filename, an open file handle, or
+          a PEM key (as a string, should begin with "-----BEGIN"). It
+          must be supplied for asymmetric algorithms.
         '''
 
         def load_privkey(fh):
@@ -1019,17 +1019,17 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     def denied(self):
         '''Returns 401 if resource is secret and no authentication
 
-        Same as parent denied, but also whitelist /refresh endpoint.
+        Same as parent denied, but also whitelist /authtoken endpoint.
         '''
 
-        if self.pathname == '/refresh':
+        if self.pathname == '/authtoken':
             return None
         return super().denied()
 
     def get_current_session(self):
         '''Returns a Session if the JWT or refresh_token is valid
 
-        - If a refresh_token is given (as it should to /refresh or
+        - If a refresh_token is given (as it should to /authtoken or
           /logout), then the Session.token is set to it.
         - Otherwise if the JWT is valid, Session.user and
           Session.expiry are taken from it and Session.token will be
@@ -1123,7 +1123,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
             return None
         return res
 
-    def do_refresh(self):
+    def do_authtoken(self):
         '''Sends a new access_token
 
         If the _send_new_refresh_token class attribute is True, then
