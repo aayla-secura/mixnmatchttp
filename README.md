@@ -1,3 +1,19 @@
+# Table of Contents
+
+   * [Overview](#overview)
+   * [Quick start](#quick-start)
+      * [Defining endpoints](#defining-endpoints)
+      * [Handling parsed endpoints](#handling-parsed-endpoints)
+      * [Example: Implementing a server](#example-implementing-a-server)
+   * [Handlers](#handlers)
+      * [AuthCookieHTTPRequestHandler and AuthJWTHTTPRequestHandler](#authcookiehttprequesthandler-and-authjwthttprequesthandler)
+      * [CachingHTTPRequestHandler](#cachinghttprequesthandler)
+      * [ProxyingHTTPRequestHandler](#proxyinghttprequesthandler)
+   * [Known issues](#known-issues)
+   * [Coming soon](#coming-soon)
+      * [Possibly coming at some point](#possibly-coming-at-some-point)
+   * [Demos and source](#demos-and-source)
+
 # Overview
 
 `mixnmatchttp` is a modular HTTP/S server based on [Python's http
