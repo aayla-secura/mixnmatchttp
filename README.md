@@ -505,8 +505,7 @@ Redirects (with `307`) to any address given in the URL.
 
 ## Possibly coming at some point
 
-  * Database lookup of users
-  * Password policy
+  * Database storage of users and sessions
 
 # Demos and source
 
