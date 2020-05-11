@@ -49,6 +49,7 @@ __all__ = [
     'InvalidUsernameError',
     'BadPasswordError',
     'User',
+    'Role',
     'Session',
     'BaseAuthHTTPRequestHandler',
     'BaseAuthCookieHTTPRequestHandler',
@@ -90,38 +91,78 @@ class BadPasswordError(AuthError):
 
 
 ############################################################
-class BaseDict:
+class ReadOnlyDict(object):
     def __setattr__(self, key, val):
         if not key.startswith('_'):
-            d = self.dict()
-            d[key] = val
+            self._dict_data[key] = val
         super().__setattr__(key, val)
 
-    def dict(self, copy=False):
-        try:
-            self._dict_data
-        except AttributeError:
-            self._dict_data = {}
-        if copy:
-            return self._dict_data.copy()
-        else:
-            return self._dict_data
+    def __contains__(self, key):
+        return self._dict_data.__contains__(key)
 
-class User(BaseDict):
+    def __getitem__(self, key):
+        return self._dict_data.__getitem__(key)
+
+    def __iter__(self):
+        return self._dict_data.__iter__()
+
+    def __len__(self):
+        return self._dict_data.__len__()
+
+    def __str__(self):
+        return self._dict_data.__str__()
+
+    def __repr__(self):
+        return self._dict_data.__repr__()
+
+    def get(self, key):
+        return self._dict_data.get(key)
+
+    def items(self):
+        return self._dict_data.items()
+
+    def keys(self):
+        return self._dict_data.keys()
+
+    def values(self):
+        return self._dict_data.values()
+
+    @property
+    def _dict_data(self):
+        try:
+            self.__dict
+        except AttributeError:
+            self.__dict = {}
+        return self.__dict
+
+class User(ReadOnlyDict):
     '''Abstract class for a user'''
 
     def __init__(self,
                  username=None,
                  password=None,
                  roles=None):
-        _roles = roles
-        if _roles is None:
-            _roles = []
+        '''
+        - roles should be a list of Roles or a list of strings
+        '''
+        _roles = []
+        if roles is not None:
+            for r in roles:
+                if is_str(r):
+                    _roles.append(Role(r))
+                else:
+                    _roles.append(r)
         self.username = username
         self.password = password
         self.roles = _roles
 
-class Session(BaseDict):
+class Role(ReadOnlyDict):
+    '''Abstract class for a user role'''
+
+    def __init__(self, name=None):
+        self.name = name
+
+class Session(ReadOnlyDict):
     '''Abstract class for a session'''
 
     def __init__(self,
@@ -437,6 +478,15 @@ class BaseAuthHTTPRequestHandler(
         raise NotImplementedError
 
     @classmethod
+    def create_user(cls, username, password, roles=None):
+        '''Should create a new User
+
+        Child class should implement
+        '''
+
+        raise NotImplementedError
+
+    @classmethod
     def add_user(cls, user):
         '''Should record the new User
 
@@ -507,6 +557,7 @@ class BaseAuthHTTPRequestHandler(
         except ValueError:
             checker = self._is_authorized_plain
             requested = self.pathname
+        logger.debug('Checking authorization for {}'.format(requested))
         return checker(requested,
                        None if session is None else session.user,
                        secrets)
@@ -515,6 +566,8 @@ class BaseAuthHTTPRequestHandler(
     def _is_authorized_complex(cmd_path, user, secrets_map):
         for regex, acls in secrets_map.items():
             logger.debug('{} is allowed for {}'.format(regex, acls))
+            logger.debug('User {} is in groups {}'.format(
+                user.username, user.roles))
             if re.search(regex, cmd_path):
                 if None in acls:
                     logger.debug('Anyone allowed')
@@ -529,10 +582,10 @@ class BaseAuthHTTPRequestHandler(
                     logger.debug('Explicitly allowed')
                     return True
                 for r in user.roles:
-                    if '!#{}'.format(r) in acls:
+                    if '!#{}'.format(r.name) in acls:
                         logger.debug('Explicitly denied by role')
                         return False
-                    if '#{}'.format(r) in acls:
+                    if '#{}'.format(r.name) in acls:
                         logger.debug('Explicitly allowed by role')
                         return True
                 if '*' in acls:
@@ -614,8 +667,11 @@ class BaseAuthHTTPRequestHandler(
         '''
 
         def process_line(line):
-            user, pwd, roles, *_ = '{}::'.format(
-                line.rstrip('\n').rstrip('\r')).split(':')
+            def unpack(a, b, c, *d):
+                return a, b, c
+
+            user, pwd, roles = unpack(*'{}::'.format(
+                line.rstrip('\n').rstrip('\r')).split(':'))
             return (user, pwd, [r.strip(' ')
                                 for r in roles.split(',') if r != ''])
 
@@ -627,8 +683,8 @@ class BaseAuthHTTPRequestHandler(
             for line in ufile:
                 username, password, roles = process_line(line)
                 try:
-                    cls.create_user(username, password, roles=roles,
-                                    plaintext=plaintext)
+                    cls.new_user(username, password, roles=roles,
+                                 plaintext=plaintext)
                 except (UserAlreadyExistsError, InvalidUsernameError,
                         BadPasswordError) as e:
                     logger.error('{}'.format(str(e)))
@@ -645,7 +701,7 @@ class BaseAuthHTTPRequestHandler(
                 cls.rm_session(s)
 
     @classmethod
-    def create_user(
+    def new_user(
             cls, username, password, roles=None, plaintext=True):
         '''Creates a user with the given password and roles
 
@@ -663,10 +719,10 @@ class BaseAuthHTTPRequestHandler(
             if not cls.password_is_strong(password):
                 raise BadPasswordError(username)
             password = cls.transform_password(password)
-        logger.debug('Creating user {}:{}'.format(
-            username, password))
-        cls.add_user(User(
-            username=username, password=password, roles=roles))
+        logger.debug('Creating user {}:{} (roles: {})'.format(
+            username, password, roles))
+        user = cls.create_user(username, password, roles)
+        cls.add_user(user)
 
     @classmethod
     def change_password(
@@ -1237,6 +1293,12 @@ class BaseAuthInMemoryHTTPRequestHandler(BaseAuthHTTPRequestHandler):
             return cls.__users[username]
         except KeyError:
             return None
+
+    @classmethod
+    def create_user(cls, username, password, roles=None):
+        '''Creates a new User'''
+
+        return User(username=username, password=password, roles=roles)
 
     @classmethod
     def add_user(cls, user):
