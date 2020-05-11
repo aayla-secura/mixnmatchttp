@@ -532,8 +532,8 @@ class BaseHTTPRequestHandler(with_metaclass(
                      headers={}):
         '''Sends an object as a JSON response
 
-        - If obj is None, then the parameters saved by
-          save_response_param will be sent.
+        - If obj is None, then the parameters saved by save_param will
+          be sent.
         '''
 
         _obj = obj
@@ -677,7 +677,12 @@ class BaseHTTPRequestHandler(with_metaclass(
         new.append(value)
         self.__headers_to_send[header] = new
 
-    def save_response_param(self, key, value, is_list=False):
+    def saved_headers(self):
+        '''Returns the saved headers'''
+
+        return self.__headers_to_send
+
+    def save_param(self, key, value, is_list=False):
         '''Saves a key--value to be sent by send_as_json
 
         - If is_list is True, then the key is saved as a list, i.e.
@@ -694,6 +699,11 @@ class BaseHTTPRequestHandler(with_metaclass(
             self.__params_to_send[key] = [
                 self.__params_to_send[key]]
         self.__params_to_send[key].append(value)
+
+    def saved_params(self):
+        '''Returns the saved parameters'''
+
+        return self.__params_to_send
 
     def end_headers(self):
         '''Sends all custom headers and calls end_headers

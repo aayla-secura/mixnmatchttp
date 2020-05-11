@@ -245,6 +245,10 @@ class BaseAuthHTTPRequestHandler(
     creating and sending tokens.
 
     Class attributes:
+    - _JSON_params: a list of keys to send with every JSON response.
+      If any have not been set, they will be set as None (null).
+      Default is None, meaning do not send a JSON response (but an
+      HTML one)
     - _secrets: can be either:
       1) A simple filter: an iterable of absolute or relative paths
          which require authentication:
@@ -321,6 +325,7 @@ class BaseAuthHTTPRequestHandler(
       expired either way, and if it is, it remove it.
     '''
 
+    _JSON_params = None
     _secrets = []
     _pwd_min_len = 10
     _pwd_min_charsets = 3
@@ -450,29 +455,36 @@ class BaseAuthHTTPRequestHandler(
 
         raise NotImplementedError
 
-    def send_response_changepwd(self):
-        '''Sends the response to a change password request
+    def send_response_auth(self, error=None):
+        '''Sends the response to a one of our endpoints
 
-        Here we send send_response_goto, child class may override.
+        - If error is given, it must be a tuple of (code, message)
+        - If the _JSON_params class attribute is set, we call
+          send_as_json (if error is given the message is sent as an
+          "error" key). TODO customise the error key?
+        - Otherwise we call send_response_goto
         '''
 
-        self.send_response_goto()
+        if self.__class__._JSON_params is not None:
+            for k in self.__class__._JSON_params:
+                if k not in self.saved_params():
+                    self.save_param(k, None)
+            self._send_response_auth_json(error)
+        else:
+            self._send_response_auth_plain(error)
 
-    def send_response_login(self):
-        '''Sends the response to a login request
+    def _send_response_auth_plain(self, error):
+        if error is not None:
+            self.send_error(code=error[0], explain=error[1])
+        else:
+            self.send_response_goto()
 
-        Here we send send_response_goto, child class may override.
-        '''
-
-        self.send_response_goto()
-
-    def send_response_logout(self):
-        '''Sends the response to a logout request
-
-        Here we send send_response_goto, child class may override.
-        '''
-
-        self.send_response_goto()
+    def _send_response_auth_json(self, error):
+        code = 200
+        if error is not None:
+            self.save_param('error', error[1])
+            code = error[0]
+        self.send_as_json(code=code)
 
     def denied(self):
         '''Returns 401 if resource is secret and no authentication'''
@@ -821,8 +833,8 @@ class BaseAuthHTTPRequestHandler(
 
         user = self.authenticate()
         if user is None:
-            self.send_error(
-                401, explain='Username or password is wrong')
+            self.send_response_auth(
+                error=(401, 'Username or password is wrong'))
             return
 
         new_password = self.get_param('new_password')
@@ -830,10 +842,10 @@ class BaseAuthHTTPRequestHandler(
             self.change_password(user, new_password, plaintext=True)
         except (BadPasswordError, NoSuchUserError,
                 InvalidUsernameError) as e:
-            self.send_error(400, explain=str(e))
+            self.send_response_auth(error=(400, str(e)))
             return
         self.new_session(user)
-        self.send_response_changepwd()
+        self.send_response_auth()
 
     def do_login(self):
         '''Issues a random cookie and saves it'''
@@ -841,17 +853,17 @@ class BaseAuthHTTPRequestHandler(
         user = self.authenticate()
         if user is None:
             self.expire_current_session()
-            self.send_error(
-                401, explain='Username or password is wrong')
+            self.send_response_auth(
+                error=(401, 'Username or password is wrong'))
             return
         self.new_session(user)
-        self.send_response_login()
+        self.send_response_auth()
 
     def do_logout(self):
         '''Clears the cookie from the browser and saved sessions'''
 
         self.expire_current_session()
-        self.send_response_logout()
+        self.send_response_auth()
 
 class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     '''Implements cookie-based authentication
@@ -940,6 +952,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
       server-side.
 
     Class attributes:
+    - _JSON_params: send access_token, refresh_token and error
     - _jwt_lifetime: JWT lifetime in minutes. Default is 15.
     - _send_new_refresh_token: Send a new refresh token after a JWT
       refresh (/authtoken request). Default is True.
@@ -963,6 +976,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     set_JWT_keys class method.
     '''
 
+    _JSON_params = ['access_token', 'refresh_token', 'error']
     _jwt_lifetime = 15
     _send_new_refresh_token = True
     _refresh_token_lifetime = 1440
@@ -983,8 +997,10 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         },
     )
 
-    #  def __init__(self, *args, **kargs):
-    #      pass  # XXX
+    def __init__(self, *args, **kargs):
+        if self._enc_key is None or self._dec_key is None:
+            raise RuntimeError('JWT key not set')
+        super().__init__(*args, **kargs)
 
     @classmethod
     def set_JWT_keys(cls,
@@ -1046,30 +1062,6 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         setattr(cls, '_enc_key', privkey_loaded)
         setattr(cls, '_dec_key', pubkey_loaded)
 
-    def send_response_changepwd(self):
-        '''Sends the response to a change password request
-
-        Here we send a new access_token and refresh_token.
-        '''
-
-        self.send_as_json()
-
-    def send_response_refresh(self):
-        '''Sends the response to a refresh request
-
-        Here we send a new access_token and possibly refresh_token.
-        '''
-
-        self.send_as_json()
-
-    def send_response_login(self):
-        '''Sends the response to a login request
-
-        Here we send a new access_token and refresh_token.
-        '''
-
-        self.send_as_json()
-
     def denied(self):
         '''Returns 401 if resource is secret and no authentication
 
@@ -1122,9 +1114,9 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         '''Saves a new JWT to be sent with this response'''
 
         jwtok = self._get_new_jwt(session.user)
-        self.save_response_param('access_token', jwtok)
+        self.save_param('access_token', jwtok)
         if session.token is not None:
-            self.save_response_param('refresh_token', session.token)
+            self.save_param('refresh_token', session.token)
 
     def unset_session(self, session):
         '''Does nothing'''
@@ -1187,15 +1179,15 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         # see if refresh token is given and still valid
         session = super().get_current_session()
         if session is None:
-            self.send_error(
-                401, explain='Missing or invalid refresh token')
+            self.send_response_auth(
+                error=(401, 'Missing or invalid refresh token'))
             return
         if self.__class__._send_new_refresh_token:
             session = self.new_session(session.user)
             self.set_session(session)
         else:
             self.set_session(Session(user=session.user))
-        self.send_response_refresh()
+        self.send_response_auth()
 
 class BaseAuthInMemoryHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     '''Implements in-memory storage of users and sessions
