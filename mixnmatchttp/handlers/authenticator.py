@@ -566,8 +566,6 @@ class BaseAuthHTTPRequestHandler(
     def _is_authorized_complex(cmd_path, user, secrets_map):
         for regex, acls in secrets_map.items():
             logger.debug('{} is allowed for {}'.format(regex, acls))
-            logger.debug('User {} is in groups {}'.format(
-                user.username, user.roles))
             if re.search(regex, cmd_path):
                 if None in acls:
                     logger.debug('Anyone allowed')
