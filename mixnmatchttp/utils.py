@@ -223,16 +223,21 @@ def randhex(size):
     except AttributeError:  # python2
         return res.encode('hex')
 
-def randstr(size):
+def randstr(size, skip=''):
     '''Returns a random string of length size
 
-    The string consists of letters, digits and punctuation.
+    The string consists of letters, digits and punctuation excluding
+    any characters given in skip.
     '''
 
-    return ''.join([
-        random.choice(
-            string.ascii_letters + string.digits + string.punctuation)
-        for i in range(size)])
+    alphabet = \
+        string.ascii_letters + string.digits + string.punctuation
+    try:  # python2
+        alphabet = alphabet.translate(None, skip)
+    except TypeError:  # python3
+        alphabet = alphabet.translate(
+            str.maketrans(dict.fromkeys(skip)))
+    return ''.join([random.choice(alphabet) for i in range(size)])
 
 def abspath(path):
     '''Canonicalize the path segment by segment
