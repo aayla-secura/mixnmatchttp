@@ -319,23 +319,34 @@ def iter_abspath(path, start_n=1, join=False):
             return
         start_n += 1
 
-def param_dict(s, itemsep=' *; *', valsep='=', values_are_opt=False):
+def param_dict(s,
+               itemsep=' *; *',
+               valsep='=',
+               values_are_opt=False,
+               decoder=None):
     '''Returns a dictionary of keys/values from the string s
 
     itemsep: regex for separating items
     valsep: literal string for separating key/value
+    decoder: a callable to decode keys and values
     '''
+
+    def _id(o):
+        return o
 
     if s is None:
         return {}
 
+    if decoder is None:
+        decoder = _id
     params = dict()
     sepfunc = lambda x: x.split(valsep)
     if values_are_opt:
         sepfunc = lambda x: x.partition(valsep)[0::2]
 
     try:
-        params = dict([sepfunc(v) for v in re.split(itemsep, s)])
+        params = {decoder(k): decoder(v) for k, v in [
+            sepfunc(v) for v in re.split(itemsep, s)]}
     except ValueError:
         pass
 

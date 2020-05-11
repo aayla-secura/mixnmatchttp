@@ -337,7 +337,8 @@ class BaseHTTPRequestHandler(with_metaclass(
         logger.debug('Loading parameters from form body')
         if post_data is None:
             post_data = self.body
-        req_params = param_dict(post_data, itemsep='&')
+        req_params = param_dict(post_data, itemsep='&',
+                                decoder=urllib.parse.unquote_plus)
         if not req_params:
             raise DecodingError(
                 'Cannot load parameters from request!')
