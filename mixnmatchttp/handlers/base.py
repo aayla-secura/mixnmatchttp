@@ -539,11 +539,14 @@ class BaseHTTPRequestHandler(with_metaclass(
         _obj = obj
         if _obj is None:
             _obj = self.__params_to_send
-        self.render({
-            'data': json.dumps(_obj,
-                               default=serializer,
-                               indent=indent).encode('utf-8'),
-            'type': 'application/json'})
+        self.render(
+            {
+                'data': json.dumps(_obj,
+                                   default=serializer,
+                                   indent=indent).encode('utf-8'),
+                'type': 'application/json'},
+            code=code,
+            headers=headers)
 
     def page_from_template(self, template, dynfields={}):
         '''Returns a page from the given template'''
