@@ -7,6 +7,8 @@ from future import standard_library
 standard_library.install_aliases()
 import os
 import re
+import string
+import random
 from collections import UserDict
 try:
     # python2
@@ -81,6 +83,7 @@ __all__ = [
     'is_seq_like',
     'is_map_like',
     'randhex',
+    'randstr',
     'abspath',
     'iter_abspath_up_to_nth',
     'iter_abspath',
@@ -219,6 +222,17 @@ def randhex(size):
         return res.hex()
     except AttributeError:  # python2
         return res.encode('hex')
+
+def randstr(size):
+    '''Returns a random string of length size
+
+    The string consists of letters, digits and punctuation.
+    '''
+
+    return ''.join([
+        random.choice(
+            string.ascii_letters + string.digits + string.punctuation)
+        for i in range(size)])
 
 def abspath(path):
     '''Canonicalize the path segment by segment
