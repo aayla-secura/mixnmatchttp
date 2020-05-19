@@ -387,6 +387,7 @@ class BaseAuthHTTPRequestHandler(
 
     _JSON_params = None
     _secrets = []
+    _can_create_users = {None: [None]}
     _pwd_min_len = 10
     _pwd_min_charsets = 3
     _pwd_type = None
@@ -575,11 +576,12 @@ class BaseAuthHTTPRequestHandler(
         if self.pathname != '/login' \
                 and self.pathname != '/logout' \
                 and not self.is_authorized(
-                    requested, secrets, is_regex=True):
+                    requested, secrets, default=True, is_regex=True):
             return (401,)
         return super().denied()
 
-    def is_authorized(self, val, acl_map, is_regex=True):
+    def is_authorized(
+            self, val, acl_map, default=False, is_regex=True):
         '''Returns True or False if val is allowed by acl_map
 
         - acl_map is a dict-like reference--list of user/roles pairs.
@@ -627,7 +629,8 @@ class BaseAuthHTTPRequestHandler(
                     return True
                 logger.debug('Implicitly denied')
                 return False
-        return True
+        logger.debug('No match, defaulting to {}'.format(default))
+        return default
 
     def get_current_session(self):
         '''Returns the current Session if still valid
@@ -916,15 +919,19 @@ class BaseAuthHTTPRequestHandler(
         # otherwise accept a comma-separated string
         if is_str(roles):
             roles = [r.strip(' ') for r in roles.split(',')]
+        if roles is None:
+            roles = []
         for r in roles:
             if not self.is_authorized(
                     r,
                     self.__class__._can_create_users,
+                    default=False,
                     is_regex=False):
                 self.send_response_auth(
                     error=(401,
                            ('You cannot create '
                             'a user of role {}').format(r)))
+                return
         try:
             self.new_user(username, password, roles)
         except (UserAlreadyExistsError, InvalidUsernameError,
