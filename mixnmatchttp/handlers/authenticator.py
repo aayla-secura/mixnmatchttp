@@ -374,6 +374,9 @@ class BaseAuthHTTPRequestHandler(
     _prune_sessions_every = 0
     __last_prune = curr_timestamp()
     _endpoints = endpoints.Endpoint(
+        register={
+            '$allowed_methods': {'GET', 'POST'},
+        },
         changepwd={
             '$allowed_methods': {'GET', 'POST'},
         },
@@ -882,6 +885,24 @@ class BaseAuthHTTPRequestHandler(
                 and len(password) >= cls._pwd_min_len
                 and num_charsets(password) >= cls._pwd_min_charsets)
 
+    def do_register(self):
+        '''Creates a new user'''
+
+        username = self.get_param('username')
+        password = self.get_param('password')
+        roles = self.get_param('roles')
+        # for JSON requests roles could be a list already,
+        # otherwise accept a comma-separated string
+        if is_str(roles):
+            roles = [r.strip(' ') for r in roles.split(',')]
+        try:
+            self.new_user(username, password, roles)
+        except (UserAlreadyExistsError, InvalidUsernameError,
+                BadPasswordError) as e:
+            self.send_response_auth(error=(400, str(e)))
+            return
+        self.send_response_auth()
+
     def do_changepwd(self):
         '''Changes the password for the given username'''
 
@@ -894,8 +915,7 @@ class BaseAuthHTTPRequestHandler(
         new_password = self.get_param('new_password')
         try:
             self.change_password(user, new_password, plaintext=True)
-        except (BadPasswordError, NoSuchUserError,
-                InvalidUsernameError) as e:
+        except BadPasswordError as e:
             self.send_response_auth(error=(400, str(e)))
             return
         self.new_session(user)

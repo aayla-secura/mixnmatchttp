@@ -411,8 +411,8 @@ Users can be loaded from a file with the `load_users_from_file` method. For JWT 
       + `password`: Password (duh)
     - Response codes:
       + `200 OK`: Authentication successful; issues a `SESSION` cookie or sends a JWT `access_token` and a randon `refresh_token`
-      + `401 Unauthorized`: Username or password invalid;
       + `302 Found`: (For cookies only) Location is as requested via the `goto` parameter
+      + `401 Unauthorized`: Username or password invalid;
     - Notes:
       + Cookies are issued with the `HttpOnly` flag, and if over SSL with the `Secure` flag as well; Can optionally set SameSite
       + Cookie, JWT and refresh token lifetimes (as well as other settings) are configurable via class attributes, see pydoc.
@@ -432,6 +432,19 @@ Users can be loaded from a file with the `load_users_from_file` method. For JWT 
     - Response codes:
       + `200 OK`: Success; a new `access_token` is returned and possibly a new `refresh_token`.
       + `401 Unauthorized`: Refresh token missing or invalid
+  * `GET|POST /register`: Creates a new user
+    - Supported URL parameters:
+      + `goto`: Redirect to this URL
+    - Required body or URL parameters:
+      + `username`: Username (duh)
+      + `password`: Current password
+    - Optional body parameters (for JWT only):
+      + `roles`: A list (for JSON requests) or a comma-separated list of
+        roles to assign to the user
+    - Response codes:
+      + `200 OK`: Success; user created
+      + `302 Found`: (For cookies only) Location is as requested via the `goto` parameter
+      + `400 Bad Request`: Username or password invalid, or user exists
   * `GET|POST /changepwd`: Changes the password for a given username
     - Supported URL parameters:
       + `goto`: Redirect to this URL
@@ -443,8 +456,9 @@ Users can be loaded from a file with the `load_users_from_file` method. For JWT 
       + `refresh_token`: Current refresh token to be expired server-side
     - Response codes:
       + `200 OK`: Success; password is changed, current `SESSION` cookie or `refresh_token` is invalidated and a new session is given
-      + `401 Unauthorized`: Username or password invalid
       + `302 Found`: (For cookies only) Location is as requested via the `goto` parameter
+      + `400 Bad Request`: New password is bad
+      + `401 Unauthorized`: Current username or password invalid
 
 ## CachingHTTPRequestHandler
 
