@@ -397,7 +397,7 @@ if __name__ == '__main__':
 
 ## AuthCookieHTTPRequestHandler and AuthJWTHTTPRequestHandler
 
-Implements username:password authentication via form or JSON `POST` request. Has configurable file paths/endpoints for which authentication is required.
+Implements username:password authentication via form or JSON `POST` request. Has configurable file paths/endpoints for which authentication is required via the `_secrets` class attribute, see pydoc.
 
 These classes store users and sessions in memory via `BaseAuthInMemoryHTTPRequestHandler`. It's recommended you implement your own class that inherits `BaseAuthCookieHTTPRequestHandler` or `BaseAuthJWTHTTPRequestHandler` and that defines the relevant methods to save, retrieve and update users and sessions (see `BaseAuthInMemoryHTTPRequestHandler`).
 
@@ -445,6 +445,8 @@ Users can be loaded from a file with the `load_users_from_file` method. For JWT 
       + `200 OK`: Success; user created
       + `302 Found`: (For cookies only) Location is as requested via the `goto` parameter
       + `400 Bad Request`: Username or password invalid, or user exists
+    - Notes:
+      + access to `/register` is controlled both by the `_secrets` and `_can_create_users` class attributes. See pydoc.
   * `GET|POST /changepwd`: Changes the password for a given username
     - Supported URL parameters:
       + `goto`: Redirect to this URL

@@ -333,18 +333,37 @@ class BaseAuthHTTPRequestHandler(
              - Allowed implicitly by *
              - Denied implicitly (none of the above)
          Example:
-        _secrets = [
-            # all authenticated users, except service, can access /foo
-            ('^[A-Z]+ /foo(/|$)', ['*', '!service']),
-            # only users in the admin group can POST (POST /foo is
-            # still allowed for all other than service
-            ('^POST ', ['#admin']),
-            # anyone can fetch /bar
-            ('^GET /bar(/|$)', [None]),
-            # require authentication for all other pages
-            ('.*', ['*']),
-        ]
+         _secrets = [
+             # all authenticated users, except service, can access /foo
+             ('^[A-Z]+ /foo(/|$)', ['*', '!service']),
+             # only users in the admin group can POST (POST /foo is
+             # still allowed for all other than service
+             ('^POST ', ['#admin']),
+             # anyone can fetch /bar
+             ('^GET /bar(/|$)', [None]),
+             # require authentication for all other pages
+             ('.*', ['*']),
+         ]
       Default _secrets is [], i.e. no authentication required.
+    - _can_create_users: A dictionary, where every key is a user role
+      (<new_role>) and every value is a list of users  or roles
+      (prefixed with '#') who are able to register users with role
+      <new_role>. As in _secrets, a username or role can be negated
+      with '!'.
+      The role None as a key means the new user is assigned no roles.
+      None and '*' in the list have the same meaning as explained in
+      _secrets.
+      When a new user is to be registered with a set of roles, the
+      currently logged in user should be authorized to create users of
+      each of the given roles. Note that access to the /register
+      endpoint still needs to be granted via _secrets.
+      Example:
+        _can_create_users = {
+            None: [None],  # self-register with no role assignment
+            'service': ['admin'], # admins can create service accounts
+            'admin': ['admin'],   # admins can create other admins
+        }
+      Default _can_create_users is {None: [None]}, i.e. self-register.
     - _pwd_min_len: Minimum length of passwords. Default is 10.
     - _pwd_min_charsets: Minimum number of character sets in
       passwords. Default is 3.
@@ -542,34 +561,48 @@ class BaseAuthHTTPRequestHandler(
     def denied(self):
         '''Returns 401 if resource is secret and no authentication'''
 
-        if self.pathname != '/login' \
-                and self.pathname != '/logout' \
-                and not self.is_authorized():
-            return (401,)
-        return super().denied()
-
-    def is_authorized(self):
-        '''Returns True or False if request is authorized'''
-
-        session = self.get_current_session()
-        checker = self._is_authorized_complex
         requested = '{} {}'.format(self.command, self.pathname)
         secrets = self.__class__._secrets
         try:
             secrets = OrderedDict(self.__class__._secrets)
         except ValueError:
-            checker = self._is_authorized_plain
             requested = self.pathname
-        logger.debug('Checking authorization for {}'.format(requested))
-        return checker(requested,
-                       None if session is None else session.user,
-                       secrets)
+            secrets = OrderedDict([(
+                ('(^|/)'
+                 '{}'  # secrets joined in an OR
+                 '(/|$)'.format('|'.join(secrets))),
+                ['*'])])
+        if self.pathname != '/login' \
+                and self.pathname != '/logout' \
+                and not self.is_authorized(
+                    requested, secrets, is_regex=True):
+            return (401,)
+        return super().denied()
 
-    @staticmethod
-    def _is_authorized_complex(cmd_path, user, secrets_map):
-        for regex, acls in secrets_map.items():
-            logger.debug('{} is allowed for {}'.format(regex, acls))
-            if re.search(regex, cmd_path):
+    def is_authorized(self, val, acl_map, is_regex=True):
+        '''Returns True or False if val is allowed by acl_map
+
+        - acl_map is a dict-like reference--list of user/roles pairs.
+        - val is the value to be compared to each key in acl_map.
+        - If is_regex is True, then reference is a regex for val,
+          otherwise equality is checked.
+        '''
+
+        def is_equal(ref, val):
+            return (ref is None and val is None) or ref == val
+
+        logger.debug('Checking authorization for {}'.format(val))
+        user = None
+        session = self.get_current_session()
+        if session is not None:
+            user = session.user
+        if is_regex:
+            comparator = re.search
+        else:
+            comparator = is_equal
+        for ref, acls in acl_map.items():
+            logger.debug('{} is allowed for {}'.format(ref, acls))
+            if comparator(ref, val):
                 if None in acls:
                     logger.debug('Anyone allowed')
                     return True
@@ -593,18 +626,6 @@ class BaseAuthHTTPRequestHandler(
                     logger.debug('Implicitly allowed')
                     return True
                 logger.debug('Implicitly denied')
-                return False
-        return True
-
-    @staticmethod
-    def _is_authorized_plain(path, user, secrets_list):
-        if user is not None:
-            return True
-        for s in secrets_list:
-            logger.debug('{} is secret'.format(s))
-            if re.search('{}{}(/|$)'.format(
-                ('^' if s[0] == '/' else '(/|^)'),
-                    s), path):
                 return False
         return True
 
@@ -895,6 +916,15 @@ class BaseAuthHTTPRequestHandler(
         # otherwise accept a comma-separated string
         if is_str(roles):
             roles = [r.strip(' ') for r in roles.split(',')]
+        for r in roles:
+            if not self.is_authorized(
+                    r,
+                    self.__class__._can_create_users,
+                    is_regex=False):
+                self.send_response_auth(
+                    error=(401,
+                           ('You cannot create '
+                            'a user of role {}').format(r)))
         try:
             self.new_user(username, password, roles)
         except (UserAlreadyExistsError, InvalidUsernameError,
