@@ -92,11 +92,6 @@ class BadPasswordError(AuthError):
 
 ############################################################
 class ReadOnlyDict(object):
-    def __setattr__(self, key, val):
-        if not key.startswith('_'):
-            self._dict_data[key] = val
-        super().__setattr__(key, val)
-
     def __contains__(self, key):
         return self._dict_data.__contains__(key)
 
@@ -129,11 +124,16 @@ class ReadOnlyDict(object):
 
     @property
     def _dict_data(self):
-        try:
-            self.__dict
-        except AttributeError:
-            self.__dict = {}
-        return self.__dict
+        res = {}
+        #  for a in dir(self):
+        for a, v in self.__dict__.items():
+            if a.startswith('_'):
+                continue
+            #  v = getattr(self, a)
+            if callable(v):
+                continue
+            res[a] = v
+        return res
 
 class User(ReadOnlyDict):
     '''Abstract class for a user'''
