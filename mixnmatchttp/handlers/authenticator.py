@@ -502,16 +502,7 @@ class BaseAuthHTTPRequestHandler(
 
     @classmethod
     def create_user(cls, username, password, roles=None):
-        '''Should create a new User
-
-        Child class should implement
-        '''
-
-        raise NotImplementedError
-
-    @classmethod
-    def add_user(cls, user):
-        '''Should record the new User
+        '''Should create and return a new User
 
         Child class should implement
         '''
@@ -746,8 +737,7 @@ class BaseAuthHTTPRequestHandler(
             password = cls.transform_password(password)
         logger.debug('Creating user {}:{} (roles: {})'.format(
             username, password, roles))
-        user = cls.create_user(username, password, roles)
-        cls.add_user(user)
+        cls.create_user(username, password, roles)
 
     @classmethod
     def change_password(
@@ -1351,15 +1341,11 @@ class BaseAuthInMemoryHTTPRequestHandler(BaseAuthHTTPRequestHandler):
 
     @classmethod
     def create_user(cls, username, password, roles=None):
-        '''Creates a new User'''
+        '''Creates and returns a new User'''
 
-        return User(username=username, password=password, roles=roles)
-
-    @classmethod
-    def add_user(cls, user):
-        '''Records the new User'''
-
-        cls.__users[user.username] = user
+        u = User(username=username, password=password, roles=roles)
+        cls.__users[username] = u
+        return u
 
     @classmethod
     def update_user(cls, user, **kargs):
