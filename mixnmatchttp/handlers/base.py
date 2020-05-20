@@ -5,6 +5,8 @@ from __future__ import absolute_import
 from builtins import *
 from future import standard_library
 standard_library.install_aliases()
+from future.utils import with_metaclass
+
 import logging
 import http.server
 import re
@@ -22,13 +24,13 @@ import base64
 import binascii
 from wrapt import decorator
 from string import Template
-from future.utils import with_metaclass
 
 from .. import endpoints
 from ..utils import is_seq_like, abspath, param_dict, DictNoClobber
 
 __all__ = [
     'methodhandler',
+    'InvalidRequestError',
     'PageReadError',
     'UnsupportedOperationError',
     'DecodingError',
@@ -113,6 +115,11 @@ def methodhandler(realhandler, self, args, kwargs):
 
 ######################### EXCEPTIONS ########################
 
+class InvalidRequestError(Exception):
+    '''Base class for exceptions raised when request is invalid'''
+
+    pass
+
 class PageReadError(Exception):
     '''Base class for exceptions related to request body read'''
     pass
@@ -171,6 +178,7 @@ class BaseMeta(type):
 
 class BaseHTTPRequestHandler(with_metaclass(
         BaseMeta, http.server.SimpleHTTPRequestHandler, object)):
+    pollers = {}
     _endpoints = endpoints.Endpoint()
     _template_pages = DictNoClobber(
         default={

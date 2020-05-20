@@ -395,11 +395,19 @@ if __name__ == '__main__':
 
 # Handlers
 
-## AuthCookieHTTPRequestHandler and AuthJWTHTTPRequestHandler
+## Auth(Cookie|JWT)HTTPRequestHandler and Auth(Cookie|JWT)DBHTTPRequestHandler
 
-Implements username:password authentication via form or JSON `POST` request. Has configurable file paths/endpoints for which authentication is required via the `_secrets` class attribute, see pydoc.
+These implement username:password authentication via form or JSON `POST` request. Have configurable file paths/endpoints for which authentication is required via the `_secrets` class attribute, see pydoc.
 
-These classes store users and sessions in memory via `BaseAuthInMemoryHTTPRequestHandler`. It's recommended you implement your own class that inherits `BaseAuthCookieHTTPRequestHandler` or `BaseAuthJWTHTTPRequestHandler` and that defines the relevant methods to save, retrieve and update users and sessions (see `BaseAuthInMemoryHTTPRequestHandler`).
+The `AuthCookie`... classes issue cookies, which the `AuthJWT`... classes issue JWT tokens and refresh tokens. Many configurable options, such as cookie/token lifetime and others, see pydoc.
+
+The `Auth*HTTRequestHandler` classes store users and sessions in memory. The `Auth*DBHTTRequestHandler` classes store users and sessions in a database. SQLAlchemy is required. To connect the declarative base (set of tables) to the database use:
+
+```
+from mixnmatchttp.handlers.authenticator.dbapi import DBBase
+
+DBConnection(DBBase, dburl)
+```
 
 Users can be loaded from a file with the `load_users_from_file` method. For JWT auth, a public/private key pair can be loaded with the `set_JWT_keys` method.
 
