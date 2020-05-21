@@ -1,5 +1,6 @@
 from . import handlers
 from . import servers
+from .webapp import WebApp
 
 __all__ = [
     'handlers',
