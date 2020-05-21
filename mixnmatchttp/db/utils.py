@@ -279,6 +279,31 @@ class DBConnection:
             session.close()
 
 
+def parse_db_url(url):
+    '''Returns a dictionary
+
+    with dialect, user, password, host, database, query
+    '''
+
+    m = re.search(
+        ('^([^:/]+)://((([^@/:]+):([^@/:]*)@)?'
+         '([^:/]+))?(/([^?]+)(\?(.+))?)?$'), url)
+    if not m:
+        return None
+    res = {
+        'dialect': m.group(1),
+        'user': m.group(4),
+        'password': m.group(5),
+        'host': m.group(6),
+        'database': m.group(8),
+        'query': m.group(10)}
+    return res
+
+def is_base(cls):
+    '''Returns True if cls is a declarative base'''
+
+    return isinstance(cls, DeclarativeMeta) and not is_mapper(cls)
+
 def is_mapper(cls):
     '''Returns True if cls is a mapper class'''
 
