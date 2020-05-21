@@ -142,7 +142,18 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
     '''
 
     def __new__(cls, name, bases, attrs):
+        attrs['_supported_hashes'] = []
         new_class = super().__new__(cls, name, bases, attrs)
+        pwd_types = [None]
+        prefT = '_transform_password_'
+        prefV = '_verify_password_'
+        for m in dir(new_class):
+            if callable(getattr(new_class, m)) \
+                    and m.startswith(prefT):
+                ptype = m[len(prefT):]
+                if hasattr(new_class, '{}{}'.format(prefV, ptype)):
+                    pwd_types.append(ptype)
+        super().__setattr__(new_class, '_supported_hashes', pwd_types)
         for key, value in attrs.items():
             new_class.__check_attr(key, value)
         return new_class
@@ -163,17 +174,8 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
                     return True
             return False
 
-        pwd_types = [None]
-        prefT = '_transform_password_'
-        prefV = '_verify_password_'
-        for m in dir(cls):
-            if callable(getattr(cls, m)) \
-                    and m.startswith(prefT):
-                ptype = m[len(prefT):]
-                if hasattr(cls, '{}{}'.format(prefV, ptype)):
-                    pwd_types.append(ptype)
         requirements = {
-            '_pwd_type': (isoneof, pwd_types),
+            '_pwd_type': (isoneof, cls._supported_hashes),
             '_secrets': (isanytrue, [is_seq_like, is_map_like]),
             '_pwd_min_len': (isinstance, int),
             '_pwd_min_charsets': (isinstance, int),
