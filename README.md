@@ -6,7 +6,7 @@
       * [Handling parsed endpoints](#handling-parsed-endpoints)
       * [Example: Implementing a server](#example-implementing-a-server)
    * [Handlers](#handlers)
-      * [AuthCookieHTTPRequestHandler and AuthJWTHTTPRequestHandler](#authcookiehttprequesthandler-and-authjwthttprequesthandler)
+      * [Auth(Cookie|JWT)HTTPRequestHandler and Auth(Cookie|JWT)DBHTTPRequestHandler](#authcookiejwthttprequesthandler-and-authcookiejwtdbhttprequesthandler)
       * [CachingHTTPRequestHandler](#cachinghttprequesthandler)
       * [ProxyingHTTPRequestHandler](#proxyinghttprequesthandler)
    * [Known issues](#known-issues)
