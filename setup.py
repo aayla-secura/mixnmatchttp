@@ -34,5 +34,7 @@ setup(
         'scrypt': ['passlib>=1.7.2', 'scrypt>=0.8.3'],
         'bcrypt': ['passlib>=1.7.2', 'bcrypt>=3.1.4'],
         'jwt': ['PyJWT[crypto]>=1.7.1'],
+        'daemon': ['python-daemon>=2.2.4'],
+        'sql': ['SQLAlchemy>=1.3.16'],
     },
     zip_safe=False)
