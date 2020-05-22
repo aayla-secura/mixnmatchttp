@@ -220,7 +220,10 @@ class DBConnection:
             if dbname is not None and os.path.isfile(dbname):
                 exists = True
         else:
-            engine = create_engine(self.url, **engine_kargs)
+            baseurl = self.url
+            if dbname:
+                baseurl = baseurl.replace('/{}'.format(dbname), '')
+            engine = create_engine(baseurl, **engine_kargs)
             insp = Inspector.from_engine(engine)
             if dbname in insp.get_schema_names():
                 exists = True
