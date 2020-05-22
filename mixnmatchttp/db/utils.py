@@ -282,12 +282,12 @@ class DBConnection:
 def parse_db_url(url):
     '''Returns a dictionary
 
-    with dialect, user, password, host, database, query
+    with dialect, user, password, host, port, database, query
     '''
 
     m = re.search(
         ('^([^:/]+)://((([^@/:]+):([^@/:]*)@)?'
-         '([^:/]+))?(/([^?]+)(\?(.+))?)?$'), url)
+         '([^:/]+)(:([0-9]+))?)?(/([^?]+)(\?(.+))?)?$'), url)
     if not m:
         return None
     res = {
@@ -295,8 +295,9 @@ def parse_db_url(url):
         'user': m.group(4),
         'password': m.group(5),
         'host': m.group(6),
-        'database': m.group(8),
-        'query': m.group(10)}
+        'port': m.group(8),
+        'database': m.group(10),
+        'query': m.group(12)}
     return res
 
 def is_base(cls):

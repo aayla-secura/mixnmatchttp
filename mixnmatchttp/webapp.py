@@ -232,7 +232,6 @@ class WebApp(object):
                 db_parser.add_argument(
                     '--{}-dburl'.format(name),
                     dest='{}_dburl'.format(name),
-                    default='sqlite://',  # required=True,
                     metavar=('dialect://[username:password@]'
                              'host/database'),
                     help='URL of the {} database.'.format(name))
