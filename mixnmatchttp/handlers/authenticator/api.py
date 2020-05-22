@@ -52,9 +52,6 @@ class ReadOnlyDict(object):
     def __repr__(self):
         return self._dict_data.__repr__()
 
-    def __eq__(self, ref):
-        return self._dict_data.__eq__(ref)
-
     def get(self, key):
         return self._dict_data.get(key)
 
