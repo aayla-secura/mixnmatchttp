@@ -16,6 +16,7 @@ import urllib
 from time import sleep
 import tempfile
 import logging
+from copy import copy
 import argparse
 import json
 
@@ -87,8 +88,12 @@ class WebApp(object):
         if self.log_fmt is None:
             self.log_fmt = \
                 '[%(asctime)s] %(name)s (%(threadName)s): %(message)s'
-        self.conf = Conf(skip=[
-            'action', 'config', 'save_config', 'add_users'])
+        self.conf = Conf(skip=['action',
+                               'config',
+                               'save_config',
+                               'log_pkgs',
+                               'dbg_pkgs',
+                               'add_users'])
 
         # TODO access to supparsers via instance attributes
         self.parser = argparse.ArgumentParser(
@@ -271,13 +276,13 @@ class WebApp(object):
                   'Current working directory will be changed to it.'))
         misc_server_parser.add_argument(
             '--multithread', dest='multithread',
-            action='store_true',
+            default=True, action='store_true',
             help=('Use multi-threading support. This is the default, '
                   'but can be used to override configuration '
                   'file setting.'))
         misc_server_parser.add_argument(
             '--no-multithread', dest='multithread',
-            default=True, action='store_false',
+            action='store_false',
             help='Disable multi-threading support.')
         if support_daemon:
             misc_server_parser.add_argument(
@@ -334,14 +339,13 @@ class WebApp(object):
         # do not raise AttributeError but return None for command-line
         # options which are not supported
         self.conf._error_on_missing = False
-        try:
-            self.action = args.action
-        except AttributeError:  # no daemon support
+        self.action = self.conf.action
+        if self.action is None:
             self.action = 'start'
-        if args.save_config:
-            if args.config is None:
+        if self.conf.save_config:
+            if self.conf.config is None:
                 exit('--save-config requires --config.')
-            self.save_config(args.config)
+            self.save_config(self.conf.config)
 
         #### Preliminary checks and directory creation
         if self.conf.port is None:
@@ -372,7 +376,7 @@ class WebApp(object):
             ensure_exists(self.conf.webroot, is_file=False)
             # check userfile
             if self.conf.userfile is not None \
-                    and not args.add_users:
+                    and not self.conf.add_users:
                 ensure_exists(self.conf.userfile, is_file=True)
             for name in self.db_bases.keys():
                 url = getattr(self.conf, '{}_dburl'.format(name))
@@ -420,7 +424,7 @@ class WebApp(object):
 
         #### Load users
         _delete_userfile = False
-        if args.add_users:
+        if self.conf.add_users:
             # if userfile is not given, use a temporary file
             if self.conf.userfile is None:
                 _delete_userfile = True
@@ -698,7 +702,8 @@ class Conf(object):
     _error_on_missing = True
 
     def __init__(self, skip=[], settings={}):
-        self._skip = skip
+        self._skip = copy(skip)
+        self._skip.extend(['_skip', '_error_on_missing'])
         self._update(settings)
 
     def _update(self, settings):
@@ -707,7 +712,7 @@ class Conf(object):
 
     def _to_dict(self):
         return {k: v for k, v in self.__dict__.items()
-                if k != '_skip'}
+                if k not in self._skip}
 
     def __getattr__(self, key):
         if self._error_on_missing or key.startswith('_'):
@@ -715,12 +720,6 @@ class Conf(object):
                 "'{}' object has no attribute '{}'".format(
                     type(self), key))
         return None
-
-    def __setattr__(self, key, val):
-        if key != '_skip' and key in self._skip:
-            return
-        super().__setattr__(key, val)
-
 
 def exit(error, rc=None):
     if isinstance(error, Exception):
