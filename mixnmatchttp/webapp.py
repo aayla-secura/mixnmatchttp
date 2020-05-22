@@ -737,7 +737,7 @@ def read_line(prompt):
     sys.stdout.flush()
     return sys.stdin.readline().strip('\n').strip('\r')
 
-def get_loggers(logdir, fmt, info_dest, dbg_dest):
+def get_loggers(logdir=None, fmt=None, info_dest=None, dbg_dest=None):
     def get_logger(filename, level):
         streamHandler, fileHandler = logger_classes[level]
         if logdir is None:
