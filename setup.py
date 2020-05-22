@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setup(
     name='mixnmatchttp',
-    version='1.0beta',
+    version='1.0.dev1',
     url='https://github.com/aayla-secura/mixnmatchttp',
     author='AaylaSecura1138',
     author_email='aayla.secura.1138@gmail.com',
