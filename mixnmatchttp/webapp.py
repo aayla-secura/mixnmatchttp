@@ -763,12 +763,16 @@ def get_loggers(logdir=None, fmt=None, info_dest=None, dbg_dest=None):
     if info_dest:
         for dest in info_dest:
             pkg, files = unpack_dest(*dest)
+            if not files:
+                files = ['event.log']
             for f in files:
                 loggers[pkg] = get_logger(f, 'INFO')
             loggers[pkg] = get_logger('error.log', 'ERROR')
     if dbg_dest:
         for dest in dbg_dest:
             pkg, files = unpack_dest(*dest)
+            if not files:
+                files = ['debug.log']
             for f in files:
                 loggers[pkg] = get_logger(f, 'DEBUG')
     return loggers
@@ -788,6 +792,7 @@ def make_dirs(path, is_file=False, mode=0o755):
     if os.path.exists(path) and not os.path.isdir(path):
         exit(NotADirectoryError(
             errno.ENOTDIR, os.strerror(errno.ENOTDIR), path))
+    os.makedirs(path, mode=mode)
 
 def ensure_exists(path, is_file=True):
     if not os.path.exists(path):
