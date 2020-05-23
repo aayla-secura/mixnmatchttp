@@ -491,8 +491,8 @@ class WebApp(object):
         f = open(conffile, 'r')
         try:
             settings = json.load(f)
-        except json.JSONDecodeError:
-            exit('Invalid configuration file.')
+        except json.JSONDecodeError as e:
+            exit('Invalid configuration file: {}'.format(e))
         f.close()
         self.conf._update(settings)
 
