@@ -347,7 +347,9 @@ class BaseAuthHTTPRequestHandler(
         login={
             '$allowed_methods': {'GET', 'POST'},
         },
-        logout={},
+        logout={
+            '$allowed_methods': {'GET', 'POST'},
+        },
     )
 
     def __init__(self, *args, **kwargs):

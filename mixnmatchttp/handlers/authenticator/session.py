@@ -163,9 +163,6 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         authtoken={
             '$allowed_methods': {'GET', 'POST'},
         },
-        logout={
-            '$allowed_methods': {'GET', 'POST'},
-        },
     )
 
     def __init__(self, *args, **kargs):
