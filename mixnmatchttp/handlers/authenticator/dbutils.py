@@ -10,9 +10,10 @@ from sqlalchemy.exc import DatabaseError
 
 from functools import partial
 from wrapt import decorator
+from datetime import datetime
 import logging
 
-from ...utils import is_map_like
+from ...utils import is_map_like, datetime_to_str
 from ...db import DBConnection, is_mapper, object_to_dict
 from ...db.exc import DBError
 from ..base import InvalidRequestError
@@ -30,6 +31,9 @@ def json_serializer(obj, short=False, short_mappings={}):
             obj, short=short, short_mappings=short_mappings)
     elif is_map_like(obj):
         return dict(obj)
+    elif isinstance(obj, datetime):
+        return datetime_to_str(obj)
+    return repr(obj)
 
 def needs_db_response_handling(base,
                                poller=None,

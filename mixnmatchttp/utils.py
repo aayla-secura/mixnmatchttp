@@ -93,6 +93,7 @@ __all__ = [
     'datetime_to_timestamp',
     'datetime_from_timestamp',
     'date_from_timestamp',
+    'datetime_to_str',
 ]
 
 logger = logging.getLogger(__name__)
@@ -422,4 +423,12 @@ def date_from_timestamp(ts,
     dtime = datetime_from_timestamp(
         ts, to_utc=to_utc, from_utc=from_utc, relative=relative)
     datefmt = datefmt.replace('{{TZ}}', dtime.tzname())
+    return dtime.strftime(datefmt)
+
+def datetime_to_str(dtime, datefmt='%a, %d %b %Y %H:%M:%S {{TZ}}'):
+    tzname = dtime.tzname()
+    if tzname is None:
+        datefmt = datefmt.replace(' {{TZ}}', '').replace('{{TZ}}', '')
+    else:
+        datefmt = datefmt.replace('{{TZ}}', tzname)
     return dtime.strftime(datefmt)
