@@ -18,7 +18,9 @@ import tempfile
 import logging
 from copy import copy
 import argparse
+from string import Template
 import json
+from awesomedict import AwesomeDict
 
 try:  # python3
     from json import JSONDecodeError
@@ -488,12 +490,15 @@ class WebApp(object):
     def update_config(self, conffile):
         '''TODO'''
 
-        f = open(conffile, 'r')
+        with open(conffile, 'r') as f:
+            content_raw = f.read()
+        # return an empty value for missing env variables
+        env = AwesomeDict(os.environ).set_defaults({'.*': ''})
+        content = Template(content_raw).substitute(env)
         try:
-            settings = json.load(f)
+            settings = json.loads(content)
         except json.JSONDecodeError as e:
             exit('Invalid configuration file: {}'.format(e))
-        f.close()
         self.conf._update(settings)
 
     def save_config(self, conffile):
