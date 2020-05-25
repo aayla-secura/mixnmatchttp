@@ -470,7 +470,7 @@ class BaseHTTPRequestHandler(with_metaclass(
     def show(self):
         '''Logs the request'''
 
-        logger.info('''
+        logger.log(1, '''
 ----- Request Start ----->
 
 {}

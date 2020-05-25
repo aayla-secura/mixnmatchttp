@@ -49,6 +49,9 @@ from .db import DBConnection, is_base, parse_db_url
 from .handlers.authenticator.dbapi import DBBase
 
 
+MY_PKG_NAME = __name__.split('.')[0]
+
+
 class WebApp(object):
     '''TODO'''
 
@@ -82,6 +85,8 @@ class WebApp(object):
             if not is_base(d['base']):
                 exit('db_bases base should be a declarative base.')
         self._is_configured = False
+        # access.log is for http.server (which writes to stderr)
+        self.access_log = None
         self.httpd = self.url = self.pidlockfile = None
         self.reqhandler = reqhandler
         self.auth_type = auth_type
@@ -93,8 +98,7 @@ class WebApp(object):
         self.conf = Conf(skip=['action',
                                'config',
                                'save_config',
-                               'log_pkgs',
-                               'dbg_pkgs',
+                               'debug_log',
                                'add_users'])
 
         # TODO access to supparsers via instance attributes
@@ -143,11 +147,11 @@ class WebApp(object):
             if auth_type == 'jwt':
                 auth_parser.add_argument(
                     '--jwt-key', dest='jwt_key', metavar='PASSWORD',
-                    help=('A password to use for symmetric signing of '
-                          'JWT. If none is given, then a random one is '
-                          'generated (meaning all JWT keys become '
-                          'invalid upon restart). If "-" is supplied, '
-                          'then it is read from stdin.'))
+                    help=('A password to use for symmetric signing '
+                          'of JWT. If none is given, then a random '
+                          'one is generated (meaning all JWT keys '
+                          'become invalid upon restart). If "-" is '
+                          'supplied, then it is read from stdin.'))
             auth_parser.add_argument(
                 '--userfile', dest='userfile', metavar='FILE',
                 help=('File containing one username:password[:roles] '
@@ -288,31 +292,40 @@ class WebApp(object):
         if support_daemon:
             misc_server_parser.add_argument(
                 '-l', '--logdir', dest='logdir', metavar='DIR',
-                help=('Directory that will hold the access and error '
-                      'log log files. Default when running in daemon '
-                      'mode is /var/log/pyhttpd. Default in '
-                      'foreground mode is to print print all output '
-                      'to the console.'))
+                help=('Directory that will hold the log files. '
+                      'Default when running in daemon mode is '
+                      '/var/log/pyhttpd. Default in foreground mode '
+                      'is to print print all output to the console.'))
         else:
             misc_server_parser.add_argument(
                 '-l', '--logdir', dest='logdir', metavar='DIR',
-                help=('Directory that will hold the access and error '
-                      'log log files. Default is to print print all '
-                      'output to the console.'))
+                help=('Directory that will hold the log files. '
+                      'Default is to print print all output to '
+                      'the console.'))
         misc_server_parser.add_argument(
-            '--log', dest='log_pkgs', nargs='+',
+            '--log', dest='log', nargs='+',
             action='append', default=[], metavar='PACKAGE [FILENAME]',
-            help=('Enable logging (INFO) output for the given '
-                  'package. FILENAME will be stored in --logdir '
-                  'and defaults to event.log. '
+            help=('Enable logging output for the given package. '
+                  'FILENAME will be stored in --logdir if given '
+                  '(otherwise ignored and output goes to the '
+                  'console). Default is <PACKAGE>.log. Only INFO '
+                  'level messages go in FILENAME, WARNING and ERROR '
+                  'go to error.log (or stderr if no --logdir). '
+                  'Note that printing of request lines to '
+                  'access.log (or stderr) is always enabled. '
                   'This option can be given multiple times.'))
         misc_server_parser.add_argument(
-            '--debug', dest='dbg_pkgs', nargs='+',
+            '--request-log', dest='request_log', nargs='?',
+            const='request.log', metavar='[FILENAME]',
+            help=('Enable logging of full requests. FILENAME '
+                  'defaults to request.log if not given.'))
+        misc_server_parser.add_argument(
+            '--debug-log', dest='debug_log', nargs='+',
             action='append', default=[], metavar='PACKAGE [FILENAME]',
             help=('Enable debugging output for the given package. '
-                  'FILENAME will be stored in --logdir '
-                  'and defaults to debug.log. '
-                  'This option can be given multiple times.'))
+                  'FILENAME defaults to debug.log. Note that this '
+                  'option is not saved in the configuration file. '
+                  'Otherwise the behaviour is similar as --log.'))
 
     def configure(self):
         '''TODO'''
@@ -323,8 +336,6 @@ class WebApp(object):
 
         if self._is_configured:
             raise RuntimeError("'configure' can be called only once.")
-        signal(SIGTERM, self._term_sighandler)
-        signal(SIGINT, self._term_sighandler)
 
         args = self.parser.parse_args()
         #### Load/save/update config file
@@ -367,7 +378,7 @@ class WebApp(object):
             if self.conf.logdir is not None:
                 self.conf.logdir = os.path.abspath(
                     self.conf.logdir).rstrip('/')
-            make_dirs(self.conf.logdir, mode=0o700)
+                make_dirs(self.conf.logdir, mode=0o700)
             # check webroot
             self.conf.webroot = self.conf.webroot.rstrip('/')
             #  self.conf.webroot = self.conf.webroot.strip('/')
@@ -388,8 +399,8 @@ class WebApp(object):
                 conn = parse_db_url(url)
                 if not conn:
                     exit('Invalid database URL: {}'.format(url))
-                if conn['dialect'] == 'sqlite' \
-                        and conn['database'] not in [':memory:', None]:
+                if conn['dialect'] == 'sqlite' and \
+                        conn['database'] not in [':memory:', None]:
                     make_dirs(conn['database'], is_file=True)
             if self.auth_type == 'jwt' and self.conf.jwt_key is None:
                 self.conf.jwt_key = randstr(16)
@@ -519,28 +530,39 @@ class WebApp(object):
         getattr(self, '_{}'.format(self.action))()
 
     def _start(self):
-        os.chdir(self.conf.webroot)
+        if self.conf.logdir is not None:
+            self.access_log = open('{}/{}'.format(
+                self.conf.logdir, 'access.log'), 'ab')
+
         sys.stderr.write('Starting server on {}\n'.format(self.url))
+        #### Daemonize
         if self.conf.daemonize:
+            assert self.access_log is not None
             if self.pidlockfile.is_locked():
                 exit('PID file {} already locked'.format(
                     self.pidlockfile.path))
-            # http.server writes to stderr
-            stderr_f = open('{}/{}'.format(
-                self.conf.logdir, 'access.log'), 'wb+')
             daemon = DaemonContext(
                 working_directory=os.getcwd(),
                 umask=0o077,
                 pidfile=self.pidlockfile,
                 signal_map={SIGTERM: None},  # let me handle signals
-                stderr=stderr_f)
+                stderr=self.access_log)
             daemon.open()
 
         #### Setup logging
-        self.loggers = get_loggers(logdir=self.conf.logdir,
-                                   fmt=self.log_fmt,
-                                   info_dest=self.conf.log_pkgs,
-                                   dbg_dest=self.conf.dbg_pkgs)
+        log_dest = {
+            'REQUEST': [],
+            'DEBUG': self.conf.debug_log,
+            'INFO': self.conf.log,
+            'ERROR': self.conf.log}
+        if self.conf.logdir is not None:
+            log_dest['INFO'].append([__name__, 'event.log'])
+        if self.conf.request_log is not None:
+            log_dest['REQUEST'].append(
+                [MY_PKG_NAME, self.conf.request_log])
+        self.loggers = get_loggers(log_dest,
+                                   logdir=self.conf.logdir,
+                                   fmt=self.log_fmt)
 
         #### Create the server
         # This has to be done after daemonization because it binds to
@@ -557,6 +579,19 @@ class WebApp(object):
                 certfile=self.conf.certfile,
                 server_side=True)
 
+        #### Setup signal handlers
+        signal(SIGTERM, self._term_sighandler)
+        signal(SIGINT, self._term_sighandler)
+
+        #### Redirect stderr to access.log
+        if self.conf.logdir is not None and not self.conf.daemonize:
+            # running in foreground, but logging to logdir, redirect
+            # stderr to access.log as http.server writes to stderr
+            os.dup2(self.access_log.fileno(), sys.stderr.fileno())
+
+        #### Change working directory and run
+        os.chdir(self.conf.webroot)
+        self._log_event('Starting server on {}'.format(self.url))
         self.httpd.serve_forever()
 
     def _stop(self):
@@ -593,8 +628,20 @@ class WebApp(object):
             exit('Server is not running, pidfile is old', -1)
         exit('Server is running, pid = {}'.format(pid), 0)
 
+    def _log_event(self, message):
+        try:
+            self.loggers[__name__]
+        except KeyError:
+            return
+        self.loggers[__name__].info(message)
+
     def _term_sighandler(self, signo, stack_frame):
+        self._log_event('Stopping server on {}'.format(self.url))
         self.httpd.server_close()
+        self._log_event('Stopped server on {}'.format(self.url))
+
+        if self.access_log is not None:
+            self.access_log.close()
         sys.exit(0)
 
     def _send_cors_headers(self, reqself):
@@ -702,6 +749,14 @@ class DebugStreamHandler(StreamHandler):
     _min_level = logging.DEBUG
     _max_level = logging.DEBUG
 
+class RequestDebugFileHandler(FileHandler):
+    _min_level = 1
+    _max_level = 1
+
+class RequestDebugStreamHandler(StreamHandler):
+    _min_level = 1
+    _max_level = 1
+
 class Conf(object):
     _error_on_missing = True
 
@@ -741,45 +796,51 @@ def read_line(prompt):
     sys.stdout.flush()
     return sys.stdin.readline().strip('\n').strip('\r')
 
-def get_loggers(logdir=None, fmt=None, info_dest=None, dbg_dest=None):
-    def get_logger(filename, level):
-        streamHandler, fileHandler = logger_classes[level]
-        if logdir is None:
-            handler = streamHandler(
-                sys.stderr if level == 'ERROR' else sys.stdout)
-        else:
-            handler = fileHandler('{}/{}'.format(logdir, filename))
-        handler.setFormatter(log_formatter)
-        logger = logging.getLogger(pkg)
-        logger.addHandler(handler)
-        logger.setLevel(logging.DEBUG)  # the handler filters
-        return logger
-
+def get_loggers(destinations_map, logdir=None, fmt=None):
     def unpack_dest(pkg, *files):
         return pkg, files
 
-    log_formatter = logging.Formatter(
-        fmt=fmt, datefmt='%d/%b/%Y %H:%M:%S')
+    log_formatter = None
+    if fmt is not None:
+        log_formatter = logging.Formatter(
+            fmt=fmt, datefmt='%d/%b/%Y %H:%M:%S')
     loggers = {}
     logger_classes = {
-        'DEBUG': (DebugStreamHandler, DebugFileHandler),
-        'INFO': (InfoStreamHandler, InfoFileHandler),
-        'ERROR': (ErrorStreamHandler, ErrorFileHandler)}
-    if info_dest:
-        for dest in info_dest:
+        'REQUEST': (RequestDebugStreamHandler,
+                    RequestDebugFileHandler, 'request.log'),
+        'DEBUG': (DebugStreamHandler, DebugFileHandler, 'debug.log'),
+        'INFO': (InfoStreamHandler, InfoFileHandler, None),
+        'ERROR': (ErrorStreamHandler, ErrorFileHandler, 'error.log')}
+
+    for level, destinations in destinations_map.items():
+        for dest in destinations:
             pkg, files = unpack_dest(*dest)
             if not files:
-                files = ['event.log']
-            for f in files:
-                loggers[pkg] = get_logger(f, 'INFO')
-            loggers[pkg] = get_logger('error.log', 'ERROR')
-    if dbg_dest:
-        for dest in dbg_dest:
-            pkg, files = unpack_dest(*dest)
-            if not files:
-                files = ['debug.log']
-            for f in files:
-                loggers[pkg] = get_logger(f, 'DEBUG')
+                files = [None]
+            for filename in files:
+                streamHandler, fileHandler, def_filename = \
+                    logger_classes[level]
+                if logdir is None:
+                    handler = streamHandler(
+                        sys.stderr
+                        if level == 'ERROR' else sys.stdout)
+                else:
+                    if filename is None:
+                        filename = def_filename
+                    if filename is None:
+                        if '/' in pkg:
+                            raise ValueError(
+                                ('{} cannot be used as a '
+                                 'filename').format(pkg))
+                        filename = '{}.log'.format(pkg)
+                    handler = fileHandler('{}/{}'.format(
+                        logdir, filename))
+                if log_formatter is not None:
+                    handler.setFormatter(log_formatter)
+                logger = logging.getLogger(pkg)
+                logger.addHandler(handler)
+                logger.setLevel(1)  # the handler filters
+                loggers[pkg] = logger
     return loggers
 
 def make_dirs(path, is_file=False, mode=0o755):
@@ -797,7 +858,8 @@ def make_dirs(path, is_file=False, mode=0o755):
     if os.path.exists(path) and not os.path.isdir(path):
         exit(NotADirectoryError(
             errno.ENOTDIR, os.strerror(errno.ENOTDIR), path))
-    os.makedirs(path, mode=mode)
+    if not os.path.exists(path):
+        os.makedirs(path, mode=mode)
 
 def ensure_exists(path, is_file=True):
     if not os.path.exists(path):
