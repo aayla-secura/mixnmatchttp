@@ -330,10 +330,6 @@ class WebApp(object):
     def configure(self):
         '''TODO'''
 
-        def send_custom_headers(reqself):
-            super(self.reqhandler, reqself).send_custom_headers()
-            return self._send_cors_headers(reqself)
-
         if self._is_configured:
             raise RuntimeError("'configure' can be called only once.")
 
@@ -373,39 +369,84 @@ class WebApp(object):
             if self.action in ['stop', 'status']:
                 self.conf.daemonize = False
         if self.action in ['start', 'restart']:
-            if self.conf.logdir is None and self.conf.daemonize:
-                self.conf.logdir = '/var/log/pyhttpd'
-            if self.conf.logdir is not None:
-                self.conf.logdir = os.path.abspath(
-                    self.conf.logdir).rstrip('/')
-                make_dirs(self.conf.logdir, mode=0o700)
-            # check webroot
-            self.conf.webroot = self.conf.webroot.rstrip('/')
-            #  self.conf.webroot = self.conf.webroot.strip('/')
-            #  if not os.path.abspath(self.conf.webroot).startswith(
-            #          os.getcwd()):
-            #      exit('The given webroot is outside the current root')
-            ensure_exists(self.conf.webroot, is_file=False)
-            # check userfile
-            if self.conf.userfile is not None \
-                    and not self.conf.add_users:
-                ensure_exists(self.conf.userfile, is_file=True)
-            for name in self.db_bases.keys():
-                url = getattr(self.conf, '{}_dburl'.format(name))
-                if not url:
-                    exit(('You must specify the {}_dburl '
-                          'configuration option or the --{}-dburl '
-                          'command-line option.').format(name, name))
-                conn = parse_db_url(url)
-                if not conn:
-                    exit('Invalid database URL: {}'.format(url))
-                if conn['dialect'] == 'sqlite' and \
-                        conn['database'] not in [':memory:', None]:
-                    make_dirs(conn['database'], is_file=True)
-            if self.auth_type == 'jwt' and self.conf.jwt_key is None:
-                self.conf.jwt_key = randstr(16)
-            elif self.conf.jwt_key == '-':
-                self.conf.jwt_key = read_line('Enter JWT passphrase')
+            self._prepare_for_start()
+
+        self.url = '{proto}://{addr}:{port}'.format(
+            proto='https' if self.conf.ssl else 'http',
+            addr=self.conf.address,
+            port=self.conf.port)
+        self._is_configured = True
+
+    def update_config(self, conffile):
+        '''TODO'''
+
+        with open(conffile, 'r') as f:
+            content_raw = f.read()
+        # return an empty value for missing env variables
+        env = AwesomeDict(os.environ).set_defaults({'.*': ''})
+        content = Template(content_raw).substitute(env)
+        try:
+            settings = json.loads(content)
+        except json.JSONDecodeError as e:
+            exit('Invalid configuration file: {}'.format(e))
+        self.conf._update(settings)
+
+    def save_config(self, conffile):
+        '''TODO'''
+
+        f = open(conffile, 'w')
+        json.dump(self.conf._to_dict(), f, indent=2)
+        f.close()
+
+    def run(self):
+        '''TODO'''
+
+        if not self._is_configured:
+            self.configure()
+        if self.action == 'restart':
+            self._stop()
+            self.action = 'start'
+        getattr(self, '_{}'.format(self.action))()
+
+    def _prepare_for_start(self):
+        def send_custom_headers(reqself):
+            super(self.reqhandler, reqself).send_custom_headers()
+            return self._send_cors_headers(reqself)
+
+        #### Preliminary checks and directory creation
+        if self.conf.logdir is None and self.conf.daemonize:
+            self.conf.logdir = '/var/log/pyhttpd'
+        if self.conf.logdir is not None:
+            self.conf.logdir = os.path.abspath(
+                self.conf.logdir).rstrip('/')
+            make_dirs(self.conf.logdir, mode=0o700)
+        # check webroot
+        self.conf.webroot = self.conf.webroot.rstrip('/')
+        #  self.conf.webroot = self.conf.webroot.strip('/')
+        #  if not os.path.abspath(self.conf.webroot).startswith(
+        #          os.getcwd()):
+        #      exit('The given webroot is outside the current root')
+        ensure_exists(self.conf.webroot, is_file=False)
+        # check userfile
+        if self.conf.userfile is not None \
+                and not self.conf.add_users:
+            ensure_exists(self.conf.userfile, is_file=True)
+        for name in self.db_bases.keys():
+            url = getattr(self.conf, '{}_dburl'.format(name))
+            if not url:
+                exit(('You must specify the {}_dburl '
+                      'configuration option or the --{}-dburl '
+                      'command-line option.').format(name, name))
+            conn = parse_db_url(url)
+            if not conn:
+                exit('Invalid database URL: {}'.format(url))
+            if conn['dialect'] == 'sqlite' and \
+                    conn['database'] not in [':memory:', None]:
+                make_dirs(conn['database'], is_file=True)
+        if self.auth_type == 'jwt' and self.conf.jwt_key is None:
+            self.conf.jwt_key = randstr(16)
+        elif self.conf.jwt_key == '-':
+            self.conf.jwt_key = read_line('Enter JWT passphrase')
 
         #### Create the new request handler class
         attrs = {}
@@ -490,44 +531,6 @@ class WebApp(object):
             # TODO asymmetric algo support
             self.reqhandler.set_JWT_keys(
                 passphrase=self.conf.jwt_key, algorithm='HS256')
-
-        #### Done
-        self.url = '{proto}://{addr}:{port}'.format(
-            proto='https' if self.conf.ssl else 'http',
-            addr=self.conf.address,
-            port=self.conf.port)
-        self._is_configured = True
-
-    def update_config(self, conffile):
-        '''TODO'''
-
-        with open(conffile, 'r') as f:
-            content_raw = f.read()
-        # return an empty value for missing env variables
-        env = AwesomeDict(os.environ).set_defaults({'.*': ''})
-        content = Template(content_raw).substitute(env)
-        try:
-            settings = json.loads(content)
-        except json.JSONDecodeError as e:
-            exit('Invalid configuration file: {}'.format(e))
-        self.conf._update(settings)
-
-    def save_config(self, conffile):
-        '''TODO'''
-
-        f = open(conffile, 'w')
-        json.dump(self.conf._to_dict(), f, indent=2)
-        f.close()
-
-    def run(self):
-        '''TODO'''
-
-        if not self._is_configured:
-            self.configure()
-        if self.action == 'restart':
-            self._stop()
-            self.action = 'start'
-        getattr(self, '_{}'.format(self.action))()
 
     def _start(self):
         if self.conf.logdir is not None:
