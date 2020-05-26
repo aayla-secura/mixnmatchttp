@@ -532,6 +532,7 @@ Redirects (with `307`) to any address given in the URL.
   * Command-line option for paths shouldn't be cached
   * Disable directory listing by default (an option to enable)
   * An option to disable access to certain files
+  * Log rotation
   * MT-safe saving and clearing of cache
 
 # Internal TODO notes
