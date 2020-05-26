@@ -21,7 +21,7 @@ from sqlalchemy.orm import Session, \
     scoped_session, sessionmaker, joinedload
 from sqlalchemy.orm.util import class_mapper
 
-from .exc import ObjectConversionError, DBError, \
+from .exc import ObjectConversionError, ServerDBError, \
     MetadataMistmatchError
 from .is_db_sane import is_db_sane
 from ..utils import is_seq_like, is_map_like
@@ -272,7 +272,7 @@ class DBConnection:
             yield session
             if auto_commit:
                 session.commit()
-        except (DBError, DatabaseError) as e:
+        except (DatabaseError, ServerDBError) as e:
             logger.error(str(e))
             session.rollback()
             if reraise:
@@ -565,7 +565,7 @@ def object_from_dict(db, cls, dic, no_create=False,
     try:
         obj = cls(**props)
     except (ValueError, TypeError) as e:
-        raise ObjectConversionError(str(e))
+        raise ServerDBError(str(e))
     if add:
         logger.debug('Adding {} object'.format(tbl))
         db.add(obj)

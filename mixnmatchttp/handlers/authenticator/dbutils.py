@@ -15,8 +15,7 @@ import logging
 
 from ...utils import is_map_like, datetime_to_str
 from ...db import DBConnection, is_mapper, object_to_dict
-from ...db.exc import DBError
-from ..base import InvalidRequestError
+from ..base import ServerError, InvalidRequestError
 from .dbapi import DBBase
 
 
@@ -70,7 +69,7 @@ def needs_db_response_handling(base,
                 self.save_param('error', str(e))
                 self.send_as_json(code=400)
                 return
-            except (DatabaseError, DBError) as e:
+            except (DatabaseError, ServerError) as e:
                 self.save_param('error', str(e))
                 self.send_as_json(code=500)
                 raise  # so session_context cleans up
@@ -109,7 +108,7 @@ def needs_db_error_response_handling(base):
         with dconn.session_context(reraise=False) as db:
             try:
                 return wrapped(db, *args, **kwargs)
-            except (DatabaseError, DBError) as e:
+            except (DatabaseError, ServerError) as e:
                 self.save_param('error', str(e))
                 self.send_as_json(code=500)
                 raise  # so session_context cleans up

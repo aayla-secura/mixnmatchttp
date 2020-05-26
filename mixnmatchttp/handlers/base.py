@@ -115,6 +115,11 @@ def methodhandler(realhandler, self, args, kwargs):
 
 ######################### EXCEPTIONS ########################
 
+class ServerError(Exception):
+    '''Base class for exceptions raised when there is a server error'''
+
+    pass
+
 class InvalidRequestError(Exception):
     '''Base class for exceptions raised when request is invalid'''
 
