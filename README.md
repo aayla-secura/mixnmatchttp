@@ -530,6 +530,7 @@ Redirects (with `307`) to any address given in the URL.
   * A configurable declarative base to use with `BaseAuthSQLAlchemyORMHTTPRequestHandler`
   * Disable request logging by default, enable optionally (at the moment the only way is to not enable INFO level logging from the package)
   * Command-line option for paths shouldn't be cached
+  * Command-line option for paths which need authentication (`_secrets`)
   * Disable directory listing by default (an option to enable)
   * An option to disable access to certain files
   * Log rotation
@@ -537,9 +538,11 @@ Redirects (with `307`) to any address given in the URL.
 
 # Internal TODO notes
 
+  * Access to `WebApp.parser`'s supparsers via instance attributes
   * Smarter way of merging endpoints with parent's (remembering which ones were explicitly set, and which inherited)
   * Move some code from `handlers.base` to `handlers.exc` and handlers.utils
   * Remove `_` prefix from class attributes
+  * Do not save expanded env variables to config file
 
 ## Possibly coming at some point
 
