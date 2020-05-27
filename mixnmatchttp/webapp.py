@@ -101,7 +101,6 @@ class WebApp(object):
                                'debug_log',
                                'add_users'])
 
-        # TODO access to supparsers via instance attributes
         self.parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description=description)
@@ -141,17 +140,30 @@ class WebApp(object):
                       'server certificate.'))
 
         if auth_type:
-            # TODO secrets via command-line?
             auth_parser = self.parser.add_argument_group(
                 'Authentication options')
             if auth_type == 'jwt':
                 auth_parser.add_argument(
                     '--jwt-key', dest='jwt_key', metavar='PASSWORD',
                     help=('A password to use for symmetric signing '
-                          'of JWT. If none is given, then a random '
+                          'of JWT or a passphrase used to decrypt '
+                          'the private key (for asymmetric '
+                          'algorithms). If none is given and the '
+                          'algorithm is symmetric, then a random '
                           'one is generated (meaning all JWT keys '
-                          'become invalid upon restart). If "-" is '
+                          'become invalid upon restart). If none is '
+                          'given and the algorithm is asymmetric, '
+                          'the key must be decrypted. If "-" is '
                           'supplied, then it is read from stdin.'))
+                auth_parser.add_argument(
+                    '--jwt-priv-key', dest='jwt_priv_key',
+                    help=('A private PEM key for use with asymmetric '
+                          'JWT encodings.'))
+                auth_parser.add_argument(
+                    '--jwt-algo', dest='jwt_algo',
+                    help=('The algorithm used to encode JWTs. '
+                          'Default is HS256 is no private key is '
+                          'given, otherwise RS256.'))
             auth_parser.add_argument(
                 '--userfile', dest='userfile', metavar='FILE',
                 help=('File containing one username:password[:roles] '
@@ -443,10 +455,6 @@ class WebApp(object):
             if conn['dialect'] == 'sqlite' and \
                     conn['database'] not in [':memory:', None]:
                 make_dirs(conn['database'], is_file=True)
-        if self.auth_type == 'jwt' and self.conf.jwt_key is None:
-            self.conf.jwt_key = randstr(16)
-        elif self.conf.jwt_key == '-':
-            self.conf.jwt_key = read_line('Enter JWT passphrase')
 
         #### Create the new request handler class
         attrs = {}
@@ -528,9 +536,20 @@ class WebApp(object):
 
         #### JWT keys
         if self.auth_type == 'jwt':
-            # TODO asymmetric algo support
+            if self.conf.jwt_algo is None:
+                if self.conf.jwt_priv_key is None:
+                    self.conf.jwt_algo = 'HS256'
+                else:
+                    self.conf.jwt_algo = 'RS256'
+            if self.conf.jwt_key is None \
+                    and self.conf.jwt_algo.startswith('HS'):
+                self.conf.jwt_key = randstr(16)
+            elif self.conf.jwt_key == '-':
+                self.conf.jwt_key = read_line('Enter JWT passphrase')
             self.reqhandler.set_JWT_keys(
-                passphrase=self.conf.jwt_key, algorithm='HS256')
+                passphrase=self.conf.jwt_key,
+                algorithm=self.conf.jwt_algo,
+                privkey=self.conf.jwt_priv_key)
 
     def _start(self):
         if self.conf.logdir is not None:

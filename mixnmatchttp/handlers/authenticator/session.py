@@ -15,7 +15,8 @@ except ImportError:
     pass
 else:
     from jwt.exceptions import \
-        InvalidTokenError as JWTInvalidTokenError
+        InvalidTokenError as JWTInvalidTokenError, \
+        InvalidKeyError as JWTInvalidKeyError
 try:
     import cryptography
 except ImportError:
@@ -25,6 +26,7 @@ else:
         default_backend as crypto_default_backend
     from cryptography.hazmat.primitives.serialization import \
         load_pem_private_key
+    from cryptography.hazmat.primitives import serialization
 
 from ... import endpoints
 from ...utils import is_str, param_dict, datetime_from_timestamp, \
@@ -174,8 +176,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     def set_JWT_keys(cls,
                      passphrase,
                      algorithm=None,
-                     privkey=None,
-                     pubkey=None):
+                     privkey=None):
         '''Set the passphrase or keys used to sign and verify JWTs
 
         - algortihm: The JWT algorithm, e.g. HS256. If not supplied,
@@ -191,23 +192,17 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
           open file handle, or an already decrypted PEM key (as
           a string, should begin with "-----BEGIN"). It must be
           supplied asymmetric algorithms.
-        - pubkey: The public PEM key to use for verifying the JWT
-          signature. It can be a filename, an open file handle, or
-          a PEM key (as a string, should begin with "-----BEGIN"). It
-          must be supplied for asymmetric algorithms.
         '''
 
         def load_privkey(fh):
             _passphrase = passphrase
-            if not isinstance(_passphrase, bytes):
+            if _passphrase is not None \
+                    and not isinstance(_passphrase, bytes):
                 _passphrase = _passphrase.encode('utf-8')
             return load_pem_private_key(
                 fh.read(),
                 password=_passphrase,
                 backend=crypto_default_backend())
-
-        def load_pubkey(fh):
-            return fh.read()
 
         def load_key(arg, loader):
             if is_str(arg):
@@ -226,9 +221,15 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
             return
         # asymmetric algorithm
         privkey_loaded = load_key(privkey, load_privkey)
-        pubkey_loaded = load_key(pubkey, load_pubkey)
-        setattr(cls, '_enc_key', privkey_loaded)
-        setattr(cls, '_dec_key', pubkey_loaded)
+        pubkey_pem = privkey_loaded.public_key().public_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PublicFormat.SubjectPublicKeyInfo)
+        privkey_pem = privkey_loaded.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.TraditionalOpenSSL,
+            encryption_algorithm=serialization.NoEncryption())
+        setattr(cls, '_enc_key', privkey_pem)
+        setattr(cls, '_dec_key', pubkey_pem)
 
     def denied(self):
         '''Returns 401 if resource is secret and no authentication
@@ -332,7 +333,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
                 cls._dec_key,
                 algorithms=[cls._algorithm],
                 options=cls._decode_opts)
-        except JWTInvalidTokenError as e:
+        except (JWTInvalidTokenError, JWTInvalidKeyError) as e:
             logger.debug(str(e))
             return None
         return res
