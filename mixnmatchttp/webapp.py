@@ -85,6 +85,7 @@ class WebApp(object):
             if not is_base(d['base']):
                 exit('db_bases base should be a declarative base.')
         self._is_configured = False
+        self._delete_tmp_userfile = False
         # access.log is for http.server (which writes to stderr)
         self.access_log = None
         self.httpd = self.url = self.pidlockfile = None
@@ -469,26 +470,11 @@ class WebApp(object):
             '{}Custom'.format(self.reqhandler.__name__),
             (self.reqhandler,), attrs)
 
-        #### Connect to the databases
-        for name, d in self.db_bases.items():
-            base = d['base']
-            url = getattr(self.conf, '{}_dburl'.format(name))
-            session_kargs = d.get('session_args', {})
-            engine_kargs = d.get('engine_args', {})
-            cache = d.get('cache', False)
-            DBConnection(base,
-                         url,
-                         session_kargs=session_kargs,
-                         engine_kargs=engine_kargs)
-            if cache:  # ETag support
-                self.reqhandler.enable_client_cache(name, base)
-
-        #### Load users
-        _delete_userfile = False
+        #### Read users from stdin
         if self.conf.add_users:
             # if userfile is not given, use a temporary file
             if self.conf.userfile is None:
-                _delete_userfile = True
+                self._delete_tmp_userfile = True
                 self.conf.userfile = \
                     tempfile.NamedTemporaryFile(
                         mode='a', delete=False)
@@ -526,13 +512,6 @@ class WebApp(object):
             # close the file, so load_users_from_file can start
             # reading it from the start
             self.conf.userfile = self.conf.userfile.name
-
-        if self.conf.userfile is not None:
-            self.reqhandler.load_users_from_file(
-                self.conf.userfile,
-                plaintext=not self.conf.userfile_hashed)
-            if _delete_userfile:
-                os.remove(self.conf.userfile)
 
         #### JWT keys
         if self.auth_type == 'jwt':
@@ -585,6 +564,30 @@ class WebApp(object):
         self.loggers = get_loggers(log_dest,
                                    logdir=self.conf.logdir,
                                    fmt=self.log_fmt)
+
+        #### Connect to the databases
+        # This has to be done after daemonization because the sockets
+        # may be closed
+        for name, d in self.db_bases.items():
+            base = d['base']
+            url = getattr(self.conf, '{}_dburl'.format(name))
+            session_kargs = d.get('session_args', {})
+            engine_kargs = d.get('engine_args', {})
+            cache = d.get('cache', False)
+            DBConnection(base,
+                         url,
+                         session_kargs=session_kargs,
+                         engine_kargs=engine_kargs)
+            if cache:  # ETag support
+                self.reqhandler.enable_client_cache(name, base)
+
+        #### Load users
+        if self.conf.userfile is not None:
+            self.reqhandler.load_users_from_file(
+                self.conf.userfile,
+                plaintext=not self.conf.userfile_hashed)
+            if self._delete_tmp_userfile:
+                os.remove(self.conf.userfile)
 
         #### Create the server
         # This has to be done after daemonization because it binds to
