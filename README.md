@@ -543,6 +543,7 @@ Redirects (with `307`) to any address given in the URL.
   * Move some code from `handlers.base` to `handlers.exc` and handlers.utils
   * Remove `_` prefix from class attributes
   * Do not save expanded env variables to config file
+  * Test with nginx proxy setup (it was behaving weirdly, need to find if it's a bug here)
 
 ## Possibly coming at some point
 
