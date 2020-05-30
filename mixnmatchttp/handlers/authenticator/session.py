@@ -46,6 +46,7 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
 
     Class attributes:
     - _is_SSL: sets the Secure cookie flag if True. Default is False.
+    - _cookie_path: the cookie path. Default is '/'.
     - _cookie_name: the cookie name. Default is 'SESSION'.
     - _cookie_len: Number of characters in the cookie (random hex).
       Default is 20.
@@ -56,6 +57,7 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     '''
 
     _is_SSL = False
+    _cookie_path = '/'
     _cookie_name = 'SESSION'
     _cookie_len = 20
     _cookie_lifetime = None
@@ -81,8 +83,9 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
             'SameSite={}; '.format(self.__class__._SameSite)
             if self.__class__._SameSite is not None else '')
         cookie = \
-            '{name}={value}; path=/; {expiry}{flags}'.format(
+            '{name}={value}; path={path}; {expiry}{flags}'.format(
                 name=self.__class__._cookie_name,
+                path=self.__class__._cookie_path,
                 value=session.token,
                 expiry=cookie_expflag(session.expiry),
                 flags=flags)
@@ -91,8 +94,9 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     def unset_session(self, session):
         '''Sets an empty cookie to be sent with this response'''
 
-        cookie = '{name}=; path=/; {expiry}'.format(
+        cookie = '{name}=; path={path}; {expiry}'.format(
             name=self.__class__._cookie_name,
+            path=self.__class__._cookie_path,
             expiry=cookie_expflag(0))
         self.save_header('Set-Cookie', cookie)
 
