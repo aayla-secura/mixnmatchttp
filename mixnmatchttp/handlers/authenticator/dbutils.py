@@ -67,7 +67,7 @@ def needs_db_response_handling(base,
             except (DatabaseError, ServerError) as e:
                 self.save_param('error', str(e))
                 self.send_as_json(code=500)
-                raise ServerDBError  # so session_context cleans up
+                raise ServerDBError(e)  # so session_context cleans up
 
             if poller is not None:
                 self.save_header(
@@ -106,7 +106,7 @@ def needs_db_error_response_handling(base):
             except (DatabaseError, ServerError) as e:
                 self.save_param('error', str(e))
                 self.send_as_json(code=500)
-                raise ServerDBError  # so session_context cleans up
+                raise ServerDBError(e)  # so session_context cleans up
 
     return _decorator
 

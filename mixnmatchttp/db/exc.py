@@ -1,6 +1,7 @@
-from ..handlers.exc import ServerError, InvalidRequestError
+from ..handlers.exc import ServerError as _ServerError, \
+    InvalidRequestError as _InvalidRequestError
 
-class ObjectConversionError(InvalidRequestError, ValueError):
+class ObjectConversionError(_InvalidRequestError, ValueError):
     pass
 
 class ObjectExistsError(ObjectConversionError):
@@ -9,7 +10,7 @@ class ObjectExistsError(ObjectConversionError):
 class ObjectNotFoundError(ObjectConversionError):
     pass
 
-class ServerDBError(ServerError):
+class ServerDBError(_ServerError):
     pass
 
 class MetadataMistmatchError(ServerDBError, RuntimeError):
