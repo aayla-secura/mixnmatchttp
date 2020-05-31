@@ -653,16 +653,15 @@ class WebApp(object):
         sys.exit(0)
 
     def _send_cors_headers(self, reqself):
-        def get_cors_hdr(hdr):
-            if self.cors.get(hdr, None) is not None:
-                if isinstance(self.cors[hdr], list):
-                    return ', '.join(self.cors[hdr])
-                return self.cors[hdr]
-            return None
+        def get_cors(what):
+            res = getattr(self.conf, 'cors_{}'.format(what))
+            if isinstance(res, list):
+                return ', '.join(res)
+            return res
 
         for h in self.conf.headers:
             reqself.send_header(*re.split(': *', h, maxsplit=1))
-        cors_origins = get_cors_hdr('origins')
+        cors_origins = get_cors('origins')
         if cors_origins is not None:
             cors_origins = urllib.parse.unquote_plus(
                 cors_origins)
@@ -670,9 +669,9 @@ class WebApp(object):
             cors_origins = reqself.headers.get('Origin')
             if not cors_origins:
                 cors_origins = '*'
-        cors_headers = get_cors_hdr('headers')
-        cors_methods = get_cors_hdr('methods')
-        cors_creds = get_cors_hdr('creds')
+        cors_headers = get_cors('headers')
+        cors_methods = get_cors('methods')
+        cors_creds = get_cors('creds')
         if cors_origins:
             reqself.send_header('Access-Control-Allow-Origin',
                                 cors_origins)
