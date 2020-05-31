@@ -553,4 +553,6 @@ Redirects (with `307`) to any address given in the URL.
 
 # Demos and source
 
+*The demos work with the latest stable version, 0.2! Not currently working with the master branch (TODO).*
+
 Source code and demo scripts which build on the handlers can be found at [https://github.com/aayla-secura/mixnmatchttp](https://github.com/aayla-secura/mixnmatchttp)
