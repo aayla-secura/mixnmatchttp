@@ -1,12 +1,6 @@
 # TODO check if jwt is used and all modules are present
 
-#  from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
-from builtins import *
-from future import standard_library
-standard_library.install_aliases()
+from ..._py2 import *
 from future.utils import with_metaclass
 
 import logging

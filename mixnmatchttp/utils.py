@@ -1,22 +1,11 @@
-#  from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
-from builtins import *
-from future import standard_library
-standard_library.install_aliases()
+from ._py2 import *
 
 import os
 import re
 import string
 import random
 from collections import UserDict
-try:
-    # python2
-    from collections import _abcoll
-except ImportError:
-    # python3
-    from collections import abc as _abcoll
+from ._py2 import _abcoll
 import logging
 from datetime import datetime, tzinfo, timedelta
 try:  # python3

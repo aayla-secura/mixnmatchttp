@@ -1,10 +1,4 @@
-#  from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
-from builtins import *
-from future import standard_library
-standard_library.install_aliases()
+from .._py2 import *
 from future.utils import with_metaclass
 
 import logging
@@ -16,10 +10,7 @@ import shutil
 import mimetypes
 import urllib
 import json
-try:  # python3
-    from json import JSONDecodeError
-except ImportError:  # python2
-    JSONDecodeError = ValueError
+from .._py2 import _JSONDecodeError
 import base64
 import binascii
 from wrapt import decorator
@@ -369,7 +360,7 @@ class BaseHTTPRequestHandler(with_metaclass(
             post_data = self.body
         try:
             req_params = json.loads(post_data)
-        except JSONDecodeError:
+        except _JSONDecodeError:
             raise DecodingError('Cannot decode JSON!')
         return req_params
 
@@ -516,8 +507,11 @@ class BaseHTTPRequestHandler(with_metaclass(
         except FileNotFoundError:
             self.send_error(404)
             return
-        except PermissionError:
+        except (PermissionError, IsADirectoryError):
             self.send_error(403)
+            return
+        except IOError:
+            self.send_error(500)
             return
         fs = os.fstat(f.fileno())
         self.send_response(200)
@@ -767,13 +761,13 @@ class BaseHTTPRequestHandler(with_metaclass(
         super().do_GET()
 
     @methodhandler
-    def do_OPTIONS(self):
-        '''Decorated by methodhandler'''
-
-        self.send_response_empty()
-
-    @methodhandler
     def do_HEAD(self):
         '''Decorated by methodhandler'''
 
         super().do_HEAD()
+
+    @methodhandler
+    def do_OPTIONS(self):
+        '''Decorated by methodhandler'''
+
+        self.send_response_empty()

@@ -1,10 +1,4 @@
-#  from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
-from builtins import *
-from future import standard_library
-standard_library.install_aliases()
+from ._py2 import *
 
 import os
 import sys
@@ -21,18 +15,7 @@ import argparse
 from string import Template
 import json
 from awesomedict import AwesomeDict
-
-try:  # python3
-    from json import JSONDecodeError
-except ImportError:  # python2
-    JSONDecodeError = ValueError
-try:  # python3
-    FileNotFoundError
-except NameError:  # python 2
-    FileExistsError = \
-        FileNotFoundError = \
-        IsADirectoryError = \
-        NotADirectoryError = IOError
+from ._py2 import _JSONDecodeError
 
 # optional features
 try:
@@ -400,7 +383,7 @@ class WebApp(object):
         content = Template(content_raw).substitute(env)
         try:
             settings = json.loads(content)
-        except json.JSONDecodeError as e:
+        except _JSONDecodeError as e:
             exit('Invalid configuration file: {}'.format(e))
         self.conf._update(settings)
 
