@@ -9,6 +9,7 @@ import logging
 
 from ...utils import is_map_like, datetime_to_str
 from ...db import DBConnection, is_mapper, object_to_dict
+from ...db.exc import ServerDBError
 from ..exc import ServerError, InvalidRequestError
 from .dbapi import DBBase
 
@@ -66,7 +67,7 @@ def needs_db_response_handling(base,
             except (DatabaseError, ServerError) as e:
                 self.save_param('error', str(e))
                 self.send_as_json(code=500)
-                raise  # so session_context cleans up
+                raise ServerDBError  # so session_context cleans up
 
             if poller is not None:
                 self.save_header(
@@ -105,7 +106,7 @@ def needs_db_error_response_handling(base):
             except (DatabaseError, ServerError) as e:
                 self.save_param('error', str(e))
                 self.send_as_json(code=500)
-                raise  # so session_context cleans up
+                raise ServerDBError  # so session_context cleans up
 
     return _decorator
 
