@@ -30,7 +30,12 @@ class BaseAuthSQLAlchemyORMHTTPRequestHandler(
 
     Incomplete, must be inherited, and the child class must define
     methods for creating and sending tokens.
+
+    Default of _prune_sessions_every changed from 0 (every request) to
+    300 (every 5 minutes).
     '''
+
+    _prune_sessions_every = 300
 
     @needs_db(DBBase)
     @classmethod
