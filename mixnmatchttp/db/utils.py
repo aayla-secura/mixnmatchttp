@@ -15,8 +15,8 @@ from sqlalchemy.orm import Session, \
     scoped_session, sessionmaker, joinedload
 from sqlalchemy.orm.util import class_mapper
 
-from .exc import ObjectConversionError, ServerDBError, \
-    MetadataMistmatchError
+from .exc import ObjectConversionError, ObjectNotFoundError, \
+    ServerDBError, MetadataMistmatchError
 from .is_db_sane import is_db_sane
 from ..utils import is_seq_like, is_map_like
 
@@ -430,8 +430,12 @@ def _object_to_dict(obj,
         data[attr.key] = val
     return data
 
-def object_from_dict(db, cls, dic, no_create=False,
-                     idprops={}, add=True):
+def object_from_dict(db, cls, dic,
+                     no_create=False,
+                     must_exist=False,
+                     children_must_exist=False,
+                     idprops={},
+                     add=False):
     '''Creates or updates an object from a dictionary
 
     - If the dictionary describes uniquely an object already in the
@@ -446,6 +450,11 @@ def object_from_dict(db, cls, dic, no_create=False,
       an existing object, but not used to update.
       E.g. if idprops = {'name': 'foo'} and dic = {'name': 'bar'},
       this will rename foo to bar
+    - If must_exist is True, then the object is only updated, not
+      created (no_create is treated as True as well) and an
+      ObjectNotFoundError exception is raised if it does not exist.
+    - If children_must_exist is True, then any children of the object
+      must exist, otherwise an exception is raised.
     - Returns the object or None if no_create is True and not found.
     '''
 
@@ -472,7 +481,7 @@ def object_from_dict(db, cls, dic, no_create=False,
     dbconn = DBConnection.get(db)
     assert dbconn is not None
 
-    if no_create:
+    if must_exist or no_create:
         logger.debug('Updating {} from dict'.format(tbl))
     else:
         logger.debug('Creating or updating {} from dict'.format(tbl))
@@ -491,15 +500,14 @@ def object_from_dict(db, cls, dic, no_create=False,
             props[key] = val
         elif key in relationships:
             logger.debug('{} is a relationship'.format(key))
-            if no_create:
-                # no point in adding this key, since it can't be used
-                # to look up an existing object
-                continue
             if is_seq_like(val):
                 props[key] = [
                     object_from_dict(
                         db, relationships[key]['class'], d,
-                        no_create=no_create, add=add)
+                        no_create=no_create,
+                        must_exist=children_must_exist,
+                        children_must_exist=children_must_exist,
+                        add=add)
                     for d in val]
             elif is_map_like(val):
                 lrkeys = relationships[key]['keys']
@@ -518,7 +526,10 @@ def object_from_dict(db, cls, dic, no_create=False,
                 # object are not populated.
                 props[key] = object_from_dict(
                     db, relationships[key]['class'], val,
-                    no_create=no_create, add=(lrkeys is None))
+                    no_create=no_create,
+                    must_exist=children_must_exist,
+                    children_must_exist=children_must_exist,
+                    add=(lrkeys is None))
                 if lrkeys is not None:
                     # get the value on the remote side of this foreign
                     # key and add it to the object we are creating
@@ -553,6 +564,9 @@ def object_from_dict(db, cls, dic, no_create=False,
                 setattr(obj, k, v)
             return obj
 
+    if must_exist:
+        raise ObjectNotFoundError(
+            '{} object must exist but not found'.format(tbl))
     if no_create:
         return None
     logger.debug('Creating {} object'.format(tbl))
@@ -564,6 +578,18 @@ def object_from_dict(db, cls, dic, no_create=False,
         logger.debug('Adding {} object'.format(tbl))
         db.add(obj)
     return obj
+
+def bulk_objects_from_dicts(db, cls, dics, **kargs):
+    '''Creates or updates objects from a list of dictionaries
+
+    Keyword arguments are same as object_from_dict
+    '''
+
+    result = []
+    for dic in dics:
+        obj = object_from_dict(db, cls, dic, **kargs)
+        result.append(obj)
+    return result
 
 def delete_from_dict(db, cls, dic):
     '''Deletes an object from a dictionary
@@ -578,18 +604,21 @@ def delete_from_dict(db, cls, dic):
     return False
 
 def update_from_dict(db, cls, dic, idprops={}):
-    '''Creates or updates an object from a dictionary
+    '''Updates an object from a dictionary
 
-    Same as object_from_dict, except it adds the object to the session
+    Same as object_from_dict, except it requires it to exist
     '''
 
-    return object_from_dict(db, cls, dic, idprops=idprops)
+    return object_from_dict(db, cls, dic,
+                            idprops=idprops,
+                            must_exist=True)
 
-def bulk_update_from_dicts(db, cls, dics):
-    '''Creates or updates objects from a list of dictionaries'''
+def bulk_update_from_dicts(db, cls, dics, idprops={}):
+    '''Updates objects from a list of dictionaries
 
-    result = []
-    for dic in dics:
-        obj = object_from_dict(db, cls, dic)
-        result.append(obj)
-    return result
+    Same as bulk_objects_from_dicts, except it requires them to exist
+    '''
+
+    return bulk_objects_from_dicts(db, cls, dics,
+                                   idprops=idprops,
+                                   must_exist=True)

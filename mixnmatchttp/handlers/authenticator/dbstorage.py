@@ -97,8 +97,7 @@ class BaseAuthSQLAlchemyORMHTTPRequestHandler(
 
         user = User(  # dummy that we can use as a dict
             username=username, password=password, roles=roles)
-        db_user = object_from_dict(db, DBUser, user, add=False)
-        db.add(db_user)
+        db_user = object_from_dict(db, DBUser, user, add=True)
         return db_user
 
     @needs_db(DBBase)
