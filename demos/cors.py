@@ -5,6 +5,7 @@ from mixnmatchttp import WebApp
 from mixnmatchttp.handlers import BaseHTTPRequestHandler, \
     AuthCookieHTTPRequestHandler, CachingHTTPRequestHandler, \
     ProxyingHTTPRequestHandler
+from mixnmatchttp.handlers.authenticator.api import User
 
 
 class CORSHTTPSServer(AuthCookieHTTPRequestHandler,
@@ -13,6 +14,10 @@ class CORSHTTPSServer(AuthCookieHTTPRequestHandler,
     def no_cache(self):
         return (not re.search('/jquery-[0-9\.]+(\.min)?\.js',
                 self.pathname)) or super().no_cache()
+
+    def authenticate(self):
+        # dummy
+        return User(username='demo')
 
 
 webapp = WebApp(
