@@ -11,6 +11,8 @@ from mixnmatchttp.handlers.authenticator.api import User
 class CORSHTTPSServer(AuthCookieHTTPRequestHandler,
                       CachingHTTPRequestHandler,
                       ProxyingHTTPRequestHandler):
+    enable_directory_listing = True
+
     def no_cache(self):
         return (not re.search('/jquery-[0-9\.]+(\.min)?\.js',
                 self.pathname)) or super().no_cache()

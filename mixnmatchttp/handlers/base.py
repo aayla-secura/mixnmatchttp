@@ -5,6 +5,7 @@ import logging
 import http.server
 import re
 import os
+import errno
 from datetime import datetime
 import shutil
 import mimetypes
@@ -142,6 +143,7 @@ class BaseMeta(type):
 class BaseHTTPRequestHandler(with_metaclass(
         BaseMeta, http.server.SimpleHTTPRequestHandler, object)):
     pollers = {}
+    enable_directory_listing = False
     _endpoints = Endpoint()
     _template_pages = DictNoClobber(
         default={
@@ -465,19 +467,25 @@ class BaseHTTPRequestHandler(with_metaclass(
         - path defaults to the URL (minus the leading / of course)
         - If as_attachment is True, we add Content-Disposition:
           attachment
+        If path is a directory, will raise IsADirectoryError
         '''
 
         if path is None:
             path = self.pathname[1:]
+        if path == '':
+            path = '.'  # will raise IsADirectoryError
+        logger.debug('Requested file {}'.format(path))
         try:
             f = open(path, 'rb')
-        except FileNotFoundError:
+        except FileNotFoundError:  # XXX
             self.send_error(404)
             return
-        except (PermissionError, IsADirectoryError):
+        except PermissionError:  # XXX
             self.send_error(403)
             return
-        except IOError:
+        except IOError as e:
+            if e.errno == errno.EISDIR:
+                raise
             self.send_error(500)
             return
         fs = os.fstat(f.fileno())
@@ -719,13 +727,20 @@ class BaseHTTPRequestHandler(with_metaclass(
     def do_GET(self):
         '''Decorated by methodhandler'''
 
-        super().do_GET()
+        try:
+            self.send_file()
+        except IsADirectoryError:
+            logger.debug("It's a directory")
+            if self.enable_directory_listing:
+                super().do_GET()
+            else:
+                self.send_error(403)
 
     @methodhandler
     def do_POST(self):
         '''Decorated by methodhandler'''
 
-        super().do_GET()
+        self.send_error(405)
 
     @methodhandler
     def do_HEAD(self):

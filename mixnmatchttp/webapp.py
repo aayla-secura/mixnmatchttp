@@ -334,7 +334,7 @@ class WebApp(object):
         if args.config is not None:
             try:
                 self.update_config(args.config)
-            except FileNotFoundError as e:
+            except FileNotFoundError as e:  # XXX
                 if not args.save_config:
                     exit(e)
         # update without overriding values loaded from the conf file
