@@ -16,7 +16,7 @@ from sqlalchemy.orm import Session, \
 from sqlalchemy.orm.util import class_mapper
 
 from .exc import ObjectConversionError, ObjectNotFoundError, \
-    ServerDBError, MetadataMistmatchError
+    ObjectExistsError, ServerDBError, MetadataMistmatchError
 from .is_db_sane import is_db_sane
 from ..utils import is_seq_like, is_map_like
 
@@ -431,7 +431,8 @@ def _object_to_dict(obj,
     return data
 
 def object_from_dict(db, cls, dic,
-                     no_create=False,
+                     must_not_exist=False,
+                     children_must_not_exist=False,
                      must_exist=False,
                      children_must_exist=False,
                      idprops={},
@@ -440,7 +441,7 @@ def object_from_dict(db, cls, dic,
 
     - If the dictionary describes uniquely an object already in the
       database, then it is retrieved and updated.
-      Otherwise, the object is created unless no_create is True.
+      Otherwise, the object is created.
     - The object is added to the session unless add is False.
       - NOTE: setting add to False will cause problems when creating
         an object which has a *ToMany relationship with another table
@@ -450,12 +451,17 @@ def object_from_dict(db, cls, dic,
       an existing object, but not used to update.
       E.g. if idprops = {'name': 'foo'} and dic = {'name': 'bar'},
       this will rename foo to bar
+    - If must_not_exist is True, the object is only created, not
+      updated and an ObjectExistsError is raised if it exists.
+    - If children_must_not_exist is True, then any children of the
+      object must be newly created, otherwise the same exception is
+      raised.
     - If must_exist is True, then the object is only updated, not
-      created (no_create is treated as True as well) and an
-      ObjectNotFoundError exception is raised if it does not exist.
+      created and an ObjectNotFoundError is raised if it does not
+      exist.
     - If children_must_exist is True, then any children of the object
-      must exist, otherwise an exception is raised.
-    - Returns the object or None if no_create is True and not found.
+      must exist, otherwise the same exception is raised.
+    - Returns the object.
     '''
 
     def uniq_props():
@@ -481,8 +487,10 @@ def object_from_dict(db, cls, dic,
     dbconn = DBConnection.get(db)
     assert dbconn is not None
 
-    if must_exist or no_create:
+    if must_exist:
         logger.debug('Updating {} from dict'.format(tbl))
+    elif must_not_exist:
+        logger.debug('Creating {} from dict'.format(tbl))
     else:
         logger.debug('Creating or updating {} from dict'.format(tbl))
     logger.debug('idprops for {} = {}'.format(tbl, idprops))
@@ -504,7 +512,8 @@ def object_from_dict(db, cls, dic,
                 props[key] = [
                     object_from_dict(
                         db, relationships[key]['class'], d,
-                        no_create=no_create,
+                        must_not_exist=children_must_not_exist,
+                        children_must_not_exist=must_not_exist,
                         must_exist=children_must_exist,
                         children_must_exist=children_must_exist,
                         add=add)
@@ -526,7 +535,8 @@ def object_from_dict(db, cls, dic,
                 # object are not populated.
                 props[key] = object_from_dict(
                     db, relationships[key]['class'], val,
-                    no_create=no_create,
+                    must_not_exist=children_must_not_exist,
+                    children_must_not_exist=must_not_exist,
                     must_exist=children_must_exist,
                     children_must_exist=children_must_exist,
                     add=(lrkeys is None))
@@ -559,6 +569,10 @@ def object_from_dict(db, cls, dic,
         assert len(res) <= 1
         if res:
             logger.debug('Found {} in DB'.format(tbl))
+            if must_not_exist:
+                raise ObjectExistsError(
+                    ('A new {} object requested, '
+                     'but one already exists').format(tbl))
             obj = res[0]
             for k, v in props.items():
                 setattr(obj, k, v)
@@ -567,8 +581,6 @@ def object_from_dict(db, cls, dic,
     if must_exist:
         raise ObjectNotFoundError(
             '{} object must exist but not found'.format(tbl))
-    if no_create:
-        return None
     logger.debug('Creating {} object'.format(tbl))
     try:
         obj = cls(**props)
@@ -597,11 +609,13 @@ def delete_from_dict(db, cls, dic):
     - Returns True if object was found (and deleted), False otherwise.
     '''
 
-    obj = object_from_dict(db, cls, dic, no_create=True, add=False)
-    if obj is not None:
-        db.delete(obj)
-        return True
-    return False
+    try:
+        obj = object_from_dict(
+            db, cls, dic, must_exist=True, add=False)
+    except ObjectNotFoundError:
+        return False
+    db.delete(obj)
+    return True
 
 def update_from_dict(db, cls, dic, idprops={}):
     '''Updates an object from a dictionary
