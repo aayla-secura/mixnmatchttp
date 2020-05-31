@@ -83,6 +83,8 @@ __all__ = [
     'is_str_like',
     'is_seq_like',
     'is_map_like',
+    'str_removechars',
+    'str_tohex',
     'randhex',
     'randstr',
     'abspath',
@@ -212,6 +214,18 @@ def is_map_like(val):
     # in python2 UserDict is not a child of Mapping
     return isinstance(val, (_abcoll.Mapping, UserDict))
 
+def str_removechars(s, skip):
+    try:  # python2
+        return s.translate(None, skip)
+    except TypeError:  # python3
+        return s.translate(str.maketrans(dict.fromkeys(skip)))
+
+def str_tohex(s):
+    try:  # python3
+        return s.hex()
+    except AttributeError:  # python2
+        return s.encode('hex')
+
 def randhex(size):
     '''Returns a random hex string of length size
 
@@ -219,11 +233,7 @@ def randhex(size):
     Read from urandom.
     '''
 
-    res = os.urandom(int(size / 2))
-    try:  # python3
-        return res.hex()
-    except AttributeError:  # python2
-        return res.encode('hex')
+    return str_tohex(os.urandom(int(size / 2)))
 
 def randstr(size, skip=''):
     '''Returns a random string of length size
@@ -233,12 +243,10 @@ def randstr(size, skip=''):
     '''
 
     alphabet = \
-        string.ascii_letters + string.digits + string.punctuation
-    try:  # python2
-        alphabet = alphabet.translate(None, skip)
-    except TypeError:  # python3
-        alphabet = alphabet.translate(
-            str.maketrans(dict.fromkeys(skip)))
+        str_removechars(string.ascii_letters
+                        + string.digits
+                        + string.punctuation,
+                        skip)
     return ''.join([random.choice(alphabet) for i in range(size)])
 
 def abspath(path):
