@@ -357,6 +357,9 @@ class Endpoint(DictNoClobber):
         if not path or path[0] != '/':
             raise ValueError(
                 'Path for endpoint parsing must begin with a /')
+        if not path.startswith(httpreq.endpoint_prefix):
+            raise NotAnEndpointError(path)
+        path = path[len(httpreq.endpoint_prefix):]
 
         # we don't yet know if the endpoint wants the arguments raw or
         # canonicalized. So we check each absolute segment; if it's an

@@ -235,7 +235,8 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         Same as parent denied, but also whitelist /authtoken endpoint.
         '''
 
-        if self.pathname == '/authtoken':
+        if self.pathname == '{}/authtoken'.format(
+                self.endpoint_prefix):
             return None
         return super().denied()
 

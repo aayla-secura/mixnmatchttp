@@ -529,8 +529,6 @@ Redirects (with `307`) to any address given in the URL.
 
   * Brute force protections and account lockout
   * A configurable declarative base to use with `BaseAuthSQLAlchemyORMHTTPRequestHandler`
-  * A configurable prefix to ignore for normal requests, e.g. `/app`
-  * A configurable prefix to ignore for endpoint requests, e.g. `/api`
   * Disable request logging by default, enable optionally (at the moment the only way is to not enable INFO level logging from the package)
   * Command-line option for paths shouldn't be cached
   * Command-line option for paths which need authentication (`_secrets`)

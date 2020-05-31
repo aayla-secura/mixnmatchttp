@@ -43,12 +43,13 @@ def methodhandler(realhandler, self, args, kwargs):
     # TODO other encodings??
     # take only the first set of parameters (i.e. everything
     # between the first ? and the subsequent / or #
-    m = re.match('(/[^\?]*)(?:\?([^/#]*))?(.*)', self.path)
+    m = re.match('^([^#\?]*)(?:\?([^#]+))?', self.path)
     query_str = urllib.parse.unquote_plus(m.group(2)) \
         if m.group(2) else ''
     self._BaseHTTPRequestHandler__raw_pathname = \
         self._BaseHTTPRequestHandler__pathname = \
-        urllib.parse.unquote_plus(m.group(1) + m.group(3))
+        urllib.parse.unquote_plus(
+            m.group(1) if m.group(1) else '/')
 
     logger.debug('Decoded path is {}'.format(self.pathname))
     # canonicalize the path
@@ -82,6 +83,10 @@ def methodhandler(realhandler, self, args, kwargs):
         self.ep = self.endpoints.parse(self)
     except NotAnEndpointError as e:
         logger.debug('{}'.format(str(e)))
+        self._BaseHTTPRequestHandler__pathname = \
+            self.pathname[len(self.path_prefix):]
+        logger.debug('Calling normal handler, path is {}'.format(
+            self.pathname))
         realhandler(*args, **kwargs)
     except MethodNotAllowedError as e:
         logger.debug('{}'.format(str(e)))
@@ -95,7 +100,10 @@ def methodhandler(realhandler, self, args, kwargs):
         logger.debug('{}'.format(str(e)))
         self.send_error(400, explain=str(e))
     else:
-        logger.debug('Calling endpoint handler')
+        self._BaseHTTPRequestHandler__pathname = \
+            self.pathname[len(self.endpoint_prefix):]
+        logger.debug('Calling endpoint handler, path is {}'.format(
+            self.pathname))
         self.ep.handler(*args, **kwargs)
 
 
@@ -138,12 +146,19 @@ class BaseMeta(type):
             logger.debug('Final {} for {}: {}'.format(
                 attr, name, list(getattr(new_class, attr).keys())))
 
+        if new_class.path_prefix.endswith('/'):
+            new_class.path_prefix = new_class.path_prefix.rstrip('/')
+        if new_class.endpoint_prefix.endswith('/'):
+            new_class.endpoint_prefix = \
+                new_class.endpoint_prefix.rstrip('/')
         return new_class
 
 class BaseHTTPRequestHandler(with_metaclass(
         BaseMeta, http.server.SimpleHTTPRequestHandler, object)):
     pollers = {}
     enable_directory_listing = False
+    path_prefix = ''
+    endpoint_prefix = ''
     _endpoints = Endpoint()
     _template_pages = DictNoClobber(
         default={
