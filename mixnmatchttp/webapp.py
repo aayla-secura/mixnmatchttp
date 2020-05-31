@@ -85,6 +85,7 @@ class WebApp(object):
                                'debug_log',
                                'add_users'])
 
+        self.parser_groups = {}
         self.parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description=description)
@@ -94,40 +95,42 @@ class WebApp(object):
                 choices=['start', 'stop', 'restart', 'status'],
                 default='start',
                 help='Action to take on the running daemon.')
-        listen_parser = self.parser.add_argument_group(
+        self.parser_groups['listen'] = self.parser.add_argument_group(
             'Listen options')
-        listen_parser.add_argument(
+        self.parser_groups['listen'].add_argument(
             '-a', '--address', dest='address',
             default='127.0.0.1', metavar='IP',
             help='Address of interface to bind to.')
-        listen_parser.add_argument(
+        self.parser_groups['listen'].add_argument(
             '-p', '--port', dest='port', metavar='PORT', type=int,
             help=('HTTP port to listen on. Default is 80 if not '
                   'over SSL or 443 if over SSL.'))
 
         if support_ssl:
-            ssl_parser = self.parser.add_argument_group('SSL options')
-            ssl_parser.add_argument(
+            self.parser_groups['ssl'] = \
+                self.parser.add_argument_group('SSL options')
+            self.parser_groups['ssl'].add_argument(
                 '-s', '--ssl', dest='ssl', default=False,
                 action='store_true', help='Use SSL.')
-            ssl_parser.add_argument(
+            self.parser_groups['ssl'].add_argument(
                 '--no-ssl', dest='ssl', action='store_false',
                 help=("Don't use SSL. This is the default, but can "
                       "be used to override configuration file "
                       "setting."))
-            ssl_parser.add_argument(
+            self.parser_groups['ssl'].add_argument(
                 '--cert', dest='certfile', metavar='FILE',
                 help='PEM file containing the server certificate.')
-            ssl_parser.add_argument(
+            self.parser_groups['ssl'].add_argument(
                 '--key', dest='keyfile', metavar='FILE',
                 help=('PEM file containing the private key for the '
                       'server certificate.'))
 
         if auth_type:
-            auth_parser = self.parser.add_argument_group(
+            self.parser_groups['auth'] = \
+                self.parser.add_argument_group(
                 'Authentication options')
             if auth_type == 'jwt':
-                auth_parser.add_argument(
+                self.parser_groups['auth'].add_argument(
                     '--jwt-key', dest='jwt_key', metavar='PASSWORD',
                     help=('A password to use for symmetric signing '
                           'of JWT or a passphrase used to decrypt '
@@ -139,38 +142,38 @@ class WebApp(object):
                           'given and the algorithm is asymmetric, '
                           'the key must be decrypted. If "-" is '
                           'supplied, then it is read from stdin.'))
-                auth_parser.add_argument(
+                self.parser_groups['auth'].add_argument(
                     '--jwt-priv-key', dest='jwt_priv_key',
                     help=('A private PEM key for use with asymmetric '
                           'JWT encodings.'))
-                auth_parser.add_argument(
+                self.parser_groups['auth'].add_argument(
                     '--jwt-algo', dest='jwt_algo',
                     help=('The algorithm used to encode JWTs. '
                           'Default is HS256 is no private key is '
                           'given, otherwise RS256.'))
-            auth_parser.add_argument(
+            self.parser_groups['auth'].add_argument(
                 '--userfile', dest='userfile', metavar='FILE',
                 help=('File containing one username:password[:roles] '
                       'per line. roles is an optional comma-'
                       'separated list of roles.'))
-            auth_parser.add_argument(
+            self.parser_groups['auth'].add_argument(
                 '--add-users', dest='add_users', action='store_true',
                 default=False,
                 help=('Prompt to create users. Entries will be '
                       'appended to --userfile if given. '
                       '--userfile-plain determines if the passwords '
                       'are hashed before written to the --userfile.'))
-            auth_parser.add_argument(
+            self.parser_groups['auth'].add_argument(
                 '--userfile-plain', dest='userfile_hashed',
                 default=True, action='store_false',
                 help='The passwords in userfile are in cleartext.')
-            auth_parser.add_argument(
+            self.parser_groups['auth'].add_argument(
                 '--userfile-hashed', dest='userfile_hashed',
                 action='store_true',
                 help=('The passwords in userfile are hashed. This is '
                       'the default, but can be used to override '
                       'configuration file setting.'))
-            auth_parser.add_argument(
+            self.parser_groups['auth'].add_argument(
                 '--hash-type', dest='userfile_hash_type', nargs='?',
                 const=None, default=None,
                 choices=reqhandler._supported_hashes,
@@ -180,19 +183,19 @@ class WebApp(object):
                       'hashing to none (plaintext).'))
 
         if support_cors:
-            cors_parser = self.parser.add_argument_group(
-                'CORS options')
-            cors_parser.add_argument(
+            self.parser_groups['cors'] = \
+                self.parser.add_argument_group('CORS options')
+            self.parser_groups['cors'].add_argument(
                 '-X', '--enable-cors', dest='cors',
                 default=False, action='store_true',
                 help='Enable CORS support.')
-            cors_parser.add_argument(
+            self.parser_groups['cors'].add_argument(
                 '--disable-cors', dest='cors', action='store_false',
                 help=('Disable CORS support. This is the default, '
                       'but can be used to override configuration '
                       'file setting.'))
-            cors_origin_parser = \
-                cors_parser.add_mutually_exclusive_group()
+            cors_origin_parser = self.parser_groups[
+                'cors'].add_mutually_exclusive_group()
             cors_origin_parser.add_argument(
                 '--allowed-origins', dest='cors_origins',
                 default=['*'], metavar='Origin', nargs='*',
@@ -202,25 +205,25 @@ class WebApp(object):
                 action='store_const', const=['{ECHO}'],
                 help=('Allow any origin, i.e. echo back '
                       'the requesting origin.'))
-            cors_parser.add_argument(
+            self.parser_groups['cors'].add_argument(
                 '--allowed-headers', dest='cors_headers',
                 default=['Accept', 'Accept-Language',
                          'Content-Language', 'Content-Type',
                          'Authorization'],
                 metavar='Header: Value', nargs='*',
                 help='Headers allowed for CORS requests.')
-            cors_parser.add_argument(
+            self.parser_groups['cors'].add_argument(
                 '--allowed-methods', dest='cors_methods',
                 default=['POST', 'GET', 'OPTIONS', 'HEAD'],
                 metavar='Method', nargs='*',
                 help=('Methods allowed for CORS requests. OPTIONS '
                       'to one of the special endpoints always '
                       'return the allowed methods of that endpoint.'))
-            cors_parser.add_argument(
+            self.parser_groups['cors'].add_argument(
                 '--allow-credentials', dest='cors_creds',
                 default=False, action='store_true',
                 help='Allow sending credentials with CORS requests')
-            cors_parser.add_argument(
+            self.parser_groups['cors'].add_argument(
                 '--disallow-credentials', dest='cors_creds',
                 action='store_false',
                 help=('Do not allow sending credentials with CORS '
@@ -228,77 +231,77 @@ class WebApp(object):
                       'used to override configuration file setting.'))
 
         if db_bases:
-            db_parser = self.parser.add_argument_group(
+            self.parser_groups['db'] = self.parser.add_argument_group(
                 'Database options')
             for name in self.db_bases.keys():
-                db_parser.add_argument(
+                self.parser_groups['db'].add_argument(
                     '--{}-dburl'.format(name),
                     dest='{}_dburl'.format(name),
                     metavar=('dialect://[username:password@]'
                              'host/database'),
                     help='URL of the {} database.'.format(name))
 
-        misc_http_parser = self.parser.add_argument_group(
+        self.parser_groups['http'] = self.parser.add_argument_group(
             'Other HTTP options')
-        misc_http_parser.add_argument(
+        self.parser_groups['http'].add_argument(
             '-H', '--headers', dest='headers',
             default=[], metavar='Header: Value', nargs='*',
             help='Additional headers to include in the response.')
 
-        misc_server_parser = self.parser.add_argument_group(
+        self.parser_groups['server'] = self.parser.add_argument_group(
             'Logging and process options')
         if support_daemon:
-            misc_server_parser.add_argument(
+            self.parser_groups['server'].add_argument(
                 '-P', '--pidfile', dest='pidfile', metavar='FILE',
                 default='/var/run/pyhttpd.pid',
                 help='Path to pidfile when running in daemon mode.')
-            misc_server_parser.add_argument(
+            self.parser_groups['server'].add_argument(
                 '-d', '--daemon', dest='daemonize',
                 default=False, action='store_true',
                 help='Run as a daemon.')
-            misc_server_parser.add_argument(
+            self.parser_groups['server'].add_argument(
                 '-f', '--foreground', dest='daemonize',
                 action='store_false',
                 help=('Run in foreground. This is the default, '
                       'but can be used to override configuration '
                       'file setting.'))
-        misc_server_parser.add_argument(
+        self.parser_groups['server'].add_argument(
             '-c', '--config', dest='config', metavar='FILE',
             help=('Configuration file. Command-line options take '
                   'precedence.'))
-        misc_server_parser.add_argument(
+        self.parser_groups['server'].add_argument(
             '--save-config', dest='save_config',
             default=False, action='store_true',
             help='Update or create the configuration file.')
-        misc_server_parser.add_argument(
+        self.parser_groups['server'].add_argument(
             '-r', '--webroot', dest='webroot', metavar='DIR',
             default='/var/www/html',
             help=('Directory to serve files from. '
                   'Current working directory will be changed to it.'))
-        misc_server_parser.add_argument(
+        self.parser_groups['server'].add_argument(
             '--multithread', dest='multithread',
             default=True, action='store_true',
             help=('Use multi-threading support. This is the default, '
                   'but can be used to override configuration '
                   'file setting.'))
-        misc_server_parser.add_argument(
+        self.parser_groups['server'].add_argument(
             '--no-multithread', dest='multithread',
             action='store_false',
             help='Disable multi-threading support.')
         if support_daemon:
-            misc_server_parser.add_argument(
+            self.parser_groups['server'].add_argument(
                 '-l', '--logdir', dest='logdir', metavar='DIR',
                 help=('Directory that will hold the log files. '
                       'Default when running in daemon mode is '
                       '/var/log/pyhttpd. Default in foreground mode '
                       'is to print print all output to the console.'))
         else:
-            misc_server_parser.add_argument(
+            self.parser_groups['server'].add_argument(
                 '-l', '--logdir', dest='logdir', metavar='DIR',
                 help=('Directory that will hold the log files. '
                       'Default is to print print all output to '
                       'the console.'))
-        misc_server_parser.add_argument(
+        self.parser_groups['server'].add_argument(
             '--log', dest='log', nargs='+',
             action='append', default=[], metavar='PACKAGE [FILENAME]',
             help=('Enable logging output for the given package. '
@@ -310,12 +313,12 @@ class WebApp(object):
                   'Note that printing of request lines to '
                   'access.log (or stderr) is always enabled. '
                   'This option can be given multiple times.'))
-        misc_server_parser.add_argument(
+        self.parser_groups['server'].add_argument(
             '--request-log', dest='request_log', nargs='?',
             const='request.log', metavar='[FILENAME]',
             help=('Enable logging of full requests. FILENAME '
                   'defaults to request.log if not given.'))
-        misc_server_parser.add_argument(
+        self.parser_groups['server'].add_argument(
             '--debug-log', dest='debug_log', nargs='+',
             action='append', default=[], metavar='PACKAGE [FILENAME]',
             help=('Enable debugging output for the given package. '
