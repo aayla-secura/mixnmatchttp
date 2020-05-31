@@ -1,21 +1,23 @@
-from .._py2 import *
+from ..._py2 import *
 
 import logging
 import uuid
 import mimetypes
 
-from .. import endpoints, cache
-from .base import BaseHTTPRequestHandler, DecodingError
+from ...endpoints import Endpoint, ARGS_OPTIONAL
+from ...cache import Cache
+from ...cache.exc import PageNotCachedError, PageClearedError, \
+    CacheError
+from ..base import BaseHTTPRequestHandler
+from ..exc import DecodingError
 
-__all__ = [
-    'CachingHTTPRequestHandler',
-]
 
 logger = logging.getLogger(__name__)
 
+
 class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
-    cache = cache.Cache()
-    _endpoints = endpoints.Endpoint(
+    cache = Cache()
+    _endpoints = Endpoint(
         echo={
             '$allowed_methods': {'POST'},
         },
@@ -23,7 +25,7 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
             '$allowed_methods': {'GET', 'POST'},
             '$nargs': 1,
             '$clear': {
-                '$nargs': endpoints.ARGS_OPTIONAL,
+                '$nargs': ARGS_OPTIONAL,
             },
             'new': {},
         },
@@ -113,8 +115,8 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
         if self.command == 'GET':
             try:
                 page = self.cache.get(name)
-            except (cache.PageClearedError,
-                    cache.PageNotCachedError) as e:
+            except (PageClearedError,
+                    PageNotCachedError) as e:
                 self.send_error(500, explain=str(e))
             else:
                 self.render(page)
@@ -127,7 +129,7 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
                 return
             try:
                 self.cache.save(name, page)
-            except cache.CacheError as e:
+            except CacheError as e:
                 self.send_error(500, explain=str(e))
             else:
                 self.send_response_empty(204)

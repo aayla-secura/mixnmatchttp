@@ -9,7 +9,7 @@ import logging
 
 from ...utils import is_map_like, datetime_to_str
 from ...db import DBConnection, is_mapper, object_to_dict
-from ..base import ServerError, InvalidRequestError
+from ..exc import ServerError, InvalidRequestError
 from .dbapi import DBBase
 
 

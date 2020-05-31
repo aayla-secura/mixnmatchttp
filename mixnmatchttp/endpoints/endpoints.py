@@ -1,73 +1,21 @@
-from ._py2 import *
+from .._py2 import *
 
 import logging
 import re
 from wrapt import ObjectProxy
 
-from .utils import iter_abspath, DictNoClobber
+from ..utils import iter_abspath, DictNoClobber
+from .exc import EndpointError, NotAnEndpointError, \
+    MissingArgsError, ExtraArgsError, MethodNotAllowedError
+
 
 ARGS_OPTIONAL = '?'  # 0 or 1
 ARGS_ANY = '*'       # any number
 ARGS_REQUIRED = '+'  # 1 or more
 
-__all__ = [
-    'ARGS_OPTIONAL',
-    'ARGS_ANY',
-    'ARGS_REQUIRED',
-    'EndpointError',
-    'EndpointParseError',
-    'NotAnEndpointError',
-    'MethodNotAllowedError',
-    'MissingArgsError',
-    'ExtraArgsError',
-    'Endpoint',
-    'ParsedEndpoint',
-]
 
 logger = logging.getLogger(__name__)
 
-######################### EXCEPTIONS ########################
-
-class EndpointError(Exception):
-    '''Base class for exceptions related creation of endpoints'''
-
-    pass
-
-class EndpointParseError(Exception):
-    '''Base class for exceptions related parsing of endpoints'''
-
-    pass
-
-class NotAnEndpointError(EndpointParseError):
-    '''Exception raised when the root path is unknown'''
-
-    def __init__(self, root):
-        super().__init__('{} is not special.'.format(root))
-
-class MethodNotAllowedError(EndpointParseError):
-    '''Exception raised when the request method is not allowed
-
-    Will have an "allowed_methods" attribute containing a set of
-    allowed HTTP methods for this endpoint.
-    '''
-
-    def __init__(self, allowed_methods):
-        self.allowed_methods = allowed_methods
-        super().__init__('Method not allowed.')
-
-class MissingArgsError(EndpointParseError):
-    '''Exception raised when a required argument is not given'''
-
-    def __init__(self):
-        super().__init__('Missing required argument.')
-
-class ExtraArgsError(EndpointParseError):
-    '''Exception raised when extra arguments are given'''
-
-    def __init__(self, nargs):
-        super().__init__('Extra arguments: {}.'.format(nargs))
-
-############################################################
 
 class Endpoint(DictNoClobber):
     '''Special endpoints

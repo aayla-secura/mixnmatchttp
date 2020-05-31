@@ -1,17 +1,15 @@
-from .._py2 import *
+from ..._py2 import *
 
 import logging
 import re
 
-from .. import endpoints
-from ..utils import param_dict
-from .base import BaseHTTPRequestHandler
+from ... import endpoints
+from ...utils import param_dict
+from ..base import BaseHTTPRequestHandler
 
-__all__ = [
-    'ProxyingHTTPRequestHandler',
-]
 
 logger = logging.getLogger(__name__)
+
 
 class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
     _endpoints = endpoints.Endpoint(

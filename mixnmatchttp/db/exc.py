@@ -1,4 +1,4 @@
-from ..handlers.base import ServerError, InvalidRequestError
+from ..handlers.exc import ServerError, InvalidRequestError
 
 class ObjectConversionError(InvalidRequestError, ValueError):
     pass

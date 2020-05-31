@@ -16,18 +16,12 @@ import binascii
 from wrapt import decorator
 from string import Template
 
-from .. import endpoints
+from ..endpoints import Endpoint
+from ..endpoints.exc import NotAnEndpointError, \
+    MethodNotAllowedError, MissingArgsError, ExtraArgsError
 from ..utils import is_seq_like, abspath, param_dict, DictNoClobber
+from .exc import DecodingError, UnsupportedOperationError
 
-__all__ = [
-    'methodhandler',
-    'InvalidRequestError',
-    'PageReadError',
-    'UnsupportedOperationError',
-    'DecodingError',
-    'BaseMeta',
-    'BaseHTTPRequestHandler',
-]
 
 logger = logging.getLogger(__name__)
 
@@ -85,10 +79,10 @@ def methodhandler(realhandler, self, args, kwargs):
     # check if it's a special endpoint
     try:
         self.ep = self.endpoints.parse(self)
-    except endpoints.NotAnEndpointError as e:
+    except NotAnEndpointError as e:
         logger.debug('{}'.format(str(e)))
         realhandler(*args, **kwargs)
-    except endpoints.MethodNotAllowedError as e:
+    except MethodNotAllowedError as e:
         logger.debug('{}'.format(str(e)))
         self.save_header('Allow', ','.join(e.allowed_methods))
         if self.command == 'OPTIONS':
@@ -96,40 +90,13 @@ def methodhandler(realhandler, self, args, kwargs):
             realhandler(*args, **kwargs)
         else:
             self.send_error(405)
-    except (endpoints.MissingArgsError,
-            endpoints.ExtraArgsError) as e:
+    except (MissingArgsError, ExtraArgsError) as e:
         logger.debug('{}'.format(str(e)))
         self.send_error(400, explain=str(e))
     else:
         logger.debug('Calling endpoint handler')
         self.ep.handler(*args, **kwargs)
 
-######################### EXCEPTIONS ########################
-
-class ServerError(Exception):
-    '''Base class for exceptions raised when there is a server error'''
-
-    pass
-
-class InvalidRequestError(Exception):
-    '''Base class for exceptions raised when request is invalid'''
-
-    pass
-
-class PageReadError(Exception):
-    '''Base class for exceptions related to request body read'''
-    pass
-
-class UnsupportedOperationError(PageReadError):
-    '''Exception raised when request body is read more than once'''
-
-    def __init__(self):
-        super().__init__(
-            'Cannot read body data again, buffer not seekable')
-
-class DecodingError(PageReadError):
-    '''Exception raised when cannot decode sent data'''
-    pass
 
 ############################################################
 class BaseMeta(type):
@@ -148,7 +115,7 @@ class BaseMeta(type):
         # _template_pages and _templates, which combines all parents'
         # attributes
         required_classes = {
-            '_endpoints': endpoints.Endpoint,
+            '_endpoints': Endpoint,
             '_template_pages': DictNoClobber,
             '_templates': DictNoClobber,
         }
@@ -175,7 +142,7 @@ class BaseMeta(type):
 class BaseHTTPRequestHandler(with_metaclass(
         BaseMeta, http.server.SimpleHTTPRequestHandler, object)):
     pollers = {}
-    _endpoints = endpoints.Endpoint()
+    _endpoints = Endpoint()
     _template_pages = DictNoClobber(
         default={
             'data': '''
