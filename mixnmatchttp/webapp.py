@@ -46,6 +46,7 @@ class WebApp(object):
                  support_daemon=False,
                  auth_type='cookie',
                  db_bases={},
+                 class_opts=[],
                  log_fmt=None):
         '''TODO
 
@@ -75,6 +76,7 @@ class WebApp(object):
         self.reqhandler = reqhandler
         self.auth_type = auth_type
         self.db_bases = db_bases
+        self.class_opts = class_opts
         self.log_fmt = log_fmt
         if self.log_fmt is None:
             self.log_fmt = \
@@ -515,6 +517,10 @@ class WebApp(object):
                 passphrase=self.conf.jwt_key,
                 algorithm=self.conf.jwt_algo,
                 privkey=self.conf.jwt_priv_key)
+
+        #### Set class options from conf
+        for o in self.class_opts:
+            setattr(self.reqhandler, o, getattr(self.conf, o))
 
     def _start(self):
         if self.conf.logdir is not None:

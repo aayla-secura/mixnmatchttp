@@ -529,17 +529,16 @@ Redirects (with `307`) to any address given in the URL.
 
   * Brute force protections and account lockout
   * A configurable declarative base to use with `BaseAuthSQLAlchemyORMHTTPRequestHandler`
-  * Disable request logging by default, enable optionally (at the moment the only way is to not enable INFO level logging from the package)
   * Command-line option for paths shouldn't be cached
   * Command-line option for paths which need authentication (`_secrets`)
   * An option to disable access to certain files
   * Log rotation
   * MT-safe saving and clearing of cache
+  * Option for case-sensitivity of endpoints (and separately for variable endpoint names)
 
 # Internal TODO notes
 
   * Access to `WebApp.parser`'s supparsers via instance attributes
-  * Easy way to set class attributes based on command-line-options
   * Smarter way of merging endpoints with parent's (remembering which ones were explicitly set, and which inherited)
   * Remove `_` prefix from class attributes
   * Do not save expanded env variables to config file
