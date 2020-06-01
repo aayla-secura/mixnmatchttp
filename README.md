@@ -542,6 +542,7 @@ Redirects (with `307`) to any address given in the URL.
   * Access to `WebApp.parser`'s supparsers via instance attributes
   * Smarter way of merging endpoints with parent's (remembering which ones were explicitly set, and which inherited)
   * Remove `_` prefix from class attributes
+  * Rename ...`Server` to ...`Handler`
   * Do not save expanded env variables to config file
   * Test with nginx proxy setup (it was behaving weirdly, need to find if it's a bug here)
 
