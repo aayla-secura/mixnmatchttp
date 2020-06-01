@@ -4,6 +4,7 @@ import os
 import sys
 import errno
 from signal import signal, SIGTERM, SIGINT, SIG_DFL
+import threading
 import ssl
 import re
 import urllib
@@ -71,19 +72,21 @@ class App(object):
                 exit("db_bases items should contain a 'base' key.")
             if not is_base(d['base']):
                 exit('db_bases base should be a declarative base.')
-        self._is_configured = False
-        self._delete_tmp_userfile = False
+
+        self._is_configured = self._delete_tmp_userfile = False
         # access.log is for http.server (which writes to stderr)
-        self.access_log = None
-        self.server_cls = server_cls
-        self.server = self.url = self.pidlockfile = None
+        self.access_log = self.doneEvent = self.server = self.url = \
+            self.pidlockfile = None
+
         self.reqhandler = reqhandler
+        self.name = name
+        self.server_cls = server_cls
+        self.proto = proto
         self.auth_type = auth_type
         self.db_bases = db_bases
         self.class_opts = class_opts
         self.log_fmt = log_fmt
-        self.name = name
-        self.proto = proto
+
         if self.name is None:
             if self.proto == 'http':
                 self.name = 'pyhttpd'
@@ -292,16 +295,6 @@ class App(object):
             default='/var/www/html' if self.proto == 'http' else '/',
             help=('Directory to serve files from. '
                   'Current working directory will be changed to it.'))
-        self.parser_groups['server'].add_argument(
-            '--multithread', dest='multithread',
-            default=True, action='store_true',
-            help=('Use multi-threading support. This is the default, '
-                  'but can be used to override configuration '
-                  'file setting.'))
-        self.parser_groups['server'].add_argument(
-            '--no-multithread', dest='multithread',
-            action='store_false',
-            help='Disable multi-threading support.')
         if support_daemon:
             self.parser_groups['server'].add_argument(
                 '-l', '--logdir', dest='logdir', metavar='DIR',
@@ -544,9 +537,10 @@ class App(object):
             self.access_log = open('{}/{}'.format(
                 self.conf.logdir, 'access.log'), 'ab')
 
-        sys.stderr.write('Starting server on {}\n'.format(self.url))
         #### Daemonize
         if self.conf.daemonize:
+            sys.stderr.write(
+                'Starting server on {}\n'.format(self.url))
             assert self.access_log is not None
             if self.pidlockfile.is_locked():
                 exit('PID file {} already locked'.format(
@@ -565,8 +559,7 @@ class App(object):
             'DEBUG': self.conf.debug_log,
             'INFO': self.conf.log,
             'ERROR': self.conf.log}
-        if self.conf.logdir is not None:
-            log_dest['INFO'].append([__name__, 'event.log'])
+        log_dest['INFO'].append([__name__, 'event.log'])
         if self.conf.request_log is not None:
             log_dest['REQUEST'].append(
                 [MY_PKG_NAME, self.conf.request_log])
@@ -603,10 +596,10 @@ class App(object):
         # the listening port at creation time
         if self.server_cls is None:
             self.server_cls = HTTPServer
-        if self.conf.multithread:
-            self.server_cls = type(
-                'Threading{}'.format(self.server_cls.__name__),
-                (ThreadingMixIn, self.server_cls, object), {})
+        self.server_cls = type(
+            'Threading{}'.format(self.server_cls.__name__),
+            (ThreadingMixIn, self.server_cls, object), {})
+        self.server_cls.daemon_threads = True
         self.server = self.server_cls(
             (self.conf.address, self.conf.port),
             self.reqhandler)
@@ -629,8 +622,13 @@ class App(object):
 
         #### Change working directory and run
         os.chdir(self.conf.root)
-        self._log_event('Starting server on {}'.format(self.url))
-        self.server.serve_forever()
+        self.doneEvent = threading.Event()
+        server_thread = threading.Thread(
+            target=self.server.serve_forever)
+        server_thread.daemon = True
+        server_thread.start()
+        self._log_event('Started server on {}'.format(self.url))
+        self.doneEvent.wait()
 
     def _stop(self):
         pid = self._get_pid(break_stale=True)
@@ -674,13 +672,11 @@ class App(object):
         self.loggers[__name__].info(message)
 
     def _term_sighandler(self, signo, stack_frame):
-        self._log_event('Stopping server on {}'.format(self.url))
-        self.server.server_close()
+        self.server.shutdown()
         self._log_event('Stopped server on {}'.format(self.url))
-
         if self.access_log is not None:
             self.access_log.close()
-        sys.exit(0)
+        self.doneEvent.set()
 
     def _send_cors_headers(self, reqself):
         def get_cors(what):
