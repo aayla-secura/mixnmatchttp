@@ -810,7 +810,7 @@ def exit(error, rc=None):
 def read_line(prompt):
     sys.stdout.write('{}: '.format(prompt))
     sys.stdout.flush()
-    return sys.stdin.readline().strip('\n').strip('\r')
+    return sys.stdin.readline().rstrip('\r\n')
 
 def get_loggers(destinations_map, logdir=None, fmt=None):
     def unpack_dest(pkg, *files):

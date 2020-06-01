@@ -628,7 +628,7 @@ class BaseAuthHTTPRequestHandler(
                 return a, b, c
 
             user, pwd, roles = unpack(*'{}::'.format(
-                line.rstrip('\n').rstrip('\r')).split(':'))
+                line.rstrip('\r\n')).split(':'))
             return (user, pwd, [r.strip(' ')
                                 for r in roles.split(',') if r != ''])
 
