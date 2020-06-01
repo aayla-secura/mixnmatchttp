@@ -10,6 +10,7 @@ import urllib
 from time import sleep
 import tempfile
 import logging
+from socketserver import ThreadingMixIn
 from copy import copy
 import argparse
 from string import Template
@@ -27,7 +28,6 @@ except ImportError:
 from http.server import HTTPServer
 
 from .utils import randstr, is_str
-from .servers import ThreadingHTTPServer
 from .db import DBConnection, is_base, parse_db_url
 from .handlers.authenticator.dbapi import DBBase
 
@@ -35,11 +35,14 @@ from .handlers.authenticator.dbapi import DBBase
 MY_PKG_NAME = __name__.split('.')[0]
 
 
-class WebApp(object):
+class App(object):
     '''TODO'''
 
     def __init__(self,
                  reqhandler,
+                 name=None,
+                 server_cls=None,
+                 proto='http',
                  description='',
                  support_ssl=True,
                  support_cors=True,
@@ -72,12 +75,20 @@ class WebApp(object):
         self._delete_tmp_userfile = False
         # access.log is for http.server (which writes to stderr)
         self.access_log = None
-        self.httpd = self.url = self.pidlockfile = None
+        self.server_cls = server_cls
+        self.server = self.url = self.pidlockfile = None
         self.reqhandler = reqhandler
         self.auth_type = auth_type
         self.db_bases = db_bases
         self.class_opts = class_opts
         self.log_fmt = log_fmt
+        self.name = name
+        self.proto = proto
+        if self.name is None:
+            if self.proto == 'http':
+                self.name = 'pyhttpd'
+            else:
+                self.name = 'pyserver'
         if self.log_fmt is None:
             self.log_fmt = \
                 '[%(asctime)s] %(name)s (%(threadName)s): %(message)s'
@@ -105,7 +116,7 @@ class WebApp(object):
             help='Address of interface to bind to.')
         self.parser_groups['listen'].add_argument(
             '-p', '--port', dest='port', metavar='PORT', type=int,
-            help=('HTTP port to listen on. Default is 80 if not '
+            help=('Port to listen on. Default is 80 if not '
                   'over SSL or 443 if over SSL.'))
 
         if support_ssl:
@@ -127,7 +138,7 @@ class WebApp(object):
                 help=('PEM file containing the private key for the '
                       'server certificate.'))
 
-        if auth_type:
+        if self.proto == 'http' and auth_type:
             self.parser_groups['auth'] = \
                 self.parser.add_argument_group(
                 'Authentication options')
@@ -184,7 +195,7 @@ class WebApp(object):
                       'in the configuration file and resets the '
                       'hashing to none (plaintext).'))
 
-        if support_cors:
+        if self.proto == 'http' and support_cors:
             self.parser_groups['cors'] = \
                 self.parser.add_argument_group('CORS options')
             self.parser_groups['cors'].add_argument(
@@ -243,19 +254,20 @@ class WebApp(object):
                              'host/database'),
                     help='URL of the {} database.'.format(name))
 
-        self.parser_groups['http'] = self.parser.add_argument_group(
-            'Other HTTP options')
-        self.parser_groups['http'].add_argument(
-            '-H', '--headers', dest='headers',
-            default=[], metavar='Header: Value', nargs='*',
-            help='Additional headers to include in the response.')
+        if self.proto == 'http':
+            self.parser_groups['http'] = self.parser.add_argument_group(
+                'Other HTTP options')
+            self.parser_groups['http'].add_argument(
+                '-H', '--headers', dest='headers',
+                default=[], metavar='Header: Value', nargs='*',
+                help='Additional headers to include in the response.')
 
         self.parser_groups['server'] = self.parser.add_argument_group(
             'Logging and process options')
         if support_daemon:
             self.parser_groups['server'].add_argument(
                 '-P', '--pidfile', dest='pidfile', metavar='FILE',
-                default='/var/run/pyhttpd.pid',
+                default='/var/run/{}.pid'.format(self.name),
                 help='Path to pidfile when running in daemon mode.')
             self.parser_groups['server'].add_argument(
                 '-d', '--daemon', dest='daemonize',
@@ -276,8 +288,8 @@ class WebApp(object):
             default=False, action='store_true',
             help='Update or create the configuration file.')
         self.parser_groups['server'].add_argument(
-            '-r', '--webroot', dest='webroot', metavar='DIR',
-            default='/var/www/html',
+            '-r', '--root', dest='root', metavar='DIR',
+            default='/var/www/html' if self.proto == 'http' else '/',
             help=('Directory to serve files from. '
                   'Current working directory will be changed to it.'))
         self.parser_groups['server'].add_argument(
@@ -295,8 +307,9 @@ class WebApp(object):
                 '-l', '--logdir', dest='logdir', metavar='DIR',
                 help=('Directory that will hold the log files. '
                       'Default when running in daemon mode is '
-                      '/var/log/pyhttpd. Default in foreground mode '
-                      'is to print print all output to the console.'))
+                      '/var/log/{}. Default in foreground mode is '
+                      'to print print all output to the console.'
+                      ).format(self.name))
         else:
             self.parser_groups['server'].add_argument(
                 '-l', '--logdir', dest='logdir', metavar='DIR',
@@ -372,8 +385,9 @@ class WebApp(object):
         if self.action in ['start', 'restart']:
             self._prepare_for_start()
 
-        self.url = '{proto}://{addr}:{port}'.format(
-            proto='https' if self.conf.ssl else 'http',
+        self.url = '{proto}{ssl}://{addr}:{port}'.format(
+            proto=self.proto,
+            ssl='s' if self.conf.ssl else '',
             addr=self.conf.address,
             port=self.conf.port)
         self._is_configured = True
@@ -411,23 +425,29 @@ class WebApp(object):
 
     def _prepare_for_start(self):
         def send_custom_headers(reqself):
-            super(self.reqhandler, reqself).send_custom_headers()
-            return self._send_cors_headers(reqself)
+            for h in self.conf.headers:
+                reqself.send_header(*re.split(': *', h, maxsplit=1))
+            if self.conf.cors:
+                self._send_cors_headers(reqself)
+            return super(
+                self.reqhandler, reqself).send_custom_headers()
 
         #### Preliminary checks and directory creation
         if self.conf.logdir is None and self.conf.daemonize:
-            self.conf.logdir = '/var/log/pyhttpd'
+            self.conf.logdir = '/var/log/{}'.format(self.name)
         if self.conf.logdir is not None:
             self.conf.logdir = os.path.abspath(
                 self.conf.logdir).rstrip('/')
             make_dirs(self.conf.logdir, mode=0o700)
-        # check webroot
-        self.conf.webroot = self.conf.webroot.rstrip('/')
-        #  self.conf.webroot = self.conf.webroot.strip('/')
-        #  if not os.path.abspath(self.conf.webroot).startswith(
+        # check root
+        self.conf.root = self.conf.root.rstrip('/')
+        if self.conf.root == '':
+            self.conf.root = '/'
+        #  self.conf.root = self.conf.root.strip('/')
+        #  if not os.path.abspath(self.conf.root).startswith(
         #          os.getcwd()):
-        #      exit('The given webroot is outside the current root')
-        ensure_exists(self.conf.webroot, is_file=False)
+        #      exit('The given root is outside the current root')
+        ensure_exists(self.conf.root, is_file=False)
         # check userfile
         if self.conf.userfile is not None \
                 and not self.conf.add_users:
@@ -446,17 +466,14 @@ class WebApp(object):
                 make_dirs(conn['database'], is_file=True)
 
         #### Create the new request handler class
-        attrs = {}
-        if self.conf.cors:
-            attrs.update({
-                'send_custom_headers': send_custom_headers})
+        attrs = {'send_custom_headers': send_custom_headers}
         if self.auth_type is not None:
             attrs.update({
                 '_is_SSL': self.conf.ssl,
                 '_pwd_type': self.conf.userfile_hash_type})
         self.reqhandler = type(
             '{}Custom'.format(self.reqhandler.__name__),
-            (self.reqhandler,), attrs)
+            (self.reqhandler, object), attrs)
 
         #### Read users from stdin
         if self.conf.add_users:
@@ -584,14 +601,18 @@ class WebApp(object):
         #### Create the server
         # This has to be done after daemonization because it binds to
         # the listening port at creation time
-        srv_cls = HTTPServer
+        if self.server_cls is None:
+            self.server_cls = HTTPServer
         if self.conf.multithread:
-            srv_cls = ThreadingHTTPServer
-        self.httpd = srv_cls((self.conf.address, self.conf.port),
-                             self.reqhandler)
+            self.server_cls = type(
+                'Threading{}'.format(self.server_cls.__name__),
+                (ThreadingMixIn, self.server_cls, object), {})
+        self.server = self.server_cls(
+            (self.conf.address, self.conf.port),
+            self.reqhandler)
         if self.conf.ssl:
-            self.httpd.socket = ssl.wrap_socket(
-                self.httpd.socket,
+            self.server.socket = ssl.wrap_socket(
+                self.server.socket,
                 keyfile=self.conf.keyfile,
                 certfile=self.conf.certfile,
                 server_side=True)
@@ -607,9 +628,9 @@ class WebApp(object):
             os.dup2(self.access_log.fileno(), sys.stderr.fileno())
 
         #### Change working directory and run
-        os.chdir(self.conf.webroot)
+        os.chdir(self.conf.root)
         self._log_event('Starting server on {}'.format(self.url))
-        self.httpd.serve_forever()
+        self.server.serve_forever()
 
     def _stop(self):
         pid = self._get_pid(break_stale=True)
@@ -654,7 +675,7 @@ class WebApp(object):
 
     def _term_sighandler(self, signo, stack_frame):
         self._log_event('Stopping server on {}'.format(self.url))
-        self.httpd.server_close()
+        self.server.server_close()
         self._log_event('Stopped server on {}'.format(self.url))
 
         if self.access_log is not None:
@@ -668,8 +689,6 @@ class WebApp(object):
                 return ', '.join(res)
             return res
 
-        for h in self.conf.headers:
-            reqself.send_header(*re.split(': *', h, maxsplit=1))
         cors_origins = get_cors('origins')
         if cors_origins is not None:
             cors_origins = urllib.parse.unquote_plus(

@@ -1,8 +1,8 @@
-import http.server
-from socketserver import ThreadingMixIn
+from http.server import HTTPServer as _HTTPServer
+from socketserver import ThreadingMixIn as _ThreadingMixIn
 
 
-class ThreadingHTTPServer(ThreadingMixIn, http.server.HTTPServer):
+class ThreadingHTTPServer(_ThreadingMixIn, _HTTPServer):
     '''Multi-threaded HTTPServer'''
 
     pass

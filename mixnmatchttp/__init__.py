@@ -1,6 +1,6 @@
 from . import handlers
 from . import servers
-from .webapp import WebApp
+from .app import App
 
 import logging
 try:  # python2.7 and above
@@ -14,7 +14,7 @@ except ImportError:
 __all__ = [
     'handlers',
     'servers',
-    'WebApp',
+    'App',
 ]
 
 logger = logging.getLogger(__name__)

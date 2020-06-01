@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import re
-from mixnmatchttp import WebApp
+from mixnmatchttp import App
 from mixnmatchttp.handlers import BaseHTTPRequestHandler, \
     AuthCookieHTTPRequestHandler, CachingHTTPRequestHandler, \
     ProxyingHTTPRequestHandler
@@ -22,7 +22,7 @@ class CORSHTTPSServer(AuthCookieHTTPRequestHandler,
         return User(username='demo')
 
 
-webapp = WebApp(
+webapp = App(
     CORSHTTPSServer,
     description=(
         'Serve the current working directory over HTTPS and with '
