@@ -535,6 +535,7 @@ Redirects (with `307`) to any address given in the URL.
   * Log rotation
   * MT-safe saving and clearing of cache
   * Option for case-sensitivity of endpoints (and separately for variable endpoint names)
+  * Endpoints or paths: list of required parameters and raise an error if any missing
 
 # Internal TODO notes
 
