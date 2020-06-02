@@ -313,7 +313,8 @@ class App(object):
                       'the console.'))
         self.parser_groups['server'].add_argument(
             '--log', dest='log', nargs='+',
-            action='append', default=[], metavar='PACKAGE [FILENAME]',
+            action=AppendUniqueArgAction,
+            default=[], metavar='PACKAGE [FILENAME]',
             help=('Enable logging output for the given package. '
                   'FILENAME will be stored in --logdir if given '
                   '(otherwise ignored and output goes to the '
@@ -330,7 +331,8 @@ class App(object):
                   'defaults to request.log if not given.'))
         self.parser_groups['server'].add_argument(
             '--debug-log', dest='debug_log', nargs='+',
-            action='append', default=[], metavar='PACKAGE [FILENAME]',
+            action=AppendUniqueArgAction,
+            default=[], metavar='PACKAGE [FILENAME]',
             help=('Enable debugging output for the given package. '
                   'FILENAME defaults to debug.log. Note that this '
                   'option is not saved in the configuration file. '
@@ -746,6 +748,16 @@ class App(object):
             return True
         return False
 
+class AppendUniqueArgAction(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        try:
+            curr = getattr(namespace, self.dest)
+        except AttributeError:
+            setattr(namespace, self.dest, values)
+        else:
+            if values not in curr:
+                curr.append(values)
+
 class LogHandler(object):
     def emit(self, record):
         if record.levelno < self.__class__._min_level \
@@ -791,7 +803,7 @@ class RequestDebugStreamHandler(StreamHandler):
     _min_level = 1
     _max_level = 1
 
-class Conf(object):
+class Conf(argparse.Namespace):
     _error_on_missing = True
 
     def __init__(self, skip=[], settings={}):
@@ -855,6 +867,10 @@ def get_loggers(destinations_map, logdir=None, fmt=None):
                 streamHandler, fileHandler, def_filename = \
                     logger_classes[level]
                 if logdir is None:
+                    if pkg in loggers:
+                        # doesn't make sense to add duplicate loggers
+                        # when not writing to files
+                        continue
                     handler = streamHandler(
                         sys.stderr
                         if level == 'ERROR' else sys.stdout)
