@@ -545,6 +545,8 @@ Redirects (with `307`) to any address given in the URL.
   * Rename ...`Server` to ...`Handler`
   * Do not save expanded env variables to config file
   * Test with nginx proxy setup (it was behaving weirdly, need to find if it's a bug here)
+  * Add back `--no-multithread` option
+  * Remove `methodhandler` and instead override one of the server or request handler methods called at the start of a request
 
 ## Possibly coming at some point
 

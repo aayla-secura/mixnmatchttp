@@ -599,11 +599,9 @@ class App(object):
         # This has to be done after daemonization because it binds to
         # the listening port at creation time
         if self.server_cls is None:
-            self.server_cls = HTTPServer
-        self.server_cls = type(
-            'Threading{}'.format(self.server_cls.__name__),
-            (ThreadingMixIn, self.server_cls, object), {})
-        self.server_cls.allow_reuse_address = True
+            self.server_cls = type(
+                'Threading{}'.format(self.server_cls.__name__),
+                (ThreadingMixIn, HTTPServer, object), {})
         for o in self.server_opts:
             setattr(self.server_cls, o, getattr(self.conf, o))
         self.server = self.server_cls(
@@ -815,6 +813,7 @@ class Conf(argparse.Namespace):
         for k, v in settings.items():
             setattr(self, k, v)
 
+    # TODO, change this to __repr__ and __str__
     def _to_dict(self):
         return {k: v for k, v in self.__dict__.items()
                 if k not in self._skip}
