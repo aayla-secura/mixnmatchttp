@@ -547,6 +547,7 @@ Redirects (with `307`) to any address given in the URL.
   * Test with nginx proxy setup (it was behaving weirdly, need to find if it's a bug here)
   * Add back `--no-multithread` option
   * Remove `methodhandler` and instead override one of the server or request handler methods called at the start of a request
+  * Cmdline options to disable `request_log` and `logdir` if set in config
 
 ## Possibly coming at some point
 
