@@ -848,6 +848,7 @@ def get_loggers(destinations_map, logdir=None, fmt=None):
         log_formatter = logging.Formatter(
             fmt=fmt, datefmt='%d/%b/%Y %H:%M:%S')
     loggers = {}
+    seen = []
     logger_classes = {
         'REQUEST': (RequestDebugStreamHandler,
                     RequestDebugFileHandler, 'request.log'),
@@ -864,7 +865,7 @@ def get_loggers(destinations_map, logdir=None, fmt=None):
                 streamHandler, fileHandler, def_filename = \
                     logger_classes[level]
                 if logdir is None:
-                    if pkg in loggers:
+                    if '{}.{}'.format(pkg, level) in seen:
                         # doesn't make sense to add duplicate loggers
                         # when not writing to files
                         continue
@@ -888,6 +889,7 @@ def get_loggers(destinations_map, logdir=None, fmt=None):
                 logger.addHandler(handler)
                 logger.setLevel(1)  # the handler filters
                 loggers[pkg] = logger
+                seen.append('{}.{}'.format(pkg, level))
     return loggers
 
 def make_dirs(path, is_file=False, mode=0o755):
