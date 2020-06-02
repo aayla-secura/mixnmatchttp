@@ -52,7 +52,8 @@ class App(object):
                  db_bases={},
                  reqhn_opts=[],
                  server_opts=[],
-                 log_fmt=None):
+                 log_fmt=('[%(asctime)s] %(name)s '
+                          '(%(threadName)s): %(message)s')):
         '''TODO
 
         reqhandler will be replaced
@@ -94,9 +95,6 @@ class App(object):
                 self.name = 'pyhttpd'
             else:
                 self.name = 'pyserver'
-        if self.log_fmt is None:
-            self.log_fmt = \
-                '[%(asctime)s] %(name)s (%(threadName)s): %(message)s'
         self.conf = Conf(skip=['action',
                                'config',
                                'save_config',
