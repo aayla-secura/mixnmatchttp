@@ -50,7 +50,8 @@ class App(object):
                  support_daemon=False,
                  auth_type='cookie',
                  db_bases={},
-                 class_opts=[],
+                 reqhn_opts=[],
+                 server_opts=[],
                  log_fmt=None):
         '''TODO
 
@@ -84,7 +85,8 @@ class App(object):
         self.proto = proto
         self.auth_type = auth_type
         self.db_bases = db_bases
-        self.class_opts = class_opts
+        self.reqhn_opts = reqhn_opts
+        self.server_opts = server_opts
         self.log_fmt = log_fmt
 
         if self.name is None:
@@ -529,7 +531,7 @@ class App(object):
                 privkey=self.conf.jwt_priv_key)
 
         #### Set class options from conf
-        for o in self.class_opts:
+        for o in self.reqhn_opts:
             setattr(self.reqhandler, o, getattr(self.conf, o))
 
     def _start(self):
@@ -599,7 +601,9 @@ class App(object):
         self.server_cls = type(
             'Threading{}'.format(self.server_cls.__name__),
             (ThreadingMixIn, self.server_cls, object), {})
-        self.server_cls.daemon_threads = True
+        self.server_cls.allow_reuse_address = True
+        for o in self.server_opts:
+            setattr(self.server_cls, o, getattr(self.conf, o))
         self.server = self.server_cls(
             (self.conf.address, self.conf.port),
             self.reqhandler)
@@ -625,7 +629,6 @@ class App(object):
         self.doneEvent = threading.Event()
         server_thread = threading.Thread(
             target=self.server.serve_forever)
-        server_thread.daemon = True
         server_thread.start()
         self._log_event('Started server on {}'.format(self.url))
         self.doneEvent.wait()
