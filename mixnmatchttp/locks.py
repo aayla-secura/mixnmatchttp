@@ -58,7 +58,8 @@ class named_lock(ContextDecorator):
                     self.timeout - current_time + start_time)
                 logger.debug('Woke up')
                 current_time = time.time()
-        logger.info('Timed out')
+        logger.error('Timed out waiting for lock {}'.format(
+            self.name if self.name is not None else ''))
         self.lock_busy.release()
         return False
 
