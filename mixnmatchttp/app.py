@@ -598,7 +598,7 @@ class App(object):
         # the listening port at creation time
         if self.server_cls is None:
             self.server_cls = type(
-                'Threading{}'.format(self.server_cls.__name__),
+                'ThreadingHTTPServer',
                 (ThreadingMixIn, HTTPServer, object), {})
         for o in self.server_opts:
             setattr(self.server_cls, o, getattr(self.conf, o))
