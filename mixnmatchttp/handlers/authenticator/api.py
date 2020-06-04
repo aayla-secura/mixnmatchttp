@@ -287,37 +287,43 @@ class BaseAuthHTTPRequestHandler(
              - Denied explicitly by role
              - Allowed implicitly by *
              - Denied implicitly (none of the above)
-         Example:
-         _secrets = [
-             # all authenticated users, except service, can access /foo
-             ('^[A-Z]+ /foo(/|$)', ['*', '!service']),
-             # only users in the admin group can POST (POST /foo is
-             # still allowed for all other than service
-             ('^POST ', ['#admin']),
-             # anyone can fetch /bar
-             ('^GET /bar(/|$)', [None]),
-             # require authentication for all other pages
-             ('.*', ['*']),
-         ]
+      Example:
+      _secrets = [
+          # all authenticated users, except service, can access /foo
+          ('^[A-Z]+ /foo(/|$)', ['*', '!service']),
+          # only users in the admin group can POST (POST /foo is
+          # still allowed for all other than service
+          ('^POST ', ['#admin']),
+          # anyone can fetch /bar
+          ('^GET /bar(/|$)', [None]),
+          # require authentication for all other pages
+          ('.*', ['*']),
+      ]
       Default _secrets is [], i.e. no authentication required.
     - _can_create_users: A dictionary, where every key is a user role
       (<new_role>) and every value is a list of users  or roles
       (prefixed with '#') who are able to register users with role
       <new_role>. As in _secrets, a username or role can be negated
       with '!'.
-      The role None as a key means the new user is assigned no roles.
-      None and '*' in the list have the same meaning as explained in
-      _secrets.
-      When a new user is to be registered with a set of roles, the
-      currently logged in user should be authorized to create users of
-      each of the given roles. Note that access to the /register
-      endpoint still needs to be granted via _secrets.
+      - The role None as a key means the new user is assigned no
+        roles.
+        None and '*' in the list have the same meaning as explained in
+        _secrets.
+      - When a new user is to be registered with a set of roles, the
+        currently logged in user should be authorized to create users of
+        each of the given roles. Note that access to the /register
+        endpoint still needs to be granted via _secrets.
+      - Unlike _secrets, the keys (roles) are not regular expressions,
+        but comapred for literal equality. Also, if a user is to be
+        created with a role that isn't listed in _can_create_users,
+        access is denied, i.e. _can_create_users should list all
+        allowed roles and who is allowed to create users of that role.
       Example:
-        _can_create_users = {
-            None: [None],  # self-register with no role assignment
-            'service': ['admin'], # admins can create service accounts
-            'admin': ['admin'],   # admins can create other admins
-        }
+      _can_create_users = {
+          None: [None],  # self-register with no role assignment
+          'service': ['admin'], # admins can create service accounts
+          'admin': ['admin'],   # admins can create other admins
+      }
       Default _can_create_users is {None: [None]}, i.e. self-register.
     - _pwd_min_len: Minimum length of passwords. Default is 10.
     - _pwd_min_charsets: Minimum number of character sets in
