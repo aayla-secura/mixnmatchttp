@@ -548,6 +548,7 @@ Redirects (with `307`) to any address given in the URL.
   * Add back `--no-multithread` option
   * Remove `methodhandler` and instead override one of the server or request handler methods called at the start of a request
   * Cmdline options to disable `request_log` and `logdir` if set in config
+  * Merge `_secrets` and `_can_create_users` with those of parent classes, like endpoints
 
 ## Possibly coming at some point
 
