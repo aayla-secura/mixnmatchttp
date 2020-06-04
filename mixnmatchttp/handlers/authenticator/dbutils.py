@@ -31,6 +31,7 @@ def json_serializer(obj, short=False, short_mappings={}):
 
 def needs_db_response_handling(base,
                                poller=None,
+                               poll_any=False,
                                json_serializer=json_serializer):
     '''Passes a session and sends the returned object as JSON
 
@@ -40,7 +41,9 @@ def needs_db_response_handling(base,
       been enabled via
       BaseAuthSQLAlchemyORMHTTPRequestHandler.enable_client_cache;
       then we support If-None-Match request headers and ETag response
-      header via the current tag of that poller.
+      header via the current tag of that poller
+    - If poll_any is True, then we always inspect the If-None-Match.
+      Otherwise, only in GET requests.
     - json_serializer is used to serialize the returned object.
     '''
 
@@ -49,7 +52,8 @@ def needs_db_response_handling(base,
         dconn = DBConnection.get(base)
         with dconn.session_context(reraise=False) as db:
             # check if client cache is up to date
-            if poller is not None and self.command == 'GET':
+            if poller is not None \
+                    and (self.command == 'GET' or poll_any):
                 current = self.headers.get('If-None-Match')
                 if current is not None:
                     if self.pollers[poller].is_match(

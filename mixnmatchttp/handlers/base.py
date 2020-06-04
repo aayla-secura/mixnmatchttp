@@ -443,7 +443,6 @@ class BaseHTTPRequestHandler(with_metaclass(
     def end_response_empty(self):
         '''Ends an empty response'''
 
-        #  self.send_header('Content-type', 'text/plain')
         self.send_header('Content-Length', 0)
         self.end_headers()
 
