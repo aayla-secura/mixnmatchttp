@@ -146,41 +146,57 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
                     pwd_types.append(ptype)
         super().__setattr__(new_class, '_supported_hashes', pwd_types)
         for key, value in attrs.items():
-            new_class.__check_attr(key, value)
+            new_val = new_class.__check_attr(key, value)
+            if new_val is not value:
+                setattr(new_class, key, new_val)
         return new_class
 
     def __setattr__(self, key, value):
-        self.__check_attr(key, value)
+        new_val = self.__check_attr(key, value)
         # super() doesn't work here in python 2, see:
         # https://github.com/PythonCharmers/python-future/issues/267
-        super(self.__class__, self).__setattr__(key, value)
+        super(self.__class__, self).__setattr__(key, new_val)
 
     def __check_attr(cls, key, value):
-        def isoneof(val, sequence):
+        def is_none(val):
+            return val is None
+
+        def is_one_of(val, sequence):
             return val in sequence
 
-        def isanytrue(val, checkers):
+        def is_any_true(val, checkers):
             for c in checkers:
                 if c(val):
                     return True
             return False
 
+        transformer = {
+            '_can_create_users': OrderedDict,
+        }
         requirements = {
-            '_pwd_type': (isoneof, cls._supported_hashes),
-            '_secrets': (isanytrue, [is_seq_like, is_map_like]),
+            '_JSON_params': (is_any_true, [is_none, is_seq_like]),
+            '_pwd_type': (is_one_of, cls._supported_hashes),
+            '_secrets': (is_any_true, [is_seq_like, is_map_like]),
+            '_can_create_users': (is_any_true, [is_map_like]),
             '_pwd_min_len': (isinstance, int),
             '_pwd_min_charsets': (isinstance, int),
             '_is_SSL': (isinstance, bool),
-            '_cookie_name': (isanytrue, [is_str]),
+            '_cookie_name': (is_any_true, [is_str]),
             '_cookie_len': (isinstance, int),
             '_cookie_lifetime': (isinstance, (int, type(None))),
-            '_SameSite': (isoneof, [None, 'lax', 'strict']),
+            '_SameSite': (is_one_of, [None, 'lax', 'strict']),
             '_jwt_lifetime': (isinstance, int),
             '_send_new_refresh_token': (isinstance, bool),
             '_refresh_token_lifetime': (isinstance, int),
             '_refresh_token_len': (isinstance, int),
         }
 
+        if key in transformer:
+            try:
+                value = transformer[key](value)
+            except (ValueError, TypeError):
+                raise TypeError('{} cannot be converted to {}'.format(
+                    key, transformer[key].__name__))
         if key in requirements:
             checker, req = requirements[key]
             if not checker(value, req):
@@ -213,6 +229,7 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
                             raise ImportError(
                                 'The scrypt module is required '
                                 'for scrypt hashes')
+        return value
 
 class BaseAuthHTTPRequestHandler(
     with_metaclass(BaseAuthHTTPRequestHandlerMeta,
