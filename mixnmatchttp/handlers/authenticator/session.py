@@ -161,7 +161,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     _dec_key = None
     _endpoints = endpoints.Endpoint(
         authtoken={
-            '$allowed_methods': {'GET', 'POST'},
+            '$allowed_methods': {'POST'},
         },
     )
 

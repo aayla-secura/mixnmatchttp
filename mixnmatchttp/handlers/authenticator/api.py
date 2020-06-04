@@ -356,13 +356,13 @@ class BaseAuthHTTPRequestHandler(
     __last_prune = curr_timestamp()
     _endpoints = endpoints.Endpoint(
         register={
-            '$allowed_methods': {'GET', 'POST'},
+            '$allowed_methods': {'POST'},
         },
         changepwd={
-            '$allowed_methods': {'GET', 'POST'},
+            '$allowed_methods': {'POST'},
         },
         login={
-            '$allowed_methods': {'GET', 'POST'},
+            '$allowed_methods': {'POST'},
         },
         logout={
             '$allowed_methods': {'GET', 'POST'},
