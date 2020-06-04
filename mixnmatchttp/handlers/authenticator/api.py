@@ -689,6 +689,7 @@ class BaseAuthHTTPRequestHandler(
           the policy and hashed according to the _pwd_type class
           attribute; otherwise it is saved as is (the hashing
           algorithm must correspond to _pwd_type)
+        Returns the new user.
         '''
 
         if not username:
@@ -701,7 +702,7 @@ class BaseAuthHTTPRequestHandler(
             password = cls.transform_password(password)
         logger.debug('Creating user {}:{} (roles: {})'.format(
             username, password, roles))
-        cls.create_user(username, password, roles)
+        return cls.create_user(username, password, roles)
 
     @classmethod
     def change_password(
@@ -887,11 +888,12 @@ class BaseAuthHTTPRequestHandler(
                             'a user of role {}').format(r)))
                 return
         try:
-            self.new_user(username, password, roles)
+            user = self.new_user(username, password, roles)
         except (UserAlreadyExistsError, InvalidUsernameError,
                 BadPasswordError) as e:
             self.send_response_auth(error=(400, str(e)))
             return
+        self.new_session(user)
         self.send_response_auth()
 
     def do_changepwd(self):
