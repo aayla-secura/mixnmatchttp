@@ -473,7 +473,17 @@ class BaseHTTPRequestHandler(with_metaclass(
         self.send_header('Content-Length', len(page['data']))
         self.send_headers(headers)
         self.end_headers()
-        self.wfile.write(page['data'])
+        self.write(page['data'])
+
+    def write(self, data):
+        if not isinstance(data, bytes):
+            data = data.encode('utf-8')
+        try:
+            self.wfile.write(data)
+        except BrokenPipeError:
+            logger.debug('Client closed the connection')
+            return False
+        return True
 
     def send_file(self, path=None, as_attachment=False):
         '''Sends the file given in path
