@@ -522,8 +522,7 @@ Redirects (with `307`) to any address given in the URL.
   * On python2 directory listing does not work, even if enabled (returns: 404). *Solution*: Wait for a fix soon... Or better yet, don't use python2 anymore!
   * Overriding a parent endpoint sometimes doesn't work for classes which inherit multiple classes. *Solution*: Wait for a fix...
   * Clearing of cache is not done safely in mutli-threaded context. You may experience issues under heavy load. *Solution*: Wait for a fix...
-  * When running as a signle thread (default), the server sometimes hangs. It seems to be an issue whereby some browsers don't close the socket. *Solution*: Run the server in multi-thread mode (`-t` option).
-  * Occasionally a `BrokenPipeError` is thrown. It happens with some browsers which close the socket abruptly. *Solution*: Just ignore it.
+  * When running as a signle thread (default), the server sometimes hangs. It seems to be an issue whereby some browsers don't close the socket. *Solution*: Run the server in multi-thread mode.
 
 # Coming soon
 
