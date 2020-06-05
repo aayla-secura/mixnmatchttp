@@ -414,6 +414,35 @@ class BaseHTTPRequestHandler(with_metaclass(
             self.send_response(200)
         self.send_headers(headers)
 
+    def begin_event_stream(self, headers={}):
+        '''Begins a text/event-stream response'''
+
+        self.send_response(200)
+        self.send_header('Content-Type', 'text/event-stream')
+        self.end_headers()
+
+    def send_event(self, data, name=None, eid=None):
+        '''Sends a single event
+
+        The event stream must have been started
+        - If name is given, an event: name is sent at the beginning
+        - data can contain new lines, theses are properly handled by
+          prepending data: at the start of each
+        - If eid is given, an id: eid is sent at the end
+        '''
+
+        if name is not None:
+            self.write('event: {}\n'.format(name))
+        if isinstance(data, bytes):
+            lines = data.split(b'\n')
+        else:
+            lines = data.split('\n')
+        for line in lines:
+            self.write('data: {}\n'.format(line))
+        if eid is not None:
+            self.write('id: {}\n'.format(eid))
+        self.write('\n')
+
     def send_response_goto(self, *args, **kwargs):
         '''begin_response_goto and end_response_default'''
 
