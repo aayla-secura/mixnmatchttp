@@ -865,7 +865,10 @@ class BaseAuthHTTPRequestHandler(
                 and num_charsets(password) >= cls._pwd_min_charsets)
 
     def do_register(self):
-        '''Creates a new user'''
+        '''Creates a new user
+
+        Returns the user on success and None on failure
+        '''
 
         username = self.get_param('username')
         password = self.get_param('password')
@@ -886,48 +889,61 @@ class BaseAuthHTTPRequestHandler(
                     error=(401,
                            ('You cannot create '
                             'a user of role {}').format(r)))
-                return
+                return None
         try:
             user = self.new_user(username, password, roles)
         except (UserAlreadyExistsError, InvalidUsernameError,
                 BadPasswordError) as e:
             self.send_response_auth(error=(400, str(e)))
-            return
+            return None
         self.new_session(user)
         self.send_response_auth()
+        return user
 
     def do_changepwd(self):
-        '''Changes the password for the given username'''
+        '''Changes the password for the given username
+
+        Returns the user on success and None on failure
+        '''
 
         user = self.authenticate()
         if user is None:
             self.send_response_auth(
                 error=(401, 'Username or password is wrong'))
-            return
+            return None
 
         new_password = self.get_param('new_password')
         try:
             self.change_password(user, new_password, plaintext=True)
         except BadPasswordError as e:
             self.send_response_auth(error=(400, str(e)))
-            return
+            return None
         self.new_session(user)
         self.send_response_auth()
+        return user
 
     def do_login(self):
-        '''Issues a random cookie and saves it'''
+        '''Issues a random cookie and saves it
+
+        Returns the user on success and None on failure
+        '''
 
         user = self.authenticate()
         if user is None:
             self.expire_current_session()
             self.send_response_auth(
                 error=(401, 'Username or password is wrong'))
-            return
+            return None
         self.new_session(user)
         self.send_response_auth()
+        return user
 
     def do_logout(self):
-        '''Clears the cookie from the browser and saved sessions'''
+        '''Clears the cookie from the browser and saved sessions
+
+        Returns True
+        '''
 
         self.expire_current_session()
         self.send_response_auth()
+        return True

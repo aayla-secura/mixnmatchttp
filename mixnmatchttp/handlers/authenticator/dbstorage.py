@@ -121,23 +121,23 @@ class BaseAuthSQLAlchemyORMHTTPRequestHandler(
 
     @needs_db_error_response_handling(DBBase)
     def do_register(self, db):
-        super().do_register()
+        return super().do_register()
 
     @needs_db_error_response_handling(DBBase)
     def do_changepwd(self, db):
-        super().do_changepwd()
+        return super().do_changepwd()
 
     @needs_db_error_response_handling(DBBase)
     def do_login(self, db):
-        super().do_login()
+        return super().do_login()
 
     @needs_db_error_response_handling(DBBase)
     def do_logout(self, db):
-        super().do_logout()
+        return super().do_logout()
 
     @needs_db_error_response_handling(DBBase)
     def do_authtoken(self, db):
-        super().do_authtoken()
+        return super().do_authtoken()
 
     @classmethod
     def enable_client_cache(cls, name, base):

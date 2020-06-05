@@ -342,6 +342,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
 
         If the _send_new_refresh_token class attribute is True, then
         a new refresh_token is also sent.
+        Returns the user on success and None on failure
         '''
 
         # see if refresh token is given and still valid
@@ -349,10 +350,11 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         if session is None:
             self.send_response_auth(
                 error=(401, 'Missing or invalid refresh token'))
-            return
+            return None
         if self.__class__._send_new_refresh_token:
             session = self.new_session(session.user)
             self.set_session(session)
         else:
             self.set_session(Session(user=session.user))
         self.send_response_auth()
+        return session.user
