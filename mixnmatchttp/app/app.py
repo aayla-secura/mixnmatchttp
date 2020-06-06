@@ -5,6 +5,7 @@ import sys
 import errno
 from signal import signal, SIGTERM, SIGINT, SIG_DFL
 import threading
+from functools import partial
 import ssl
 import re
 import urllib
@@ -33,6 +34,7 @@ from ..handlers.authenticator.dbapi import DBBase
 from .utils import AppendUniqueArgAction, exit, read_line, \
     make_dirs, ensure_exists
 from .log import get_loggers
+from .exc import ArgumentValueError
 
 
 MY_PKG_NAME = __name__.split('.')[0]
@@ -81,6 +83,7 @@ class App(object):
         # access.log is for http.server (which writes to stderr)
         self.access_log = self.doneEvent = self.server = self.url = \
             self.pidlockfile = None
+        self._custom_checks = {}
 
         self.reqhandler = reqhandler
         self.name = name
@@ -338,6 +341,45 @@ class App(object):
                   'option is not saved in the configuration file. '
                   'Otherwise the behaviour is similar as --log.'))
 
+    def add_argument(
+            self, *args, group=None, check=None, **kargs):
+        '''TODO
+
+        - check can be 'file', 'dir' or a callable which takes one
+          argument (the value) and can raise ArgumentValueError.
+          If check is given, the argument must have a value (either
+          set by default or explicitly given.
+        - group s a tuple of alias, description. If the alias
+          corresponds to an existing group, the description is ignored
+          and can be omitted.
+        '''
+
+        try:
+            dest = kargs['dest']
+        except KeyError:
+            exit('{}.add_argument requires the dest keyword'.format(
+                __name__))
+        if group is None:
+            parser = self.parser
+        else:
+            try:
+                parser = self.parser_groups[group[0]]
+            except KeyError:
+                parser = self.parser_groups[group[0]] = \
+                    self.parser.add_argument_group(group[1])
+        parser.add_argument(*args, **kargs)
+        if check is not None:
+            if check == 'file':
+                check = partial(ensure_exists, is_file=True)
+            elif check == 'dir':
+                check = partial(make_dirs, is_file=False)
+            opt_string = args[0]
+            for a in args[1:]:
+                if len(a) > len(opt_string):
+                    opt_string = a
+            self._custom_checks[dest] = {
+                'opt': opt_string, 'check': check}
+
     def configure(self):
         '''TODO'''
 
@@ -379,6 +421,16 @@ class App(object):
                 os.path.abspath(self.conf.pidfile), 3)
             if self.action in ['stop', 'status']:
                 self.conf.daemonize = False
+        for dest, o in self._custom_checks.items():
+            opt = o['opt']
+            check = o['check']
+            val = getattr(self.conf, dest)
+            if val is None:
+                exit('{} is required'.format(opt))
+            try:
+                check(val)
+            except ArgumentValueError as e:
+                exit(str(e))
         if self.action in ['start', 'restart']:
             self._prepare_for_start()
 
