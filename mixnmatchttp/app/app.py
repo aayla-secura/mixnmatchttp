@@ -1,4 +1,4 @@
-from ._py2 import *
+from .._py2 import *
 
 import os
 import sys
@@ -10,14 +10,13 @@ import re
 import urllib
 from time import sleep
 import tempfile
-import logging
 from socketserver import ThreadingMixIn
 from copy import copy
 import argparse
 from string import Template
 import json
 from awesomedict import AwesomeDict
-from ._py2 import _JSONDecodeError
+from .._py2 import _JSONDecodeError
 
 # optional features
 try:
@@ -28,9 +27,12 @@ except ImportError:
 
 from http.server import HTTPServer
 
-from .utils import randstr, is_str
-from .db import DBConnection, is_base, parse_db_url
-from .handlers.authenticator.dbapi import DBBase
+from ..utils import randstr, is_str
+from ..db import DBConnection, is_base, parse_db_url
+from ..handlers.authenticator.dbapi import DBBase
+from .utils import AppendUniqueArgAction, exit, read_line, \
+    make_dirs, ensure_exists
+from .log import get_loggers
 
 
 MY_PKG_NAME = __name__.split('.')[0]
@@ -744,61 +746,6 @@ class App(object):
             return True
         return False
 
-class AppendUniqueArgAction(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        try:
-            curr = getattr(namespace, self.dest)
-        except AttributeError:
-            setattr(namespace, self.dest, values)
-        else:
-            if values not in curr:
-                curr.append(values)
-
-class LogHandler(object):
-    def emit(self, record):
-        if record.levelno < self.__class__._min_level \
-                or record.levelno > self.__class__._max_level:
-            return
-        super().emit(record)
-
-class FileHandler(LogHandler, logging.FileHandler):
-    pass
-
-class StreamHandler(LogHandler, logging.StreamHandler):
-    pass
-
-class ErrorFileHandler(FileHandler):
-    _min_level = logging.WARNING
-    _max_level = logging.ERROR
-
-class ErrorStreamHandler(StreamHandler):
-    _min_level = logging.WARNING
-    _max_level = logging.ERROR
-
-class InfoFileHandler(FileHandler):
-    _min_level = logging.INFO
-    _max_level = logging.INFO
-
-class InfoStreamHandler(StreamHandler):
-    _min_level = logging.INFO
-    _max_level = logging.INFO
-
-class DebugFileHandler(FileHandler):
-    _min_level = logging.DEBUG
-    _max_level = logging.DEBUG
-
-class DebugStreamHandler(StreamHandler):
-    _min_level = logging.DEBUG
-    _max_level = logging.DEBUG
-
-class RequestDebugFileHandler(FileHandler):
-    _min_level = 1
-    _max_level = 1
-
-class RequestDebugStreamHandler(StreamHandler):
-    _min_level = 1
-    _max_level = 1
-
 class Conf(argparse.Namespace):
     _error_on_missing = True
 
@@ -822,103 +769,3 @@ class Conf(argparse.Namespace):
                 "'{}' object has no attribute '{}'".format(
                     type(self), key))
         return None
-
-def exit(error, rc=None):
-    if isinstance(error, Exception):
-        try:
-            rc = error.errno
-        except AttributeError:
-            pass
-    if rc is None:
-        rc = -1
-    sys.stderr.write('{}\n'.format(error))
-    sys.exit(rc)
-
-def read_line(prompt):
-    sys.stdout.write('{}: '.format(prompt))
-    sys.stdout.flush()
-    return sys.stdin.readline().rstrip('\r\n')
-
-def get_loggers(destinations_map, logdir=None, fmt=None):
-    def unpack_dest(pkg, *files):
-        return pkg, files
-
-    log_formatter = None
-    if fmt is not None:
-        log_formatter = logging.Formatter(
-            fmt=fmt, datefmt='%d/%b/%Y %H:%M:%S')
-    loggers = {}
-    seen = []
-    logger_classes = {
-        'REQUEST': (RequestDebugStreamHandler,
-                    RequestDebugFileHandler, 'request.log'),
-        'DEBUG': (DebugStreamHandler, DebugFileHandler, 'debug.log'),
-        'INFO': (InfoStreamHandler, InfoFileHandler, None),
-        'ERROR': (ErrorStreamHandler, ErrorFileHandler, 'error.log')}
-
-    for level, destinations in destinations_map.items():
-        for dest in destinations:
-            pkg, files = unpack_dest(*dest)
-            if not files:
-                files = [None]
-            for filename in files:
-                streamHandler, fileHandler, def_filename = \
-                    logger_classes[level]
-                if logdir is None:
-                    if '{}.{}'.format(pkg, level) in seen:
-                        # doesn't make sense to add duplicate loggers
-                        # when not writing to files
-                        continue
-                    handler = streamHandler(
-                        sys.stderr
-                        if level == 'ERROR' else sys.stdout)
-                else:
-                    if filename is None:
-                        filename = def_filename
-                    if filename is None:
-                        if '/' in pkg:
-                            raise ValueError(
-                                ('{} cannot be used as a '
-                                 'filename').format(pkg))
-                        filename = '{}.log'.format(pkg)
-                    handler = fileHandler('{}/{}'.format(
-                        logdir, filename))
-                if log_formatter is not None:
-                    handler.setFormatter(log_formatter)
-                logger = logging.getLogger(pkg)
-                logger.addHandler(handler)
-                logger.setLevel(1)  # the handler filters
-                loggers[pkg] = logger
-                seen.append('{}.{}'.format(pkg, level))
-    return loggers
-
-def make_dirs(path, is_file=False, mode=0o755):
-    if path is None:
-        return
-    if is_file:
-        path = os.path.dirname(os.path.abspath(path))
-    # under python2, makedirs doesn't accept exist_ok...
-    #  try:
-    #      os.makedirs(path, mode=mode, exist_ok=True)
-    #  # let other exceptions through
-    #  except FileExistsError:
-    #      exit(NotADirectoryError(
-    #          errno.ENOTDIR, os.strerror(errno.ENOTDIR), path))
-    if os.path.exists(path) and not os.path.isdir(path):
-        exit(NotADirectoryError(
-            errno.ENOTDIR, os.strerror(errno.ENOTDIR), path))
-    if not os.path.exists(path):
-        os.makedirs(path, mode=mode)
-
-def ensure_exists(path, is_file=True):
-    if not os.path.exists(path):
-        exit(FileNotFoundError(
-            errno.ENOENT, os.strerror(errno.ENOENT), path))
-    if is_file:
-        if os.path.isdir(path):
-            exit(IsADirectoryError(
-                errno.EISDIR, os.strerror(errno.EISDIR), path))
-    else:
-        if not os.path.isdir(path):
-            exit(NotADirectoryError(
-                errno.ENOTDIR, os.strerror(errno.ENOTDIR), path))
