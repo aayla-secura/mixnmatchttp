@@ -454,7 +454,7 @@ class BaseHTTPRequestHandler(with_metaclass(
 
         return self.send_response_empty(*args, **kwargs)
 
-    def send_response_empty(self, code=200, headers={}):
+    def send_response_empty(self, code=204, headers={}):
         '''Send an empty response
 
         headers: additional headers to send
