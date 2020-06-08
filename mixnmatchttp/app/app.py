@@ -727,6 +727,8 @@ class App(object):
         self.loggers[__name__].info(message)
 
     def _term_sighandler(self, signo, stack_frame):
+        for p in self.reqhandler.pollers.values():
+            p.close()
         self.server.shutdown()
         self._log_event('Stopped server on {}'.format(self.url))
         if self.access_log is not None:
