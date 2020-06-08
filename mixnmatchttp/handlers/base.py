@@ -441,7 +441,7 @@ class BaseHTTPRequestHandler(with_metaclass(
             self.write('data: {}\n'.format(line))
         if eid is not None:
             self.write('id: {}\n'.format(eid))
-        self.write('\n')
+        return self.write('\n')
 
     def send_response_goto(self, *args, **kwargs):
         '''begin_response_goto and end_response_default'''
