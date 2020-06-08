@@ -11,7 +11,6 @@ import re
 import urllib
 from time import sleep
 import tempfile
-from socketserver import ThreadingMixIn
 from copy import copy
 import argparse
 from string import Template
@@ -26,8 +25,7 @@ try:
 except ImportError:
     pass
 
-from http.server import HTTPServer
-
+from ..servers import ThreadingHTTPServer
 from ..utils import randstr, is_str
 from ..db import DBConnection, is_base, parse_db_url
 from ..handlers.authenticator.dbapi import DBBase
@@ -353,6 +351,7 @@ class App(object):
           and can be omitted.
         '''
 
+        # python 2 (cannot specofy keywords after *args)
         group = kargs.pop('group', None)
         check = kargs.pop('check', None)
         try:
@@ -654,7 +653,7 @@ class App(object):
         if self.server_cls is None:
             self.server_cls = type(
                 'ThreadingHTTPServer',
-                (ThreadingMixIn, HTTPServer, object), {})
+                (ThreadingHTTPServer, object), {})
         for o in self.server_opts:
             setattr(self.server_cls, o, getattr(self.conf, o))
         self.server = self.server_cls(

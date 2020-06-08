@@ -647,7 +647,7 @@ class BaseAuthHTTPRequestHandler(
         '''
 
         def process_line(line):
-            def unpack(a, b, c, *d):
+            def unpack(a, b, c, *d):  # python 2
                 return a, b, c
 
             user, pwd, roles = unpack(*'{}::'.format(
