@@ -185,17 +185,32 @@ def is_map_like(val):
     # in python2 UserDict is not a child of Mapping
     return isinstance(val, (_abcoll.Mapping, UserDict))
 
-def str_removechars(s, skip):
+def str_remove_chars(s, skip):
     try:  # python2
         return s.translate(None, skip)
     except TypeError:  # python3
         return s.translate(str.maketrans(dict.fromkeys(skip)))
 
-def str_tohex(s):
+def str_to_hex(s):
     try:  # python3
         return s.hex()
     except AttributeError:  # python2
         return s.encode('hex')
+
+def hex_to_bytes(s):
+    try:  # python3
+        return bytes.fromhex(s)
+    except AttributeError:  # python2
+        return s.decode('hex')
+
+def int_to_hex(i):
+    h = '{:x}'.format(i)
+    if len(h) % 2 != 0:
+        h = '0' + h
+    return h
+
+def int_to_bytes(i):
+    return hex_to_bytes(int_to_hex(i))
 
 def randhex(size):
     '''Returns a random hex string of length size
@@ -204,20 +219,31 @@ def randhex(size):
     Read from urandom.
     '''
 
-    return str_tohex(os.urandom(int(size / 2)))
+    return str_to_hex(os.urandom(int(size / 2)))
 
-def randstr(size, skip=''):
+def randstr(size,
+            use_lower=True,
+            use_upper=True,
+            use_digit=True,
+            use_punct=True,
+            skip=''):
     '''Returns a random string of length size
 
     The string consists of letters, digits and punctuation excluding
     any characters given in skip.
     '''
 
-    alphabet = \
-        str_removechars(string.ascii_letters
-                        + string.digits
-                        + string.punctuation,
-                        skip)
+    alphabet = ''
+    if use_lower:
+        alphabet += string.ascii_lowercase
+    if use_upper:
+        alphabet += string.ascii_uppercase
+    if use_digit:
+        alphabet += string.digits
+    if use_punct:
+        alphabet += string.punctuation
+    if skip:
+        alphabet = str_remove_chars(alphabet, skip)
     return ''.join([random.choice(alphabet) for i in range(size)])
 
 def abspath(path):
