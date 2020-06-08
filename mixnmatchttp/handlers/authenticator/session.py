@@ -152,6 +152,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     set_JWT_keys class method.
     '''
 
+    _enable_JWKS = False
     _JSON_params = ['access_token', 'refresh_token', 'error']
     _jwt_lifetime = 15
     _send_new_refresh_token = True
