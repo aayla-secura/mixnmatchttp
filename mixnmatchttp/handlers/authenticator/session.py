@@ -1,6 +1,7 @@
 from ..._py2 import *
 
 import logging
+import base64
 
 # optional features
 try:
@@ -24,7 +25,7 @@ else:
 
 from ... import endpoints
 from ...utils import is_str, param_dict, datetime_from_timestamp, \
-    curr_timestamp, randhex
+    curr_timestamp, randhex, randstr, int_to_bytes
 from .api import BaseAuthHTTPRequestHandler, Session
 from .utils import cookie_expflag
 
@@ -123,6 +124,8 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
       server-side.
 
     Class attributes:
+    - _enable_JWKS: save a JWKS object in _jwks. Coming soon:
+      a /.well-known/jwks.json endpoint
     - _JSON_params: send access_token, refresh_token and error
     - _jwt_lifetime: JWT lifetime in minutes. Default is 15.
     - _send_new_refresh_token: Send a new refresh token after a JWT
@@ -143,6 +146,8 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     - _dec_key: The key used to verify the JWT. The same passphrase as
       _enc_key (for symmetric algorithms), or the corresponding public
       key (for asymmetric algorithms).
+    - _jwks: If the jwks option is given to set_JWT_keys, then a JWKS
+      object is saved in _jwks with a random kid.
     You can load public/private keys from a file by calling the
     set_JWT_keys class method.
     '''
@@ -159,6 +164,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     _algorithm = 'HS256'
     _enc_key = None
     _dec_key = None
+    _jwks = None
     _endpoints = endpoints.Endpoint(
         authtoken={
             '$allowed_methods': {'POST'},
@@ -174,6 +180,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     def set_JWT_keys(cls,
                      passphrase,
                      algorithm=None,
+                     jwks=None,
                      privkey=None):
         '''Set the passphrase or keys used to sign and verify JWTs
 
@@ -190,6 +197,9 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
           open file handle, or an already decrypted PEM key (as
           a string, should begin with "-----BEGIN"). It must be
           supplied asymmetric algorithms.
+        - jwks: Boolean specifying whether or not to user JWKS.
+          If None, it is taken from the _enable_JWKS class attribute.
+          If it is supplied, it sets that class attribute.
         '''
 
         def load_privkey(fh):
@@ -210,6 +220,29 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
             # it has to be an open file handle
             return loader(f)
 
+        def get_jwks(pubkey):
+            n = pubkey.public_numbers().n
+            n_b64 = base64.urlsafe_b64encode(
+                int_to_bytes(n)).decode('utf-8').strip('=')
+            e = pubkey.public_numbers().e
+            e_b64 = base64.urlsafe_b64encode(
+                int_to_bytes(e)).decode('utf-8').strip('=')
+            assert not cls._algorithm.startswith('HS')
+            kty = 'RSA'
+            if cls._algorithm.startswith('ES'):
+                kty = 'EC'
+            return {
+                'keys': [
+                    {
+                        'alg': cls._algorithm,
+                        'kty': kty,
+                        'use': 'sig',
+                        'n': n_b64,
+                        'e': e_b64,
+                        'kid': randstr(40, use_punct=False),
+                    }
+                ]}
+
         if algorithm is not None:
             cls._algorithm = algorithm
         if cls._algorithm.startswith('HS'):
@@ -219,7 +252,8 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
             return
         # asymmetric algorithm
         privkey_loaded = load_key(privkey, load_privkey)
-        pubkey_pem = privkey_loaded.public_key().public_bytes(
+        pubkey = privkey_loaded.public_key()
+        pubkey_pem = pubkey.public_bytes(
             encoding=serialization.Encoding.PEM,
             format=serialization.PublicFormat.SubjectPublicKeyInfo)
         privkey_pem = privkey_loaded.private_bytes(
@@ -228,6 +262,10 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
             encryption_algorithm=serialization.NoEncryption())
         setattr(cls, '_enc_key', privkey_pem)
         setattr(cls, '_dec_key', pubkey_pem)
+        if jwks is not None:
+            cls._enable_JWKS = jwks
+        if cls._enable_JWKS:
+            setattr(cls, '_jwks', get_jwks(pubkey))
 
     def denied(self):
         '''Returns 401 if resource is secret and no authentication
