@@ -341,8 +341,7 @@ class App(object):
                   'option is not saved in the configuration file. '
                   'Otherwise the behaviour is similar as --log.'))
 
-    def add_argument(
-            self, *args, group=None, check=None, **kargs):
+    def add_argument(self, *args, **kargs):
         '''TODO
 
         - check can be 'file', 'dir' or a callable which takes one
@@ -354,6 +353,8 @@ class App(object):
           and can be omitted.
         '''
 
+        group = kargs.pop('group', None)
+        check = kargs.pop('check', None)
         try:
             dest = kargs['dest']
         except KeyError:
