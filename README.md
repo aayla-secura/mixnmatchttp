@@ -548,6 +548,8 @@ Redirects (with `307`) to any address given in the URL.
   * Cmdline options to disable `request_log` and `logdir` if set in config
   * Move stuff from JWT class to `cryptourtils` module
   * Merge `_secrets` and `_can_create_users` with those of parent classes, like endpoints
+  * `--add-users`: password input should not be displayed
+  * Fix path canonicalization for endpoints, .e.g `//login` does not match an endpoint
 
 ## Possibly coming at some point
 
