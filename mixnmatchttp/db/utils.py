@@ -282,20 +282,16 @@ def parse_db_url(url):
     with dialect, user, password, host, port, database, query
     '''
 
-    m = re.search(
-        ('^([^:/]+)://((([^@/:]+):([^@/:]*)@)?'
-         '([^:/]+)(:([0-9]+))?)?(/([^?]+)(\?(.+))?)?$'), url)
+    m = re.search((
+        '^(?P<dialect>[^:/]+)://'
+        '('
+        '((?P<user>[^@/:]+)(:(?P<password>.*))?@)?'
+        '(?P<host>[^@:/]+)(:(?P<port>[0-9]+))?'
+        ')?'
+        '(/(?P<database>[^?]+)(\?(?P<query>.+))?)?$'), url)
     if not m:
         return None
-    res = {
-        'dialect': m.group(1),
-        'user': m.group(4),
-        'password': m.group(5),
-        'host': m.group(6),
-        'port': m.group(8),
-        'database': m.group(10),
-        'query': m.group(12)}
-    return res
+    return m.groupdict()
 
 def is_base(cls):
     '''Returns True if cls is a declarative base'''
