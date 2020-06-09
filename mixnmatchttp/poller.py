@@ -20,6 +20,12 @@ class Poller:
         self.update()
 
     @property
+    def closed(self):
+        '''A boolean indicating if the poller has been closed'''
+
+        return self.__closed
+
+    @property
     def latest(self):
         '''An ETag string (UUID) which is updated on change'''
 
@@ -31,17 +37,22 @@ class Poller:
 
         return self.__last_change
 
-    def wait(self):
+    def wait(self, timeout=None):
         '''Wait for a change
 
         Returns the latest tag or None if the poller has been closed
+        or a timeout has occurred
         '''
 
         if self.__closed:
             return None
         with self.__waiter:
-            self.__waiter.wait()
-        if self.__closed:
+            # python 2: wait always returns None, so figure out if it
+            # timed out by comparing the current and new tags
+            old = self.__latest
+            self.__waiter.wait(timeout=timeout)
+        if old == self.__latest:
+            # timed out or was closed
             return None
         return self.__latest
 
