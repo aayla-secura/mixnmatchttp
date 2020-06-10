@@ -318,6 +318,9 @@ def filter_results(db,
     - db is a database session
     - cls is a table object
     - fparams is a dictionary of column names and comparison values
+      - it supports a nested dictionary up to one level, i.e. the
+        top-most values can be dictionaries, but their values have to
+        be flat
     - If expect_one is True, then one() is called finally, otherwise
       all()
     - load is a list of attributes (as names) which should be loaded
