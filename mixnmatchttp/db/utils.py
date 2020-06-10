@@ -331,7 +331,9 @@ def filter_results(db,
 
     def get_filter():
         return joining(*[
-            getattr(cls, k) == v for k, v in fparams.items()])
+            getattr(cls, k).has(**v) if isinstance(v, dict)
+            else getattr(cls, k) == v
+            for k, v in fparams.items()])
 
     options = []
     if load:
