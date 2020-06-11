@@ -117,17 +117,17 @@ def needs_db_error_response_handling(base):
 
     return _decorator
 
-def needs_db(base):
+def needs_db(base, auto_close=False):
     '''Passes a session of base to the wrapped method
 
-    The session is commited but not closed.
+    The session is commited but not closed, unless auto_close is True.
     '''
 
     @decorator
     def _decorator(wrapped, self, args, kwargs):
-        db = DBConnection.get(base).session()
-        result = wrapped(db, *args, **kwargs)
-        db.commit()
-        return result
+        dconn = DBConnection.get(base)
+        with dconn.session_context(
+                reraise=False, auto_close=auto_close) as db:
+            return wrapped(db, *args, **kwargs)
 
     return _decorator

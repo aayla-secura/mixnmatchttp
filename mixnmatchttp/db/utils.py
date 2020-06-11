@@ -258,7 +258,8 @@ class DBConnection:
                 raise error
 
     @contextmanager
-    def session_context(self, reraise=True, auto_commit=True):
+    def session_context(self, reraise=True, auto_commit=True,
+                        auto_close=True):
         '''Creates a context with an open SQLAlchemy session.'''
 
         session = self.session()
@@ -272,8 +273,9 @@ class DBConnection:
             if reraise:
                 raise
         finally:
-            #  session.expunge_all()
-            session.close()
+            if auto_close:
+                #  session.expunge_all()
+                session.close()
 
 
 def parse_db_url(url):
