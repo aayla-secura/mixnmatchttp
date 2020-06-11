@@ -550,6 +550,7 @@ Redirects (with `307`) to any address given in the URL.
   * Merge `_secrets` and `_can_create_users` with those of parent classes, like endpoints
   * `--add-users`: password input should not be displayed
   * Fix path canonicalization for endpoints, .e.g `//login` does not match an endpoint
+  * `max_depth` option to `object_from_dict`
 
 ## Possibly coming at some point
 
