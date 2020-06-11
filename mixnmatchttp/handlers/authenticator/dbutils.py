@@ -17,12 +17,12 @@ from .dbapi import DBBase
 logger = logging.getLogger(__name__)
 
 
-def json_serializer(obj, short=False, short_mappings={}):
+def json_serializer(obj, max_depth=None, short_mappings={}):
     '''Supports mapper classes and dict-like objects'''
 
     if is_mapper(obj.__class__):
         return object_to_dict(
-            obj, short=short, short_mappings=short_mappings)
+            obj, max_depth=max_depth, short_mappings=short_mappings)
     elif is_map_like(obj):
         return dict(obj)
     elif isinstance(obj, datetime):
@@ -79,18 +79,21 @@ def needs_db_response_handling(base,
             if result is None:
                 self.send_response_empty(204)
             else:
-                short = self.get_param('short', self.query)
-                if short is not None:
+                max_depth = self.get_param('max_depth', self.query)
+                if max_depth is not None:
                     try:
-                        short = int(short)
+                        max_depth = int(max_depth)
+                        if max_depth < 0:
+                            raise ValueError
                     except ValueError:
-                        if short.lower() in ['false', 'no']:
-                            short = False
-                        elif short == '':
-                            short = True
-                short = bool(short)
+                        self.save_param(
+                            'error',
+                            ('max_depth must be a non-negative '
+                             'integer'))
+                        self.send_as_json(code=400)
+                        return
                 self.send_as_json(result, serializer=partial(
-                    json_serializer, short=short))
+                    json_serializer, max_depth=max_depth))
 
     return _decorator
 

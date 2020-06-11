@@ -346,33 +346,42 @@ def filter_results(db,
         return res.one()
     return res.all()
 
-def object_to_dict(obj, skip='_id$', short=False, short_mappings={}):
+def object_to_dict(obj, skip='_id$', max_depth=None, short_mappings={}):
     '''Returns a dictionary of the mapper object's columns
 
     Supports relationships (converts these to dictionaries).
     - skip is a regex of keys to be skipped.
-    - If short is True, then a string is returned with a predefined
-      format containing one or more columns; the format is controlled
-      by short_mappings: a dictionary where each key is a table name
-      and each value is a list of format_string, [value_1, [value_2]]
-      i.e. the short value will be format_string.format(value_1, ...).
-      Default is:
-        short_mappings = {
-            'user': ['{}', 'username'],
-            'session': ['{}', 'token'],
-            'role': ['{}', 'name']}
-      The dictionary given in short_mappings adds to the default,
-      rather than replacing it.
+    - If max_depth is given, then it specifies the maximum depth of
+      the dictionary. At the last level, objects are converted to
+      strings via a predefined format containing one or more columns.
+      - The format is controlled by short_mappings: a dictionary where
+        each key is a table name and each value is a list of
+        format_string, [value_1, [value_2]], i.e. the string value
+        will be format_string.format(value_1, ...).
+        - Default is:
+          short_mappings = {
+              'user': ['{}', 'username'],
+              'session': ['{}', 'token'],
+              'role': ['{}', 'name']}
+        If the table name is not found in short_mappings, then the id
+        column is returned (which must exist).
+        The dictionary given in short_mappings adds to the default,
+        rather than replacing it.
+      - If max_depth is 0, then this function returns a string, rather
+        than a dictionary
     '''
+
+    if max_depth is not None and max_depth < 0:
+        raise ValueError('max_depth must be non-negative')
 
     return _object_to_dict(obj,
                            skip=skip,
-                           short=short,
+                           max_depth=max_depth,
                            short_mappings=short_mappings)
 
 def _object_to_dict(obj,
                     skip='_id$',
-                    short=False,
+                    max_depth=None,
                     short_mappings={},
                     seen=None):
     def transform_value(val, seen):
@@ -387,14 +396,21 @@ def _object_to_dict(obj,
         elif is_mapper(val.__class__):
             logger.debug('tansforming {}, seen: {}'.format(
                 val.__tablename__, seen))
-            short = False
             if val.__tablename__ in seen:
-                short = True
+                this_max_depth = 0
                 logger.debug(
                     '{} already seen'.format(val.__tablename__))
+            elif max_depth is None:
+                this_max_depth = None
+            else:
+                this_max_depth = max_depth - 1
             seen = seen.union([val.__tablename__])
             return _object_to_dict(
-                val, skip=skip, seen=seen, short=short)
+                val,
+                skip=skip,
+                short_mappings=short_mappings,
+                max_depth=this_max_depth,
+                seen=seen)
         # assume it's a simple value like int or string
         # should we check here if it's JSON serializable and ommit
         # if not?
@@ -418,7 +434,7 @@ def _object_to_dict(obj,
             vals.append(val)
         return fmt[0].format(*vals)
 
-    if short:
+    if max_depth == 0:
         return get_short_value(obj)
     insp = inspect(obj)
     data = {}
