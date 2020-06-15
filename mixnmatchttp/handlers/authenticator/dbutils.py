@@ -131,3 +131,13 @@ def needs_db(base, auto_close=False):
             return wrapped(db, *args, **kwargs)
 
     return _decorator
+
+def needs_db_conn(base):
+    '''Passes a session connection of base to the wrapped method'''
+
+    @decorator
+    def _decorator(wrapped, self, args, kwargs):
+        dconn = DBConnection.get(base)
+        return wrapped(dconn, *args, **kwargs)
+
+    return _decorator
