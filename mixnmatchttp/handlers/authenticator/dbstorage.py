@@ -147,20 +147,33 @@ class BaseAuthSQLAlchemyORMHTTPRequestHandler(
           via DBConnection(base, url, ...).
         '''
 
-        def before_commit(session):
-            if not session._is_clean():
+        def is_clean(session):
+            if session.new or session.deleted:
+                return False
+            for i in session.dirty:
+                if session.is_modified(i):
+                    return False
+            return True
+
+        def before_flush(session, flush_context, instances):
+            if 'is_clean' not in session.info:
+                session.info['is_clean'] = True
+            if not session.info['is_clean']:
+                return
+            if is_clean(session):
+                logger.debug('DB unchanged')
+            else:
                 logger.debug('DB will change')
-                data['is_clean'] = False
+                session.info['is_clean'] = False
 
         def after_commit(session):
-            if not data['is_clean']:
+            if not session.info.get('is_clean', True):
                 logger.debug('DB changed')
                 cls.pollers[name].update()
-                data['is_clean'] = True
+                session.info['is_clean'] = True
 
-        data = {'is_clean': True}
         cls.pollers[name] = Poller()
         DBConnection.get(base).listen(
-            'before_commit', before_commit)
+            'before_flush', before_flush)
         DBConnection.get(base).listen(
             'after_commit', after_commit)
