@@ -348,11 +348,18 @@ def filter_results(db,
         return res.one()
     return res.all()
 
-def object_to_dict(obj, skip='_id$', max_depth=None, short_mappings={}):
+def object_to_dict(obj,
+                   skip='_id$',
+                   no_skip=None,
+                   max_depth=None,
+                   short_mappings={}):
     '''Returns a dictionary of the mapper object's columns
 
     Supports relationships (converts these to dictionaries).
-    - skip is a regex of keys to be skipped.
+    - skip is a regex of keys to be skipped. If None, nothing is
+      skipped.
+    - noskip is a regex of keys to be included and overrides any match
+      in skip.
     - If max_depth is given, then it specifies the maximum depth of
       the dictionary. At the last level, objects are converted to
       strings via a predefined format containing one or more columns.
@@ -378,13 +385,15 @@ def object_to_dict(obj, skip='_id$', max_depth=None, short_mappings={}):
 
     return _object_to_dict(obj,
                            skip=skip,
+                           no_skip=no_skip,
                            max_depth=max_depth,
                            short_mappings=short_mappings)
 
 def _object_to_dict(obj,
-                    skip='_id$',
-                    max_depth=None,
-                    short_mappings={},
+                    skip,
+                    no_skip,
+                    max_depth,
+                    short_mappings,
                     seen=None):
     def transform_value(val, seen):
         if is_seq_like(val):
@@ -410,6 +419,7 @@ def _object_to_dict(obj,
             return _object_to_dict(
                 val,
                 skip=skip,
+                no_skip=no_skip,
                 short_mappings=short_mappings,
                 max_depth=this_max_depth,
                 seen=seen)
@@ -443,7 +453,9 @@ def _object_to_dict(obj,
     if seen is None:
         seen = set([obj.__tablename__])
     for attr in insp.attrs:
-        if re.search(skip, attr.key):
+        if (skip is not None and re.search(skip, attr.key)) \
+                and (no_skip is None
+                     or not re.search(no_skip, attr.key)):
             continue
         val = transform_value(attr.value, seen)
         data[attr.key] = val

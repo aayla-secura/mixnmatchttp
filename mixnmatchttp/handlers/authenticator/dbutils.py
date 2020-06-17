@@ -17,12 +17,14 @@ from .dbapi import DBBase
 logger = logging.getLogger(__name__)
 
 
-def json_serializer(obj, max_depth=None, short_mappings={}):
-    '''Supports mapper classes and dict-like objects'''
+def json_serializer(obj, **kargs):
+    '''Supports mapper classes and dict-like objects
+
+    - kargs are passed to object_to_dict
+    '''
 
     if is_mapper(obj.__class__):
-        return object_to_dict(
-            obj, max_depth=max_depth, short_mappings=short_mappings)
+        return object_to_dict(obj, **kargs)
     elif is_map_like(obj):
         return dict(obj)
     elif isinstance(obj, datetime):
