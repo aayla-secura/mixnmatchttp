@@ -54,8 +54,9 @@ class App(object):
                  db_bases={},
                  reqhn_opts=[],
                  server_opts=[],
-                 log_fmt=('[%(asctime)s] %(name)s '
-                          '(%(threadName)s): %(message)s')):
+                 log_fmt=(
+                     '[%(asctime)s] %(name)s '
+                     '(%(threadName)s @ %(thread)d): %(message)s')):
         '''TODO
 
         reqhandler will be replaced
