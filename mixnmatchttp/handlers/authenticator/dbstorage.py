@@ -37,7 +37,7 @@ class BaseAuthSQLAlchemyORMHTTPRequestHandler(
 
     _prune_sessions_every = 300
 
-    @needs_db(DBBase)
+    @needs_db(DBBase, expire_on_commit=False)
     @classmethod
     def find_session(cls, db, token, must_exist=False):
         '''Returns the Session corresponding to the token'''
@@ -50,7 +50,7 @@ class BaseAuthSQLAlchemyORMHTTPRequestHandler(
                 raise
             return None
 
-    @needs_db(DBBase)
+    @needs_db(DBBase, expire_on_commit=False)
     @classmethod
     def get_all_sessions(cls, db):
         '''Returns a list of Sessions'''
@@ -82,7 +82,7 @@ class BaseAuthSQLAlchemyORMHTTPRequestHandler(
         db_session = cls.find_session(session.token, must_exist=True)
         db.delete(db_session)
 
-    @needs_db(DBBase)
+    @needs_db(DBBase, expire_on_commit=False)
     @classmethod
     def find_user(cls, db, username, must_exist=False):
         '''Returns the User for that username'''
@@ -95,7 +95,7 @@ class BaseAuthSQLAlchemyORMHTTPRequestHandler(
                 raise
             return None
 
-    @needs_db(DBBase)
+    @needs_db(DBBase, expire_on_commit=False)
     @classmethod
     def create_user(cls, db, username, password, roles=None):
         '''Creates and returns a new User'''
