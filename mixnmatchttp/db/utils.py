@@ -258,14 +258,19 @@ class DBConnection:
                 raise error
 
     @contextmanager
-    def session_context(self, reraise=True, auto_commit=True,
-                        auto_close=True):
+    def session_context(self,
+                        reraise=True,
+                        commit_at_end=True,
+                        close_at_end=True,
+                        **kargs):
         '''Creates a context with an open SQLAlchemy session.'''
 
         session = self.session()
+        for k, v in kargs.items():
+            setattr(session, k, v)
         try:
             yield session
-            if auto_commit:
+            if commit_at_end:
                 session.commit()
         except (DatabaseError, ServerDBError) as e:
             logger.error(str(e))
@@ -273,7 +278,7 @@ class DBConnection:
             if reraise:
                 raise
         finally:
-            if auto_close:
+            if close_at_end:
                 #  session.expunge_all()
                 session.close()
 
