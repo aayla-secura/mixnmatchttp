@@ -34,6 +34,7 @@ def json_serializer(obj, **kargs):
 def needs_db_response_handling(base,
                                poller=None,
                                poll_any=False,
+                               send_None=True,
                                json_serializer=json_serializer):
     '''Passes a session and sends the returned object as JSON
 
@@ -46,6 +47,9 @@ def needs_db_response_handling(base,
       header via the current tag of that poller
     - If poll_any is True, then we always inspect the If-None-Match.
       Otherwise, only in GET requests.
+    - If send_None is True, then a 204 is sent if the wrapped method
+      returns None. Otherwise nothing is sent, i.e. the wrapped method
+      must send the response itself.
     - json_serializer is used to serialize the returned object.
     '''
 
@@ -79,7 +83,8 @@ def needs_db_response_handling(base,
                 self.save_header(
                     'ETag', self.pollers[poller].latest)
             if result is None:
-                self.send_response_empty(204)
+                if send_None:
+                    self.send_response_empty(204)
             else:
                 max_depth = self.get_param('max_depth', self.query)
                 if max_depth is not None:
