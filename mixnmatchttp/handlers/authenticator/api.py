@@ -46,8 +46,8 @@ class ReadOnlyDict(object):
     def __repr__(self):
         return self._dict_data.__repr__()
 
-    def get(self, key):
-        return self._dict_data.get(key)
+    def get(self, key, default=None):
+        return self._dict_data.get(key, default)
 
     def items(self):
         return self._dict_data.items()
