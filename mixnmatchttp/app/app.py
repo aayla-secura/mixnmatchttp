@@ -65,12 +65,13 @@ class App(object):
         reqhandler will be replaced
         '''
 
-        if support_daemon:
+        if db_bases:
             try:
                 DBConnection
             except NameError:
                 exit('You need the SQLAlchemy package '
                      'to use databases.')
+        if support_daemon:
             try:
                 DaemonContext
             except NameError:
