@@ -27,7 +27,10 @@ except ImportError:
 
 from ..servers import ThreadingHTTPServer
 from ..utils import randstr, is_str
-from ..db import DBConnection, is_base, parse_db_url
+try:
+    from ..db import DBConnection, is_base, parse_db_url
+except ImportError:
+    pass  # optional
 from ..handlers.authenticator.dbapi import DBBase
 from .utils import AppendUniqueArgAction, exit, read_line, \
     make_dirs, ensure_exists
@@ -63,6 +66,11 @@ class App(object):
         '''
 
         if support_daemon:
+            try:
+                DBConnection
+            except NameError:
+                exit('You need the SQLAlchemy package '
+                     'to use databases.')
             try:
                 DaemonContext
             except NameError:
