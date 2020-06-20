@@ -29,9 +29,9 @@ from ..servers import ThreadingHTTPServer
 from ..utils import randstr, is_str
 try:
     from ..db import DBConnection, is_base, parse_db_url
+    from ..handlers.authenticator.dbapi import DBBase
 except ImportError:
     pass  # optional
-from ..handlers.authenticator.dbapi import DBBase
 from .utils import AppendUniqueArgAction, exit, read_line, \
     make_dirs, ensure_exists
 from .log import get_loggers
