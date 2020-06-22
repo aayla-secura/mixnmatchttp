@@ -77,10 +77,10 @@ class App(object):
             except NameError:
                 exit('You need the python-daemon package '
                      'to use daemon mode.')
-        for name, d in db_bases.items():
-            if not is_str(name):
+        for n, d in db_bases.items():
+            if not is_str(n):
                 exit('db_bases keys should be strings')
-            if name.replace(' ', '') != name:
+            if n.replace(' ', '') != n:
                 exit('db_bases keys cannot contain spaces.')
             if 'base' not in d:
                 exit("db_bases items should contain a 'base' key.")
@@ -262,13 +262,13 @@ class App(object):
         if db_bases:
             self.parser_groups['db'] = self.parser.add_argument_group(
                 'Database options')
-            for name in self.db_bases.keys():
+            for n in self.db_bases.keys():
                 self.parser_groups['db'].add_argument(
-                    '--{}-dburl'.format(name),
-                    dest='{}_dburl'.format(name),
+                    '--{}-dburl'.format(n),
+                    dest='{}_dburl'.format(n),
                     metavar=('dialect://[username:password@]'
                              'host/database'),
-                    help='URL of the {} database.'.format(name))
+                    help='URL of the {} database.'.format(n))
 
         if self.proto == 'http':
             self.parser_groups['http'] = self.parser.add_argument_group(
@@ -511,12 +511,12 @@ class App(object):
         if self.conf.userfile is not None \
                 and not self.conf.add_users:
             ensure_exists(self.conf.userfile, is_file=True)
-        for name in self.db_bases.keys():
-            url = getattr(self.conf, '{}_dburl'.format(name))
+        for n in self.db_bases.keys():
+            url = getattr(self.conf, '{}_dburl'.format(n))
             if not url:
-                exit(('You must specify the {}_dburl '
-                      'configuration option or the --{}-dburl '
-                      'command-line option.').format(name, name))
+                exit(('You must specify the {name}_dburl '
+                      'configuration option or the --{name}-dburl '
+                      'command-line option.').format(name=n))
             conn = parse_db_url(url)
             if not conn:
                 exit('Invalid database URL: {}'.format(url))
@@ -636,9 +636,9 @@ class App(object):
         #### Connect to the databases
         # This has to be done after daemonization because the sockets
         # may be closed
-        for name, d in self.db_bases.items():
+        for n, d in self.db_bases.items():
             base = d['base']
-            url = getattr(self.conf, '{}_dburl'.format(name))
+            url = getattr(self.conf, '{}_dburl'.format(n))
             session_kargs = d.get('session_args', {})
             engine_kargs = d.get('engine_args', {})
             cache = d.get('cache', False)
@@ -647,7 +647,7 @@ class App(object):
                          session_kargs=session_kargs,
                          engine_kargs=engine_kargs)
             if cache:  # ETag support
-                self.reqhandler.enable_client_cache(name, base)
+                self.reqhandler.enable_client_cache(n, base)
 
         #### Load users
         if self.conf.userfile is not None:
