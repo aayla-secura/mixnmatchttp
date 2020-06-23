@@ -185,6 +185,37 @@ def is_map_like(val):
     # in python2 UserDict is not a child of Mapping
     return isinstance(val, (_abcoll.Mapping, UserDict))
 
+def is_time_like(val,
+                 years_ahead=10,
+                 months_ahead=0,
+                 days_ahead=0,
+                 hours_ahead=0,
+                 minutes_ahead=0,
+                 seconds_ahead=0,
+                 microseconds_ahead=0):
+    '''True if val is like a timestamp
+
+    I.e. if non-negative number up to the current timestamp + the
+    future time given by the *_ahead arguments.
+    The timestamp is assumed to be in local timezone.
+    '''
+
+    try:
+        ts = int(float(val))
+    except (TypeError, ValueError):
+        return False
+    now = datetime_from_timestamp(0, relative=True)
+    dmax = datetime(
+        year=now.year + years_ahead,
+        month=now.month + months_ahead,
+        day=now.day + days_ahead,
+        hour=now.hour + hours_ahead,
+        minute=now.minute + minutes_ahead,
+        second=now.second + seconds_ahead,
+        microsecond=now.microsecond + microseconds_ahead,
+        tzinfo=now.tzinfo)
+    return ts >= 0 and ts < datetime_to_timestamp(dmax, to_utc=False)
+
 def str_remove_chars(s, skip):
     try:  # python2
         return s.translate(None, skip)
@@ -363,7 +394,7 @@ def param_dict(s,
 def curr_timestamp(to_utc=True):
     '''Returns the current timestamp (in seconds since epoch)
 
-    - if to_utc is True it returns a timestamp in UTC timezone
+    - If to_utc is True it returns a timestamp in UTC timezone
       (otherwise in the local timezone)
     '''
 
@@ -373,7 +404,7 @@ def curr_timestamp(to_utc=True):
 def datetime_to_timestamp(dtime, to_utc=True):
     '''Returns the timestamp (in seconds since epoch)
 
-    - if to_utc is True it returns the timestamp in UTC time,
+    - If to_utc is True it returns the timestamp in UTC time,
       otherwise in local time (if dtime is not timezone aware, we
       assume it's in the local timezone)
     '''
@@ -394,10 +425,10 @@ def datetime_from_timestamp(ts,
                             relative=False):
     '''Returns the datetime from a timestamp
 
-    - if relative is True, the current timestamp is added
+    - If relative is True, the current timestamp is added
     - from_utc determines if the timestamp is in UTC time; it's
       ignored if relative is True.
-    - if to_utc is True it returns a datetime in UTC timezone
+    - If to_utc is True it returns a datetime in UTC timezone
       (otherwise in the local timezone)
     '''
 
@@ -417,10 +448,10 @@ def date_from_timestamp(ts,
                         relative=False):
     '''Returns the datetime from a timestamp
 
-    - if relative is True, the current timestamp is added
+    - If relative is True, the current timestamp is added
     - from_utc determines if the timestamp is in UTC time; it's
       ignored if relative is True.
-    - if to_utc is True it returns a date in UTC timezone
+    - If to_utc is True it returns a date in UTC timezone
       (otherwise in the local timezone)
     - datefmt is the format; {{TZ}} is replaced by the timzone's name
     '''
@@ -430,7 +461,31 @@ def date_from_timestamp(ts,
     datefmt = datefmt.replace('{{TZ}}', dtime.tzname())
     return dtime.strftime(datefmt)
 
+def timestamp_to_str(ts,
+                     to_utc=True,
+                     from_utc=False,
+                     relative=False,
+                     datefmt='%a, %d %b %Y %H:%M:%S {{TZ}}'):
+    '''Returns the formatted timestamp
+
+    - If relative is True, the current timestamp is added
+    - from_utc determines if the timestamp is in UTC time; it's
+      ignored if relative is True.
+    - If to_utc is True it returns a date in UTC timezone
+      (otherwise in the local timezone)
+    '''
+
+    return datetime_to_str(
+        datetime_from_timestamp(
+            ts,
+            relative=relative,
+            to_utc=to_utc,
+            from_utc=from_utc),
+        datefmt=datefmt)
+
 def datetime_to_str(dtime, datefmt='%a, %d %b %Y %H:%M:%S {{TZ}}'):
+    '''Returns the formatted datetime'''
+
     tzname = dtime.tzname()
     if tzname is None:
         datefmt = datefmt.replace(' {{TZ}}', '').replace('{{TZ}}', '')
