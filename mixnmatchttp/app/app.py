@@ -55,8 +55,7 @@ class App(object):
                  support_daemon=False,
                  auth_type='cookie',
                  db_bases={},
-                 reqhn_opts=[],
-                 server_opts=[],
+                 user_conf_key=None,
                  log_fmt=(
                      '[%(asctime)s] %(name)s '
                      '(%(threadName)s @ %(thread)d): %(message)s')):
@@ -90,7 +89,12 @@ class App(object):
         self._is_configured = self._delete_tmp_userfile = False
         # access.log is for http.server (which writes to stderr)
         self.access_log = self.doneEvent = self.server = self.url = \
-            self.pidlockfile = None
+            self.pidlockfile = self.conf = None
+        self._no_conf_items = ['action',
+                               'config',
+                               'save_config',
+                               'debug_log',
+                               'add_users']
         self._custom_checks = {}
 
         self.reqhandler = reqhandler
@@ -99,8 +103,7 @@ class App(object):
         self.proto = proto
         self.auth_type = auth_type
         self.db_bases = db_bases
-        self.reqhn_opts = reqhn_opts
-        self.server_opts = server_opts
+        self.user_conf_key = user_conf_key
         self.log_fmt = log_fmt
 
         if self.name is None:
@@ -108,11 +111,6 @@ class App(object):
                 self.name = 'pyhttpd'
             else:
                 self.name = 'pyserver'
-        self.conf = Conf(skip=['action',
-                               'config',
-                               'save_config',
-                               'debug_log',
-                               'add_users'])
 
         self.parser_groups = {}
         self.parser = argparse.ArgumentParser(
@@ -364,6 +362,7 @@ class App(object):
         # python 2 (cannot specofy keywords after *args)
         group = kargs.pop('group', None)
         check = kargs.pop('check', None)
+        no_save = kargs.pop('no_save', False)
         try:
             dest = kargs['dest']
         except KeyError:
@@ -377,6 +376,10 @@ class App(object):
             except KeyError:
                 parser = self.parser_groups[group[0]] = \
                     self.parser.add_argument_group(group[1])
+
+        if no_save:
+            self._no_conf_items.append(dest)
+
         parser.add_argument(*args, **kargs)
         if check is not None:
             if check == 'file':
@@ -396,6 +399,7 @@ class App(object):
         if self._is_configured:
             raise RuntimeError("'configure' can be called only once.")
 
+        self.conf = Conf(skip=self._no_conf_items)
         args = self.parser.parse_args()
         #### Load/save/update config file
         if args.config is not None:
@@ -595,8 +599,8 @@ class App(object):
                 privkey=self.conf.jwt_priv_key)
 
         #### Set class options from conf
-        for o in self.reqhn_opts:
-            setattr(self.reqhandler, o, getattr(self.conf, o))
+        if self.user_conf_key is not None:
+            setattr(self.reqhandler, self.user_conf_key, self.conf)
 
     def _start(self):
         if self.conf.logdir is not None:
@@ -664,8 +668,8 @@ class App(object):
             self.server_cls = type(
                 'ThreadingHTTPServer',
                 (ThreadingHTTPServer, object), {})
-        for o in self.server_opts:
-            setattr(self.server_cls, o, getattr(self.conf, o))
+        if self.user_conf_key is not None:
+            setattr(self.server_cls, self.user_conf_key, self.conf)
         self.server = self.server_cls(
             (self.conf.address, self.conf.port),
             self.reqhandler)
