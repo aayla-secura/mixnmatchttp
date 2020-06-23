@@ -18,7 +18,8 @@ from sqlalchemy.orm.util import class_mapper
 from .exc import ObjectConversionError, ObjectNotFoundError, \
     ObjectExistsError, ServerDBError, MetadataMistmatchError
 from .is_db_sane import is_db_sane
-from ..utils import is_seq_like, is_map_like
+from ..utils import is_seq_like, is_map_like, is_time_like, \
+    timestamp_to_str
 
 
 logger = logging.getLogger(__name__)
@@ -357,6 +358,7 @@ def object_to_dict(obj,
                    skip='_id$',
                    no_skip=None,
                    max_depth=None,
+                   convert_timestamp=timestamp_to_str,
                    short_mappings={}):
     '''Returns a dictionary of the mapper object's columns
 
@@ -383,6 +385,14 @@ def object_to_dict(obj,
         rather than replacing it.
       - If max_depth is 0, then this function returns a string, rather
         than a dictionary
+    - If convert_timestamp is not None, it must be a callable which
+      takes a single argument (the timestamp) and returns a formatted
+      date. It is used for values which look like timestamps.
+      We guess by looking for values which are non-negative numbers up
+      to the current timestamp + 10 years and with keys containing the
+      word "time" or "date" (non-case sensitive). Both conditions have
+      to match for the value to be converted. Local timezone is
+      assumed.
     '''
 
     if max_depth is not None and max_depth < 0:
@@ -392,23 +402,28 @@ def object_to_dict(obj,
                            skip=skip,
                            no_skip=no_skip,
                            max_depth=max_depth,
+                           convert_timestamp=convert_timestamp,
                            short_mappings=short_mappings)
 
 def _object_to_dict(obj,
                     skip,
                     no_skip,
                     max_depth,
+                    convert_timestamp,
                     short_mappings,
                     seen=None):
-    def transform_value(val, seen):
+    def transform_value(key, val, seen):
         if is_seq_like(val):
             result = []
             first = True
             for e in val:
-                v = transform_value(e, seen)
+                v = transform_value(key, e, seen)
                 result.append(v)
                 first = False
             return result
+        elif convert_timestamp is not None and is_time_like(val) \
+                and re.search('time|date', key, re.IGNORECASE):
+            return convert_timestamp(val)
         elif is_mapper(val.__class__):
             logger.debug('tansforming {}, seen: {}'.format(
                 val.__tablename__, seen))
@@ -427,6 +442,7 @@ def _object_to_dict(obj,
                 no_skip=no_skip,
                 short_mappings=short_mappings,
                 max_depth=this_max_depth,
+                convert_timestamp=convert_timestamp,
                 seen=seen)
         # assume it's a simple value like int or string
         # should we check here if it's JSON serializable and ommit
@@ -462,7 +478,7 @@ def _object_to_dict(obj,
                 and (no_skip is None
                      or not re.search(no_skip, attr.key)):
             continue
-        val = transform_value(attr.value, seen)
+        val = transform_value(attr.key, attr.value, seen)
         data[attr.key] = val
     return data
 
