@@ -27,4 +27,4 @@ class BadPasswordError(AuthError):
     '''Exception raised when new password is invalid'''
 
     def __init__(self, username):
-        super().__init__('Bad password for user {}'.format(username))
+        super().__init__('Choose a stronger password')
