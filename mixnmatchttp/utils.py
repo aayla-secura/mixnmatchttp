@@ -214,7 +214,10 @@ def is_time_like(val,
         second=now.second + seconds_ahead,
         microsecond=now.microsecond + microseconds_ahead,
         tzinfo=now.tzinfo)
-    return ts >= 0 and ts < datetime_to_timestamp(dmax, to_utc=False)
+    return (ts >= 0 and (
+        ts < datetime_to_timestamp(dmax, to_utc=False)
+        or ts < datetime_to_timestamp(
+            dmax, to_utc=False, to_ms=True)))
 
 def str_remove_chars(s, skip):
     try:  # python2
@@ -391,22 +394,25 @@ def param_dict(s,
     logger.debug('Got params from {}: {}'.format(s, params))
     return params
 
-def curr_timestamp(to_utc=True):
+def curr_timestamp(to_utc=True, to_ms=False):
     '''Returns the current timestamp (in seconds since epoch)
 
     - If to_utc is True it returns a timestamp in UTC timezone
       (otherwise in the local timezone)
+    - If to_ms is True, then the timestamp is returned in milliseconds
     '''
 
     tz = UTCTimeZone if to_utc else LocalTimeZone
-    return datetime_to_timestamp(datetime.now(tz=tz), to_utc=to_utc)
+    return datetime_to_timestamp(
+        datetime.now(tz=tz), to_utc=to_utc, to_ms=to_ms)
 
-def datetime_to_timestamp(dtime, to_utc=True):
+def datetime_to_timestamp(dtime, to_utc=True, to_ms=False):
     '''Returns the timestamp (in seconds since epoch)
 
     - If to_utc is True it returns the timestamp in UTC time,
       otherwise in local time (if dtime is not timezone aware, we
       assume it's in the local timezone)
+    - If to_ms is True, then the timestamp is returned in milliseconds
     '''
 
     local_offset = datetime.now(tz=LocalTimeZone).utcoffset()
@@ -417,9 +423,13 @@ def datetime_to_timestamp(dtime, to_utc=True):
         offset = -dtime_offset
     else:
         offset = -dtime_offset + local_offset
-    return float(dtime.strftime('%s')) + offset.total_seconds()
+    ts = float(dtime.strftime('%s')) + offset.total_seconds()
+    if to_ms:
+        ts = ts * 1000 + dtime.microsecond / 1000
+    return ts
 
 def datetime_from_timestamp(ts,
+                            from_ms=False,
                             to_utc=True,
                             from_utc=False,
                             relative=False):
@@ -430,9 +440,12 @@ def datetime_from_timestamp(ts,
       ignored if relative is True.
     - If to_utc is True it returns a datetime in UTC timezone
       (otherwise in the local timezone)
+    - If from_ms is True, then the timestamp should be in milliseconds
     '''
 
     ts = float(ts)  # support strings
+    if from_ms:
+        ts /= 1000
     if relative:
         ts += curr_timestamp(to_utc=False)
     elif from_utc:
@@ -442,11 +455,12 @@ def datetime_from_timestamp(ts,
     return datetime.fromtimestamp(ts, tz=tz)
 
 def date_from_timestamp(ts,
+                        from_ms=False,
                         to_utc=True,
                         from_utc=False,
                         datefmt='%a, %d %b %Y %H:%M:%S {{TZ}}',
                         relative=False):
-    '''Returns the datetime from a timestamp
+    '''Returns the date from a timestamp
 
     - If relative is True, the current timestamp is added
     - from_utc determines if the timestamp is in UTC time; it's
@@ -454,34 +468,17 @@ def date_from_timestamp(ts,
     - If to_utc is True it returns a date in UTC timezone
       (otherwise in the local timezone)
     - datefmt is the format; {{TZ}} is replaced by the timzone's name
+    - If from_ms is True, then the timestamp should be in milliseconds
     '''
 
     dtime = datetime_from_timestamp(
-        ts, to_utc=to_utc, from_utc=from_utc, relative=relative)
+        ts,
+        from_ms=from_ms,
+        to_utc=to_utc,
+        from_utc=from_utc,
+        relative=relative)
     datefmt = datefmt.replace('{{TZ}}', dtime.tzname())
     return dtime.strftime(datefmt)
-
-def timestamp_to_str(ts,
-                     to_utc=True,
-                     from_utc=False,
-                     relative=False,
-                     datefmt='%a, %d %b %Y %H:%M:%S {{TZ}}'):
-    '''Returns the formatted timestamp
-
-    - If relative is True, the current timestamp is added
-    - from_utc determines if the timestamp is in UTC time; it's
-      ignored if relative is True.
-    - If to_utc is True it returns a date in UTC timezone
-      (otherwise in the local timezone)
-    '''
-
-    return datetime_to_str(
-        datetime_from_timestamp(
-            ts,
-            relative=relative,
-            to_utc=to_utc,
-            from_utc=from_utc),
-        datefmt=datefmt)
 
 def datetime_to_str(dtime, datefmt='%a, %d %b %Y %H:%M:%S {{TZ}}'):
     '''Returns the formatted datetime'''

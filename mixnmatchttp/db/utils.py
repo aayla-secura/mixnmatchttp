@@ -19,7 +19,7 @@ from .exc import ObjectConversionError, ObjectNotFoundError, \
     ObjectExistsError, ServerDBError, MetadataMistmatchError
 from .is_db_sane import is_db_sane
 from ..utils import is_seq_like, is_map_like, is_time_like, \
-    timestamp_to_str
+    date_from_timestamp
 
 
 logger = logging.getLogger(__name__)
@@ -358,7 +358,7 @@ def object_to_dict(obj,
                    skip='_id$',
                    no_skip=None,
                    max_depth=None,
-                   convert_timestamp=timestamp_to_str,
+                   convert_timestamp=date_from_timestamp,
                    short_mappings={}):
     '''Returns a dictionary of the mapper object's columns
 
@@ -389,10 +389,10 @@ def object_to_dict(obj,
       takes a single argument (the timestamp) and returns a formatted
       date. It is used for values which look like timestamps.
       We guess by looking for values which are non-negative numbers up
-      to the current timestamp + 10 years and with keys containing the
-      word "time" or "date" (non-case sensitive). Both conditions have
-      to match for the value to be converted. Local timezone is
-      assumed.
+      to the current timestamp (in seconds or milliseconds) + 10 years
+      and with keys containing the word "time" or "date" (non-case
+      sensitive). Both conditions have to match for the value to be
+      converted. Local timezone is assumed.
     '''
 
     if max_depth is not None and max_depth < 0:
