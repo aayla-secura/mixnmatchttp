@@ -24,7 +24,11 @@ def exit(error, rc=None):
             pass
     if rc is None:
         rc = -1
-    sys.stderr.write('{}\n'.format(error))
+    if rc == 0:
+        out = sys.stdout
+    else:
+        out = sys.stderr
+    out.write('{}\n'.format(error))
     sys.exit(rc)
 
 def read_line(prompt):
