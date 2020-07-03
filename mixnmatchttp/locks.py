@@ -7,6 +7,11 @@ from functools import wraps
 logger = logging.getLogger(__name__)
 
 
+class LockTimeoutError(Exception):
+    def __init__(self, name, *args):
+        super().__init__(
+            'Timed out waiting for lock {!s}'.format(name), *args)
+
 class ContextDecorator(object):
     # From https://coderwall.com/p/0lk6jg/
     # python-decorators-vs-context-managers-have-your-cake-and-eat-it
@@ -31,9 +36,10 @@ class named_lock(ContextDecorator):
     locks = {}
     locks_busy = {}
 
-    def __init__(self, timeout, name=None):
+    def __init__(self, timeout, raise_on_error=False, name=None):
         self.timeout = timeout
         self.name = name
+        self.raise_on_error = raise_on_error
         self.lock = None
         self.lock_busy = None
 
@@ -58,9 +64,11 @@ class named_lock(ContextDecorator):
                     self.timeout - current_time + start_time)
                 logger.debug('Woke up')
                 current_time = time.time()
-        logger.error('Timed out waiting for lock {}'.format(
-            self.name if self.name is not None else ''))
         self.lock_busy.release()
+        if self.raise_on_error:
+            raise LockTimeoutError(self.name)
+        logger.error(
+            'Timed out waiting for lock {!s}'.format(self.name))
         return False
 
     def __exit__(self, typ, val, traceback):
