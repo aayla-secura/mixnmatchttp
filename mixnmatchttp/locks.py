@@ -22,6 +22,9 @@ class ContextDecorator(object):
         pass
 
     def __call__(self, f):
+        if self.raise_on_error is None:
+            self.raise_on_error = True
+
         @wraps(f)
         def wrapper(*args, **kw):
             with self as acquired:
@@ -36,7 +39,7 @@ class named_lock(ContextDecorator):
     locks = {}
     locks_busy = {}
 
-    def __init__(self, timeout, raise_on_error=False, name=None):
+    def __init__(self, timeout, raise_on_error=None, name=None):
         self.timeout = timeout
         self.name = name
         self.raise_on_error = raise_on_error
