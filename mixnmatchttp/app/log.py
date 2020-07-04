@@ -42,12 +42,12 @@ class DebugStreamHandler(StreamHandler):
     _max_level = logging.DEBUG
 
 class RequestDebugFileHandler(FileHandler):
-    _min_level = 1
-    _max_level = 1
+    _min_level = logging.TRACE
+    _max_level = logging.TRACE
 
 class RequestDebugStreamHandler(StreamHandler):
-    _min_level = 1
-    _max_level = 1
+    _min_level = logging.TRACE
+    _max_level = logging.TRACE
 
 
 def get_loggers(destinations_map, logdir=None, fmt=None):
@@ -98,7 +98,7 @@ def get_loggers(destinations_map, logdir=None, fmt=None):
                     handler.setFormatter(log_formatter)
                 logger = logging.getLogger(pkg)
                 logger.addHandler(handler)
-                logger.setLevel(1)  # the handler filters
+                logger.setLevel(logging.TRACE)  # the handler filters
                 loggers[pkg] = logger
                 seen.append('{}.{}'.format(pkg, level))
     return loggers

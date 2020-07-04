@@ -478,7 +478,7 @@ class BaseHTTPRequestHandler(with_metaclass(
     def show(self):
         '''Logs the request'''
 
-        logger.log(1, '''
+        logger.trace('''
 ----- Request Start ----->
 
 {}
