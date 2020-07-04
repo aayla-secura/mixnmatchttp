@@ -155,7 +155,8 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
         new_val = self.__check_attr(key, value)
         # super() doesn't work here in python 2, see:
         # https://github.com/PythonCharmers/python-future/issues/267
-        super(self.__class__, self).__setattr__(key, new_val)
+        super(BaseAuthHTTPRequestHandlerMeta, self).__setattr__(
+            key, new_val)
 
     def __check_attr(cls, key, value):
         def is_none(val):
