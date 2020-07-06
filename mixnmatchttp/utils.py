@@ -225,6 +225,15 @@ def str_remove_chars(s, skip):
     except TypeError:  # python3
         return s.translate(str.maketrans(dict.fromkeys(skip)))
 
+def str_trunc(s, size):
+    if len(s) <= size:
+        return s
+    if isinstance(s, bytes):
+        suff = b'...'
+    else:
+        suff = '...'
+    return s[:size - 3] + suff
+
 def str_to_hex(s):
     try:  # python3
         return s.hex()
