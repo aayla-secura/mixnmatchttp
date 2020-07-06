@@ -222,14 +222,11 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
                             'bcrypt hashes')
                 elif value == 'scrypt':
                     try:
-                        hashlib.scrypt
-                    except AttributeError:  # python2
-                        try:
-                            import scrypt
-                        except ImportError:
-                            raise ImportError(
-                                'The scrypt module is required '
-                                'for scrypt hashes')
+                        import scrypt
+                    except ImportError:
+                        raise ImportError(
+                            'The scrypt module is required '
+                            'for scrypt hashes')
         return value
 
 class BaseAuthHTTPRequestHandler(
