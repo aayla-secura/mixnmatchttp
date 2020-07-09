@@ -1,6 +1,7 @@
 from ._py2 import *
 
 import os
+from contextlib import contextmanager
 import re
 import string
 import random
@@ -151,6 +152,30 @@ class DictNoClobber(UserDict, object):
             # python3
             return super().items()
 
+
+def to_bool(val):
+    '''Converts val to a boolean. val can be numeric or a string
+
+    If None it is False.
+    If numeric, 0 is False, 1 is True and otherwise ValueError is
+    raised.
+    If a string, "1", "yes" or "true" is True; "", "0", "no" or
+    "false" is False and otherwise ValueError is raised. Comparison is
+    case-insensitive.
+    '''
+
+    if not is_bool_like(val):
+        raise ValueError('{} is not a boolean'.format(val))
+    if (is_str(val) and val.lower() in ['1', 'yes', 'true']) \
+            or val == 1:
+        return True
+    return False
+
+def is_bool_like(val):
+    if is_str(val):
+        return val.lower() in [
+            '1', 'yes', 'true', '', '0', 'no', 'false']
+    return val in [None, 0, 1]
 
 def is_str(val):
     '''True if val is a string (including unicode or bytes)'''
@@ -498,3 +523,27 @@ def datetime_to_str(dtime, datefmt='%a, %d %b %Y %H:%M:%S {{TZ}}'):
     else:
         datefmt = datefmt.replace('{{TZ}}', tzname)
     return dtime.strftime(datefmt)
+
+@contextmanager
+def open_path(path, mode='r'):
+    if hasattr(path, 'read'):
+        filename = getattr(path, 'name', None)
+        fd = path
+        needs_closing = False
+        logger.debug('Using open file {}'.format(filename))
+    else:
+        filename = path
+        fd = open(path, mode)
+        needs_closing = True
+        logger.debug('Opened file {}'.format(filename))
+    try:
+        yield fd, filename
+    finally:
+        if needs_closing:
+            fd.close()
+            logger.debug('Closed file {}'.format(filename))
+
+def read_file(path, mode='r'):
+    with open_path(path, mode=mode) as (fd, filename):
+        logger.debug('Reading file {}'.format(filename))
+        return fd.read()

@@ -17,7 +17,7 @@ except ImportError:
 
 from ... import endpoints
 from ...utils import is_str, is_seq_like, is_map_like, \
-    datetime_to_timestamp, curr_timestamp
+    datetime_to_timestamp, curr_timestamp, open_path
 from ..base import BaseMeta, BaseHTTPRequestHandler
 from .utils import num_charsets
 from .exc import UserAlreadyExistsError, NoSuchUserError, \
@@ -653,11 +653,7 @@ class BaseAuthHTTPRequestHandler(
             return (user, pwd, [r.strip(' ')
                                 for r in roles.split(',') if r != ''])
 
-        ufile = userfile
-        if not hasattr(ufile, 'read'):
-            # don't handle IOError here
-            ufile = open(ufile, 'r')
-        with ufile:
+        with open_path(userfile) as (ufile, _):
             for line in ufile:
                 username, password, roles = process_line(line)
                 try:
