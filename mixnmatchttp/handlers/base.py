@@ -541,6 +541,7 @@ class BaseHTTPRequestHandler(with_metaclass(
                 raise
             self.send_error(500)
             return
+
         fs = os.fstat(f.fileno())
         self.send_response(200)
         ctype = mimetypes.guess_type(path)[0]
@@ -559,6 +560,27 @@ class BaseHTTPRequestHandler(with_metaclass(
         self.end_headers()
         shutil.copyfileobj(f, self.wfile)
         f.close()
+
+    def send_as_file(self, content, filename=None, ctype=None):
+        '''Send the content as an attachment.
+
+        Content-Type is guessed from the filename if not given and
+        defaults to application/octet-stream.
+        '''
+
+        self.send_response(200)
+        if ctype is None and filename is not None:
+            ctype = mimetypes.guess_type(filename)[0]
+        if ctype is None:
+            ctype = 'application/octet-stream'
+        self.send_header('Content-Type', ctype)
+        self.send_header('Content-Length', len(content))
+        disposition = 'attachment'
+        if filename is not None:
+            disposition += '; filename={}'.format(filename)
+        self.send_header('Content-Disposition', disposition)
+        self.end_headers()
+        self.write(content)
 
     def send_as_json(self,
                      obj=None,
