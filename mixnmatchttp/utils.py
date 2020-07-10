@@ -482,6 +482,7 @@ def datetime_from_timestamp(ts,
         ts /= 1000
     if relative:
         ts += curr_timestamp(to_utc=False)
+    # XXX don't ignore from_utc if relative is True
     elif from_utc:
         ts += datetime.now(
             tz=LocalTimeZone).utcoffset().total_seconds()
@@ -523,6 +524,23 @@ def datetime_to_str(dtime, datefmt='%a, %d %b %Y %H:%M:%S {{TZ}}'):
     else:
         datefmt = datefmt.replace('{{TZ}}', tzname)
     return dtime.strftime(datefmt)
+
+def datetime_from_str(dstr,
+                      datefmt='%d %b %Y %H:%M:%S',
+                      #  to_utc=True,
+                      from_utc=False):
+    '''Returns a datetime object from the given string
+
+    - If from_utc is True it assumes the time is in UTC
+      (otherwise in the local timezone)
+    '''
+
+    tz = UTCTimeZone if from_utc else LocalTimeZone
+    dtime = datetime.strptime(dstr, datefmt).replace(tzinfo=tz)
+    #  if to_utc:
+    #      pass  # XXX TODO
+    return dtime
+
 
 @contextmanager
 def open_path(path, mode='r'):
