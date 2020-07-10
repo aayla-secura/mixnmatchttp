@@ -55,6 +55,8 @@ def make_dirs(path, is_file=False, mode=0o755):
         os.makedirs(path, mode=mode)
 
 def ensure_exists(path, is_file=True):
+    if path is None:
+        return
     if not os.path.exists(path):
         exit(FileNotFoundError(
             errno.ENOENT, os.strerror(errno.ENOENT), path))

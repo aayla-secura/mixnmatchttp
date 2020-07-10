@@ -362,6 +362,7 @@ class App(object):
         # python 2 (cannot specofy keywords after *args)
         group = kargs.pop('group', None)
         check = kargs.pop('check', None)
+        required = kargs.pop('required', False)
         no_save = kargs.pop('no_save', False)
         try:
             dest = kargs['dest']
@@ -381,17 +382,21 @@ class App(object):
             self._no_conf_items.append(dest)
 
         parser.add_argument(*args, **kargs)
-        if check is not None:
+        if required or check is not None:
             if check == 'file':
-                check = partial(ensure_exists, is_file=True)
+                check_f = partial(ensure_exists, is_file=True)
             elif check == 'dir':
-                check = partial(make_dirs, is_file=False)
+                check_f = partial(make_dirs, is_file=False)
+            else:
+                check_f = None
             opt_string = args[0]
             for a in args[1:]:
                 if len(a) > len(opt_string):
                     opt_string = a
             self._custom_checks[dest] = {
-                'opt': opt_string, 'check': check}
+                'opt': opt_string,
+                'required': required,
+                'check': check_f}
 
     def configure(self):
         '''TODO'''
@@ -437,14 +442,19 @@ class App(object):
                 self.conf.daemonize = False
         for dest, o in self._custom_checks.items():
             opt = o['opt']
+            required = o['required']
             check = o['check']
             val = getattr(self.conf, dest)
-            if val is None:
+
+            if required and val is None:
                 exit('{} is required'.format(opt))
-            try:
-                check(val)
-            except ArgumentValueError as e:
-                exit(str(e))
+
+            if check is not None:
+                try:
+                    check(val)
+                except ArgumentValueError as e:
+                    exit(str(e))
+
         if self.action in ['start', 'restart']:
             self._prepare_for_start()
 
