@@ -161,6 +161,7 @@ class BaseHTTPRequestHandler(with_metaclass(
     path_prefix = ''
     endpoint_prefix = '/api'
     api_is_JSON = True
+    send_software_info = False
     _endpoints = Endpoint()
     _template_pages = DictNoClobber(
         default={
@@ -842,6 +843,42 @@ class BaseHTTPRequestHandler(with_metaclass(
                 super().send_error(code, message=message, explain=explain)
             except TypeError:
                 super().send_error(code, message=message)
+
+    def send_response(self, code, message=None):
+        '''Makes the Server header optional'''
+
+        self.log_request(code)
+        self.send_response_only(code, message)
+        if self.send_software_info:
+            self.send_header('Server', self.version_string())
+        self.send_header('Date', self.date_time_string())
+
+    def log_request(self, code='-', size='-'):
+        '''Log an accepted request
+
+        This is called by send_response().
+        '''
+
+        if isinstance(code, http.HTTPStatus):
+            code = code.value
+        self.log_message(
+            '"{}" {!s} {!s}', self.requestline, code, size)
+
+    def log_error(self, fmt, *args, **kargs):
+        self._log_message(logging.ERROR, fmt, *args, **kargs)
+
+    def log_message(self, fmt, *args, **kargs):
+        self._log_message(logging.INFO, fmt, *args, **kargs)
+
+    def _log_message(self, level, fmt, *args, **kargs):
+        '''Uses the logger'''
+
+        logger.log(
+            level,
+            '{addr} - - [{date}] {rest}'.format(
+                addr=self.address_string(),
+                date=self.log_date_time_string(),
+                rest=fmt.format(*args, **kargs)))
 
     def do_default(self):
         '''Default handler for endpoints'''
