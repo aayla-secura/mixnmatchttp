@@ -6,7 +6,7 @@ from datetime import datetime
 from sqlalchemy.orm.exc import NoResultFound
 
 from ...poller import Poller
-from ...utils import datetime_from_timestamp
+from ...utils import datetime_from_timestamp, DictNoClobber
 from ...db import DBConnection, \
     filter_results, object_from_dict
 from .api import BaseAuthHTTPRequestHandler, \
@@ -31,11 +31,13 @@ class BaseAuthSQLAlchemyORMHTTPRequestHandler(
     Incomplete, must be inherited, and the child class must define
     methods for creating and sending tokens.
 
-    Default of _prune_sessions_every changed from 0 (every request) to
+    Default of prune_sessions_every changed from 0 (every request) to
     300 (every 5 minutes).
     '''
 
-    _prune_sessions_every = 300
+    conf = DictNoClobber(
+        prune_sessions_every=300,
+    )
 
     @needs_db(DBBase, expire_on_commit=False)
     @classmethod
@@ -169,10 +171,10 @@ class BaseAuthSQLAlchemyORMHTTPRequestHandler(
         def after_commit(session):
             if not session.info.get('is_clean', True):
                 logger.debug('DB changed')
-                cls.pollers[name].update()
+                cls.conf.pollers[name].update()
                 session.info['is_clean'] = True
 
-        cls.pollers[name] = Poller()
+        cls.conf.pollers[name] = Poller()
         DBConnection.get(base).listen(
             'before_flush', before_flush)
         DBConnection.get(base).listen(

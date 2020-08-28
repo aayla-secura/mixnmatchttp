@@ -73,6 +73,14 @@ logger = logging.getLogger(__name__)
 
 
 class DictNoClobber(UserDict, object):
+    '''Unknown attributes are assumed to be keys'''
+
+    def __getattr__(self, a):
+        try:
+            return self[a]
+        except KeyError:
+            return super().__getattr__(a)
+
     @staticmethod
     def __update(callback, *args, **kwargs):
         '''Iterates over items in the first argument, then keywords

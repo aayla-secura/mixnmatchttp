@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
-    _endpoints = endpoints.Endpoint(
+    endpoints = endpoints.Endpoint(
         goto={
             # call it as /goto?{params for this server}/{URI-decoded
             # address}; include the ? after /goto even if not giving

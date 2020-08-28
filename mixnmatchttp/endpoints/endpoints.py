@@ -22,7 +22,7 @@ class Endpoint(DictNoClobber):
 
     The Endpoint constructor has the same signature as for
     a dictionary. For example you can define the endpoints like so:
-        _endpoints = endpoints.Endpoints(
+        endpoints = endpoints.Endpoints(
                 some_sub={
                     '$allowed_methods': {'GET', 'POST'},
                     '$nargs': 1,
@@ -40,12 +40,12 @@ class Endpoint(DictNoClobber):
     All child endpoints are enabled by default. The root endpoint is
     disabled by default; if you want it enabled, either manually
     change the 'disabled' attribute, or construct it like so:
-        _endpoints = endpoint.Endpoints({
+        endpoints = endpoint.Endpoints({
             'some_sub': { ... },
             '$disabled': False,
             })
     or like so:
-        _endpoints = endpoint.Endpoints({
+        endpoints = endpoint.Endpoints({
             '$disabled': False,
             },
             some_sub={ ... }
@@ -64,7 +64,7 @@ class Endpoint(DictNoClobber):
     the parent's name, but can be overridden with the '$varname'
     attribute (useful for consecutive variable endpoints). For
     example:
-        _endpoints = endpoints.Endpoints(
+        endpoints = endpoints.Endpoints(
                 person={
                     '$allowed_methods': {'GET', 'POST'},
                     '*': {
@@ -357,9 +357,9 @@ class Endpoint(DictNoClobber):
         if not path or path[0] != '/':
             raise ValueError(
                 'Path for endpoint parsing must begin with a /')
-        if not path.startswith(httpreq.endpoint_prefix):
+        if not path.startswith(httpreq.conf.endpoint_prefix):
             raise NotAnEndpointError(path)
-        path = path[len(httpreq.endpoint_prefix):]
+        path = path[len(httpreq.conf.endpoint_prefix):]
 
         # we don't yet know if the endpoint wants the arguments raw or
         # canonicalized. So we check each absolute segment; if it's an

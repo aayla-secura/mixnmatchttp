@@ -55,7 +55,7 @@ class App(object):
                  support_daemon=False,
                  auth_type='cookie',
                  db_bases={},
-                 user_conf_key=None,
+                 user_conf_key='user_conf',
                  log_fmt=(
                      '[%(asctime)s] %(name)s '
                      '(%(threadName)s @ %(thread)d): %(message)s')):
@@ -542,8 +542,8 @@ class App(object):
         attrs = {'send_custom_headers': send_custom_headers}
         if self.auth_type is not None:
             attrs.update({
-                '_is_SSL': self.conf.ssl,
-                '_pwd_type': self.conf.userfile_hash_type})
+                'is_SSL': self.conf.ssl,
+                'pwd_type': self.conf.userfile_hash_type})
         self.reqhandler = type(
             '{}Custom'.format(self.reqhandler.__name__),
             (self.reqhandler, object), attrs)
@@ -752,11 +752,11 @@ class App(object):
 
     def _term_sighandler(self, signo, stack_frame):
         try:
-            self.reqhandler.pollers
+            self.reqhandler.conf.pollers
         except AttributeError:
             pass
         else:
-            for p in self.reqhandler.pollers.values():
+            for p in self.reqhandler.conf.pollers.values():
                 p.close()
         self.server.shutdown()
         self._log_event('Stopped server on {}'.format(self.url))

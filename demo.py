@@ -23,7 +23,7 @@ from mixnmatchttp.handlers import BaseHTTPRequestHandler, \
 from mixnmatchttp.utils import DictNoClobber
 
 class MyHandler(BaseHTTPRequestHandler):
-    _endpoints = endpoints.Endpoint(
+    endpoints = endpoints.Endpoint(
         foobar={},  # will use do_default handler
         refreshme={
             '$nargs': endpoints.ARGS_OPTIONAL,
@@ -55,7 +55,7 @@ class MyHandler(BaseHTTPRequestHandler):
             },
         },
     )
-    _template_pages = DictNoClobber(
+    template_pages = DictNoClobber(
         simpletxt={
             'data': '$CONTENT',
             'type': 'text/html'
@@ -77,7 +77,7 @@ class MyHandler(BaseHTTPRequestHandler):
             'type': 'text/html'
         },
     )
-    _templates = DictNoClobber(
+    templates = DictNoClobber(
         refresh={
             'fields': {
                 'HEAD': ('<meta http-equiv="refresh" '

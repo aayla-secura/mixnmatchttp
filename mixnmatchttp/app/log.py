@@ -6,8 +6,8 @@ import logging
 
 class LogHandler(object):
     def emit(self, record):
-        if record.levelno < self.__class__._min_level \
-                or record.levelno > self.__class__._max_level:
+        if record.levelno < self._min_level \
+                or record.levelno > self._max_level:
             return
         super().emit(record)
 

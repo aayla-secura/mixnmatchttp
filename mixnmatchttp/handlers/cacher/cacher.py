@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
     cache = Cache()
-    _endpoints = Endpoint(
+    endpoints = Endpoint(
         echo={
             '$allowed_methods': {'POST'},
         },

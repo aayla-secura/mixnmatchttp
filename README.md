@@ -527,6 +527,7 @@ Redirects (with `307`) to any address given in the URL.
 # Coming soon
 
   * Brute force protections and account lockout
+  * Better templates
   * A configurable declarative base to use with `BaseAuthSQLAlchemyORMHTTPRequestHandler`
   * Command-line option and/or class attribute for paths shouldn't be cached
   * Command-line option for paths which need authentication (`_secrets`)

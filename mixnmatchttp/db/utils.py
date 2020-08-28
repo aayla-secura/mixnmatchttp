@@ -60,7 +60,7 @@ class DBConnection:
         engine = self._get_engine(url)
         if engine is None:
             engine = self._create_engine(url, engine_kargs)
-        self.__class__.__instances[engine] = self
+        self.__instances[engine] = self
         self.__engine = engine
         self.__session = scoped_session(sessionmaker(
             bind=engine, **session_kargs))

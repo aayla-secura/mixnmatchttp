@@ -17,7 +17,7 @@ except ImportError:
 
 from ... import endpoints
 from ...utils import is_str, is_seq_like, is_map_like, \
-    datetime_to_timestamp, curr_timestamp, open_path
+    datetime_to_timestamp, curr_timestamp, open_path, DictNoClobber
 from ..base import BaseMeta, BaseHTTPRequestHandler
 from .utils import num_charsets
 from .exc import UserAlreadyExistsError, NoSuchUserError, \
@@ -172,24 +172,25 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
             return False
 
         transformer = {
-            '_can_create_users': OrderedDict,
+            'can_create_users': OrderedDict,
         }
+        # XXX
         requirements = {
-            '_JSON_params': (is_any_true, [is_none, is_seq_like]),
-            '_pwd_type': (is_one_of, cls._supported_hashes),
-            '_secrets': (is_any_true, [is_seq_like, is_map_like]),
-            '_can_create_users': (is_any_true, [is_map_like]),
-            '_pwd_min_len': (isinstance, int),
-            '_pwd_min_charsets': (isinstance, int),
-            '_is_SSL': (isinstance, bool),
-            '_cookie_name': (is_any_true, [is_str]),
-            '_cookie_len': (isinstance, int),
-            '_cookie_lifetime': (isinstance, (int, type(None))),
-            '_SameSite': (is_one_of, [None, 'lax', 'strict']),
-            '_jwt_lifetime': (isinstance, int),
-            '_send_new_refresh_token': (isinstance, bool),
-            '_refresh_token_lifetime': (isinstance, int),
-            '_refresh_token_len': (isinstance, int),
+            'JSON_params': (is_any_true, [is_none, is_seq_like]),
+            'pwd_type': (is_one_of, cls._supported_hashes),
+            'secrets': (is_any_true, [is_seq_like, is_map_like]),
+            'can_create_users': (is_any_true, [is_map_like]),
+            'pwd_min_len': (isinstance, int),
+            'pwd_min_charsets': (isinstance, int),
+            'is_SSL': (isinstance, bool),
+            'cookie_name': (is_any_true, [is_str]),
+            'cookie_len': (isinstance, int),
+            'cookie_lifetime': (isinstance, (int, type(None))),
+            'SameSite': (is_one_of, [None, 'lax', 'strict']),
+            'jwt_lifetime': (isinstance, int),
+            'send_new_refresh_token': (isinstance, bool),
+            'refresh_token_lifetime': (isinstance, int),
+            'refresh_token_len': (isinstance, int),
         }
 
         if key in transformer:
@@ -205,7 +206,7 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
                     key,
                     'one of ' if isinstance(req, list) else '',
                     req))
-        if key == '_pwd_type':
+        if key == 'pwd_type':
             if value is not None and value.endswith('crypt'):
                 try:
                     unix_hash
@@ -239,11 +240,11 @@ class BaseAuthHTTPRequestHandler(
     creating and sending tokens.
 
     Class attributes:
-    - _JSON_params: a list of keys to send with every JSON response.
+    - JSON_params: a list of keys to send with every JSON response.
       If any have not been set, they will be set as None (null).
       Default is None, meaning do not send a JSON response (but an
       HTML one)
-    - _secrets: can be either:
+    - secrets: can be either:
       1) A simple filter: an iterable of absolute or relative paths
          which require authentication:
          - A path filter that begins with / is matched at the
@@ -286,7 +287,7 @@ class BaseAuthHTTPRequestHandler(
              - Allowed implicitly by *
              - Denied implicitly (none of the above)
       Example:
-      _secrets = [
+      secrets = [
           # all authenticated users, except service, can access /foo
           ('^[A-Z]+ /foo(/|$)', ['*', '!service']),
           # only users in the admin group can POST (POST /foo is
@@ -297,36 +298,36 @@ class BaseAuthHTTPRequestHandler(
           # require authentication for all other pages
           ('.*', ['*']),
       ]
-      Default _secrets is [], i.e. no authentication required.
-    - _can_create_users: A dictionary, where every key is a user role
+      Default secrets is [], i.e. no authentication required.
+    - can_create_users: A dictionary, where every key is a user role
       (<new_role>) and every value is a list of users  or roles
       (prefixed with '#') who are able to register users with role
-      <new_role>. As in _secrets, a username or role can be negated
+      <new_role>. As in secrets, a username or role can be negated
       with '!'.
       - The role None as a key means the new user is assigned no
         roles.
         None and '*' in the list have the same meaning as explained in
-        _secrets.
+        secrets.
       - When a new user is to be registered with a set of roles, the
         currently logged in user should be authorized to create users of
         each of the given roles. Note that access to the /register
-        endpoint still needs to be granted via _secrets.
-      - Unlike _secrets, the keys (roles) are not regular expressions,
+        endpoint still needs to be granted via secrets.
+      - Unlike secrets, the keys (roles) are not regular expressions,
         but comapred for literal equality. Also, if a user is to be
-        created with a role that isn't listed in _can_create_users,
-        access is denied, i.e. _can_create_users should list all
+        created with a role that isn't listed in can_create_users,
+        access is denied, i.e. can_create_users should list all
         allowed roles and who is allowed to create users of that role.
       Example:
-      _can_create_users = {
+      can_create_users = {
           None: [None],  # self-register with no role assignment
           'service': ['admin'], # admins can create service accounts
           'admin': ['admin'],   # admins can create other admins
       }
-      Default _can_create_users is {None: [None]}, i.e. self-register.
-    - _pwd_min_len: Minimum length of passwords. Default is 10.
-    - _pwd_min_charsets: Minimum number of character sets in
+      Default can_create_users is {None: [None]}, i.e. self-register.
+    - pwd_min_len: Minimum length of passwords. Default is 10.
+    - pwd_min_charsets: Minimum number of character sets in
       passwords. Default is 3.
-    - _pwd_type: the type (usually hash algorithm) to store passwords
+    - pwd_type: the type (usually hash algorithm) to store passwords
       in. Supported values are:
         unsalted ones:
           md5, sha1, sha256, sha512
@@ -336,7 +337,7 @@ class BaseAuthHTTPRequestHandler(
       If a child class wants to extend these, it should define
       _transform_password_{type} and _verify_password_{type}.
       Default is None (plaintext).
-    - _prune_sessions_every: Minumum number of seconds, before we will
+    - prune_sessions_every: Minumum number of seconds, before we will
       search for and remove expired sessions. It is checked before
       every request, so if it is 0, then old sessions are searched for
       before every request. If it is None, we never search for old
@@ -344,15 +345,17 @@ class BaseAuthHTTPRequestHandler(
       expired either way, and if it is, it remove it.
     '''
 
-    _JSON_params = None
-    _secrets = []
-    _can_create_users = {None: [None]}
-    _pwd_min_len = 10
-    _pwd_min_charsets = 3
-    _pwd_type = None
-    _prune_sessions_every = 0
+    conf = DictNoClobber(
+        JSON_params=None,
+        secrets=[],
+        can_create_users={None: [None]},
+        pwd_min_len=10,
+        pwd_min_charsets=3,
+        pwd_type=None,
+        prune_sessions_every=0,
+    )
     __last_prune = curr_timestamp()
-    _endpoints = endpoints.Endpoint(
+    endpoints = endpoints.Endpoint(
         register={
             '$allowed_methods': {'POST'},
         },
@@ -371,12 +374,12 @@ class BaseAuthHTTPRequestHandler(
         # parent's __init__ must be called at the end, since
         # SimpleHTTPRequestHandler's __init__ processes the request
         # and calls the handlers
-        if self.__class__._prune_sessions_every is not None:
-            next_check = self.__class__._prune_sessions_every \
-                + self.__class__.__last_prune
+        if self.conf.prune_sessions_every is not None:
+            next_check = self.conf.prune_sessions_every \
+                + self.__last_prune
             if next_check <= curr_timestamp():
                 self.prune_old_sessions()
-                self.__class__.__last_prune = curr_timestamp()
+                self.__last_prune = curr_timestamp()
         super().__init__(*args, **kwargs)
 
     ################### Methods specific to authentication type
@@ -484,14 +487,14 @@ class BaseAuthHTTPRequestHandler(
         '''Sends the response to a one of our endpoints
 
         - If error is given, it must be a tuple of (code, message)
-        - If the _JSON_params class attribute is set, we call
+        - If the JSON_params class attribute is set, we call
           send_as_JSON (if error is given the message is sent as an
           "error" key). TODO customise the error key?
         - Otherwise we call send_response_goto
         '''
 
-        if self.__class__._JSON_params is not None:
-            for k in self.__class__._JSON_params:
+        if self.conf.JSON_params is not None:
+            for k in self.conf.JSON_params:
                 if k not in self.saved_params():
                     self.save_param(k, None)
             self._send_response_auth_json(error)
@@ -515,9 +518,9 @@ class BaseAuthHTTPRequestHandler(
         '''Returns 401 if resource is secret and no authentication'''
 
         requested = '{} {}'.format(self.command, self.pathname)
-        secrets = self.__class__._secrets
+        secrets = self.conf.secrets
         try:
-            secrets = OrderedDict(self.__class__._secrets)
+            secrets = OrderedDict(self.conf.secrets)
         except ValueError:
             requested = self.pathname
             secrets = OrderedDict([(
@@ -525,9 +528,9 @@ class BaseAuthHTTPRequestHandler(
                  '{}'  # secrets joined in an OR
                  '(/|$)'.format('|'.join(secrets))),
                 ['*'])])
-        if self.pathname != '{}/login'.format(self.endpoint_prefix) \
+        if self.pathname != '{}/login'.format(self.conf.endpoint_prefix) \
                 and self.pathname != '{}/logout'.format(
-                    self.endpoint_prefix) \
+                    self.conf.endpoint_prefix) \
                 and not self.is_authorized(
                     requested, secrets, default=True, is_regex=True):
             return (401,)
@@ -639,9 +642,9 @@ class BaseAuthHTTPRequestHandler(
           - If roles is given, it is comma-separated
           - Neither username, nor password can be empty.
         - If plaintext is True, then the password is checked against
-          the policy and hashed according to the _pwd_type class
+          the policy and hashed according to the pwd_type class
           attribute; otherwise it is saved as is (the hashing
-          algorithm must correspond to _pwd_type)
+          algorithm must correspond to pwd_type)
         '''
 
         def process_line(line):
@@ -680,9 +683,9 @@ class BaseAuthHTTPRequestHandler(
         '''Creates a user with the given password and roles
 
         - If plaintext is True, then the password is checked against
-          the policy and hashed according to the _pwd_type class
+          the policy and hashed according to the pwd_type class
           attribute; otherwise it is saved as is (the hashing
-          algorithm must correspond to _pwd_type)
+          algorithm must correspond to pwd_type)
         Returns the new user.
         '''
 
@@ -705,9 +708,9 @@ class BaseAuthHTTPRequestHandler(
 
         - user_or_username is an instance of User or a string
         - If plaintext is True, then the password is checked against
-          the policy and hashed according to the _pwd_type class
+          the policy and hashed according to the pwd_type class
           attribute; otherwise it is saved as is (the hashing
-          algorithm must correspond to _pwd_type)
+          algorithm must correspond to pwd_type)
         '''
 
         user = user_or_username
@@ -744,26 +747,26 @@ class BaseAuthHTTPRequestHandler(
     def verify_password(cls, user, password):
         '''Returns True or False if user's password is as given
 
-        Uses the algorithm is given in _pwd_type (class attribute)
+        Uses the algorithm is given in pwd_type (class attribute)
         '''
 
-        if cls._pwd_type is None:
+        if cls.conf.pwd_type is None:
             return user.password == password
         verifier = getattr(
-            cls, '_verify_password_{}'.format(cls._pwd_type))
+            cls, '_verify_password_{}'.format(cls.conf.pwd_type))
         return verifier(plain=password, hashed=user.password)
 
     @classmethod
     def transform_password(cls, password):
         '''Returns the password hashed according to the setting
 
-        Uses the algorithm is given in _pwd_type (class attribute)
+        Uses the algorithm is given in pwd_type (class attribute)
         '''
 
-        if cls._pwd_type is None:
+        if cls.conf.pwd_type is None:
             return password
         transformer = getattr(
-            cls, '_transform_password_{}'.format(cls._pwd_type))
+            cls, '_transform_password_{}'.format(cls.conf.pwd_type))
         return transformer(password)
 
     @staticmethod
@@ -855,8 +858,8 @@ class BaseAuthHTTPRequestHandler(
         '''Returns True or False if password conforms to policy'''
 
         return (password is not None
-                and len(password) >= cls._pwd_min_len
-                and num_charsets(password) >= cls._pwd_min_charsets)
+                and len(password) >= cls.conf.pwd_min_len
+                and num_charsets(password) >= cls.conf.pwd_min_charsets)
 
     def do_register(self):
         '''Creates a new user
@@ -876,7 +879,7 @@ class BaseAuthHTTPRequestHandler(
         for r in roles:
             if not self.is_authorized(
                     r,
-                    self.__class__._can_create_users,
+                    self.conf.can_create_users,
                     default=False,
                     is_regex=False):
                 self.send_response_auth(

@@ -84,7 +84,7 @@ def methodhandler(realhandler, self, args, kwargs):
     except NotAnEndpointError as e:
         logger.debug('{}'.format(str(e)))
         self._BaseHTTPRequestHandler__pathname = \
-            self.pathname[len(self.path_prefix):]
+            self.pathname[len(self.conf.path_prefix):]
         logger.debug('Calling normal handler, path is {}'.format(
             self.pathname))
         realhandler(*args, **kwargs)
@@ -102,7 +102,7 @@ def methodhandler(realhandler, self, args, kwargs):
     else:
         # strip the prefix before calling handler
         self._BaseHTTPRequestHandler__pathname = \
-            self.pathname[len(self.endpoint_prefix):]
+            self.pathname[len(self.conf.endpoint_prefix):]
         logger.debug('Calling endpoint handler, path is {}'.format(
             self.pathname))
         self.ep.handler(*args, **kwargs)
@@ -121,24 +121,25 @@ class BaseMeta(type):
 
         logger.debug('New class {}; bases: {}'.format(
             name, [b.__name__ for b in bases]))
-        # every child gets it's own class attribute for _endpoints,
-        # _template_pages and _templates, which combines all parents'
+        # every child gets it's own class attribute for endpoints,
+        # template_pages and templates, which combines all parents'
         # attributes
         required_classes = {
-            '_endpoints': Endpoint,
-            '_template_pages': DictNoClobber,
-            '_templates': DictNoClobber,
+            'endpoints': Endpoint,
+            'template_pages': DictNoClobber,
+            'templates': DictNoClobber,
+            'conf': DictNoClobber,
         }
-        for attr in ['_endpoints', '_template_pages', '_templates']:
+        for attr, rcls in required_classes.items():
             try:
                 dic = getattr(new_class, attr)
             except AttributeError:
-                dic = required_classes[attr]()
+                dic = rcls()
                 logger.debug('Initialized blank {}'.format(attr))
-            if not isinstance(dic, required_classes[attr]):
+            if not isinstance(dic, rcls):
                 logger.debug('Converting {} to {}'.format(
-                    attr, required_classes[attr].__name__))
-                dic = required_classes[attr](dic)
+                    attr, rcls.__name__))
+                dic = rcls(dic)
             setattr(new_class, attr, dic)
 
             for bc in bases[::-1]:
@@ -147,23 +148,25 @@ class BaseMeta(type):
             logger.debug('Final {} for {}: {}'.format(
                 attr, name, list(getattr(new_class, attr).keys())))
 
-        if new_class.path_prefix.endswith('/'):
-            new_class.path_prefix = new_class.path_prefix.rstrip('/')
-        if new_class.endpoint_prefix.endswith('/'):
-            new_class.endpoint_prefix = \
-                new_class.endpoint_prefix.rstrip('/')
+        if new_class.conf.path_prefix.endswith('/'):
+            new_class.conf.path_prefix = new_class.conf.path_prefix.rstrip('/')
+        if new_class.conf.endpoint_prefix.endswith('/'):
+            new_class.conf.endpoint_prefix = \
+                new_class.conf.endpoint_prefix.rstrip('/')
         return new_class
 
 class BaseHTTPRequestHandler(with_metaclass(
         BaseMeta, http.server.SimpleHTTPRequestHandler, object)):
-    pollers = {}
-    enable_directory_listing = False
-    path_prefix = ''
-    endpoint_prefix = '/api'
-    api_is_JSON = True
-    send_software_info = False
-    _endpoints = Endpoint()
-    _template_pages = DictNoClobber(
+    conf = DictNoClobber(
+        pollers={},
+        enable_directory_listing=False,
+        path_prefix='',
+        endpoint_prefix='/api',
+        api_is_JSON=True,
+        send_software_info=False,
+    )
+    endpoints = Endpoint()
+    template_pages = DictNoClobber(
         default={
             'data': '''
     <!DOCTYPE html>
@@ -180,65 +183,7 @@ class BaseHTTPRequestHandler(with_metaclass(
             'type': 'text/html'
         },
     )
-    _templates = DictNoClobber()
-
-    # copy the class attributes to instance ones, since Endpoint and
-    # dicts are mutable
-    # the alternative solution of setting it in __init__ would require
-    # checking if such an attribute already exists (set by a child
-    # class), then update_noclob, before calling the parent's __init__
-    # method
-    # we can't call parent's __init__ before updating endpoints, since
-    # BaseHTTPRequestHandler's __init__ calls do_{METHOD} and all
-    # attributes of child classes need to be set by that time
-    @property
-    def endpoints(self):
-        '''Property the class' endpoints
-
-        Copies the endpoints to an instance attribute the first time
-        it is accessed so they can be modified for the instance
-        '''
-
-        if self._endpoints is self.__class__._endpoints:
-            self._endpoints = self._endpoints.copy()
-        return self._endpoints
-
-    @endpoints.setter
-    def endpoints(self, value):
-        self._endpoints = value
-
-    @property
-    def templates(self):
-        '''Property the class' template
-
-        Copies the templates to an instance attribute the first time
-        it is accessed so they can be modified for the instance
-        '''
-
-        if self._templates is self.__class__._templates:
-            self._templates = self._templates.copy()
-        return self._templates
-
-    @templates.setter
-    def templates(self, value):
-        self._templates = value
-
-    @property
-    def template_pages(self):
-        '''Property the class' template pages
-
-        Copies the template pages to an instance attribute the first
-        time it is accessed so they can be modified for the
-        instance
-        '''
-
-        if self._template_pages is self.__class__._template_pages:
-            self._template_pages = self._template_pages.copy()
-        return self._template_pages
-
-    @template_pages.setter
-    def template_pages(self, value):
-        self._template_pages = value
+    templates = DictNoClobber()
 
     def __init__(self, *args, **kwargs):
         logger.debug('INIT for {}'.format(self))
@@ -655,10 +600,10 @@ class BaseHTTPRequestHandler(with_metaclass(
         '''Returns a page from the given template'''
 
         try:
-            page = self._template_pages[template['page']].copy()
+            page = self.template_pages[template['page']].copy()
         except KeyError:
             logger.debug('Using default template page')
-            page = self._template_pages['default'].copy()
+            page = self.template_pages['default'].copy()
 
         try:
             fields = template['fields']
@@ -833,8 +778,8 @@ class BaseHTTPRequestHandler(with_metaclass(
         argument
         '''
 
-        if self.path.startswith(self.endpoint_prefix) \
-                and self.api_is_JSON:
+        if self.path.startswith(self.conf.endpoint_prefix) \
+                and self.conf.api_is_JSON:
             # TODO customize the error parameter name
             self.save_param('error', explain)
             self.send_as_JSON(code=code, message=message)
@@ -849,7 +794,7 @@ class BaseHTTPRequestHandler(with_metaclass(
 
         self.log_request(code)
         self.send_response_only(code, message)
-        if self.send_software_info:
+        if self.conf.send_software_info:
             self.send_header('Server', self.version_string())
         self.send_header('Date', self.date_time_string())
 
@@ -893,7 +838,7 @@ class BaseHTTPRequestHandler(with_metaclass(
             self.send_file()
         except IsADirectoryError:
             logger.debug("It's a directory")
-            if self.enable_directory_listing:
+            if self.conf.enable_directory_listing:
                 super().do_GET()
             else:
                 self.send_error(403)

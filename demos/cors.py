@@ -44,5 +44,5 @@ webapp.parser.add_argument(
           'If no leading slash then it is matched anywhere in '
           'the path.'))
 webapp.configure()
-webapp.reqhandler._secrets = webapp.conf.secrets
+webapp.reqhandler.conf.secrets = webapp.conf.secrets
 webapp.run()
