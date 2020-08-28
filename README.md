@@ -528,15 +528,15 @@ Redirects (with `307`) to any address given in the URL.
 
   * Brute force protections and account lockout
   * A configurable declarative base to use with `BaseAuthSQLAlchemyORMHTTPRequestHandler`
-  * Command-line option for paths shouldn't be cached
+  * Command-line option and/or class attribute for paths shouldn't be cached
   * Command-line option for paths which need authentication (`_secrets`)
-  * An option to disable access to certain files
+  * An option to disable access to certain files (a special value in `_secrets`)
   * Log rotation
-  * MT-safe saving and clearing of cache
+  * MT-safe `CachingHTTPRequestHandler`
   * Option for case-sensitivity of endpoints (and separately for variable endpoint names)
-  * Endpoints or paths: list of required parameters and raise an error if any missing
+  * Variable endpoints: require them to match a regex
   * A configurable list of file extensions which should be served as attachment.
-  * Anti-CSRF, maybe? How?
+  * Anti-CSRF, maybe?
 
 # Internal TODO notes
 

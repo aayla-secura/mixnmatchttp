@@ -72,11 +72,11 @@ def needs_db_response_handling(base,
                 db.commit()
             except InvalidRequestError as e:
                 self.save_param('error', str(e))
-                self.send_as_json(code=400)
+                self.send_as_JSON(code=400)
                 return
             except (DatabaseError, ServerError) as e:
                 self.save_param('error', str(e))
-                self.send_as_json(code=500)
+                self.send_as_JSON(code=500)
                 raise ServerDBError(e)  # so session_context cleans up
 
             if poller is not None:
@@ -97,9 +97,9 @@ def needs_db_response_handling(base,
                             'error',
                             ('max_depth must be a non-negative '
                              'integer'))
-                        self.send_as_json(code=400)
+                        self.send_as_JSON(code=400)
                         return
-                self.send_as_json(result, serializer=partial(
+                self.send_as_JSON(result, serializer=partial(
                     json_serializer, max_depth=max_depth))
 
     return _decorator
@@ -119,7 +119,7 @@ def needs_db_error_response_handling(base):
                 return wrapped(db, *args, **kwargs)
             except (DatabaseError, ServerError) as e:
                 self.save_param('error', str(e))
-                self.send_as_json(code=500)
+                self.send_as_JSON(code=500)
                 raise ServerDBError(e)  # so session_context cleans up
 
     return _decorator

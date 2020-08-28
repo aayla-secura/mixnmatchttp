@@ -485,7 +485,7 @@ class BaseAuthHTTPRequestHandler(
 
         - If error is given, it must be a tuple of (code, message)
         - If the _JSON_params class attribute is set, we call
-          send_as_json (if error is given the message is sent as an
+          send_as_JSON (if error is given the message is sent as an
           "error" key). TODO customise the error key?
         - Otherwise we call send_response_goto
         '''
@@ -509,7 +509,7 @@ class BaseAuthHTTPRequestHandler(
         if error is not None:
             self.save_param('error', error[1])
             code = error[0]
-        self.send_as_json(code=code)
+        self.send_as_JSON(code=code)
 
     def denied(self):
         '''Returns 401 if resource is secret and no authentication'''

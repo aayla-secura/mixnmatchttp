@@ -290,6 +290,8 @@ def parse_db_url(url):
     with dialect, user, password, host, port, database, query
     '''
 
+    # TODO detect invalid SQLite?
+
     m = re.search((
         '^(?P<dialect>[^:/]+)://'
         '('

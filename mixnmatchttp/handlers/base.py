@@ -100,6 +100,7 @@ def methodhandler(realhandler, self, args, kwargs):
         logger.debug('{}'.format(str(e)))
         self.send_error(400, explain=str(e))
     else:
+        # strip the prefix before calling handler
         self._BaseHTTPRequestHandler__pathname = \
             self.pathname[len(self.endpoint_prefix):]
         logger.debug('Calling endpoint handler, path is {}'.format(
@@ -158,7 +159,8 @@ class BaseHTTPRequestHandler(with_metaclass(
     pollers = {}
     enable_directory_listing = False
     path_prefix = ''
-    endpoint_prefix = ''
+    endpoint_prefix = '/api'
+    api_is_JSON = True
     _endpoints = Endpoint()
     _template_pages = DictNoClobber(
         default={
@@ -294,6 +296,47 @@ class BaseHTTPRequestHandler(with_metaclass(
         '''Property for the request's query dictionary'''
 
         return self.__query
+
+    def set_path(self, value):
+        self.path = self._BaseHTTPRequestHandler__pathname = value
+
+    def lstrip_path(self, chars):
+        self._path_strip(chars, func=str.lstrip)
+
+    def rstrip_path(self, chars):
+        self._path_strip(chars, func=str.rstrip)
+
+    def strip_path(self, chars):
+        self._path_strip(chars)
+
+    def strip_path_prefix(self, prefix):
+        self._path_substr(start=len(prefix))
+
+    def strip_path_suffix(self, suffix):
+        self._path_substr(end=-len(suffix))
+
+    def strip_path_prefix_re(self, prefix_re):
+        self._path_select_re('({})(.*)'.format(prefix_re), group=2)
+
+    def strip_path_suffix_re(self, suffix_re):
+        self._path_select_re('(.*)({})'.format(suffix_re), group=1)
+
+    def _path_strip(self, chars, func=str.strip):
+        path = self.pathname[1:]
+        self.path = self._BaseHTTPRequestHandler__pathname = \
+            '/' + func(path, chars)
+
+    def _path_substr(self, start=0, end=-1):
+        path = self.pathname[1:]
+        self.path = self._BaseHTTPRequestHandler__pathname = \
+            '/' + self._BaseHTTPRequestHandler__pathname[start, end]
+
+    def _path_select_re(self, regex, group=1):
+        path = self.pathname[1:]
+        m = re.match(regex, path)
+        if m is not None:
+            self.path = self._BaseHTTPRequestHandler__pathname = \
+                '/' + m.group(group)
 
     def get_param(self, parname, dic=None):
         '''Returns the value of parname inside dic
@@ -488,7 +531,7 @@ class BaseHTTPRequestHandler(with_metaclass(
 <----- Request End -----
 '''.format(self.requestline, self.headers, self.body))
 
-    def render(self, page, code=200, headers={}):
+    def render(self, page, code=200, message=None, headers={}):
         '''Renders a page
 
         page: a dictionary with the following items:
@@ -497,7 +540,7 @@ class BaseHTTPRequestHandler(with_metaclass(
         headers: additional headers to send
         '''
 
-        self.send_response(code)
+        self.send_response(code, message=None)
         self.send_header('Content-Type', page['type'])
         self.send_header('Content-Length', len(page['data']))
         self.send_headers(headers)
@@ -530,16 +573,15 @@ class BaseHTTPRequestHandler(with_metaclass(
         logger.debug('Requested file {}'.format(path))
         try:
             f = open(path, 'rb')
-        except FileNotFoundError:  # XXX
-            self.send_error(404)
-            return
-        except PermissionError:  # XXX
-            self.send_error(403)
-            return
-        except IOError as e:
-            if e.errno == errno.EISDIR:
+        except OSError as e:
+            if e.errno == errno.ENOENT:
+                self.send_error(404)
+            elif e.errno == errno.EACCES:
+                self.send_error(403)
+            elif e.errno == errno.EISDIR:
                 raise
-            self.send_error(500)
+            else:
+                self.send_error(500)
             return
 
         fs = os.fstat(f.fileno())
@@ -582,11 +624,12 @@ class BaseHTTPRequestHandler(with_metaclass(
         self.end_headers()
         self.write(content)
 
-    def send_as_json(self,
+    def send_as_JSON(self,
                      obj=None,
                      serializer=None,
                      indent=None,
                      code=200,
+                     message=None,
                      headers={}):
         '''Sends an object as a JSON response
 
@@ -604,6 +647,7 @@ class BaseHTTPRequestHandler(with_metaclass(
                                    indent=indent).encode('utf-8'),
                 'type': 'application/json'},
             code=code,
+            message=message,
             headers=headers)
 
     def page_from_template(self, template, dynfields={}):
@@ -744,7 +788,7 @@ class BaseHTTPRequestHandler(with_metaclass(
         return self.__headers_to_send
 
     def save_param(self, key, value, is_list=False):
-        '''Saves a key--value to be sent by send_as_json
+        '''Saves a key--value to be sent by send_as_JSON
 
         - If is_list is True, then the key is saved as a list, i.e.
           the first time key will be [value], and if key has already
@@ -788,10 +832,16 @@ class BaseHTTPRequestHandler(with_metaclass(
         argument
         '''
 
-        try:
-            super().send_error(code, message=message, explain=explain)
-        except TypeError:
-            super().send_error(code, message=message)
+        if self.path.startswith(self.endpoint_prefix) \
+                and self.api_is_JSON:
+            # TODO customize the error parameter name
+            self.save_param('error', explain)
+            self.send_as_JSON(code=code, message=message)
+        else:
+            try:
+                super().send_error(code, message=message, explain=explain)
+            except TypeError:
+                super().send_error(code, message=message)
 
     def do_default(self):
         '''Default handler for endpoints'''
