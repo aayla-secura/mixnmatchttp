@@ -555,6 +555,8 @@ Redirects (with `307`) to any address given in the URL.
   * Fix path canonicalization for endpoints, .e.g `//login` does not match an endpoint
   * Default column for short value in `object_to_dict` should use the first primary key, not hardcoded `id`.
   * Logging conf for request line via command-line; also, custom format for it
+  * Use of pollers in `send_headers`
+  * `kargs` -> `kwargs`
 
 ## Possibly coming at some point
 

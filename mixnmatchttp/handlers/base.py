@@ -14,6 +14,7 @@ import binascii
 from wrapt import decorator
 from string import Template
 
+from ..conf import Conf, ConfItem
 from ..endpoints import Endpoint
 from ..endpoints.exc import NotAnEndpointError, \
     MethodNotAllowedError, MissingArgsError, ExtraArgsError
@@ -109,42 +110,38 @@ def methodhandler(realhandler, self, args, kwargs):
 class BaseMeta(type):
     '''Metaclass for BaseHTTPRequestHandler
 
-    Adds each of the parents' endpoints, templates and template pages
+    Adds to each of the parents' attributes
     '''
 
     def __new__(cls, name, bases, attrs):
-        # TODO check attributes set after class creation
         new_class = super().__new__(cls, name, bases, attrs)
 
         logger.debug('New class {}; bases: {}'.format(
             name, [b.__name__ for b in bases]))
-        # every child gets it's own class attribute for endpoints,
-        # template_pages and templates, which combines all parents'
-        # attributes
-        required_classes = {
+        # every child gets it's own class attribute for the following
+        # ones, which combines the corresponding attribute of all parents
+        attr_types = {
             'endpoints': Endpoint,
-            'template_pages': DictNoClobber,
-            'templates': DictNoClobber,
-            'conf': DictNoClobber,
+            # XXX  'template_pages': dict,
+            #  'templates': dict,
+            'conf': Conf,
         }
-        for attr, rcls in required_classes.items():
-            try:
-                dic = getattr(new_class, attr)
-            except AttributeError:
-                dic = rcls()
-                logger.debug('Initialized blank {}'.format(attr))
-            if not isinstance(dic, rcls):
-                logger.debug('Converting {} to {}'.format(
-                    attr, rcls.__name__))
-                dic = rcls(dic)
-            setattr(new_class, attr, dic)
+        for attr, rcls in attr_types.items():
+            val = rcls()
+            for c in bases[::-1] + [new_class]:
+                try:
+                    curr = getattr(c, attr)
+                except AttributeError:
+                    pass
+                else:
+                    for k in curr:
+                        val[k] = curr[k]
 
-            for bc in bases[::-1]:
-                if hasattr(bc, attr):
-                    dic.update_noclob(getattr(bc, attr))
+            setattr(new_class, attr, val)
             logger.debug('Final {} for {}: {}'.format(
                 attr, name, list(getattr(new_class, attr).keys())))
 
+        # XXX
         if new_class.conf.path_prefix.endswith('/'):
             new_class.conf.path_prefix = new_class.conf.path_prefix.rstrip('/')
         if new_class.conf.endpoint_prefix.endswith('/'):
@@ -155,7 +152,13 @@ class BaseMeta(type):
 class BaseHTTPRequestHandler(
         http.server.SimpleHTTPRequestHandler,
         metaclass=BaseMeta):
-    conf = DictNoClobber(
+    # 1: type which it should be convertible to
+    # 2: function to transform the value (or do any other checks)
+    # 3: should it be merged with parent's property (only for
+    #    mutable types)
+    # 4: optional modules it requires
+    #  'conf': (DictNoClobber, None, True, [])
+    conf = Conf(
         pollers={},
         enable_directory_listing=False,
         path_prefix='',
@@ -163,25 +166,7 @@ class BaseHTTPRequestHandler(
         api_is_JSON=True,
         send_software_info=False,
     )
-    endpoints = Endpoint()
-    template_pages = DictNoClobber(
-        default={
-            'data': '''
-    <!DOCTYPE html>
-    <html>
-    <head>
-    <meta charset="UTF-8" />
-    $HEAD
-    </head>
-    <body>
-    $BODY
-    </body>
-    </html>
-    ''',
-            'type': 'text/html'
-        },
-    )
-    templates = DictNoClobber()
+    endpoints = {}
 
     def __init__(self, *args, **kwargs):
         logger.debug('INIT for {}'.format(self))
@@ -596,6 +581,7 @@ class BaseHTTPRequestHandler(
 
     def page_from_template(self, template, dynfields={}):
         '''Returns a page from the given template'''
+        # XXX
 
         try:
             page = self.template_pages[template['page']].copy()
