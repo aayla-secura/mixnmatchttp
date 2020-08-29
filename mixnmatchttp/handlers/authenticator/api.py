@@ -1,8 +1,5 @@
 # TODO check if jwt is used and all modules are present
 
-from ..._py2 import *
-from future.utils import with_metaclass
-
 import logging
 import re
 from datetime import datetime
@@ -231,8 +228,8 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
         return value
 
 class BaseAuthHTTPRequestHandler(
-    with_metaclass(BaseAuthHTTPRequestHandlerMeta,
-                   BaseHTTPRequestHandler, object)):
+        BaseHTTPRequestHandler,
+        metaclass=BaseAuthHTTPRequestHandlerMeta):
     '''Implements authentication in an abstract way
 
     Incomplete, must be inherited, and the child class must define
@@ -648,11 +645,8 @@ class BaseAuthHTTPRequestHandler(
         '''
 
         def process_line(line):
-            def unpack(a, b, c, *d):  # python 2
-                return a, b, c
-
-            user, pwd, roles = unpack(*'{}::'.format(
-                line.rstrip('\r\n')).split(':'))
+            user, pwd, roles, *_ = '{}::'.format(
+                line.rstrip('\r\n')).split(':')
             return (user, pwd, [r.strip(' ')
                                 for r in roles.split(',') if r != ''])
 

@@ -1,5 +1,3 @@
-from ..._py2 import *
-
 from sqlalchemy import Table, Column, ForeignKey, \
     Integer, String, DateTime, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base

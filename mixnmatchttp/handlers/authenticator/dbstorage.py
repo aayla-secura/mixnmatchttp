@@ -1,5 +1,3 @@
-from ..._py2 import *
-
 import logging
 from datetime import datetime
 

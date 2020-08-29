@@ -1,71 +1,14 @@
-from ._py2 import *
-
 import os
 from contextlib import contextmanager
 import re
 import string
 import random
-from collections import UserDict
-from ._py2 import _abcoll
+from collections import UserDict, abc as _abcoll
 import logging
 from datetime import datetime, tzinfo, timedelta
-try:  # python3
-    from datetime import timezone
-except ImportError:  # python2
-    # taken from
-    # https://docs.python.org/2/library/datetime.html#datetime.tzinfo
-    import time
-
-    def _get_timezones():
-        ZEROTD = timedelta(0)
-        STDOFFSET = timedelta(seconds=-time.timezone)
-        if time.daylight:
-            DSTOFFSET = timedelta(seconds=-time.altzone)
-        else:
-            DSTOFFSET = STDOFFSET
-        DSTDIFF = DSTOFFSET - STDOFFSET
-
-        class UTCTimeZone(tzinfo):
-            def utcoffset(self, dt):
-                return ZEROTD
-
-            def tzname(self, dt):
-                return 'UTC'
-
-            def dst(self, dt):
-                return ZEROTD
-
-        class LocalTimeZone(tzinfo):
-            def utcoffset(self, dt):
-                if self._isdst(dt):
-                    return DSTOFFSET
-                else:
-                    return STDOFFSET
-
-            def dst(self, dt):
-                if self._isdst(dt):
-                    return DSTDIFF
-                else:
-                    return ZEROTD
-
-            def tzname(self, dt):
-                return time.tzname[self._isdst(dt)]
-
-            def _isdst(self, dt):
-                tt = (dt.year, dt.month, dt.day,
-                      dt.hour, dt.minute, dt.second,
-                      dt.weekday(), 0, 0)
-                stamp = time.mktime(tt)
-                tt = time.localtime(stamp)
-                return tt.tm_isdst > 0
-
-        return UTCTimeZone(), LocalTimeZone()
-
-    UTCTimeZone, LocalTimeZone = _get_timezones()
-
-else:
-    UTCTimeZone = timezone.utc
-    LocalTimeZone = datetime.now(tz=timezone.utc).astimezone().tzinfo
+from datetime import timezone
+UTCTimeZone = timezone.utc
+LocalTimeZone = datetime.now(tz=timezone.utc).astimezone().tzinfo
 
 
 ############################################################
@@ -104,22 +47,6 @@ class DictNoClobber(UserDict, object):
         for key, value in kwargs.items():
             callback(key, value)
 
-    # python2's UserDict.update does not call __setitem__,
-    # __getitem__, etc; so override it here to explicitly access the
-    # keys using the [] operator (as python3's UserDict.update does).
-    # Also python2's UserDict.update accepts the deprecated dict
-    # argument; remove it--this update behaves like python3's
-    # UserDict.update
-    def update(*args, **kwargs):
-        '''Updates using items in the first argument, then keywords'''
-
-        if not args:
-            raise TypeError("descriptor 'update' of 'UserDict' "
-                            "object needs an argument")
-        self = args[0]
-        args = args[1:]
-        self.__update(self.__setitem__, *args, **kwargs)
-
     def update_noclob(*args, **kwargs):
         '''Updates without overwriting existing keys'''
 
@@ -129,36 +56,6 @@ class DictNoClobber(UserDict, object):
         self = args[0]
         args = args[1:]
         self.__update(self.setdefault, *args, **kwargs)
-
-    def keys(self):
-        '''Returns a set-like object providing a view on the keys'''
-
-        try:
-            # python2
-            return self.data.viewkeys()
-        except AttributeError:
-            # python3
-            return super().keys()
-
-    def values(self):
-        '''Returns a set-like object providing a view on the values'''
-
-        try:
-            # python2
-            return self.data.viewvalues()
-        except AttributeError:
-            # python3
-            return super().values()
-
-    def items(self):
-        '''Returns a set-like object providing a view on the items'''
-
-        try:
-            # python2
-            return self.data.viewitems()
-        except AttributeError:
-            # python3
-            return super().items()
 
 
 def to_bool(val):
@@ -188,11 +85,7 @@ def is_bool_like(val):
 def is_str(val):
     '''True if val is a string (including unicode or bytes)'''
 
-    try:  # python2
-        str_types = (basestring,)
-    except NameError:  # python3
-        str_types = (str, bytes)
-    return isinstance(val, str_types)
+    return isinstance(val, (str, bytes))
 
 def is_str_like(val):
     '''True if val can be converted to string straightforwardly
@@ -215,8 +108,7 @@ def is_seq_like(val):
 def is_map_like(val):
     '''True if val is like a dict (mapping)'''
 
-    # in python2 UserDict is not a child of Mapping
-    return isinstance(val, (_abcoll.Mapping, UserDict))
+    return isinstance(val, _abcoll.Mapping)
 
 def is_time_like(val,
                  years_ahead=10,
@@ -253,10 +145,7 @@ def is_time_like(val,
             dmax, to_utc=False, to_ms=True)))
 
 def str_remove_chars(s, skip):
-    try:  # python2
-        return s.translate(None, skip)
-    except TypeError:  # python3
-        return s.translate(str.maketrans(dict.fromkeys(skip)))
+    return s.translate(str.maketrans(dict.fromkeys(skip)))
 
 def str_trunc(s, size):
     if len(s) <= size:
@@ -268,16 +157,10 @@ def str_trunc(s, size):
     return s[:size - 3] + suff
 
 def str_to_hex(s):
-    try:  # python3
-        return s.hex()
-    except AttributeError:  # python2
-        return s.encode('hex')
+    return s.hex()
 
 def hex_to_bytes(s):
-    try:  # python3
-        return bytes.fromhex(s)
-    except AttributeError:  # python2
-        return s.decode('hex')
+    return bytes.fromhex(s)
 
 def int_to_hex(i):
     h = '{:x}'.format(i)

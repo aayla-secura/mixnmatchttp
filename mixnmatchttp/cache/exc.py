@@ -1,5 +1,3 @@
-from .._py2 import *
-
 class CacheError(Exception):
     '''Base class for exceptions related to the cache'''
     pass

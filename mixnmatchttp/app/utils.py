@@ -1,5 +1,3 @@
-from .._py2 import *
-
 import os
 import sys
 import errno
@@ -41,18 +39,12 @@ def make_dirs(path, is_file=False, mode=0o755):
         return
     if is_file:
         path = os.path.dirname(os.path.abspath(path))
-    # under python2, makedirs doesn't accept exist_ok...
-    #  try:
-    #      os.makedirs(path, mode=mode, exist_ok=True)
-    #  # let other exceptions through
-    #  except FileExistsError:
-    #      exit(NotADirectoryError(
-    #          errno.ENOTDIR, os.strerror(errno.ENOTDIR), path))
-    if os.path.exists(path) and not os.path.isdir(path):
+    try:
+        os.makedirs(path, mode=mode, exist_ok=True)
+    # let other exceptions through
+    except FileExistsError:
         exit(NotADirectoryError(
             errno.ENOTDIR, os.strerror(errno.ENOTDIR), path))
-    if not os.path.exists(path):
-        os.makedirs(path, mode=mode)
 
 def ensure_exists(path, is_file=True):
     if path is None:

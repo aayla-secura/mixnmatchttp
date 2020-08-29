@@ -1,5 +1,3 @@
-from .._py2 import *
-
 import logging
 import re
 from wrapt import ObjectProxy

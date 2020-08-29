@@ -1,5 +1,3 @@
-from .._py2 import *
-
 import sys
 import logging
 

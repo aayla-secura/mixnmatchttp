@@ -1,5 +1,3 @@
-from ..._py2 import *
-
 import re
 from datetime import datetime
 

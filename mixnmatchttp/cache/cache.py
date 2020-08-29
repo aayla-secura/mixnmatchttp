@@ -1,8 +1,3 @@
-# TODO
-#  - Multi-thread safety!
-
-from .._py2 import *
-
 import logging
 
 from .exc import CacheMemoryError, CacheOverwriteError, \

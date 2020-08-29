@@ -26,7 +26,6 @@ setup(
     ],
     packages=find_packages(),
     install_requires=[
-        'future>=0.12',
         'wrapt>=1',
         'awesomedict',
     ],

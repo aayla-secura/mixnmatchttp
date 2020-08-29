@@ -1,5 +1,3 @@
-from .._py2 import *
-
 class ServerError(Exception):
     '''Base class for exceptions raised when there is a server error'''
 

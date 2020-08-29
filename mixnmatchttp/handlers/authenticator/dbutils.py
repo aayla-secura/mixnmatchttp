@@ -1,5 +1,3 @@
-from ..._py2 import *
-
 from sqlalchemy.exc import DatabaseError
 
 from functools import partial

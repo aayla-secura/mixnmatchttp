@@ -1,5 +1,3 @@
-from ..._py2 import *
-
 class AuthError(Exception):
     '''Base class for exceptions related to request body read'''
 

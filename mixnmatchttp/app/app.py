@@ -1,5 +1,3 @@
-from .._py2 import *
-
 import os
 import sys
 import errno
@@ -15,8 +13,8 @@ from copy import copy
 import argparse
 from string import Template
 import json
+from json import JSONDecodeError
 from awesomedict import AwesomeDict
-from .._py2 import _JSONDecodeError
 
 # optional features
 try:
@@ -347,7 +345,14 @@ class App(object):
                   'option is not saved in the configuration file. '
                   'Otherwise the behaviour is similar as --log.'))
 
-    def add_argument(self, *args, **kargs):
+    def add_argument(self,
+                     *args,
+                     dest=None,
+                     group=None,
+                     check=None,
+                     required=False,
+                     no_save=False,
+                     **kargs):
         '''TODO
 
         - check can be 'file', 'dir' or a callable which takes one
@@ -359,14 +364,7 @@ class App(object):
           and can be omitted.
         '''
 
-        # python 2 (cannot specofy keywords after *args)
-        group = kargs.pop('group', None)
-        check = kargs.pop('check', None)
-        required = kargs.pop('required', False)
-        no_save = kargs.pop('no_save', False)
-        try:
-            dest = kargs['dest']
-        except KeyError:
+        if dest is None:
             exit('{}.add_argument requires the dest keyword'.format(
                 __name__))
         if group is None:
@@ -475,7 +473,7 @@ class App(object):
         content = Template(content_raw).substitute(env)
         try:
             settings = json.loads(content)
-        except _JSONDecodeError as e:
+        except JSONDecodeError as e:
             exit('Invalid configuration file: {}'.format(e))
         self.conf._update(settings)
 
@@ -821,11 +819,6 @@ class App(object):
                 os.kill(pid, SIG_DFL)
             except ProcessLookupError:
                 return False
-            except OSError as e:
-                # Under Python 2, process lookup error is an OSError.
-                if e.errno == errno.ESRCH:
-                    # The specified PID does not exist.
-                    return False
             return True
         return False
 

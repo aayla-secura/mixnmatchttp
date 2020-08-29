@@ -1,10 +1,5 @@
 import logging as _logging
-try:  # python2.7 and above
-    from logging import NullHandler as _NullHandler
-except ImportError:
-    class _NullHandler(_logging.Handler):
-        def emit(self, record):
-            pass
+from logging import NullHandler as _NullHandler
 
 _logging.TRACE = 1
 class _TraceLogger(_logging.Logger):

@@ -1,5 +1,3 @@
-from .._py2 import *
-
 class EndpointError(Exception):
     '''Base class for exceptions related creation of endpoints'''
 

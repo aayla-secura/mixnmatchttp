@@ -1,5 +1,3 @@
-from ..._py2 import *
-
 from .api import BaseAuthHTTPRequestHandler, User
 
 

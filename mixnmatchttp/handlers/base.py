@@ -1,6 +1,3 @@
-from .._py2 import *
-from future.utils import with_metaclass
-
 import logging
 import http.server
 import re
@@ -11,7 +8,7 @@ import shutil
 import mimetypes
 import urllib
 import json
-from .._py2 import _JSONDecodeError
+from json import JSONDecodeError
 import base64
 import binascii
 from wrapt import decorator
@@ -155,8 +152,9 @@ class BaseMeta(type):
                 new_class.conf.endpoint_prefix.rstrip('/')
         return new_class
 
-class BaseHTTPRequestHandler(with_metaclass(
-        BaseMeta, http.server.SimpleHTTPRequestHandler, object)):
+class BaseHTTPRequestHandler(
+        http.server.SimpleHTTPRequestHandler,
+        metaclass=BaseMeta):
     conf = DictNoClobber(
         pollers={},
         enable_directory_listing=False,
@@ -333,7 +331,7 @@ class BaseHTTPRequestHandler(with_metaclass(
             post_data = self.body
         try:
             req_params = json.loads(post_data)
-        except _JSONDecodeError:
+        except JSONDecodeError:
             raise DecodingError('Cannot decode JSON!')
         return req_params
 
@@ -772,11 +770,7 @@ class BaseHTTPRequestHandler(with_metaclass(
         super().end_headers()
 
     def send_error(self, code, message=None, explain=None):
-        '''Calls parent's send_error with the correct signature
-
-        In python2, send_error does not accept the explain keyword
-        argument
-        '''
+        '''Calls parent's send_error with the correct signature'''
 
         if self.path.startswith(self.conf.endpoint_prefix) \
                 and self.conf.api_is_JSON:
@@ -784,10 +778,7 @@ class BaseHTTPRequestHandler(with_metaclass(
             self.save_param('error', explain)
             self.send_as_JSON(code=code, message=message)
         else:
-            try:
-                super().send_error(code, message=message, explain=explain)
-            except TypeError:
-                super().send_error(code, message=message)
+            super().send_error(code, message=message, explain=explain)
 
     def send_response(self, code, message=None):
         '''Makes the Server header optional'''
