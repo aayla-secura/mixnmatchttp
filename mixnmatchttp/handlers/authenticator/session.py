@@ -23,7 +23,8 @@ else:
 
 from ... import endpoints
 from ...utils import is_str, param_dict, datetime_from_timestamp, \
-    curr_timestamp, randhex, randstr, int_to_bytes, DictNoClobber
+    curr_timestamp, randhex, randstr, int_to_bytes
+from ...conf import Conf
 from .api import BaseAuthHTTPRequestHandler, Session
 from .utils import cookie_expflag
 
@@ -49,7 +50,7 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
       Default is None (do not set it).
     '''
 
-    conf = DictNoClobber(
+    conf = Conf(
         is_SSL=False,
         # XXX make cookie conf a subdict
         cookie_path='/',
@@ -153,7 +154,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     set_JWT_keys class method.
     '''
 
-    conf = DictNoClobber(
+    conf = Conf(
         enable_JWKS=False,
         JSON_params=['access_token', 'refresh_token', 'error'],
         jwt_lifetime=15,

@@ -2,7 +2,7 @@ import sys
 import logging
 
 
-class LogHandler(object):
+class LogHandler:
     def emit(self, record):
         if record.levelno < self._min_level \
                 or record.levelno > self._max_level:

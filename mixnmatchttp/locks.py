@@ -12,7 +12,7 @@ class LockTimeoutError(Exception):
         super().__init__(
             'Timed out waiting for lock {!s}'.format(name), *args)
 
-class ContextDecorator(object):
+class ContextDecorator:
     # From https://coderwall.com/p/0lk6jg/
     # python-decorators-vs-context-managers-have-your-cake-and-eat-it
     def __enter__(self):

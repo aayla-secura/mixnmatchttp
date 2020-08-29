@@ -2,7 +2,9 @@ import logging
 import re
 from wrapt import ObjectProxy
 
-from ..utils import iter_abspath, DictNoClobber
+from ..utils import iter_abspath
+from ..types import DictReprExtended
+from collections import UserDict
 from .exc import EndpointError, NotAnEndpointError, \
     MissingArgsError, ExtraArgsError, MethodNotAllowedError
 
@@ -15,7 +17,7 @@ ARGS_REQUIRED = '+'  # 1 or more
 logger = logging.getLogger(__name__)
 
 
-class Endpoint(DictNoClobber):
+class Endpoint(UserDict):  # XXX
     '''Special endpoints
 
     The Endpoint constructor has the same signature as for
@@ -99,11 +101,12 @@ class Endpoint(DictNoClobber):
             'raw_args': False,
             'varname': '',
         }
+        name = kwargs.pop('$name', None)
+        super().__init__(*args, **kwargs)
 
         # Set the name of the endpoint before initializing, so that
         # its children have access to it
-        setattr(self, 'name', kwargs.pop('$name', None))
-        super().__init__(*args, **kwargs)
+        setattr(self, 'name', name)
         logger.debug(
             'list of subpoints: {}'.format(list(self.keys())))
 
@@ -294,6 +297,7 @@ class Endpoint(DictNoClobber):
                 self.setdefault(key, value)
 
         if args and isinstance(args[0], Endpoint):
+            # XXX
             self._DictNoClobber__update(
                 __setdefaultitem, args[0].getattrs(as_keys=True))
         self._DictNoClobber__update(__setdefaultitem, *args, **kwargs)

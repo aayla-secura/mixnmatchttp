@@ -39,7 +39,7 @@ from .exc import ArgumentValueError
 MY_PKG_NAME = __name__.split('.')[0]
 
 
-class App(object):
+class App:
     '''TODO'''
 
     def __init__(self,

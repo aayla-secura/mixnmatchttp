@@ -4,7 +4,8 @@ from datetime import datetime
 from sqlalchemy.orm.exc import NoResultFound
 
 from ...poller import Poller
-from ...utils import datetime_from_timestamp, DictNoClobber
+from ...utils import datetime_from_timestamp
+from ...conf import Conf
 from ...db import DBConnection, \
     filter_results, object_from_dict
 from .api import BaseAuthHTTPRequestHandler, \
@@ -33,7 +34,7 @@ class BaseAuthSQLAlchemyORMHTTPRequestHandler(
     300 (every 5 minutes).
     '''
 
-    conf = DictNoClobber(
+    conf = Conf(
         prune_sessions_every=300,
     )
 

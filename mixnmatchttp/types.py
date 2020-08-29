@@ -9,7 +9,7 @@ __all__ = [
 ]
 
 
-class DictRepr(object):
+class DictRepr:
     '''A dictionary interface for the object's attributes
 
     It provides item access and assignment as well as iteration in the
@@ -18,13 +18,19 @@ class DictRepr(object):
 
     It keeps track of all set attributes/items on the instance,
     ignoring any that match the regex in the 'skip' class attribute
-    (if set).
+    (default is /^_/).
 
     This class does not provide any methods meant to be called
-    directly, such as items, keys, etc. This is useful if you intend
-    to assign items by the same name. If you want said methods, use
-    DictReprExtended and take care not to set items with the same name
-    as those attributes.
+    directly except keys (which is required for this class to be
+    treated as a mapping). This is useful if you intend to assign
+    items by the same name as those methods. If you want said methods,
+    use DictReprExtended and take care not to set items with the same
+    name as those methods.
+
+    Note that because the keys method is not provided, certain
+    operations would treat this class as a sequence rather than
+    mapping, so dict.update or dict unpacking (**) won't work with
+    instances of this class.
 
     If the dict_prop class attribute is set, then a dictionary by that
     name is instantiated for every instance, and every time an
@@ -46,7 +52,10 @@ class DictRepr(object):
     '''
 
     dict_prop = None
-    skip = None
+    skip = '^_'
+
+    def keys(self):
+        return self.__dict_data.keys()
 
     @property
     def __dict_data(self):
@@ -63,21 +72,20 @@ class DictRepr(object):
         setattr(self, self.__class__.dict_prop, value)
 
     def __init__(self, dic=None, /, **kwargs):
-        self.__dict_data = {}
         self.__attrs = set()
+        self.__dict_data = {}
         init = dic or kwargs
         for k in init:
             setattr(self, k, init[k])
 
     def __setattr__(self, attr, value):
         super().__setattr__(attr, value)
-        if attr in [self.__class__.dict_prop,
-                    '_DictRepr__dict_data']:
+        if attr == self.__class__.dict_prop or \
+                re.match('_DictRepr__', attr):
             return
 
         if self.__class__.skip is not None and \
-                re.search(self.__class__.skip, attr) or \
-                re.match('_DictRepr__', attr):
+                re.search(self.__class__.skip, attr):
             return
 
         self.__attrs.add(attr)
@@ -108,8 +116,8 @@ class DictRepr(object):
     def __iter__(self):
         return self.__dict_data.__iter__()
 
-    def __len__(self, other):
-        return self.__dict_data.__len__(other)
+    def __len__(self):
+        return self.__dict_data.__len__()
 
     def __le__(self, other):
         return self.__dict_data.__le__(other)
@@ -147,23 +155,20 @@ class DictReprExtended(DictRepr):
             delattr(self, k)
 
     def copy(self):
-        return self.__dict_data.copy()
+        return self._DictRepr__dict_data.copy()
 
     @classmethod
     def fromkeys(cls, iterable, *args):
         return cls(dict.fromkeys(iterable, *args))
 
     def get(self, key, default=None, /):
-        return self.__dict_data.get(key, default)
+        return self._DictRepr__dict_data.get(key, default)
 
     def items(self):
-        return self.__dict_data.items()
-
-    def keys(self):
-        return self.__dict_data.keys()
+        return self._DictRepr__dict_data.items()
 
     def pop(self, key, *args):
-        v = self.__dict_data.pop(key, *args)
+        v = self._DictRepr__dict_data.pop(key, *args)
         try:
             delattr(self, key)
         except (AttributeError, KeyError):
@@ -171,7 +176,7 @@ class DictReprExtended(DictRepr):
         return v
 
     def popitem(self):
-        k, v = self.__dict_data.popitem()
+        k, v = self._DictRepr__dict_data.popitem()
         try:
             delattr(self, k)
         except (AttributeError, KeyError):
@@ -192,4 +197,4 @@ class DictReprExtended(DictRepr):
             setattr(self, k, new[k])
 
     def values(self):
-        return self.__dict_data.values()
+        return self._DictRepr__dict_data.values()

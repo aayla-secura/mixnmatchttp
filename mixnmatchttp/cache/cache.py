@@ -7,7 +7,7 @@ from .exc import CacheMemoryError, CacheOverwriteError, \
 logger = logging.getLogger(__name__)
 
 
-class Cache(object):
+class Cache:
     __max_size = 2 * 1024 * 1024
 
     def __init__(self, max_size=None):

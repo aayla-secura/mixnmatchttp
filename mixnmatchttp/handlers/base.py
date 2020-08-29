@@ -18,7 +18,7 @@ from ..conf import Conf, ConfItem
 from ..endpoints import Endpoint
 from ..endpoints.exc import NotAnEndpointError, \
     MethodNotAllowedError, MissingArgsError, ExtraArgsError
-from ..utils import is_seq_like, abspath, param_dict, DictNoClobber
+from ..utils import is_seq_like, abspath, param_dict
 from .exc import DecodingError, UnsupportedOperationError
 
 
@@ -128,7 +128,7 @@ class BaseMeta(type):
         }
         for attr, rcls in attr_types.items():
             val = rcls()
-            for c in bases[::-1] + [new_class]:
+            for c in bases[::-1] + (new_class,):
                 try:
                     curr = getattr(c, attr)
                 except AttributeError:
@@ -139,14 +139,14 @@ class BaseMeta(type):
 
             setattr(new_class, attr, val)
             logger.debug('Final {} for {}: {}'.format(
-                attr, name, list(getattr(new_class, attr).keys())))
+                attr, name, [k for k in getattr(new_class, attr)]))
 
         # XXX
-        if new_class.conf.path_prefix.endswith('/'):
-            new_class.conf.path_prefix = new_class.conf.path_prefix.rstrip('/')
-        if new_class.conf.endpoint_prefix.endswith('/'):
-            new_class.conf.endpoint_prefix = \
-                new_class.conf.endpoint_prefix.rstrip('/')
+        #  if new_class.conf.path_prefix.endswith('/'):
+        #      new_class.conf.path_prefix = new_class.conf.path_prefix.rstrip('/')
+        #  if new_class.conf.endpoint_prefix.endswith('/'):
+        #      new_class.conf.endpoint_prefix = \
+        #          new_class.conf.endpoint_prefix.rstrip('/')
         return new_class
 
 class BaseHTTPRequestHandler(
@@ -157,7 +157,6 @@ class BaseHTTPRequestHandler(
     # 3: should it be merged with parent's property (only for
     #    mutable types)
     # 4: optional modules it requires
-    #  'conf': (DictNoClobber, None, True, [])
     conf = Conf(
         pollers={},
         enable_directory_listing=False,

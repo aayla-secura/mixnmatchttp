@@ -12,9 +12,10 @@ try:
 except ImportError:
     pass
 
-from ... import endpoints
 from ...utils import is_str, is_seq_like, is_map_like, \
-    datetime_to_timestamp, curr_timestamp, open_path, DictNoClobber
+    datetime_to_timestamp, curr_timestamp, open_path
+from ...conf import Conf
+from ...endpoints import Endpoint
 from ..base import BaseMeta, BaseHTTPRequestHandler
 from .utils import num_charsets
 from .exc import UserAlreadyExistsError, NoSuchUserError, \
@@ -24,7 +25,7 @@ from .exc import UserAlreadyExistsError, NoSuchUserError, \
 logger = logging.getLogger(__name__)
 
 
-class ReadOnlyDict(object):
+class ReadOnlyDict:
     def __contains__(self, key):
         return self._dict_data.__contains__(key)
 
@@ -342,7 +343,7 @@ class BaseAuthHTTPRequestHandler(
       expired either way, and if it is, it remove it.
     '''
 
-    conf = DictNoClobber(
+    conf = Conf(
         JSON_params=None,
         secrets=[],
         can_create_users={None: [None]},
@@ -352,7 +353,7 @@ class BaseAuthHTTPRequestHandler(
         prune_sessions_every=0,
     )
     __last_prune = curr_timestamp()
-    endpoints = endpoints.Endpoint(
+    endpoints = Endpoint(
         register={
             '$allowed_methods': {'POST'},
         },
