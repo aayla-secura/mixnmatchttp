@@ -32,11 +32,11 @@ class Endpoint(UserDict):  # XXX
                         }
                     },
                 )
-    Any keyword arguments or dictionary keys starting with
-    $ correspond to an attribute (without the $). All other keyword
-    arguments/keys become subpoints of the parent; their value
-    should be either another Endpoint (in which case it is copied),
-    or a plain dictionary.
+    Any dictionary keys starting with $ correspond to an attribute
+    (without the $). All other keys become subpoints of the parent;
+    their value should be either another Endpoint (in which case it is
+    copied), or a plain dictionary to be converted to an Endpoint.
+
     All child endpoints are enabled by default. The root endpoint is
     disabled by default; if you want it enabled, either manually
     change the 'disabled' attribute, or construct it like so:
@@ -44,26 +44,20 @@ class Endpoint(UserDict):  # XXX
             'some_sub': { ... },
             '$disabled': False,
             })
-    or like so:
-        endpoints = endpoint.Endpoints({
-            '$disabled': False,
-            },
-            some_sub={ ... }
-            )
 
     Endpoint names shouldn't have underscores, we don't handle them
-    well, so expect unexpected behaviour. TODO maybe?
+    well, so expect unexpected behaviour. XXX TODO maybe?
     Note also that endpoints are treated as case-insensitive, and the
     handler should assume the path is all lowercase, i.e. /FoO/BAR
-    should be handled by do_{METHOD}_foo_bar
+    should be handled by do_{METHOD}_foo_bar XXX
 
     An endpoint's name can be a '*', in which case it is treated as
-    a variable. It will match anything and the actual match will be
-    available in a dictionary passed to the endpoint handler, see
-    documentation on Endpoint.parse. The dictionary key defaults to
-    the parent's name, but can be overridden with the '$varname'
-    attribute (useful for consecutive variable endpoints). For
-    example:
+    variable. It will match anything and the actual match will be
+    available in a dictionary attribute of the parsed endpoing (which
+    is passed to the endpoint handler), see documentation on
+    Endpoint.parse. The dictionary key defaults to the parent's name,
+    but can be overridden with the '$varname' attribute (useful for
+    consecutive variable endpoints). For example:
         endpoints = endpoints.Endpoints(
                 person={
                     '$allowed_methods': {'GET', 'POST'},
@@ -74,17 +68,29 @@ class Endpoint(UserDict):  # XXX
                 )
     will look for a method do_{METHOD}_person or do_person (a variable
     path component is discarded when selecting a handler name).
-    The endpoint passed to the handler will have params['username']
-    set to the match path component.
+    The endpoint passed to the handler will have
+    <endpoint>.params['username'] set to the matched path component,
+    e.g. john if /person/john has been requested.
 
     Recognized attributes:
-        disabled: <bool>, defaults to True for the root, False
-                  otherwise
-        allowed_methods: <set>, defaults to {'GET'}
-        nargs: <number>|ARGS_*, defaults to 0
-        raw_args: <bool>, defaults to False
-        varname: <string>, only for wildcards, defaults to parent's
-                 name
+        disabled:        <bool>; whether the endpoint can be called;
+                         defaults to True for the root, False
+                         otherwise
+        allowed_methods: <set>; which HTTP methods are allowed;
+                         defaults to {'GET'}
+        nargs:           <number>|ARGS_*; how many arguments are
+                         accepted after the full enpoint path;
+                         defaults to 0
+                           ARGS_OPTIONAL is 0 or 1
+                           ARGS_ANY      is any number
+                           ARGS_REQUIRED is 1 or more
+        raw_args:        <bool>; whether to canonicalize the
+                           arguments, e.g. foo/../bar -> bar;
+                           defaults to False
+        varname:         <string>; the name the variable component
+                         is to be saved as; only for wildcards;
+                         defaults to parent's name
+
     Attempting to set another attribute (a key beginning with $) will
     result in AttributeError. If you want to add additional
     attributes, add them as keys to the instance's _defaultattrs
@@ -119,21 +125,19 @@ class Endpoint(UserDict):  # XXX
             raise EndpointError('Endpoints expecting raw arguments '
                                 'cannot have subpoints.')
 
-    def __eq__(self, other):
-        '''Compares endpoint to other taking into account attributes
-
-        Attributes which have not been explicitly set are also
-        compared.
-        '''
-
-        if not isinstance(other, Endpoint):
-            return NotImplemented
-        return (dict(self.items()) == dict(other.items()) and
-                self.getattrs(with_defaults=True).items()
-                == other.getattrs(with_defaults=True).items())
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
+    # XXX
+    #  def __eq__(self, other):
+    #      '''Compares endpoint to other taking into account attributes
+    #
+    #      Attributes which have not been explicitly set are also
+    #      compared.
+    #      '''
+    #
+    #      if not isinstance(other, Endpoint):
+    #          return NotImplemented
+    #      return (dict(self.items()) == dict(other.items()) and
+    #              self.getattrs(with_defaults=True).items()
+    #              == other.getattrs(with_defaults=True).items())
 
     def __setattr__(self, attr, value):
         if attr == 'allowed_methods' and 'GET' in value:
@@ -332,12 +336,13 @@ class Endpoint(UserDict):  # XXX
             argslen: actual number of arguments it was called with
             params: a dictionary of all parameters for the full path;
                 each key defaults to the parent's name
+
         For example if an endpoint /cache/new/static accepts
         arguments, and httpreq has a method do_cache, but not
         do_cache_new_static, and not do_cache_new, a request for
-        /cache/new/static/page will set ep.root to 'cache', ep.sub to
-        'new/static', ep.handler to httpreq.do_cache, ep.args to
-        'page', and ep.argslen to 1.
+        /cache/new/static/page will result in a ParsedEndpoint ep with
+        ep.root set to 'cache', ep.sub to 'new/static', ep.handler
+        to httpreq.do_cache, ep.args to 'page', and ep.argslen to 1.
         Or if /employee/*/dept/*/location is an endpoint and httpreq
         has a method do_employee_dept_location, then a request for
         /employee/jsmith/dept/it/location will set ep.root to
@@ -347,9 +352,9 @@ class Endpoint(UserDict):  # XXX
 
         If path does resolve to an enpoint's path but the
         request is not allowed for some reason, raises an exception:
-            MethodNotAllowedError
-            MissingArgsError
-            ExtraArgsError
+            MethodNotAllowedError: HTTP method not allowed
+            MissingArgsError:      < the minimum # of arguments given
+            ExtraArgsError:        > the maximum # of arguments given
         If path doesn't resolve to an enpoint's path raises an
         exception:
             NotAnEndpointError

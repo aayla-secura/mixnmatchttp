@@ -139,7 +139,7 @@ class BaseMeta(type):
 
             setattr(new_class, attr, val)
             logger.debug('Final {} for {}: {}'.format(
-                attr, name, [k for k in getattr(new_class, attr)]))
+                attr, name, getattr(new_class, attr)))
 
         return new_class
 
