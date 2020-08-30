@@ -359,9 +359,9 @@ class Endpoint(UserDict):  # XXX
         if not path or path[0] != '/':
             raise ValueError(
                 'Path for endpoint parsing must begin with a /')
-        if not path.startswith(httpreq.conf.endpoint_prefix):
+        if not path.startswith(httpreq.conf.api_prefix):
             raise NotAnEndpointError(path)
-        path = path[len(httpreq.conf.endpoint_prefix):]
+        path = path[len(httpreq.conf.api_prefix):]
 
         # we don't yet know if the endpoint wants the arguments raw or
         # canonicalized. So we check each absolute segment; if it's an

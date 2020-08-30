@@ -60,7 +60,7 @@ def needs_db_response_handling(base,
                     and (self.command == 'GET' or poll_any):
                 current = self.headers.get('If-None-Match')
                 if current is not None:
-                    if self.conf.pollers[poller].is_match(
+                    if self.pollers[poller].is_match(
                             current.strip('"')):
                         self.send_response_empty(304)
                         return
@@ -79,7 +79,7 @@ def needs_db_response_handling(base,
 
             if poller is not None:
                 self.save_header(
-                    'ETag', self.conf.pollers[poller].latest)
+                    'ETag', self.pollers[poller].latest)
             if result is None:
                 if send_None:
                     self.send_response_empty(204)

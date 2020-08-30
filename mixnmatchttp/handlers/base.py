@@ -100,7 +100,7 @@ def methodhandler(realhandler, self, args, kwargs):
     else:
         # strip the prefix before calling handler
         self._BaseHTTPRequestHandler__pathname = \
-            self.pathname[len(self.conf.endpoint_prefix):]
+            self.pathname[len(self.conf.api_prefix):]
         logger.debug('Calling endpoint handler, path is {}'.format(
             self.pathname))
         self.ep.handler(*args, **kwargs)
@@ -141,30 +141,19 @@ class BaseMeta(type):
             logger.debug('Final {} for {}: {}'.format(
                 attr, name, [k for k in getattr(new_class, attr)]))
 
-        # XXX
-        #  if new_class.conf.path_prefix.endswith('/'):
-        #      new_class.conf.path_prefix = new_class.conf.path_prefix.rstrip('/')
-        #  if new_class.conf.endpoint_prefix.endswith('/'):
-        #      new_class.conf.endpoint_prefix = \
-        #          new_class.conf.endpoint_prefix.rstrip('/')
         return new_class
 
 class BaseHTTPRequestHandler(
         http.server.SimpleHTTPRequestHandler,
         metaclass=BaseMeta):
-    # 1: type which it should be convertible to
-    # 2: function to transform the value (or do any other checks)
-    # 3: should it be merged with parent's property (only for
-    #    mutable types)
-    # 4: optional modules it requires
     conf = Conf(
-        pollers={},
         enable_directory_listing=False,
-        path_prefix='',
-        endpoint_prefix='/api',
+        path_prefix=ConfItem('', transformer=lambda s: s.rstrip('/')),
+        api_prefix=ConfItem('/api', transformer=lambda s: s.rstrip('/')),
         api_is_JSON=True,
         send_software_info=False,
     )
+    pollers = {}
     endpoints = {}
 
     def __init__(self, *args, **kwargs):
@@ -757,7 +746,7 @@ class BaseHTTPRequestHandler(
     def send_error(self, code, message=None, explain=None):
         '''Calls parent's send_error with the correct signature'''
 
-        if self.path.startswith(self.conf.endpoint_prefix) \
+        if self.path.startswith(self.conf.api_prefix) \
                 and self.conf.api_is_JSON:
             # TODO customize the error parameter name
             self.save_param('error', explain)

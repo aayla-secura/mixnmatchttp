@@ -526,9 +526,9 @@ class BaseAuthHTTPRequestHandler(
                  '{}'  # secrets joined in an OR
                  '(/|$)'.format('|'.join(secrets))),
                 ['*'])])
-        if self.pathname != '{}/login'.format(self.conf.endpoint_prefix) \
+        if self.pathname != '{}/login'.format(self.conf.api_prefix) \
                 and self.pathname != '{}/logout'.format(
-                    self.conf.endpoint_prefix) \
+                    self.conf.api_prefix) \
                 and not self.is_authorized(
                     requested, secrets, default=True, is_regex=True):
             return (401,)

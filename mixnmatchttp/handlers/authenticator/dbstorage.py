@@ -170,10 +170,10 @@ class BaseAuthSQLAlchemyORMHTTPRequestHandler(
         def after_commit(session):
             if not session.info.get('is_clean', True):
                 logger.debug('DB changed')
-                cls.conf.pollers[name].update()
+                cls.pollers[name].update()
                 session.info['is_clean'] = True
 
-        cls.conf.pollers[name] = Poller()
+        cls.pollers[name] = Poller()
         DBConnection.get(base).listen(
             'before_flush', before_flush)
         DBConnection.get(base).listen(

@@ -750,11 +750,11 @@ class App:
 
     def _term_sighandler(self, signo, stack_frame):
         try:
-            self.reqhandler.conf.pollers
+            self.reqhandler.pollers
         except AttributeError:
             pass
         else:
-            for p in self.reqhandler.conf.pollers.values():
+            for p in self.reqhandler.pollers.values():
                 p.close()
         self.server.shutdown()
         self._log_event('Stopped server on {}'.format(self.url))

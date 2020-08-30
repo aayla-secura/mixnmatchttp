@@ -278,7 +278,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         '''
 
         if self.pathname == '{}/authtoken'.format(
-                self.conf.endpoint_prefix):
+                self.conf.api_prefix):
             return None
         return super().denied()
 
