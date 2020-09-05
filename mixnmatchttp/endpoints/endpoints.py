@@ -1,10 +1,9 @@
 import logging
 import re
-from wrapt import ObjectProxy
+from wrapt import ObjectProxy  # XXX
 
 from ..utils import iter_abspath
-from ..types import DictReprExtended
-from collections import UserDict
+from ..types import DictRepr
 from .exc import EndpointError, NotAnEndpointError, \
     MissingArgsError, ExtraArgsError, MethodNotAllowedError
 
@@ -15,10 +14,17 @@ ARGS_REQUIRED = '+'  # 1 or more
 
 
 logger = logging.getLogger(__name__)
+__all__ = [
+    'ARGS_OPTIONAL',
+    'ARGS_ANY',
+    'ARGS_REQUIRED',
+    'Endpoint',
+    'ParsedEndpoint',
+]
 
 
-class Endpoint(UserDict):  # XXX
-    '''Special endpoints
+class Endpoint(DictRepr):
+    '''API endpoints
 
     The Endpoint constructor has the same signature as for
     a dictionary. For example you can define the endpoints like so:
@@ -92,10 +98,13 @@ class Endpoint(UserDict):  # XXX
                          defaults to parent's name
 
     Attempting to set another attribute (a key beginning with $) will
-    result in AttributeError. If you want to add additional
+    result in AttributeError. If you want to add additional XXX
     attributes, add them as keys to the instance's _defaultattrs
     dictionary (along with their default value).
     '''
+
+    dict_prop = 'children'
+    skip = '.'
 
     def __init__(self, *args, **kwargs):
         self._defaultattrs = {

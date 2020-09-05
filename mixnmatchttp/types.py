@@ -16,9 +16,31 @@ class DictRepr:
     usual dictionary way. Assigning items and setting attributes is
     equivalent.
 
-    It keeps track of all set attributes/items on the instance,
-    ignoring any that match the regex in the 'skip' class attribute
-    (default is /^_/).
+    Setting an item is the same as setting an attribute.
+    I.e. o.x = 1 and o['x'] = 1 will both result in an attribute as
+    well as an item 'x'. The only difference between setting an
+    attribute and setting an item occurs if the key/attribute matches
+    the regex in the 'skip' class attribute (default is /^_/).
+
+    XXX
+
+    If the dict_prop class attribute is set, then a dictionary by that
+    name is instantiated for every instance, and every time an
+    attribute or item is set on the instance, its value is saved in
+    the dictionary, unless it matched the 'skip' regex.
+    I.e. if the class's dict_prop is 'data', then
+      o.x = 1
+      o.y = 2
+    will result in o.data being a static dictionary {'x': 1, 'y': 2}.
+    All dict-related methods will operate on that dictionary.
+
+    XXX One can assign items to this dictionary directly, if one does not
+    wish to set the corresponding attribute.
+
+    If dict_prop is not set (None) on the class, then every time any
+    of the dict-related methods is accessed a new dictionary is
+    constructed from the current values of the previously set
+    attributes. This is the default.
 
     This class does not provide any methods meant to be called
     directly except keys (which is required for this class to be
@@ -26,29 +48,6 @@ class DictRepr:
     items by the same name as those methods. If you want said methods,
     use DictReprExtended and take care not to set items with the same
     name as those methods.
-
-    Note that because the keys method is not provided, certain
-    operations would treat this class as a sequence rather than
-    mapping, so dict.update or dict unpacking (**) won't work with
-    instances of this class.
-
-    If the dict_prop class attribute is set, then a dictionary by that
-    name is instantiated for every instance, and every time an
-    attribute is set on the instance, its value is saved in the
-    dictionary. i.e. if the class's dict_prop is 'data', then
-      o.x = 1
-      o.y = 2
-    will result in o.data being a static dictionary {'x': 1, 'y': 2}.
-    All dict-related methods will operate on that dictionary.
-
-    One can assign items to this dictionary directly, if access via
-    attributes is not wanted. Assigning items to the object itself, as
-    in o['x'] = 1 will also set the corresponding attribute, o.x.
-
-    If dict_prop is not set (None) on the class, then every time any
-    of the dict-related methods is accessed a new dictionary is
-    constructed from the current values of the previously set
-    attributes. This is the default.
     '''
 
     dict_prop = None
@@ -98,6 +97,7 @@ class DictRepr:
         if self.__class__.dict_prop is not None:
             del self.__dict_data[attr]
 
+    # XXX
     def __setitem__(self, key, value):
         self.__setattr__(key, value)
 
