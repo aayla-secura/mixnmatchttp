@@ -159,9 +159,6 @@ def merge(valA, valB):
     new = copy(valA)
     if hasattr(new, 'update'):
         new.update(valB)
-    elif hasattr(new, '__setitem__'):
-        for k in valB:
-            new[k] = valB[k]
     elif hasattr(new, 'extend'):
         new.extend(valB)
     elif hasattr(new, 'add'):
@@ -171,6 +168,9 @@ def merge(valA, valB):
         new = new + valB
     elif hasattr(new, '__iadd__'):
         new += valB
+    elif hasattr(new, '__setitem__'):
+        for k in valB:
+            new[k] = valB[k]
     else:
         _die()
     return new

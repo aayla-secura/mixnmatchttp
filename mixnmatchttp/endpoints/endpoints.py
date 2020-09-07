@@ -1,9 +1,9 @@
 import logging
 import re
 from wrapt import ObjectProxy  # XXX
+from collections import UserDict
 
 from ..utils import iter_abspath
-from ..types import DictRepr
 from .exc import EndpointError, NotAnEndpointError, \
     MissingArgsError, ExtraArgsError, MethodNotAllowedError
 
@@ -23,7 +23,7 @@ __all__ = [
 ]
 
 
-class Endpoint(DictRepr):
+class Endpoint(UserDict):
     '''API endpoints
 
     The Endpoint constructor has the same signature as for

@@ -115,6 +115,7 @@ class BaseMeta(type):
 
     def __new__(cls, name, bases, attrs):
         new_class = super().__new__(cls, name, bases, attrs)
+        return new_class  # XXX
 
         logger.debug('New class {}; bases: {}'.format(
             name, [b.__name__ for b in bases]))
