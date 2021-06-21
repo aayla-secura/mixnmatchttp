@@ -38,9 +38,9 @@ def methodhandler(realhandler, self, args, kwargs):
     logger.debug('Path is {}'.format(self.path))
 
     # split query from pathname and decode them
-    # TODO other encodings??
     # take only the first set of parameters (i.e. everything
-    # between the first ? and the subsequent / or #
+    # between the first ? and the subsequent #
+    # TODO is that ^ right?
     m = re.match('^([^#\?]*)(?:\?([^#]+))?', self.path)
     query_str = urllib.parse.unquote_plus(m.group(2)) \
         if m.group(2) else ''
@@ -115,7 +115,6 @@ class BaseMeta(type):
 
     def __new__(cls, name, bases, attrs):
         new_class = super().__new__(cls, name, bases, attrs)
-        return new_class  # XXX
 
         logger.debug('New class {}; bases: {}'.format(
             name, [b.__name__ for b in bases]))

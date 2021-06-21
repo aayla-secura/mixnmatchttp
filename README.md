@@ -542,6 +542,7 @@ Redirects (with `307`) to any address given in the URL.
 # Internal TODO notes
 
   * Smarter way of merging endpoints with parent's (remembering which ones were explicitly set, and which inherited). Do the same for `_secrets` in `handlers.authenticator`
+  * Templates from files
   * Remove `_` prefix from class attributes
   * Do not save expanded env variables to config file
   * Test with nginx proxy setup (it was behaving weirdly, need to find if it's a bug here)
