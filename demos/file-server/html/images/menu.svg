@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    width="30" height="30" viewBox="0 0 30 30">
+  <defs>
+    <ellipse id="ellipse" cx="15" cy="5" rx="15" ry="2"
+      style="fill:#A7A1AE" />
+      <filter id="blur" x="0" y="0">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="0.3" />
+      </filter>
+  </defs>
+  <use xlink:href="#ellipse" filter="url(#blur)" x="0" y="0"/>
+  <use xlink:href="#ellipse" filter="url(#blur)" x="0" y="10"/>
+  <use xlink:href="#ellipse" filter="url(#blur)" x="0" y="20"/>
+</svg>
