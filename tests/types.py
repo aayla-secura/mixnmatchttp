@@ -2,10 +2,49 @@ import unittest
 import re
 
 import loggers
-from mixnmatchttp.types import DictWithDefaults
+from mixnmatchttp.types import ObjectWithDefaults, DictWithDefaults
+
+class TestObjectWithDefaults(unittest.TestCase):
+    def test_defaults(self):
+        s = ObjectWithDefaults(dict(a=1, b=2))
+        self.assertEqual(s.a, 1)
+        self.assertEqual(s.b, 2)
+        self.assertRaises(AttributeError, lambda _: s.c, 'ignored')
+        self.assertNotIn('a', s)
+        self.assertNotIn('b', s)
+
+    def test_equal(self):
+        s = ObjectWithDefaults(dict(a=1, b=[1, 2]), a=1)
+        p = ObjectWithDefaults(dict(a=1, b=[1, 2]), a=1)
+        self.assertEqual(s, p)
+        p = ObjectWithDefaults(dict(a=1, c=[1, 2]), a=1)
+        self.assertNotEqual(s, p)
+
+    def test_iter(self):
+        s = ObjectWithDefaults(a=1)
+        s.b = 2
+        self.assertEqual(list(s), ['a', 'b'])
+
+    def test_add(self):
+        s = ObjectWithDefaults(dict(a=1, c=3), x=3, y=4)
+        p = ObjectWithDefaults(dict(a=2, d=4), x=2, z=5)
+        u = s + p
+        self.assertEqual(s.a, 1)
+        self.assertEqual(s.c, 3)
+        self.assertNotIn('d', s)
+        self.assertEqual(s.x, 3)
+        self.assertEqual(s.y, 4)
+        self.assertNotIn('z', s)
+        self.assertEqual(u.a, 2)
+        self.assertEqual(u.c, 3)
+        self.assertEqual(u.d, 4)
+        self.assertEqual(u.x, 2)
+        self.assertEqual(u.y, 4)
+        self.assertEqual(u.z, 5)
+        s += p
+        self.assertEqual(s, u)
 
 class TestDictWithDefaults(unittest.TestCase):
-
     def test_defaults_a(self):
         s = DictWithDefaults()
         s.setdefaults(a=1)

@@ -29,32 +29,71 @@ class ObjectWithDefaults:
     attributes to be set.
     '''
 
-    def __init__(self, **kargs):
-        self.__attrs = []
-        # TODO
+    def __init__(self, defaults={}, /, **kargs):
+        self.__data = kargs.copy()
+        self.__defaults = defaults.copy()
 
-    def __setattr__(self):
-        pass  # TODO
+    def __setattr__(self, attr, value):
+        if attr.startswith('_ObjectWithDefaults__'):
+            super().__setattr__(attr, value)
+        else:
+            self.__data[attr] = value
 
-    def __getattr__(self):
-        pass  # TODO
+    def __getattr__(self, attr):
+        if attr.startswith('_ObjectWithDefaults__'):
+            raise AttributeError(attr)
+
+        try:
+            try:
+                return self.__data[attr]
+            except KeyError:
+                return self.__defaults[attr]
+        except KeyError as e:
+            raise AttributeError(e)
+
+    def __eq__(self, other):
+        if not isinstance(other, ObjectWithDefaults):
+            return False
+        return self.__data == other.__data and \
+            self.__defaults == other.__defaults
 
     def __iter__(self):
-        yield from self._attrs
+        yield from self.__data
 
     def __contains__(self, key):
-        return key in self._attrs
+        return key in self.__data
 
     def __add__(self, other):
         if not isinstance(other, ObjectWithDefaults):
             return NotImplemented
-        # TODO
+
+        data = self.__data
+        defaults = self.__defaults
+        try:
+            self.__data = {}
+            self.__defaults = {}
+            clone = copy(self)
+        finally:
+            self.__data = data
+            self.__defaults = defaults
+        clone.__data = copy(data)
+        clone.__defaults = copy(defaults)
+        clone.__data.update(other.__data)
+        clone.__defaults.update(other.__defaults)
+        return clone
 
     def __radd__(self, other):
         return self.__add__(other)
 
     def __iadd__(self, other):
-        pass  # TODO
+        if not isinstance(other, ObjectWithDefaults):
+            return NotImplemented
+        self.__data.update(other.__data)
+        self.__defaults.update(other.__defaults)
+        return self
+
+    def __repr__(self):
+        return repr(self.__data)
 
 class DictWithDefaults:
     '''A dictionary with hidden defaults
