@@ -168,6 +168,10 @@ def merge(valA, valB):
         new = new + valB
     elif hasattr(new, '__iadd__'):
         new += valB
+    elif hasattr(new, '__or__'):
+        new = new | valB
+    elif hasattr(new, '__ior__'):
+        new |= valB
     elif hasattr(new, '__setitem__'):
         for k in valB:
             new[k] = valB[k]

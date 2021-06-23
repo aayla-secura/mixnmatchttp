@@ -68,7 +68,7 @@ class TestConfItem(unittest.TestCase):
         self.assertEqual(i, dicu)
 
 class TestConf(unittest.TestCase):
-    def test(self):
+    def test_update_merge(self):
         lista = [1, 2]
         listb = [1, 3]
         c = Conf(a=ConfItem(lista, mergeable=True), b=lista)
@@ -76,6 +76,15 @@ class TestConf(unittest.TestCase):
         self.assertEqual(c.a, lista + listb)
         self.assertEqual(c.b, listb)
         self.assertEqual(c.c, 2)
+
+    def test_add_merge(self):
+        lista = [1, 2]
+        listb = [1, 3]
+        c = Conf(a=ConfItem(lista.copy(), mergeable=True), b=listb.copy())
+        c.a += listb
+        c.b += lista
+        self.assertEqual(c.a, lista + listb + lista + listb)
+        self.assertEqual(c.b, listb + lista)
 
 
 if __name__ == '__main__':

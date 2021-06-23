@@ -1,9 +1,9 @@
 import logging
 import re
-from wrapt import ObjectProxy  # XXX
-from collections import UserDict
+from wrapt import ObjectProxy
 
 from ..utils import iter_abspath
+from ..types import ObjectDictWithDefaults
 from .exc import EndpointError, NotAnEndpointError, \
     MissingArgsError, ExtraArgsError, MethodNotAllowedError
 
@@ -23,7 +23,7 @@ __all__ = [
 ]
 
 
-class Endpoint(UserDict):
+class Endpoint(ObjectDictWithDefaults):
     '''API endpoints
 
     The Endpoint constructor has the same signature as for
@@ -59,8 +59,8 @@ class Endpoint(UserDict):
 
     An endpoint's name can be a '*', in which case it is treated as
     variable. It will match anything and the actual match will be
-    available in a dictionary attribute of the parsed endpoing (which
-    is passed to the endpoint handler), see documentation on
+    available in a dictionary attribute of the parsed endpoint (which
+    is passed to the endpoint handler); see the documentation on
     Endpoint.parse. The dictionary key defaults to the parent's name,
     but can be overridden with the '$varname' attribute (useful for
     consecutive variable endpoints). For example:
@@ -98,229 +98,88 @@ class Endpoint(UserDict):
                          defaults to parent's name
 
     Attempting to set another attribute (a key beginning with $) will
-    result in AttributeError. If you want to add additional XXX
-    attributes, add them as keys to the instance's _defaultattrs
-    dictionary (along with their default value).
+    result in AttributeError.
     '''
 
-    dict_prop = 'children'
-    skip = '.'
+    def __init__(self, **kwargs):
+        self.children = {}
 
-    def __init__(self, *args, **kwargs):
-        self._defaultattrs = {
-            'name': None,  # for internal user
-            'parent': None,  # for internal user
-            'disabled': True,  # True for root only
-            'allowed_methods': {'GET', 'HEAD'},
-            'nargs': 0,
-            'raw_args': False,
-            'varname': '',
-        }
+        # XXX accept defaults
         name = kwargs.pop('$name', None)
-        super().__init__(*args, **kwargs)
-
-        # Set the name of the endpoint before initializing, so that
-        # its children have access to it
+        # XXX Set the name of the endpoint before initializing, so
+        # that its children have access to it
         setattr(self, 'name', name)
+
+        super().__init__({
+            '$name': None,
+            '$parent': None,
+            '$disabled': True,  # True for root only
+            '$allowed_methods': {'GET', 'HEAD'},
+            '$nargs': 0,
+            '$raw_args': False,
+            '$varname': '',
+        }, **kwargs)
+
         logger.debug(
-            'list of subpoints: {}'.format(list(self.keys())))
+            'list of subpoints: {}'.format(list(self.children)))
 
         if self.raw_args and \
                 self.nargs not in [ARGS_ANY, ARGS_REQUIRED]:
             logger.warning(('Endpoint requires raw '
                             'arguments, but is sensitive to the '
                             'number of arguments; not reliable!'))
-        if self.raw_args and self.keys():
+        if self.raw_args and self.children:
             raise EndpointError('Endpoints expecting raw arguments '
                                 'cannot have subpoints.')
 
-    # XXX
-    #  def __eq__(self, other):
-    #      '''Compares endpoint to other taking into account attributes
-    #
-    #      Attributes which have not been explicitly set are also
-    #      compared.
-    #      '''
-    #
-    #      if not isinstance(other, Endpoint):
-    #          return NotImplemented
-    #      return (dict(self.items()) == dict(other.items()) and
-    #              self.getattrs(with_defaults=True).items()
-    #              == other.getattrs(with_defaults=True).items())
-
     def __setattr__(self, attr, value):
+        logger.debug('Setting endpoint attribute {}'.format(attr))
         if attr == 'allowed_methods' and 'GET' in value:
             value |= {'HEAD'}
         super().__setattr__(attr, value)
 
     def __setitem__(self, key, item):
         if not key:
-            raise ValueError('Endpoint must be non-empty')
+            raise ValueError('Endpoint name must be non-empty')
 
         if key[0] == '$':
-            logger.debug(('Endpoint special key {}, '
-                          'setting as attribute').format(key))
-            # raise an exception if attribute is unknown
-            getattr(self, key[1:])
-            setattr(self, key[1:], item)
+            return setattr(self, key[1:], item)
+
+        logger.debug('Creating endpoint {}'.format(key))
+        if isinstance(item, Endpoint):
+            child = Endpoint() + item  # create a copy
         else:
-            logger.debug('Creating endpoint {}'.format(key))
-            if isinstance(item, Endpoint):
-                super().__setitem__(key, item.copy())
-            else:
-                super().__setitem__(key, Endpoint(
-                    item, **{'$name': key}))
+            child = Endpoint(item, **{'$name': key})
 
-            # Enable the endpoint, unless disabled is explicitly set
-            self[key]._defaultattrs['disabled'] = False
-            # Save the parent
-            #  self[key]._defaultattrs['parent'] = self
-            setattr(self[key], 'parent', self)
-            # For variable endpoints, set the default varname to the
-            # parent's name
-            if key == '*':
-                self[key]._defaultattrs['varname'] = \
-                    self.getattr('name')  # will be None for root
-                logger.debug('Endpoint {} is variable ({})'.format(
-                    key, self.getattr('name')))
-            logger.debug('Endpoint {} done'.format(key))
+        # Enable the endpoint, unless disabled is explicitly set
+        child.__defaults__['disabled'] = False
+        # Save the parent
+        setattr(child, 'parent', self)
+        # For variable endpoints, set the default varname to the
+        # parent's name
+        if key == '*':
+            child.__defaults__['varname'] = \
+                self.name  # may be None for root
+            logger.debug('Endpoint {} is variable ({})'.format(
+                key, self.name))
+        logger.debug('Endpoint {} done'.format(key))
+        self.children[key] = child
 
-    def __getattr__(self, attr):
-        return self._getattr(attr, None, True)
-
-    def _getattr(self, attr, default=None, raise_None=False):
-        '''Returns the given attribute, or the default value
-
-        If default is None, it is taked from the endpoint's defaults
-        (_defaultattrs). If it is not found there then AttributeError
-        is raised if raise_None is True, otherwise None is returned.
-        '''
-
-        try:
-            return self.__getattribute__(attr)
-        except AttributeError as e:
-            if attr == '_defaultattrs':
-                # not initialized yet
-                raise e
-
-            if default is None:
-                try:
-                    default = self._defaultattrs[attr]
-                except KeyError:
-                    pass
-            if default is not None or not raise_None:
-                return default
-            raise e
-
-    def getattr(self, attr, default=None):
-        '''Returns the given attribute, or the default value
-
-        If default is None, it is taked from the endpoint's defaults
-        (_defaultattrs).
-        '''
-
-        return self._getattr(attr, default, False)
-
-    def getattrs(self, with_defaults=False, as_keys=False):
-        '''Returns a dictionary with all endpoint attributes.
-
-        By default only the attributes which have been explicitly set
-        are returned. If with_defaults is True, then all attributes
-        are returned.
-        '''
-
-        pref = ''
-        if as_keys:
-            pref = '$'
-        attrs = {}
-        for attr in self._defaultattrs:
-            try:
-                if not with_defaults:
-                    value = self.__getattribute__(attr)
-                else:
-                    value = self.getattr(attr)
-            except AttributeError:
-                pass
-            else:
-                attrs[pref + attr] = value
-        return attrs
-
-    def setdefaultattr(self, attr, default=None):
-        '''Sets the given attribute if not already set
-
-        If default is None, it is taked from the endpoint's defaults
-        (_defaultattrs).
-        '''
-
-        try:
-            self.__getattribute__(attr)
-        except AttributeError:
-            logger.debug('Setting {} to default ({})'.format(
-                attr, default))
-            if default is None:
-                try:
-                    default = self._defaultattrs[attr]
-                except KeyError:
-                    pass
-            setattr(self, attr, default)
-
-    def setdefaultattrs(self, defaults=None):
-        '''Sets the given default value for each attribute in defaults
-
-        If defaults is None self._defaultattrs is used.
-        '''
-
-        if defaults is None:
-            defaults = self._defaultattrs
-        for attr, value in defaults.items():
-            self.setdefaultattr(attr, value)
-
-    def update(self, *args, **kwargs):
+    def update(self, arg=None, /, **kwargs):
         '''Updates using items in the first argument, then keywords
 
         Special keywords (starting with $) are recognized as usual.
         '''
 
-        super().update(*args, **kwargs)
-        if not args or not isinstance(args[0], Endpoint):
-            return
-
-        # Was passed an Endpoint, update with its attributes
-        for attr, value in args[0].getattrs().items():
-            setattr(self, attr, value)
-
-    def update_noclob(self, *args, **kwargs):
-        '''Updates without overwriting existing keys or attributes
-
-        Special keywords (starting with $) are recognized as usual. If
-        the corresponding attribute has not been explicitly, it is
-        overriden.
-        '''
-
-        def __setdefaultitem(key, value):
-            if key[0] == '$':
-                logger.debug(
-                    'Updating without clobbering: attr {}={}'.format(
-                        key[1:], value))
-                self.setdefaultattr(key[1:], value)
-            else:
-                logger.debug(
-                    'Updating without clobbering: key {}={}'.format(
-                        key, value))
-                self.setdefault(key, value)
-
-        if args and isinstance(args[0], Endpoint):
-            # XXX
-            self._DictNoClobber__update(
-                __setdefaultitem, args[0].getattrs(as_keys=True))
-        self._DictNoClobber__update(__setdefaultitem, *args, **kwargs)
-
-    def clear(self):
-        '''Clears child endpoints and all attributes'''
-
-        super().clear()
-        for attr in self.getattrs():
-            self.__delattr__(attr)
+        if arg and kwargs:
+            raise ValueError(
+                ('Keyword arguments cannot be used with a '
+                 'positional argument'))
+        init = arg or kwargs
+        if isinstance(init, Endpoint):
+            pass  # XXX
+        else:
+            pass  # XXX
 
     def parse(self, httpreq):
         '''Selects an endpoint for the path

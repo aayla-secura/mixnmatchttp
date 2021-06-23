@@ -527,9 +527,10 @@ Redirects (with `307`) to any address given in the URL.
 # Coming soon
 
   * Brute force protections and account lockout
+  * CAPTHAs?
   * Better templates
   * A configurable declarative base to use with `BaseAuthSQLAlchemyORMHTTPRequestHandler`
-  * Command-line option and/or class attribute for paths shouldn't be cached
+  * Command-line option and/or class attribute for paths that shouldn't be cached
   * Command-line option for paths which need authentication (`_secrets`)
   * An option to disable access to certain files (a special value in `_secrets`)
   * Log rotation
@@ -558,6 +559,7 @@ Redirects (with `307`) to any address given in the URL.
   * Logging conf for request line via command-line; also, custom format for it
   * Use of pollers in `send_headers`
   * `kargs` -> `kwargs`
+  * Use format strings instead of the format string method
 
 ## Possibly coming at some point
 

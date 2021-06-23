@@ -1,11 +1,10 @@
 import logging
-from copy import copy, deepcopy
 
 
 logger = logging.getLogger(__name__)
 __all__ = [
     'ObjectWithDefaults',
-    'DictWithDefaults',
+    'ObjectDictWithDefaults',
 ]
 
 
@@ -18,42 +17,70 @@ class ObjectWithDefaults:
     Attributes can also be accessed as keys
 
     Supported operations:
-      in: To check if an attribute is explicitly set, then use the in
-          operator, like <attr> in <instance>.
-      +:  You can add object A to B and this would return a new
-          object with all of A's attributes and defaults in addition
-          to B's. B's attributes and defaults override those of A's
+      in:  To check if an attribute is explicitly set, then use the in
+           operator, like <attr> in <instance>.
+      +:   You can add object A to B and this would return a new
+           object with all of A's attributes and defaults in addition
+           to B's. B's attributes and defaults override those of A's
       iteration: You can iterate over the attributes; order not
-          guaranteed
+           guaranteed
       indexing: you can set and get attributes as you do dictionary
-          keys
+           keys
+      len: you can query the number of items added
 
-    Defaults can only be set at instantiation. No public methods are
-    provided by this class to ensure that they don't clash with
-    attributes to be set.
+    Defaults can only be set at instantiation (or using the private
+    attribute __defaults__ but this is subject to change). No public
+    methods or attributes are provided by this class to ensure that
+    they don't clash with attributes to be set.
     '''
 
-    def __init__(self, defaults={}, /, **kargs):
-        self.__data = kargs.copy()
-        self.__defaults = defaults.copy()
+    __data_type__ = dict
+
+    def __init__(self, defaults={}, /, **explicit):
+        self.__explicit__ = self.__data_type__()
+        self.__defaults__ = self.__data_type__()
+        self.__additems__(defaults, **explicit)
+
+    def __additems__(self, defaults={}, /, **explicit):
+        for e in explicit:
+            self.__setitem__(e, explicit[e])
+        for d in defaults:
+            self.__setdefaultitem__(d, defaults[d])
 
     def __setitem__(self, attr, value):
-        self.__data[attr] = value
+        '''This is the only method that should modify __explicit__
+
+        This allows child classes to easily hook into any changes
+        to __explicit__ and override that behaviour by overriding this
+        method alone
+        '''
+
+        self.__explicit__[attr] = value
+
+    def __setdefaultitem__(self, attr, value):
+        '''This is the only method that should modify __defaults__
+
+        This allows child classes to easily hook into any changes
+        to __defaults__ and override that behaviour by overriding this
+        method alone
+        '''
+
+        self.__defaults__[attr] = value
 
     def __getitem__(self, attr):
         try:
-            return self.__data[attr]
+            return self.__explicit__[attr]
         except KeyError:
-            return self.__defaults[attr]
+            return self.__defaults__[attr]
 
     def __setattr__(self, attr, value):
-        if attr.startswith('_ObjectWithDefaults__'):
+        if attr.startswith('__'):
             super().__setattr__(attr, value)
         else:
-            self.__data[attr] = value
+            self.__setitem__(attr, value)
 
     def __getattr__(self, attr):
-        if attr.startswith('_ObjectWithDefaults__'):
+        if attr.startswith('__'):
             raise AttributeError(attr)
 
         try:
@@ -64,124 +91,84 @@ class ObjectWithDefaults:
     def __eq__(self, other):
         if not isinstance(other, ObjectWithDefaults):
             return False
-        return self.__data == other.__data and \
-            self.__defaults == other.__defaults
+        return self.__explicit__ == other.__explicit__ and \
+            self.__defaults__ == other.__defaults__
 
     def __iter__(self):
-        yield from self.__data
+        yield from self.__explicit__
 
     def __contains__(self, key):
-        return key in self.__data
+        return key in self.__explicit__
 
     def __add__(self, other):
-        if not isinstance(other, ObjectWithDefaults):
+        if self.__class__ is not other.__class__:
             return NotImplemented
 
-        data = self.__data
-        defaults = self.__defaults
-        try:
-            self.__data = {}
-            self.__defaults = {}
-            clone = copy(self)
-        finally:
-            self.__data = data
-            self.__defaults = defaults
-        clone.__data = copy(data)
-        clone.__defaults = copy(defaults)
-        clone.__data.update(other.__data)
-        clone.__defaults.update(other.__defaults)
+        clone = self.__copy__()
+        clone.__additems__(other.__defaults__, **other.__explicit__)
         return clone
 
     def __radd__(self, other):
         return self.__add__(other)
 
     def __iadd__(self, other):
-        if not isinstance(other, ObjectWithDefaults):
+        if self.__class__ is not other.__class__:
             return NotImplemented
-        self.__data.update(other.__data)
-        self.__defaults.update(other.__defaults)
+
+        self.__additems__(other.__defaults__, **other.__explicit__)
         return self
 
     def __repr__(self):
-        return repr(self.__data)
+        return repr(self.__explicit__)
 
-class DictWithDefaults:
+    def __len__(self):
+        return len(self.__explicit__)
+
+    def __copy__(self):
+        clone = self.__class__()
+        clone.__explicit__ = self.__explicit__.copy()
+        clone.__defaults__ = self.__defaults__.copy()
+        return clone
+
+class ObjectDictWithDefaults(ObjectWithDefaults):
     '''A dictionary with hidden defaults
 
-    If <key> is not set on the instance, but is in the defaults then
-    it can be accessed in the usual way, however <key> in <instance>
-    would still return False.
+    Like ObjectWithDefaults except it provides the following public
+    methods:
+      setdefault
+      setdefaults
+      update
 
-    Defaults can be set using the setdefault or setdefaults methods.
+    Same key--attribute correspondence as ObjectWithDefaults, however,
+    set keys can only be accessed as attributes if they are not the
+    same as any of the available methods.
+
+    Defaults can be set during instantiation (the only positional
+    argument) or using the setdefault or setdefaults methods.
     The setdefault method does not explicitly set the item as is the
     case for regular dictionaries.
     '''
 
-    def __init__(self, **kargs):
-        self._defaults = {}
-        self._data = {}
-        self.update(kargs)
-
     def setdefault(self, key, value):
-        self._defaults[key] = value
+        self.__defaults__[key] = value
 
     def setdefaults(self, **kargs):
         for k in kargs:
             self.setdefault(k, kargs[k])
 
-    def update(self, other=None, /, **kargs):
-        '''TODO'''
+    def update(self, arg=None, /, **kargs):
+        '''Updates the explicitly set and default items'''
 
-        explicit = {}
-        defaults = {}
-        if other is not None:
-            if isinstance(other, DictWithDefaults):
-                explicit = other._data
-                defaults = other._defaults
-            else:
-                explicit = other
-
-        self._data.update(explicit)
-        self._defaults.update(defaults)
-
-    def copy(self, deep=False):
-        if deep:
-            _copy = deepcopy
+        if arg and kargs:
+            raise ValueError(
+                ('Keyword arguments cannot be used with a '
+                 'positional argument'))
+        other = arg or kargs
+        if isinstance(other, ObjectWithDefaults):
+            explicit = other.__explicit__
+            defaults = other.__defaults__
         else:
-            _copy = copy
-        data = self._data
-        defaults = self._defaults
-        try:
-            self._data = {}
-            self._defaults = {}
-            clone = _copy(self)
-        finally:
-            self._data = data
-            self._defaults = defaults
-        clone._data = _copy(data)
-        clone._defaults = _copy(defaults)
-        return clone
+            explicit = self.__explicit__.__class__(other)
+            defaults = self.__defaults__.__class__()
 
-    def __eq__(self, other):
-        if not isinstance(other, DictWithDefaults):
-            return False
-        return self._data == other._data and \
-            self._defaults == other._defaults
-
-    def __getitem__(self, key):
-        try:
-            return self._data[key]
-        except KeyError:
-            return self._defaults[key]
-
-    def __setitem__(self, key, value):
-        self._data[key] = value
-
-    def __iter__(self):
-        yield from self._data
-
-    def __contains__(self, key):
-        return key in self._data
-
-    def __repr__(self):
-        return repr(self._data)
+        self.__additems__(defaults, **explicit)

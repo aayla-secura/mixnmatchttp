@@ -567,7 +567,6 @@ class BaseHTTPRequestHandler(
 
     def page_from_template(self, template, dynfields={}):
         '''Returns a page from the given template'''
-        # XXX
 
         try:
             page = self.template_pages[template['page']].copy()

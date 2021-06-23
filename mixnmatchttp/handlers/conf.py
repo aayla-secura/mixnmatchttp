@@ -2,7 +2,7 @@ import logging
 import importlib
 from wrapt import ObjectProxy
 
-from ..types import ObjectWithDefaults
+from ..types import ObjectWithDefaults, ObjectDictWithDefaults
 
 
 logger = logging.getLogger(__name__)
@@ -20,7 +20,7 @@ class ConfTypeError(ConfError, TypeError):
 class _NotInitializedError(Exception):
     pass
 
-class Conf:
+class Conf(ObjectDictWithDefaults):
     '''Holds ConfItems as attributes
 
     Reassigning an item will merge it with the current one (the newly
@@ -30,27 +30,15 @@ class Conf:
         - if the value can be merged with the parent, it will be
     '''
 
-    def __init__(self, *args, **kwargs):
-        self.update(*args, **kwargs)
-
-    def update(self, dic=None, /, **kwargs):
-        if dic and kwargs:
-            raise ValueError(
-                ('Keyword arguments cannot be used with a '
-                 'positional argument'))
-        init = dic or kwargs
-        for k in init:
-            setattr(self, k, init[k])
-
-    def __iter__(self):
-        yield from []
-
-    def __setattr__(self, attr, value):
+    def __setitem__(self, attr, value):
+        # XXX if item is mergeable and the += is used, then it
+        # duplicates itself
         try:
-            curr = getattr(self, attr)
-        except AttributeError:
+            curr = self[attr]
+        except KeyError:
             pass
         else:
+            logger.debug('Updating current conf item {}'.format(attr))
             return curr._ConfItem__update(value)
 
         if not isinstance(value, ConfItem):
@@ -61,7 +49,7 @@ class Conf:
                     'Error in config item {name}: {err!s}'.format(
                         name=attr, err=e))
 
-        super().__setattr__(attr, value)
+        super().__setitem__(attr, value)
 
 class ConfItem(ObjectProxy):
     def __init__(self, value, /, **settings):
@@ -125,7 +113,7 @@ class ConfItem(ObjectProxy):
             other_settings = other._self_settings
         else:
             value = other
-            other_settings = {}
+            other_settings = ObjectWithDefaults()
 
         self.__init(value, self_settings + other_settings)
 
