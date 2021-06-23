@@ -4,13 +4,60 @@ from copy import copy, deepcopy
 
 logger = logging.getLogger(__name__)
 __all__ = [
+    'ObjectWithDefaults',
     'DictWithDefaults',
 ]
 
 
+class ObjectWithDefaults:
+    '''An object with default attributes
+
+    If <attr> is not set on the instance, but is in the defaults then
+    it can be accessed in the usual way.
+
+    Supported operations:
+      in: To check if an attribute is explicitly set, then use the in
+          operator, like <attr> in <instance>.
+      +:  You can add object A to B and this would return a new
+          object with all of A's attributes and defaults in addition
+          to B's. B's attributes and defaults override those of A's
+      iteration: You can iterate over the attributes; order not
+          guaranteed
+
+    Defaults can only be set at instantiation. No public methods are
+    provided by this class to ensure that they don't clash with
+    attributes to be set.
+    '''
+
+    def __init__(self, **kargs):
+        self.__attrs = []
+        # TODO
+
+    def __setattr__(self):
+        pass  # TODO
+
+    def __getattr__(self):
+        pass  # TODO
+
+    def __iter__(self):
+        yield from self._attrs
+
+    def __contains__(self, key):
+        return key in self._attrs
+
+    def __add__(self, other):
+        if not isinstance(other, ObjectWithDefaults):
+            return NotImplemented
+        # TODO
+
+    def __radd__(self, other):
+        return self.__add__(other)
+
+    def __iadd__(self, other):
+        pass  # TODO
+
 class DictWithDefaults:
-    '''A dictionary with hidden defaults and key--attribute
-    correspondence
+    '''A dictionary with hidden defaults
 
     If <key> is not set on the instance, but is in the defaults then
     it can be accessed in the usual way, however <key> in <instance>
@@ -24,8 +71,7 @@ class DictWithDefaults:
     def __init__(self, **kargs):
         self._defaults = {}
         self._data = {}
-        for s in kargs:
-            setattr(self, s, kargs[s])
+        self.update(kargs)
 
     def setdefault(self, key, value):
         self._defaults[key] = value
@@ -46,11 +92,8 @@ class DictWithDefaults:
             else:
                 explicit = other
 
-        for k in explicit:
-            self[k] = explicit[k]
-        for k in kargs:
-            self[k] = kargs[k]
-        self.setdefaults(**defaults)
+        self._data.update(explicit)
+        self._defaults.update(defaults)
 
     def copy(self, deep=False):
         if deep:
@@ -76,26 +119,11 @@ class DictWithDefaults:
         return self._data == other._data and \
             self._defaults == other._defaults
 
-    def __getattr__(self, key):
-        if key in ['_defaults', '_data']:
-            return super().__getattr__(key)
-
-        try:
-            return self[key]
-        except KeyError as e:
-            raise AttributeError(e)
-
     def __getitem__(self, key):
         try:
             return self._data[key]
         except KeyError:
             return self._defaults[key]
-
-    def __setattr__(self, key, value):
-        if key in ['_defaults', '_data']:
-            super().__setattr__(key, value)
-        else:
-            self[key] = value
 
     def __setitem__(self, key, value):
         self._data[key] = value
