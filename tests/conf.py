@@ -6,7 +6,6 @@ from mixnmatchttp.handlers.conf import Conf, ConfItem, \
     ConfError, ConfRuntimeError, ConfTypeError
 
 class TestConfItem(unittest.TestCase):
-
     def test_proxy(self):
         x = [1, 2, 3]
         i = ConfItem(x.copy())
@@ -67,6 +66,16 @@ class TestConfItem(unittest.TestCase):
         i = ConfItem(dica, mergeable=True)
         i._ConfItem__update(dicb)
         self.assertEqual(i, dicu)
+
+class TestConf(unittest.TestCase):
+    def test(self):
+        lista = [1, 2]
+        listb = [1, 3]
+        c = Conf(a=ConfItem(lista, mergeable=True), b=lista)
+        c.update(a=listb, b=listb, c=2)
+        self.assertEqual(c.a, lista + listb)
+        self.assertEqual(c.b, listb)
+        self.assertEqual(c.c, 2)
 
 
 if __name__ == '__main__':

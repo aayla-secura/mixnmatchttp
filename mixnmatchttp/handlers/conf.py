@@ -42,6 +42,9 @@ class Conf:
         for k in init:
             setattr(self, k, init[k])
 
+    def __iter__(self):
+        yield from []
+
     def __setattr__(self, attr, value):
         try:
             curr = getattr(self, attr)

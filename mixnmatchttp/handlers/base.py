@@ -110,11 +110,11 @@ def methodhandler(realhandler, self, args, kwargs):
 class BaseMeta(type):
     '''Metaclass for BaseHTTPRequestHandler
 
-    Adds to each of the parents' attributes
+    Merges the configuration with that of the parents
     '''
 
-    def __new__(cls, name, bases, attrs):
-        new_class = super().__new__(cls, name, bases, attrs)
+    def __new__(cls, name, bases, attributes):
+        new_class = super().__new__(cls, name, bases, attributes)
 
         logger.debug('New class {}; bases: {}'.format(
             name, [b.__name__ for b in bases]))
@@ -127,17 +127,15 @@ class BaseMeta(type):
             'conf': Conf,
         }
         for attr, rcls in attr_types.items():
-            val = rcls()
+            new = rcls()
             for c in bases[::-1] + (new_class,):
                 try:
                     curr = getattr(c, attr)
                 except AttributeError:
-                    pass
-                else:
-                    for k in curr:
-                        val[k] = curr[k]
+                    continue
+                new.update(curr)
 
-            setattr(new_class, attr, val)
+            setattr(new_class, attr, new)
             logger.debug('Final {} for {}: {}'.format(
                 attr, name, getattr(new_class, attr)))
 
