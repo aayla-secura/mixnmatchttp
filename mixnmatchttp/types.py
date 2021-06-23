@@ -15,6 +15,8 @@ class ObjectWithDefaults:
     If <attr> is not set on the instance, but is in the defaults then
     it can be accessed in the usual way.
 
+    Attributes can also be accessed as keys
+
     Supported operations:
       in: To check if an attribute is explicitly set, then use the in
           operator, like <attr> in <instance>.
@@ -23,6 +25,8 @@ class ObjectWithDefaults:
           to B's. B's attributes and defaults override those of A's
       iteration: You can iterate over the attributes; order not
           guaranteed
+      indexing: you can set and get attributes as you do dictionary
+          keys
 
     Defaults can only be set at instantiation. No public methods are
     provided by this class to ensure that they don't clash with
@@ -32,6 +36,15 @@ class ObjectWithDefaults:
     def __init__(self, defaults={}, /, **kargs):
         self.__data = kargs.copy()
         self.__defaults = defaults.copy()
+
+    def __setitem__(self, attr, value):
+        self.__data[attr] = value
+
+    def __getitem__(self, attr):
+        try:
+            return self.__data[attr]
+        except KeyError:
+            return self.__defaults[attr]
 
     def __setattr__(self, attr, value):
         if attr.startswith('_ObjectWithDefaults__'):
@@ -44,10 +57,7 @@ class ObjectWithDefaults:
             raise AttributeError(attr)
 
         try:
-            try:
-                return self.__data[attr]
-            except KeyError:
-                return self.__defaults[attr]
+            return self.__getitem__(attr)
         except KeyError as e:
             raise AttributeError(e)
 

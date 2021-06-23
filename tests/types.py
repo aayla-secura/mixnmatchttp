@@ -5,11 +5,22 @@ import loggers
 from mixnmatchttp.types import ObjectWithDefaults, DictWithDefaults
 
 class TestObjectWithDefaults(unittest.TestCase):
+    def test_attr_item(self):
+        s = ObjectWithDefaults(dict(a=1, b=2), c=3)
+        s.d = 4
+        s['e'] = 5
+        self.assertEqual(s.a, s['a'])
+        self.assertEqual(s.b, s['b'])
+        self.assertEqual(s.c, s['c'])
+        self.assertEqual(s.d, s['d'])
+        self.assertEqual(s.e, s['e'])
+
     def test_defaults(self):
         s = ObjectWithDefaults(dict(a=1, b=2))
         self.assertEqual(s.a, 1)
         self.assertEqual(s.b, 2)
         self.assertRaises(AttributeError, lambda _: s.c, 'ignored')
+        self.assertRaises(KeyError, lambda k: s[k], 'c')
         self.assertNotIn('a', s)
         self.assertNotIn('b', s)
 
