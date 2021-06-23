@@ -2,7 +2,7 @@ import logging
 import importlib
 from wrapt import ObjectProxy
 
-from ..types import DictWithDefaults
+from ..types import ObjectWithDefaults
 
 
 logger = logging.getLogger(__name__)
@@ -89,13 +89,11 @@ class ConfItem(ObjectProxy):
         '''
 
         # cannot set any attributes before calling parent __init__
-        self_settings = DictWithDefaults()
-        self_settings.setdefaults(
+        self_settings = ObjectWithDefaults(dict(
             mergeable=False,
-            allowed_types=(),
+            allowed_types=(value.__class__,),
             transformer=None,
-            requires=())
-        self_settings.update(settings)
+            requires=()), **settings)
         self.__init(value, self_settings)
 
     def __getattr__(self, attr):
@@ -120,16 +118,16 @@ class ConfItem(ObjectProxy):
         return True
 
     def __update(self, other):
-        settings = self._self_settings.copy()
+        self_settings = self._self_settings
 
         if isinstance(other, ConfItem):
             value = other.__wrapped__
-            settings.update(other._self_settings)
+            other_settings = other._self_settings
         else:
             value = other
+            other_settings = {}
 
-        # this must be done after updating the settings
-        self.__init(value, settings)
+        self.__init(value, self_settings + other_settings)
 
     def __init(self, value, settings):
         from ..utils import merge as _merge
@@ -170,10 +168,6 @@ class ConfItem(ObjectProxy):
         ##########
         if settings.allowed_types:
             value = conv_type(value)
-        else:
-            # default allowed_types is the type of the given value
-            settings.setdefaults(
-                allowed_types=(value.__class__,))
 
         if settings.transformer is not None:
             value = transform(value)

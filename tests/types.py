@@ -16,13 +16,13 @@ class TestObjectWithDefaults(unittest.TestCase):
         self.assertEqual(s.e, s['e'])
 
     def test_defaults(self):
-        s = ObjectWithDefaults(dict(a=1, b=2))
+        s = ObjectWithDefaults(dict(a=1, b=2), b=3)
         self.assertEqual(s.a, 1)
-        self.assertEqual(s.b, 2)
+        self.assertEqual(s.b, 3)
         self.assertRaises(AttributeError, lambda _: s.c, 'ignored')
         self.assertRaises(KeyError, lambda k: s[k], 'c')
         self.assertNotIn('a', s)
-        self.assertNotIn('b', s)
+        self.assertIn('b', s)
 
     def test_equal(self):
         s = ObjectWithDefaults(dict(a=1, b=[1, 2]), a=1)
