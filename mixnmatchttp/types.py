@@ -1,15 +1,16 @@
 import logging
-from copy import copy
+from copy import copy, deepcopy
 
 
 logger = logging.getLogger(__name__)
 __all__ = [
-    'Settings',
+    'DictWithDefaults',
 ]
 
 
-class Settings:
-    '''A dictionary with hidden defaults
+class DictWithDefaults:
+    '''A dictionary with hidden defaults and key--attribute
+    correspondence
 
     If <key> is not set on the instance, but is in the defaults then
     it can be accessed in the usual way, however <key> in <instance>
@@ -20,11 +21,11 @@ class Settings:
     case for regular dictionaries.
     '''
 
-    def __init__(self, **settings):
+    def __init__(self, **kargs):
         self._defaults = {}
         self._data = {}
-        for s in settings:
-            setattr(self, s, settings[s])
+        for s in kargs:
+            setattr(self, s, kargs[s])
 
     def setdefault(self, key, value):
         self._defaults[key] = value
@@ -33,11 +34,13 @@ class Settings:
         for k in kargs:
             self.setdefault(k, kargs[k])
 
-    def update(self, other=None, /, **settings):
+    def update(self, other=None, /, **kargs):
+        '''TODO'''
+
         explicit = {}
         defaults = {}
         if other is not None:
-            if isinstance(other, Settings):
+            if isinstance(other, DictWithDefaults):
                 explicit = other._data
                 defaults = other._defaults
             else:
@@ -45,31 +48,36 @@ class Settings:
 
         for k in explicit:
             self[k] = explicit[k]
-        for k in settings:
-            self[k] = settings[k]
+        for k in kargs:
+            self[k] = kargs[k]
         self.setdefaults(**defaults)
 
-    def copy(self):
+    def copy(self, deep=False):
+        if deep:
+            _copy = deepcopy
+        else:
+            _copy = copy
         data = self._data
         defaults = self._defaults
         try:
             self._data = {}
             self._defaults = {}
-            clone = copy(self)
+            clone = _copy(self)
         finally:
             self._data = data
             self._defaults = defaults
-        clone.update(self)
+        clone._data = _copy(data)
+        clone._defaults = _copy(defaults)
         return clone
 
     def __eq__(self, other):
-        if not isinstance(other, Settings):
+        if not isinstance(other, DictWithDefaults):
             return False
         return self._data == other._data and \
             self._defaults == other._defaults
 
     def __getattr__(self, key):
-        if key.startswith('_'):
+        if key in ['_defaults', '_data']:
             return super().__getattr__(key)
 
         try:
@@ -84,8 +92,9 @@ class Settings:
             return self._defaults[key]
 
     def __setattr__(self, key, value):
-        super().__setattr__(key, value)
-        if not key.startswith('_'):
+        if key in ['_defaults', '_data']:
+            super().__setattr__(key, value)
+        else:
             self[key] = value
 
     def __setitem__(self, key, value):

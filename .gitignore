@@ -1,10 +1,9 @@
 MANIFEST.in
-TEST*
-tmp
 demos/mixnmatchttp
 demos/users
 build
 dist
+tmp
 **/__pycache__
 *.pyc
 *.egg-info

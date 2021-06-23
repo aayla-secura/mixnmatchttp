@@ -14,7 +14,7 @@ except ImportError:
 
 from ...utils import is_str, is_seq_like, is_map_like, \
     datetime_to_timestamp, curr_timestamp, open_path
-from ...conf import Conf
+from ..conf import Conf
 from ...endpoints import Endpoint
 from ..base import BaseMeta, BaseHTTPRequestHandler
 from .utils import num_charsets

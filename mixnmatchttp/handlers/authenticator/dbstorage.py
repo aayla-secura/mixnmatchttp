@@ -5,7 +5,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from ...poller import Poller
 from ...utils import datetime_from_timestamp
-from ...conf import Conf
+from ..conf import Conf
 from ...db import DBConnection, \
     filter_results, object_from_dict
 from .api import BaseAuthHTTPRequestHandler, \

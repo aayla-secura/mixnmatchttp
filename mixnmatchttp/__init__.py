@@ -13,9 +13,9 @@ _logger = _logging.getLogger(__name__)
 _logger.addHandler(_NullHandler())
 
 
-from . import handlers
-from . import servers
-from .app import App
+# XXX  from . import handlers
+#  from . import servers
+#  from .app import App
 
 
 __all__ = [

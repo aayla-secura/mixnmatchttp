@@ -24,7 +24,7 @@ else:
 from ... import endpoints
 from ...utils import is_str, param_dict, datetime_from_timestamp, \
     curr_timestamp, randhex, randstr, int_to_bytes
-from ...conf import Conf
+from ..conf import Conf
 from .api import BaseAuthHTTPRequestHandler, Session
 from .utils import cookie_expflag
 
