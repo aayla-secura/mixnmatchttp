@@ -3,11 +3,11 @@ import re
 from copy import copy
 
 import loggers
-from mixnmatchttp.types import ObjectDictWithDefaults
+from mixnmatchttp.types import DefaultAttrDict
 
 class Test(unittest.TestCase):
     def test_attr_item(self):
-        s = ObjectDictWithDefaults(dict(a=1, b=2), c=3)
+        s = DefaultAttrDict(dict(a=1, b=2), c=3)
         s.d = 4
         s['e'] = 5
         self.assertEqual(s.a, s['a'])
@@ -17,7 +17,7 @@ class Test(unittest.TestCase):
         self.assertEqual(s.e, s['e'])
 
     def test_defaults_a(self):
-        s = ObjectDictWithDefaults()
+        s = DefaultAttrDict()
         s.setdefaults(a=1)
         s.setdefault('b', 2)
         self.assertEqual(s['a'], 1)
@@ -27,7 +27,7 @@ class Test(unittest.TestCase):
         self.assertNotIn('b', s)
 
     def test_defaults_b(self):
-        s = ObjectDictWithDefaults(a=1)
+        s = DefaultAttrDict(a=1)
         s.setdefaults(a=2, b=2)
         self.assertEqual(s['a'], 1)
         self.assertEqual(s['b'], 2)
@@ -35,8 +35,8 @@ class Test(unittest.TestCase):
         self.assertEqual(s['b'], 3)
 
     def test_equal(self):
-        s = ObjectDictWithDefaults(a=1)
-        p = ObjectDictWithDefaults(a=1)
+        s = DefaultAttrDict(a=1)
+        p = DefaultAttrDict(a=1)
         s.setdefaults(b=[1, 2])
         p.setdefaults(b=[1, 2])
         self.assertEqual(s, p)
@@ -44,7 +44,7 @@ class Test(unittest.TestCase):
         self.assertNotEqual(s, p)
 
     def test_copy(self):
-        s = ObjectDictWithDefaults(dict(a=1, b=2))
+        s = DefaultAttrDict(dict(a=1, b=2))
         s['c'] = [1, 2]
         c = copy(s)
         self.assertEqual(c, s)
@@ -57,8 +57,8 @@ class Test(unittest.TestCase):
         self.assertNotEqual(c, s)
 
     def test_update(self):
-        s = ObjectDictWithDefaults(a=1, c=3)
-        p = ObjectDictWithDefaults(a=2, d=4)
+        s = DefaultAttrDict(a=1, c=3)
+        p = DefaultAttrDict(a=2, d=4)
         s.setdefaults(b=2, d=5)
         p.setdefaults(b=3, c=6, e=6)
         s.update(p)
@@ -69,13 +69,13 @@ class Test(unittest.TestCase):
         self.assertEqual(s['e'], 6)
 
     def test_iter(self):
-        s = ObjectDictWithDefaults(a=1)
+        s = DefaultAttrDict(a=1)
         s.b = 2
         self.assertEqual(list(s), ['a', 'b'])
 
     def test_add(self):
-        s = ObjectDictWithDefaults(dict(a=1, c=3), x=3, y=4)
-        p = ObjectDictWithDefaults(dict(a=2, d=4), x=2, z=5)
+        s = DefaultAttrDict(dict(a=1, c=3), x=3, y=4)
+        p = DefaultAttrDict(dict(a=2, d=4), x=2, z=5)
         u = s + p
         self.assertEqual(s.a, 1)
         self.assertEqual(s.c, 3)
@@ -91,6 +91,17 @@ class Test(unittest.TestCase):
         self.assertEqual(u.z, 5)
         s += p
         self.assertEqual(s, u)
+
+    def test_public(self):
+        dicta = dict(a=1)
+        dictb = dict(b=2)
+        s = DefaultAttrDict(dicta, **dictb)
+        self.assertEqual(list(s.keys()), list(dictb.keys()))
+        self.assertEqual(list(s.defaultkeys()), list(dicta.keys()))
+        self.assertEqual(list(s.values()), list(dictb.values()))
+        self.assertEqual(list(s.defaultvalues()), list(dicta.values()))
+        self.assertEqual(list(s.items()), list(dictb.items()))
+        self.assertEqual(list(s.defaultitems()), list(dicta.items()))
 
 
 if __name__ == '__main__':

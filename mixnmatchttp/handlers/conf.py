@@ -2,7 +2,7 @@ import logging
 import importlib
 from wrapt import ObjectProxy
 
-from ..types import ObjectWithDefaults, ObjectDictWithDefaults
+from ..types import DefaultAttrKeys, DefaultAttrDict
 
 
 logger = logging.getLogger(__name__)
@@ -20,7 +20,7 @@ class ConfTypeError(ConfError, TypeError):
 class _NotInitializedError(Exception):
     pass
 
-class Conf(ObjectDictWithDefaults):
+class Conf(DefaultAttrDict):
     '''Holds ConfItems as attributes
 
     Reassigning an item will merge it with the current one (the newly
@@ -30,26 +30,32 @@ class Conf(ObjectDictWithDefaults):
         - if the value can be merged with the parent, it will be
     '''
 
-    def __setitem__(self, attr, value):
-        # XXX if item is mergeable and the += is used, then it
-        # duplicates itself
+    def __set_explicit_or_default(self, attr, value, default=False):
         try:
             curr = self[attr]
         except KeyError:
-            pass
+            if not isinstance(value, ConfItem):
+                try:
+                    value = ConfItem(value)
+                except ConfError as e:
+                    raise ConfError(
+                        'Error in config item {name}: {err!s}'.format(
+                            name=attr, err=e))
+
+            if default:
+                super().__setdefault__(attr, value)
+            else:
+                super().__setexplicit__(attr, value)
+
         else:
             logger.debug('Updating current conf item {}'.format(attr))
-            return curr._ConfItem__update(value)
+            curr._ConfItem__update(value)
 
-        if not isinstance(value, ConfItem):
-            try:
-                value = ConfItem(value)
-            except ConfError as e:
-                raise ConfError(
-                    'Error in config item {name}: {err!s}'.format(
-                        name=attr, err=e))
+    def __setexplicit__(self, attr, value):
+        self.__set_explicit_or_default(attr, value, default=False)
 
-        super().__setitem__(attr, value)
+    def __setdefault__(self, attr, value):
+        self.__set_explicit_or_default(attr, value, default=True)
 
 class ConfItem(ObjectProxy):
     def __init__(self, value, /, **settings):
@@ -77,7 +83,7 @@ class ConfItem(ObjectProxy):
         '''
 
         # cannot set any attributes before calling parent __init__
-        self_settings = ObjectWithDefaults(dict(
+        self_settings = DefaultAttrKeys(dict(
             mergeable=False,
             allowed_types=(value.__class__,),
             transformer=None,
@@ -113,7 +119,7 @@ class ConfItem(ObjectProxy):
             other_settings = other._self_settings
         else:
             value = other
-            other_settings = ObjectWithDefaults()
+            other_settings = self._self_settings.__class__()
 
         self.__init(value, self_settings + other_settings)
 
