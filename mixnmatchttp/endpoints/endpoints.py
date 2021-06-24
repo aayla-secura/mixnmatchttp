@@ -1,9 +1,10 @@
 import logging
 import re
+from copy import copy
 from wrapt import ObjectProxy
 
 from ..utils import iter_abspath
-from ..types import ObjectDictWithDefaults
+from ..types import DefaultDict, DefaultAttrs
 from .exc import EndpointError, NotAnEndpointError, \
     MissingArgsError, ExtraArgsError, MethodNotAllowedError
 
@@ -23,7 +24,7 @@ __all__ = [
 ]
 
 
-class Endpoint(ObjectDictWithDefaults):
+class Endpoint(DefaultDict):
     '''API endpoints
 
     The Endpoint constructor has the same signature as for
@@ -101,85 +102,80 @@ class Endpoint(ObjectDictWithDefaults):
     result in AttributeError.
     '''
 
-    def __init__(self, **kwargs):
-        self.children = {}
+    def __init__(self, arg=None, /, **kargs):
+        if arg and kargs:
+            raise ValueError(
+                ('Keyword arguments cannot be used with a '
+                 'positional argument'))
+        init = arg or kargs
 
-        # XXX accept defaults
-        name = kwargs.pop('$name', None)
-        # XXX Set the name of the endpoint before initializing, so
+        # Set the name of the endpoint before initializing, so
         # that its children have access to it
-        setattr(self, 'name', name)
+        super().__init__(**{'$name': kargs.pop('$name', None)})
+        self.parent = None
 
-        super().__init__({
-            '$name': None,
-            '$parent': None,
+        super().__update__({
             '$disabled': True,  # True for root only
             '$allowed_methods': {'GET', 'HEAD'},
             '$nargs': 0,
             '$raw_args': False,
             '$varname': '',
-        }, **kwargs)
+        }, **kargs)
 
         logger.debug(
-            'list of subpoints: {}'.format(list(self.children)))
+            'list of subpoints: {}'.format(list(self.keys())))
 
         if self.raw_args and \
                 self.nargs not in [ARGS_ANY, ARGS_REQUIRED]:
             logger.warning(('Endpoint requires raw '
                             'arguments, but is sensitive to the '
                             'number of arguments; not reliable!'))
-        if self.raw_args and self.children:
+        if self.raw_args and self.keys():
             raise EndpointError('Endpoints expecting raw arguments '
                                 'cannot have subpoints.')
 
-    def __setattr__(self, attr, value):
-        logger.debug('Setting endpoint attribute {}'.format(attr))
-        if attr == 'allowed_methods' and 'GET' in value:
-            value |= {'HEAD'}
-        super().__setattr__(attr, value)
+    def __getattr__(self, name):
+        if name.startswith('__'):
+            raise AttributeError(name)
 
-    def __setitem__(self, key, item):
+        try:
+            try:
+                return self.__explicit__['${}'.format(name)]
+            except KeyError:
+                return self.__defaults__['${}'.format(name)]
+        except KeyError as e:
+            raise AttributeError(e)
+
+    def __set_explicit_or_default(self, key, item, default=False):
         if not key:
             raise ValueError('Endpoint name must be non-empty')
 
         if key[0] == '$':
-            return setattr(self, key[1:], item)
-
-        logger.debug('Creating endpoint {}'.format(key))
-        if isinstance(item, Endpoint):
-            child = Endpoint() + item  # create a copy
+            if key == '$allowed_methods' and 'GET' in item:
+                item |= {'HEAD'}
         else:
-            child = Endpoint(item, **{'$name': key})
+            logger.debug('Creating endpoint {}'.format(key))
+            if isinstance(item, Endpoint):
+                item = copy(item)  # TODO should we copy?
+            else:
+                item = Endpoint(item)
 
-        # Enable the endpoint, unless disabled is explicitly set
-        child.__defaults__['disabled'] = False
-        # Save the parent
-        setattr(child, 'parent', self)
-        # For variable endpoints, set the default varname to the
-        # parent's name
-        if key == '*':
-            child.__defaults__['varname'] = \
-                self.name  # may be None for root
-            logger.debug('Endpoint {} is variable ({})'.format(
-                key, self.name))
-        logger.debug('Endpoint {} done'.format(key))
-        self.children[key] = child
+            item.__setdefault__('$name', key)
+            # Enable the endpoint, unless disabled is explicitly set
+            item.__setdefault__('$disabled', False)
+            item.parent = self
+            # For variable endpoints, set the default varname to the
+            # parent's name
+            if key == '*':
+                item.__setdefault__('$varname', self.name)
+                logger.debug('Endpoint {} is variable ({})'.format(
+                    key, self.name))
+            logger.debug('Endpoint {} done'.format(key))
 
-    def update(self, arg=None, /, **kwargs):
-        '''Updates using items in the first argument, then keywords
-
-        Special keywords (starting with $) are recognized as usual.
-        '''
-
-        if arg and kwargs:
-            raise ValueError(
-                ('Keyword arguments cannot be used with a '
-                 'positional argument'))
-        init = arg or kwargs
-        if isinstance(init, Endpoint):
-            pass  # XXX
+        if default:
+            super().__setdefault__(key, item)
         else:
-            pass  # XXX
+            super().__setexplicit__(key, item)
 
     def parse(self, httpreq):
         '''Selects an endpoint for the path
