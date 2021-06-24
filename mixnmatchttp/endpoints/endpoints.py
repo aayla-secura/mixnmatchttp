@@ -177,6 +177,12 @@ class Endpoint(DefaultDict):
         else:
             super().__setexplicit__(key, item)
 
+    def __setexplicit__(self, attr, value):
+        self.__set_explicit_or_default(attr, value, default=False)
+
+    def __setdefault__(self, attr, value):
+        self.__set_explicit_or_default(attr, value, default=True)
+
     def parse(self, httpreq):
         '''Selects an endpoint for the path
 
