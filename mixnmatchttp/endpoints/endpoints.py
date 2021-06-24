@@ -146,7 +146,7 @@ class Endpoint(DefaultDict):
         except KeyError as e:
             raise AttributeError(e)
 
-    def __set_explicit_or_default(self, key, item, default=False):
+    def __update_single__(self, key, item, is_explicit):
         if not key:
             raise ValueError('Endpoint name must be non-empty')
 
@@ -160,28 +160,19 @@ class Endpoint(DefaultDict):
             else:
                 item = Endpoint(item)
 
-            item.__setdefault__('$name', key)
+            item.__update_single__('$name', key, False)
             # Enable the endpoint, unless disabled is explicitly set
-            item.__setdefault__('$disabled', False)
+            item.__update_single__('$disabled', False, False)
             item.parent = self
             # For variable endpoints, set the default varname to the
             # parent's name
             if key == '*':
-                item.__setdefault__('$varname', self.name)
+                item.__update_single__('$varname', self.name, False)
                 logger.debug('Endpoint {} is variable ({})'.format(
                     key, self.name))
             logger.debug('Endpoint {} done'.format(key))
 
-        if default:
-            super().__setdefault__(key, item)
-        else:
-            super().__setexplicit__(key, item)
-
-    def __setexplicit__(self, attr, value):
-        self.__set_explicit_or_default(attr, value, default=False)
-
-    def __setdefault__(self, attr, value):
-        self.__set_explicit_or_default(attr, value, default=True)
+        super().__update_single__(key, item, is_explicit)
 
     def parse(self, httpreq):
         '''Selects an endpoint for the path

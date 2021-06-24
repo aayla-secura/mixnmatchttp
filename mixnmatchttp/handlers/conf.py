@@ -30,7 +30,7 @@ class Conf(DefaultAttrDict):
         - if the value can be merged with the parent, it will be
     '''
 
-    def __set_explicit_or_default(self, attr, value, default=False):
+    def __update_single__(self, attr, value, is_explicit):
         try:
             curr = self[attr]
         except KeyError:
@@ -42,20 +42,11 @@ class Conf(DefaultAttrDict):
                         'Error in config item {name}: {err!s}'.format(
                             name=attr, err=e))
 
-            if default:
-                super().__setdefault__(attr, value)
-            else:
-                super().__setexplicit__(attr, value)
+            super().__update_single__(attr, value, is_explicit)
 
         else:
             logger.debug('Updating current conf item {}'.format(attr))
             curr._ConfItem__update(value)
-
-    def __setexplicit__(self, attr, value):
-        self.__set_explicit_or_default(attr, value, default=False)
-
-    def __setdefault__(self, attr, value):
-        self.__set_explicit_or_default(attr, value, default=True)
 
 class ConfItem(ObjectProxy):
     def __init__(self, value, /, **settings):

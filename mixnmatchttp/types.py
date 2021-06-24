@@ -25,7 +25,7 @@ class _DefaultsBase:
       len: you can query the number of items added
 
     Defaults can only be set at instantiation (or using the private
-    method __setdefault__ but this is subject to change). No public
+    method __update_single__ but this is subject to change). No public
     methods or attributes are provided by this class to ensure that
     they don't clash with attributes to be set.
     '''
@@ -38,29 +38,23 @@ class _DefaultsBase:
 
     def __update__(self, defaults={}, /, **explicit):
         for e in explicit:
-            self.__setexplicit__(e, explicit[e])
+            self.__update_single__(e, explicit[e], True)
         for d in defaults:
-            self.__setdefault__(d, defaults[d])
+            self.__update_single__(d, defaults[d], False)
 
-    def __setexplicit__(self, name, value):
-        '''This is the only method that should modify __explicit__
-
-        This allows child classes to easily hook into any changes
-        to __explicit__ and override that behaviour by overriding this
-        method alone
-        '''
-
-        self.__explicit__[name] = value
-
-    def __setdefault__(self, name, value):
-        '''This is the only method that should modify __defaults__
+    def __update_single__(self, name, value, is_explicit):
+        '''This is the only method that should modify __explicit__ or
+        __default__
 
         This allows child classes to easily hook into any changes
-        to __defaults__ and override that behaviour by overriding this
-        method alone
+        to __explicit__ or __default__ and override that behaviour by
+        overriding this method alone
         '''
 
-        self.__defaults__[name] = value
+        if is_explicit:
+            self.__explicit__[name] = value
+        else:
+            self.__defaults__[name] = value
 
     def __eq__(self, other):
         if not isinstance(other, DefaultAttrs):
@@ -111,7 +105,7 @@ class DefaultAttrs(_DefaultsBase):
         if name.startswith('__'):
             super().__setattr__(name, value)
         else:
-            self.__setexplicit__(name, value)
+            self.__update_single__(name, value, True)
 
     def __getattr__(self, name):
         if name.startswith('__'):
@@ -129,7 +123,7 @@ class DefaultKeys(_DefaultsBase):
     '''A dictionary with hidden defaults'''
 
     def __setitem__(self, name, value):
-        self.__setexplicit__(name, value)
+        self.__update_single__(name, value, True)
 
     def __getitem__(self, name):
         try:
