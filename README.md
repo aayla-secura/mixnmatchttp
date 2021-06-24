@@ -560,6 +560,7 @@ Redirects (with `307`) to any address given in the URL.
   * Use of pollers in `send_headers`
   * `kargs` -> `kwargs`
   * Use format strings instead of the format string method
+  * More useful debugging messages
 
 ## Possibly coming at some point
 

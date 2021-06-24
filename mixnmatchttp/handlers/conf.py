@@ -2,7 +2,7 @@ import logging
 import importlib
 from wrapt import ObjectProxy
 
-from ..types import DefaultAttrKeys, DefaultAttrDict
+from ..types import DefaultAttrs, DefaultAttrDict
 
 
 logger = logging.getLogger(__name__)
@@ -74,7 +74,7 @@ class ConfItem(ObjectProxy):
         '''
 
         # cannot set any attributes before calling parent __init__
-        self_settings = DefaultAttrKeys(dict(
+        self_settings = DefaultAttrs(dict(
             mergeable=False,
             allowed_types=(value.__class__,),
             transformer=None,

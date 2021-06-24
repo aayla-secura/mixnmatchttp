@@ -4,7 +4,7 @@ from copy import copy
 from wrapt import ObjectProxy
 
 from ..utils import iter_abspath
-from ..types import DefaultDict, DefaultAttrs
+from ..types import DefaultDict, DefaultAttrs, DefaultAttrDict
 from .exc import EndpointError, NotAnEndpointError, \
     MissingArgsError, ExtraArgsError, MethodNotAllowedError
 
@@ -22,6 +22,13 @@ __all__ = [
     'Endpoint',
     'ParsedEndpoint',
 ]
+
+
+class EndpointSettings(DefaultAttrs):
+    def __setattr__(self, name, value):
+        if name == 'allowed_methods' and 'GET' in value:
+            value |= {'HEAD'}
+        super().__setattr__(name, value)
 
 
 class Endpoint(DefaultDict):
@@ -109,21 +116,29 @@ class Endpoint(DefaultDict):
                  'positional argument'))
         init = arg or kargs
 
-        # Set the name of the endpoint before initializing, so
-        # that its children have access to it
-        super().__init__(**{'$name': kargs.pop('$name', None)})
+        self._settings = EndpointSettings(dict(
+            name=None,
+            disabled=True,  # will be set to False for children
+            allowed_methods={'GET', 'HEAD'},
+            nargs=0,
+            raw_args=False,
+            varname='',
+        ))
+
+        super().__init__()
         self.parent = None
 
-        super().__update__({
-            '$disabled': True,  # True for root only
-            '$allowed_methods': {'GET', 'HEAD'},
-            '$nargs': 0,
-            '$raw_args': False,
-            '$varname': '',
-        }, **kargs)
+        if '$name' in kargs:
+            # Set the name of the endpoint before initializing, so
+            # that its children have access to it
+            #  self.__update_single__('$name', kargs.pop('$name'), True)
+            self._settings.name = kargs.pop('$name')
 
-        logger.debug(
-            'list of subpoints: {}'.format(list(self.keys())))
+        super().__update__(**kargs)
+
+        #  logger.debug(
+        #      'list of subpoints: {}'.format(
+        #          list(self.keys()) + list(self.defaultkeys())))
 
         if self.raw_args and \
                 self.nargs not in [ARGS_ANY, ARGS_REQUIRED]:
@@ -134,43 +149,40 @@ class Endpoint(DefaultDict):
             raise EndpointError('Endpoints expecting raw arguments '
                                 'cannot have subpoints.')
 
-    def __getattr__(self, name):
-        if name.startswith('__'):
-            raise AttributeError(name)
+    def __setattr__(self, name, value):
+        if name.startswith('_'):
+            super().__setattr__(name, value)
+        else:
+            setattr(self._settings, name, value)
 
-        try:
-            try:
-                return self.__explicit__['${}'.format(name)]
-            except KeyError:
-                return self.__defaults__['${}'.format(name)]
-        except KeyError as e:
-            raise AttributeError(e)
+    def __getattr__(self, name):
+        return getattr(self._settings, name)
 
     def __update_single__(self, key, item, is_explicit):
         if not key:
             raise ValueError('Endpoint name must be non-empty')
 
         if key[0] == '$':
-            if key == '$allowed_methods' and 'GET' in item:
-                item |= {'HEAD'}
-        else:
-            logger.debug('Creating endpoint {}'.format(key))
-            if isinstance(item, Endpoint):
-                item = copy(item)  # TODO should we copy?
-            else:
-                item = Endpoint(item)
+            setattr(self, key[1:], item)
+            return
 
-            item.__update_single__('$name', key, False)
-            # Enable the endpoint, unless disabled is explicitly set
-            item.__update_single__('$disabled', False, False)
-            item.parent = self
-            # For variable endpoints, set the default varname to the
-            # parent's name
-            if key == '*':
-                item.__update_single__('$varname', self.name, False)
-                logger.debug('Endpoint {} is variable ({})'.format(
-                    key, self.name))
-            logger.debug('Endpoint {} done'.format(key))
+        logger.debug('Creating endpoint {}'.format(key))
+        if isinstance(item, Endpoint):
+            item = copy(item)  # TODO should we copy?
+        else:
+            item = Endpoint(item)
+
+        item.__update_single__('$name', key, False)
+        # Enable the endpoint, unless disabled is explicitly set
+        item.__update_single__('$disabled', False, False)
+        item.parent = self
+        # For variable endpoints, set the default varname to the
+        # parent's name
+        if key == '*':
+            item.__update_single__('$varname', self.name, False)
+            logger.debug('Endpoint {} is variable ({})'.format(
+                key, self.name))
+        logger.debug('Endpoint {} done'.format(key))
 
         super().__update_single__(key, item, is_explicit)
 

@@ -36,7 +36,7 @@ class _DefaultsBase:
 
     def __init__(self, defaults={}, /, **explicit):
         self.__explicit__ = self.__data_type__()
-        self.__defaults__ = self.__data_type__()
+        self.__default__ = self.__data_type__()
         self.__update__(defaults, **explicit)
 
     def __update__(self, defaults={}, /, **explicit):
@@ -57,13 +57,13 @@ class _DefaultsBase:
         if is_explicit:
             self.__explicit__[name] = value
         else:
-            self.__defaults__[name] = value
+            self.__default__[name] = value
 
     def __eq__(self, other):
         if not isinstance(other, DefaultAttrs):
             return False
         return self.__explicit__ == other.__explicit__ and \
-            self.__defaults__ == other.__defaults__
+            self.__default__ == other.__default__
 
     def __iter__(self):
         yield from self.__explicit__
@@ -76,7 +76,7 @@ class _DefaultsBase:
             return NotImplemented
 
         clone = self.__copy__()
-        clone.__update__(other.__defaults__, **other.__explicit__)
+        clone.__update__(other.__default__, **other.__explicit__)
         return clone
 
     def __radd__(self, other):
@@ -86,7 +86,7 @@ class _DefaultsBase:
         if self.__class__ is not other.__class__:
             return NotImplemented
 
-        self.__update__(other.__defaults__, **other.__explicit__)
+        self.__update__(other.__default__, **other.__explicit__)
         return self
 
     def __repr__(self):
@@ -98,7 +98,7 @@ class _DefaultsBase:
     def __copy__(self):
         clone = self.__class__()
         clone.__explicit__ = self.__explicit__.copy()
-        clone.__defaults__ = self.__defaults__.copy()
+        clone.__default__ = self.__default__.copy()
         return clone
 
 class DefaultAttrs(_DefaultsBase):
@@ -118,7 +118,7 @@ class DefaultAttrs(_DefaultsBase):
             try:
                 return self.__explicit__[name]
             except KeyError:
-                return self.__defaults__[name]
+                return self.__default__[name]
         except KeyError as e:
             raise AttributeError(e)
 
@@ -132,7 +132,7 @@ class DefaultKeys(_DefaultsBase):
         try:
             return self.__explicit__[name]
         except KeyError:
-            return self.__defaults__[name]
+            return self.__default__[name]
 
 class DefaultDict(DefaultKeys):
     '''A dictionary with hidden defaults
@@ -154,7 +154,7 @@ class DefaultDict(DefaultKeys):
     def setdefault(self, key, value):
         '''Does not set key explicitly unlike regular dict'''
 
-        self.__defaults__[key] = value
+        self.__default__[key] = value
 
     def setdefaults(self, **kargs):
         for k in kargs:
@@ -175,11 +175,11 @@ class DefaultDict(DefaultKeys):
                  'positional argument'))
         if isinstance(arg, DefaultAttrs):
             explicit = arg.__explicit__
-            defaults = arg.__defaults__
+            defaults = arg.__default__
         else:
             other = arg or kargs
             explicit = self.__explicit__.__class__(other)
-            defaults = self.__defaults__.__class__()
+            defaults = self.__default__.__class__()
 
         self.__update__(defaults, **explicit)
 
@@ -196,13 +196,13 @@ class DefaultDict(DefaultKeys):
         yield from self.__explicit__.items()
 
     def defaultkeys(self):
-        yield from self.__defaults__.keys()
+        yield from self.__default__.keys()
 
     def defaultvalues(self):
-        yield from self.__defaults__.values()
+        yield from self.__default__.values()
 
     def defaultitems(self):
-        yield from self.__defaults__.items()
+        yield from self.__default__.items()
 
 class DefaultAttrKeys(DefaultAttrs, DefaultKeys):
     pass
