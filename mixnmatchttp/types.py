@@ -154,8 +154,14 @@ class DefaultDict(DefaultKeys):
       setdefault
       setdefaults
       update
-      copy
       get
+      pop
+      popitem
+      clear
+      cleardefaults
+      clearall
+      fromkeys
+      copy
       keys
       values
       items
@@ -198,6 +204,27 @@ class DefaultDict(DefaultKeys):
             defaults = self.__default__.__class__()
 
         self.__update__(defaults, **explicit)
+
+    def get(self, *args, **kargs):
+        pass  # TODO
+
+    def pop(self, *args, **kargs):
+        pass  # TODO
+
+    def popitem(self, *args, **kargs):
+        pass  # TODO
+
+    def clear(self):
+        pass  # TODO
+
+    def cleardefaults(self):
+        pass  # TODO
+
+    def clearall(self):
+        pass  # TODO
+
+    def fromkeys(self):
+        pass  # TODO
 
     def copy(self):
         return self.__copy__()
