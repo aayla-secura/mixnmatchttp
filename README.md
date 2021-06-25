@@ -526,23 +526,27 @@ Redirects (with `307`) to any address given in the URL.
 
 # Coming soon
 
-  * Brute force protections and account lockout
-  * CAPTHAs?
   * Better templates
   * A configurable declarative base to use with `BaseAuthSQLAlchemyORMHTTPRequestHandler`
   * Command-line option and/or class attribute for paths that shouldn't be cached
-  * Command-line option for paths which need authentication (`_secrets`)
-  * An option to disable access to certain files (a special value in `_secrets`)
+  * ~~Command-line option for paths which need authentication (`_secrets`)~~
+  * An option to completely disable access to certain files (a special value in `_secrets`)
   * Log rotation
   * MT-safe `CachingHTTPRequestHandler`
-  * Option for case-sensitivity of endpoints (and separately for variable endpoint names)
-  * Variable endpoints: require them to match a regex
+  * ~~Option for case-sensitivity of endpoints (and separately for variable endpoint names)~~
+  * ~~Database storage of users and sessions~~
+  * Variable regex endpoints
   * A configurable list of file extensions which should be served as attachment.
-  * Anti-CSRF, maybe?
+
+## Possibly coming at some point
+
+  * Brute force protections and account lockout
+  * CAPTHAs
+  * Anti-CSRF
 
 # Internal TODO notes
 
-  * Smarter way of merging endpoints with parent's (remembering which ones were explicitly set, and which inherited). Do the same for `_secrets` in `handlers.authenticator`
+  * ~~Smarter way of merging endpoints with parent's (remembering which ones were explicitly set, and which inherited)~~
   * Templates from files
   * Remove `_` prefix from class attributes
   * Do not save expanded env variables to config file
@@ -554,18 +558,14 @@ Redirects (with `307`) to any address given in the URL.
   * Move stuff from JWT class to `cryptoutils` module
   * Merge `_secrets` and `_can_create_users` with those of parent classes, like endpoints
   * `--add-users`: password input should not be displayed
-  * Fix path canonicalization for endpoints, .e.g `//login` does not match an endpoint
+  * ~~Fix path canonicalization for endpoints, .e.g `//login` does not match an endpoint~~
   * Default column for short value in `object_to_dict` should use the first primary key, not hardcoded `id`.
   * Logging conf for request line via command-line; also, custom format for it
   * Use of pollers in `send_headers`
-  * `kargs` -> `kwargs`
+  * `kargs` -> `kwargs` everywhere
   * Use format strings instead of the format string method
   * More useful debugging messages
   * Multiple variable endpoints for a single parent distinguished by a regex; key can be `/<regex>/`
-
-## Possibly coming at some point
-
-  * Database storage of users and sessions
 
 # Demos and source
 
