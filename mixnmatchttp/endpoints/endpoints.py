@@ -96,6 +96,27 @@ class Endpoint(DefaultDict):
     their value should be either another Endpoint (in which case it is
     copied), or a plain dictionary to be converted to an Endpoint.
 
+    Recognized attributes for endpoints (keys starting with $):
+        disabled:        <bool>; whether the endpoint can be called;
+                         defaults to True for the root, False
+                         otherwise
+        allowed_methods: <set>; which HTTP methods are allowed;
+                         defaults to {'GET'}
+        nargs:           <number>|ARGS_*; how many arguments are
+                         accepted after the full enpoint path;
+                         defaults to 0 if raw_args is False, otherwise
+                         to ARGS_ANY;
+                         special non-numerical values:
+                           ARGS_OPTIONAL is 0 or 1
+                           ARGS_ANY      is any number
+                           ARGS_REQUIRED is 1 or more
+        raw_args:        <bool>; whether to skip canonicalizing the
+                           arguments; defaults to False, e.g.
+                           foo/../bar -> bar
+        varname:         <string>; the name the variable component
+                         is to be saved as; only for wildcards;
+                         defaults to parent's name
+
     All child endpoints are enabled by default. The root endpoint is
     disabled by default; if you want it enabled, either manually
     change the 'disabled' attribute, or construct it like so:
@@ -109,11 +130,13 @@ class Endpoint(DefaultDict):
             **{'$disabled': False}
             )
 
-    Endpoint names shouldn't have underscores, we don't handle them
-    well, so expect unexpected behaviour. XXX TODO maybe?
-    Note also that endpoints are treated as case-insensitive, and the
-    handler should assume the path is all lowercase, i.e. /FoO/BAR
-    should be handled by do_{METHOD}_foo_bar XXX
+    When an endpoint is parsed for a given request, the child endpoint
+    (or the root itself) with the most specific match is selected and
+    a request handler (a method of a BaseHTTPRequestHandler instance)
+    is selected based on the selected endpoint's path. See
+    documentation on Endpoint.parse. Because / are replaced by _ when
+    looking for a handler, Endpoint names shouldn't have underscores.
+    XXX TODO fix.
 
     An endpoint's name can be a '*', in which case it is treated as
     variable. It will match anything and the actual match will be
@@ -136,30 +159,16 @@ class Endpoint(DefaultDict):
     <endpoint>.params['username'] set to the matched path component,
     e.g. john if /person/john has been requested.
 
-    Recognized attributes:
-        disabled:        <bool>; whether the endpoint can be called;
-                         defaults to True for the root, False
-                         otherwise
-        allowed_methods: <set>; which HTTP methods are allowed;
-                         defaults to {'GET'}
-        nargs:           <number>|ARGS_*; how many arguments are
-                         accepted after the full enpoint path;
-                         defaults to 0 if raw_args is False, otherwise
-                         to ARGS_ANY;
-                         special non-numerical values:
-                           ARGS_OPTIONAL is 0 or 1
-                           ARGS_ANY      is any number
-                           ARGS_REQUIRED is 1 or more
-        raw_args:        <bool>; whether to skip canonicalizing the
-                           arguments; defaults to False, e.g.
-                           foo/../bar -> bar
-        varname:         <string>; the name the variable component
-                         is to be saved as; only for wildcards;
-                         defaults to parent's name
-
-    Attempting to set another attribute (a key beginning with $) will
-    result in AttributeError.
+    The Endpoint class attribite, case_sensitive, dictates whether
+    path and handler name matching is case-sensitive. Note that
+    variable components are still saved as given, i.e. a request to
+    /user/John for a variable endpoint /user/* would still get "John"
+    and not "john" in its parameters regardless if it's case-sensitive
+    or not; default is the corresponding class attribute (False for
+    Endpoint)
     '''
+
+    case_sensitive = False
 
     def __init__(self, arg=None, /, **kargs):
         '''Keyword arguments take precedence'''
@@ -370,7 +379,7 @@ class Endpoint(DefaultDict):
                 'Current list of subpoints: {}; trying {}'.format(
                     ep.children, p))
             try:
-                ep = ep[p.lower()]
+                ep = ep[p]
             except KeyError:
                 try:
                     ep = ep['*']
@@ -491,11 +500,14 @@ class Endpoint(DefaultDict):
         return getattr(self._settings, name)
 
     def __getitem__(self, name):
-        # TODO optional case-sensitive
-        return super().__getitem__(name.lower())
+        if not self.case_sensitive:
+            name = name.lower()
+        return super().__getitem__(name)
 
     def __contains__(self, name):
-        return super().__getitem__(name.lower())
+        if not self.case_sensitive:
+            name = name.lower()
+        return super().__contains__(name)
 
     def __update_single__(self, key, item, is_explicit):
         if not key:
@@ -522,7 +534,7 @@ class Endpoint(DefaultDict):
             item = copy(item)
             item._settings.name = key
         else:
-            item = Endpoint(item, **{'$name': key})
+            item = self.__class__(item, **{'$name': key})
 
         item.parent = self
         # For variable endpoints, set the default varname to the
@@ -532,7 +544,9 @@ class Endpoint(DefaultDict):
         logger.debug('Endpoint {id} ({name}) done'.format(
             id=item._id, name=key))
 
-        super().__update_single__(key.lower(), item, is_explicit)
+        if not item.case_sensitive:
+            key = key.lower()
+        super().__update_single__(key, item, is_explicit)
 
     def __copy__(self):
         clone = super().__copy__()
@@ -573,7 +587,6 @@ class ParsedEndpoint(ObjectProxy):
         self.params = params
 
     def __repr__(self):
-        # ObjectProxy's repr doesn't call wrapped's __repr__
         return self.__wrapped__.__repr__()
 
 

@@ -9,6 +9,9 @@ from mixnmatchttp.endpoints.exc import EndpointError, \
     MethodNotAllowedError, ExtraArgsError, MissingArgsError, NotAnEndpointError
 from mixnmatchttp.types import DefaultAttrs
 
+class CSEndpoint(Endpoint):
+    case_sensitive = True
+
 class Test(unittest.TestCase):
     def _test_settings(self, parse=False):
         e = Endpoint(
@@ -74,10 +77,29 @@ class Test(unittest.TestCase):
         self.assertIs(e.get_from_path('/foo/bar'), e['foo']['bar'])
         self.assertIs(e.get_from_path('/foo'), e['foo'])
 
-    def test_case_sensitive(self):
+    def test_case_insensitive(self):
         e = Endpoint(foo=dict(Bar={}))
         self.assertIs(e.get_from_path('/foo/bar'), e['foo']['bar'])
         self.assertIs(e.get_from_path('/FOo'), e['foo'])
+
+    def test_case_sensitive(self):
+        h = DefaultAttrs(
+            conf=DefaultAttrs(api_prefix=''),
+            do_default=lambda x: None,
+            command='GET',
+        )
+        e = CSEndpoint(Foo=dict(bar={}))
+        self.assertIn('Foo', e)
+        self.assertNotIn('foo', e)
+        self.assertIn('bar', e['Foo'])
+
+        h.raw_pathname = '/foo'
+        self.assertRaises(NotAnEndpointError, e.parse, h)
+        h.raw_pathname = '/Foo'
+        e.parse(h)
+
+        h.raw_pathname = '/Foo/bar'
+        e.parse(h)
 
     def test_parse_nargs(self):
         h = DefaultAttrs(
