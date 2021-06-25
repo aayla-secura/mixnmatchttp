@@ -172,7 +172,7 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
         transformer = {
             'can_create_users': OrderedDict,
         }
-        # XXX
+        # XXX set as conf
         requirements = {
             'JSON_params': (is_any_true, [is_none, is_seq_like]),
             'pwd_type': (is_one_of, cls._supported_hashes),

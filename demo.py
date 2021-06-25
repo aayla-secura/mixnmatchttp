@@ -10,16 +10,16 @@ import sys
 
 from http.server import HTTPServer
 from mixnmatchttp.servers import ThreadingHTTPServer
-from mixnmatchttp import endpoints
+from mixnmatchttp.endpoints import Endpoint, ARGS_OPTIONAL, ARGS_ANY
 from mixnmatchttp.handlers import BaseHTTPRequestHandler, \
     methodhandler
 from mixnmatchttp.utils import DictNoClobber
 
 class MyHandler(BaseHTTPRequestHandler):
-    endpoints = endpoints.Endpoint(
+    endpoints = Endpoint(
         foobar={},  # will use do_default handler
         refreshme={
-            '$nargs': endpoints.ARGS_OPTIONAL,
+            '$nargs': ARGS_OPTIONAL,
         },
         parameter={
             # this way /parameter will raise "missing arg"
@@ -36,7 +36,7 @@ class MyHandler(BaseHTTPRequestHandler):
             '$allowed_methods': {'GET', 'POST'},
             'sub': {  # will use do_*debug handler
                 # these are for when /debug/sub is called
-                '$nargs': endpoints.ARGS_ANY,
+                '$nargs': ARGS_ANY,
                 '$raw_args': True,  # don't canonicalize rest of path
             },
             '*': {
@@ -160,7 +160,8 @@ class MyHandler(BaseHTTPRequestHandler):
     def no_cache(self):
         '''Only allow caching of scripts'''
 
-        return (not self.pathname.endswith('.js')) or super().no_cache()
+        return not self.pathname.endswith('.js') \
+            or super().no_cache()
 
     def send_custom_headers(self):
         '''Send our custom headers'''

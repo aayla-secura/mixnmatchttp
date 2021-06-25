@@ -46,9 +46,6 @@ class Poller:
         if self.__closed:
             return None
         with self.__waiter:
-            # XXX
-            # python 2: wait always returns None, so figure out if it
-            # timed out by comparing the current and new tags
             old = self.__latest
             self.__waiter.wait(timeout=timeout)
         if old == self.__latest:

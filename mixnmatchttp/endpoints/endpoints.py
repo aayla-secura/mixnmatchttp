@@ -4,7 +4,7 @@ from copy import copy
 from wrapt import ObjectProxy
 from bidict import bidict
 
-from ..utils import iter_abspath
+from ..utils import iter_abspath, to_natint
 from ..conf.containers import DefaultDict, DefaultAttrs, DefaultAttrDict
 from .exc import EndpointError, NotAnEndpointError, \
     MissingArgsError, ExtraArgsError, MethodNotAllowedError
@@ -29,9 +29,7 @@ class EndpointArgs:
 
     def __init__(self, num):
         try:
-            self.value = int(num)
-            if self.value < 0:
-                raise ValueError
+            self.value = to_natint(num)
         except ValueError:
             if num in self._special:
                 self.value = num
@@ -136,7 +134,7 @@ class Endpoint(DefaultDict):
     is selected based on the selected endpoint's path. See
     documentation on Endpoint.parse. Because / are replaced by _ when
     looking for a handler, Endpoint names shouldn't have underscores.
-    XXX TODO fix.
+    TODO fix.
 
     An endpoint's name can be a '*', in which case it is treated as
     variable. It will match anything and the actual match will be

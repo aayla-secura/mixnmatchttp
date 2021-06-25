@@ -15,6 +15,8 @@ __all__ = [
     'is_iterable',
     'is_map_like',
     'to_bool',
+    'to_natint',
+    'to_posint',
     'str_remove_chars',
     'str_trunc',
     'str_to_hex',
@@ -87,6 +89,20 @@ def to_bool(val):
         return True
     return False
 
+def to_natint(val, base=0):
+    '''Convert val to an integer and requires it to be >=0'''
+
+    new = int(val, base=base)
+    if new < 0:
+        raise ValueError('{} is negative'.format(val))
+
+def to_posint(val, base=0):
+    '''Convert val to an integer and requires it to be >0'''
+
+    new = int(val, base=base)
+    if new <= 0:
+        raise ValueError('{} is not positive'.format(val))
+
 def str_remove_chars(s, skip):
     return s.translate(str.maketrans(dict.fromkeys(skip)))
 
@@ -152,10 +168,6 @@ def merge(valA, valB):
     Does not change the values, but returns a new one.
     '''
 
-    def _die():
-        raise TypeError('Cannot merge {} and {}'.format(
-            valA.__class__.__name__, valB.__class__.__name__))
-
     new = copy(valA)
     if hasattr(new, 'update'):
         new.update(valB)
@@ -176,5 +188,6 @@ def merge(valA, valB):
         for k in valB:
             new[k] = valB[k]
     else:
-        _die()
+        raise TypeError('Cannot merge {} and {}'.format(
+            valA.__class__.__name__, valB.__class__.__name__))
     return new
