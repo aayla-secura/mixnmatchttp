@@ -1,5 +1,7 @@
 import logging
 
+from ..utils import merge, is_mergeable
+
 
 logger = logging.getLogger(__name__)
 __all__ = [
@@ -31,13 +33,31 @@ class _DefaultsBase:
     method __update_single__ but this is subject to change). No public
     methods or attributes are provided by this class to ensure that
     they don't clash with attributes to be set.
+
+    Items are stored in an object of type given by the class attribute
+    __container_type__ (default dict).
+
+    If the class attribute __item_type__ is not None, then items are
+    converted to __item_type__.
+
+    If the class attribute __attempt_merge__ is True, then setting
+    a new value for an existing item attempts to merge them (if
+    applicable).
     '''
-    __data_type__ = dict
+    __container_type__ = dict
+    __item_type__ = None
+    __attempt_merge__ = False
 
     def __init__(self, defaults={}, /, **explicit):
-        self.__explicit__ = self.__data_type__()
-        self.__default__ = self.__data_type__()
+        self.__explicit__ = self.__container_type__()
+        self.__default__ = self.__container_type__()
         self.__update__(defaults, **explicit)
+
+    def __merge__(self, other):
+        if isinstance(other, _DefaultsBase):
+            self.__update__(other.__default__, **other.__explicit__)
+        else:
+            self.__update__(**other)
 
     def __update__(self, defaults={}, /, **explicit):
         for e in explicit:
@@ -45,25 +65,102 @@ class _DefaultsBase:
         for d in defaults:
             self.__update_single__(d, defaults[d], False)
 
-    def __update_single__(self, name, value, is_explicit):
-        '''This is the only method that should add to __explicit__ or
-        __default__
+    def __get_single__(self, name, is_explicit):
+        '''This is the only method that should retrieve items
+
+        If is_explicit is None: searches in both explicit and
+        default; otherwise in one or the other
+
+        Returns a tuple of (the found item, was_it_explicit) or raises
+        KeyError.
         '''
 
+        if is_explicit is None:
+            try:
+                return self.__explicit__[name], True
+            except KeyError:
+                return self.__default__[name], False
+        elif is_explicit:
+            return self.__explicit__[name], True
+        else:
+            return self.__default__[name], False
+
+    def __update_single__(self, name, value, is_explicit):
+        '''This is the only method that should add/change items
+
+        If is_explicit is None name is required to be present, i.e.
+        update the entry (default or explicit); otherwise update or
+        set the corresponding explicit or default entry
+        '''
+
+        def attempt_merge(curr):
+            if not is_mergeable(curr):
+                return False
+            merge(curr, value, inplace=True)
+            return True
+
+        ##########
+        if self.__item_type__ is not None:
+            if not isinstance(value, self.__item_type__):
+                value = self.__item_type__(value)
+
+        curr = None
+        try:
+            # update is_explicit to True/False if it was None
+            curr, is_explicit = \
+                self.__get_single__(name, is_explicit)
+        except KeyError:
+            if is_explicit is None:
+                raise
+
+        # merge?
+        if curr is not None and self.__attempt_merge__:
+            if attempt_merge(curr):
+                return  # done
+
+        # set a new one
+        assert is_explicit is not None
         if is_explicit:
             self.__explicit__[name] = value
         else:
             self.__default__[name] = value
 
     def __delete_single__(self, name, is_explicit):
-        '''This is the only method that should remove from
-        __explicit__ or __default__
+        '''This is the only method that should remove items
+
+        If is_explicit is None it removes it from both explicit and
+        default; otherwise from one or the other
         '''
 
-        if is_explicit:
-            del self.__explicit__[name]
+        def _del(d, required):
+            try:
+                del d[name]
+            except KeyError:
+                if required:
+                    raise
+
+        def _delexp(required):
+            _del(self.__explicit__, required)
+
+        def _deldef(required):
+            _del(self.__default__, required)
+
+        ##########
+        if is_explicit is None:
+            try:
+                _delexp(True)
+            except KeyError:
+                # if it wasn't in explicit it must be in default or
+                # KeyError
+                _deldef(True)
+            else:
+                # if it was in explicit it can also be in default
+                # but don't raise a KeyError
+                _deldef(False)
+        elif is_explicit:
+            _delexp(True)
         else:
-            del self.__default__[name]
+            _deldef(True)
 
     def __eq__(self, other):
         if not isinstance(other, DefaultAttrs):
@@ -82,7 +179,7 @@ class _DefaultsBase:
             return NotImplemented
 
         clone = self.__copy__()
-        clone.__update__(other.__default__, **other.__explicit__)
+        clone.__merge__(other)
         return clone
 
     def __radd__(self, other):
@@ -92,7 +189,7 @@ class _DefaultsBase:
         if self.__class__ is not other.__class__:
             return NotImplemented
 
-        self.__update__(other.__default__, **other.__explicit__)
+        self.__merge__(other)
         return self
 
     def __repr__(self):
@@ -117,17 +214,14 @@ class DefaultAttrs(_DefaultsBase):
             self.__update_single__(name, value, True)
 
     def __delattr__(self, name):
-        self.__delete_single__(name, True)
+        self.__delete_single__(name, None)
 
     def __getattr__(self, name):
         if name.startswith('__'):
             raise AttributeError(name)
 
         try:
-            try:
-                return self.__explicit__[name]
-            except KeyError:
-                return self.__default__[name]
+            return self.__get_single__(name, None)[0]
         except KeyError as e:
             raise AttributeError(e)
 
@@ -138,13 +232,10 @@ class DefaultKeys(_DefaultsBase):
         self.__update_single__(name, value, True)
 
     def __delitem__(self, name):
-        self.__delete_single__(name, True)
+        self.__delete_single__(name, None)
 
     def __getitem__(self, name):
-        try:
-            return self.__explicit__[name]
-        except KeyError:
-            return self.__default__[name]
+        return self.__get_single__(name, None)[0]
 
 class DefaultDict(DefaultKeys):
     '''A dictionary with hidden defaults
@@ -176,7 +267,7 @@ class DefaultDict(DefaultKeys):
     def setdefault(self, key, value):
         '''Does not set key explicitly unlike regular dict'''
 
-        self.__default__[key] = value
+        self.__update_single__(key, value, False)
 
     def setdefaults(self, **kargs):
         for k in kargs:

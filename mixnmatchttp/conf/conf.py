@@ -16,35 +16,9 @@ __all__ = [
 class _NotInitializedError(Exception):
     pass
 
-class Conf(DefaultAttrDict):
-    '''Holds ConfItems as attributes
-
-    Reassigning an item will merge it with the current one (the newly
-    assigned item takes precedence):
-        - any settings not explicitly given in the new item will
-          inherit its parent
-        - if the value can be merged with the parent, it will be
-    '''
-
-    def __update_single__(self, attr, value, is_explicit):
-        try:
-            curr = self[attr]
-        except KeyError:
-            if not isinstance(value, ConfItem):
-                try:
-                    value = ConfItem(value)
-                except ConfError as e:
-                    raise ConfError(
-                        'Error in config item {name}: {err!s}'.format(
-                            name=attr, err=e))
-
-            super().__update_single__(attr, value, is_explicit)
-
-        else:
-            logger.debug('Updating current conf item {}'.format(attr))
-            curr._ConfItem__update(value)
-
 class ConfItem(ObjectProxy):
+    __mergeable__ = False
+
     def __init__(self, value, /, **settings):
         '''Configuration item - a proxy for its value
 
@@ -54,9 +28,10 @@ class ConfItem(ObjectProxy):
 
         Accepted settings:
         - mergeable: whether the value is to be merged with its
-          previous one during an update (see _ConfItem__update method);
+          previous one during an update (see __update__ method);
           this is valid only for sequences and mappings,
-          where concatenation/merging makes sense; default is False
+          where concatenation/merging makes sense; default is the
+          class attribute __mergeable__ (False for ConfItem)
         - allowed_types: a tuple of allowed types for this item; if
           the item is not an instance of any of them, a conversion is
           attempted for each of the types in turn (by calling its
@@ -71,7 +46,7 @@ class ConfItem(ObjectProxy):
 
         # cannot set any attributes before calling parent __init__
         self_settings = DefaultAttrs(dict(
-            mergeable=False,
+            mergeable=self.__mergeable__,
             allowed_types=(value.__class__,),
             transformer=None,
             requires=()), **settings)
@@ -90,15 +65,7 @@ class ConfItem(ObjectProxy):
     def __repr__(self):
         return str(self.__wrapped__)
 
-    @property
-    def __initialized(self):
-        try:
-            self.__wrapped__
-        except _NotInitializedError:
-            return False
-        return True
-
-    def __update(self, other):
+    def __update__(self, other):
         self_settings = self._self_settings
 
         if isinstance(other, ConfItem):
@@ -109,6 +76,14 @@ class ConfItem(ObjectProxy):
             other_settings = self._self_settings.__class__()
 
         self.__init(value, self_settings + other_settings)
+
+    @property
+    def __initialized(self):
+        try:
+            self.__wrapped__
+        except _NotInitializedError:
+            return False
+        return True
 
     def __init(self, value, settings):
         from ..utils import merge as _merge
@@ -141,7 +116,12 @@ class ConfItem(ObjectProxy):
                 raise ConfTypeError(e)
 
         def merge(value):
+            from copy import copy
             try:
+                try:
+                    copy(self.__wrapped__)
+                except NotImplementedError:
+                    print(f'{self.__wrapped__.__class__}')
                 return _merge(self.__wrapped__, value)
             except (TypeError, ValueError) as e:
                 raise ConfTypeError(e)
@@ -160,3 +140,34 @@ class ConfItem(ObjectProxy):
 
         super().__init__(value)
         self._self_settings = settings
+
+class Conf(DefaultAttrDict):
+    '''Holds ConfItems as attributes
+
+    Reassigning an item will merge it with the current one (the newly
+    assigned item takes precedence):
+        - any settings not explicitly given in the new item will
+          inherit its parent
+        - if the value can be merged with the parent, it will be
+    '''
+
+    __item_type__ = ConfItem  # dictates whether it is mergeable
+    __attempt_merge__ = False
+
+    def __update_single__(self, attr, value, is_explicit):
+        try:
+            curr = self[attr]
+        except KeyError:
+            #  if not isinstance(value, ConfItem):
+            #      try:
+            #          value = ConfItem(value)
+            #      except ConfError as e:
+            #          raise ConfError(
+            #              'Error in config item {name}: {err!s}'.format(
+            #                  name=attr, err=e))
+
+            super().__update_single__(attr, value, is_explicit)
+
+        else:
+            logger.debug('Updating current conf item {}'.format(attr))
+            curr.__update__(value)

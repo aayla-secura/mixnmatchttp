@@ -38,6 +38,16 @@ class Test(unittest.TestCase):
         sab = sa.union(sb)
         self.assertSetEqual(sab, merge(sa, sb))
 
+    def test_merge_inplace(self):
+        ta = tuple([1])
+        tb = tuple([1, 2])
+        self.assertRaises(TypeError, merge, ta, tb, inplace=True)
+        la = list([1, 2])
+        lb = list([3, 4])
+        lab = la + lb
+        merge(la, lb, inplace=True)
+        self.assertListEqual(lab, la)
+
 
 if __name__ == '__main__':
     unittest.main()

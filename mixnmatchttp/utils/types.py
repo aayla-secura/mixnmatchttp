@@ -14,6 +14,7 @@ __all__ = [
     'is_seq_like',
     'is_iterable',
     'is_map_like',
+    'is_mergeable',
     'to_bool',
     'to_natint',
     'to_posint',
@@ -70,6 +71,21 @@ def is_map_like(val):
     '''True if val is like a dict (mapping)'''
 
     return isinstance(val, Mapping)
+
+def is_mergeable(val, inplace=True):
+    '''True if value can be merged with another of its type'''
+
+    # __merge__ is a custom one used by us
+    return hasattr(val, '__merge__') \
+        or hasattr(val, 'update') \
+        or hasattr(val, 'extend') \
+        or hasattr(val, 'add') \
+        or hasattr(val, '__iadd__') \
+        or hasattr(val, '__ior__') \
+        or hasattr(val, '__setitem__') \
+        or not inplace and (
+            hasattr(val, '__add__')
+            or hasattr(val, '__or__'))
 
 def to_bool(val):
     '''Converts val to a boolean. val can be numeric or a string
@@ -161,32 +177,42 @@ def param_dict(s,
     logger.debug('Got params from {}: {}'.format(s, params))
     return params
 
-def merge(valA, valB):
+def merge(valA, valB, inplace=False):
     '''Attempt to merge valA and valB, valB takes precedence
 
     Works for sequences and mappings.
-    Does not change the values, but returns a new one.
+    If inplace is True, then it updates valA which must be mutable. If
+    valA is not mutable raises TypeError. If inplace is False
+    (default), it does not change the values, but returns a new one.
     '''
 
-    new = copy(valA)
-    if hasattr(new, 'update'):
+    if inplace:
+        new = valA
+    else:
+        new = copy(valA)
+
+    if hasattr(new, '__merge__'):
+        new.__merge__(valB)
+    elif hasattr(new, 'update'):
         new.update(valB)
     elif hasattr(new, 'extend'):
         new.extend(valB)
     elif hasattr(new, 'add'):
         for k in valB:
             new.add(k)
-    elif hasattr(new, '__add__'):
-        new = new + valB
     elif hasattr(new, '__iadd__'):
         new += valB
-    elif hasattr(new, '__or__'):
-        new = new | valB
     elif hasattr(new, '__ior__'):
         new |= valB
     elif hasattr(new, '__setitem__'):
         for k in valB:
             new[k] = valB[k]
+    elif not inplace:
+        # only applicable if making a copy
+        if hasattr(new, '__add__'):
+            new = new + valB
+        elif hasattr(new, '__or__'):
+            new = new | valB
     else:
         raise TypeError('Cannot merge {} and {}'.format(
             valA.__class__.__name__, valB.__class__.__name__))

@@ -5,6 +5,14 @@ import loggers
 from mixnmatchttp.conf import Conf, ConfItem
 from mixnmatchttp.conf.exc import ConfError, ConfRuntimeError, ConfTypeError
 
+class MergeableConfItem(ConfItem):
+    #  __mergeable__ = True
+    pass
+
+class MergeableConf(Conf):
+    #  __attempt_merge__ = False
+    __item_type__ = MergeableConfItem
+
 class TestConfItem(unittest.TestCase):
     def test_proxy(self):
         x = [1, 2, 3]
@@ -49,10 +57,10 @@ class TestConfItem(unittest.TestCase):
         lista = [1, 2]
         listb = [1, 3]
         i = ConfItem(lista)
-        i._ConfItem__update(listb)
+        i.__update__(listb)
         self.assertEqual(i, listb)
         i = ConfItem(lista, mergeable=True)
-        i._ConfItem__update(listb)
+        i.__update__(listb)
         self.assertEqual(i, lista + listb)
 
     def test_merge_dict(self):
@@ -61,28 +69,59 @@ class TestConfItem(unittest.TestCase):
         dicu = dica.copy()
         dicu.update(dicb)
         i = ConfItem(dica)
-        i._ConfItem__update(dicb)
+        i.__update__(dicb)
         self.assertEqual(i, dicb)
         i = ConfItem(dica, mergeable=True)
-        i._ConfItem__update(dicb)
+        i.__update__(dicb)
         self.assertEqual(i, dicu)
 
 class TestConf(unittest.TestCase):
-    def test_update_merge(self):
+    def test_update_merge_a(self):
         lista = [1, 2]
         listb = [1, 3]
-        c = Conf(a=ConfItem(lista, mergeable=True), b=lista)
+        c = Conf(a=ConfItem(lista.copy(), mergeable=True),
+                 b=listb.copy())
         c.update(a=listb, b=listb, c=2)
         self.assertEqual(c.a, lista + listb)
         self.assertEqual(c.b, listb)
         self.assertEqual(c.c, 2)
 
+    def test_update_merge_b(self):
+        c = Conf(a=1)
+        c.update(a=2)
+        self.assertEqual(c.a, 2)
+
+    def test_update_merge_by_default_a(self):
+        lista = [1, 2]
+        listb = [1, 3]
+        c = MergeableConf(a=lista.copy(),
+                          b=ConfItem(listb.copy(), mergeable=False),
+                          c=1)
+        c.update(a=listb, b=listb, c=2)
+        #  self.assertEqual(c.a, lista + listb)
+        #  self.assertEqual(c.b, listb)
+        #  self.assertEqual(c.c, 2)
+
+    def xtest_update_merge_by_default_b(self):
+        lista = [1, 2]
+        listb = [1, 3]
+        c = Conf(a=lista.copy(),
+                 b=MergeableConfItem(listb.copy()),
+                 c=1)
+        c.update(a=listb, b=lista, c=2)
+        self.assertEqual(c.a, listb)
+        self.assertEqual(c.b, listb + lista)
+        self.assertEqual(c.c, 2)
+
     def test_add_merge(self):
         lista = [1, 2]
         listb = [1, 3]
-        c = Conf(a=ConfItem(lista.copy(), mergeable=True), b=listb.copy())
+        c = Conf(a=ConfItem(lista.copy(), mergeable=True),
+                 b=listb.copy())
         c.a += listb
         c.b += lista
+        # unexpected but logical and inevitable consequence of
+        # mergeable is that += doubles the item
         self.assertEqual(c.a, lista + listb + lista + listb)
         self.assertEqual(c.b, listb + lista)
 

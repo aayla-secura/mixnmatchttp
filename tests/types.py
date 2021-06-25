@@ -5,6 +5,12 @@ from copy import copy
 import loggers
 from mixnmatchttp.conf.containers import DefaultAttrDict
 
+class Mergeable(DefaultAttrDict):
+    __attempt_merge__ = True
+
+class HoldsList(DefaultAttrDict):
+    __item_type__ = list
+
 class Test(unittest.TestCase):
     def test_attr_item(self):
         s = DefaultAttrDict(dict(a=1, b=2), c=3)
@@ -55,6 +61,15 @@ class Test(unittest.TestCase):
         self.assertIn(3, s['c'])
         c['a'] = 'a'
         self.assertNotEqual(c, s)
+
+    def test_merge(self):
+        s = Mergeable(dict(a=[1, 2]), b=[1, 2, 3], c=1)
+        s.a = [3, 4]
+        s.b = [4, 5]
+        s.c = [1, 2]
+        self.assertEqual(s.a, [3, 4])  # orig was default
+        self.assertEqual(s.b, [1, 2, 3, 4, 5])
+        self.assertEqual(s.c, [1, 2])
 
     def test_update(self):
         s = DefaultAttrDict(a=1, c=3)
