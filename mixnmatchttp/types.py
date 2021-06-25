@@ -149,6 +149,9 @@ class DefaultDict(DefaultKeys):
       defaultkeys
       defaultvalues
       defaultitems
+      allkeys
+      allvalues
+      allitems
     '''
 
     def setdefault(self, key, value):
@@ -202,6 +205,18 @@ class DefaultDict(DefaultKeys):
         yield from self.__default__.values()
 
     def defaultitems(self):
+        yield from self.__default__.items()
+
+    def allkeys(self):
+        yield from self.__explicit__.keys()
+        yield from self.__default__.keys()
+
+    def allvalues(self):
+        yield from self.__explicit__.values()
+        yield from self.__default__.values()
+
+    def allitems(self):
+        yield from self.__explicit__.items()
         yield from self.__default__.items()
 
 class DefaultAttrKeys(DefaultAttrs, DefaultKeys):

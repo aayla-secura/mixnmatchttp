@@ -254,7 +254,8 @@ class Endpoint(DefaultDict):
         if not path or path[0] != '/':
             raise ValueError(
                 'Path for endpoint parsing must begin with a /')
-        if not path.startswith(httpreq.conf.api_prefix):
+        if httpreq.conf.api_prefix and \
+                not path.startswith(httpreq.conf.api_prefix):
             raise NotAnEndpointError(path)
         path = path[len(httpreq.conf.api_prefix):]
 
@@ -262,11 +263,14 @@ class Endpoint(DefaultDict):
         # canonicalized. So we check each absolute segment; if it's an
         # endpoint remember it, check next
         logger.debug('Checking if endpoint takes raw arguments')
-        ep = self
+
+        # defaults
+        ep = self  # if path is / the for loop won't run
         handler = httpreq.do_default
         sub = args = ''
         root = '/'
         params = {}
+
         for curr_path, curr_args in iter_abspath(path):
             logger.debug(
                 'Current abspath segment: {}'.format(curr_path))
@@ -291,7 +295,9 @@ class Endpoint(DefaultDict):
 
             if ep.raw_args:
                 logger.debug(
-                    '{}({}) is "raw"; done'.format(root, sub))
+                    ("root = {}, sub = {} takes raw arguments; "
+                     "we're done").format(
+                         root, sub))
                 break  # don't inspect rest of path
 
         if ep is None or ep.disabled:
@@ -299,29 +305,30 @@ class Endpoint(DefaultDict):
                 logger.debug('{} is disabled'.format(root))
             raise NotAnEndpointError(path)
 
-        # either entire canonical path resolved to an endpoint, or
-        # part of it resolved to an endpoint expecting raw arguments;
-        # either way, we're done
+        # at this point either entire canonical path resolved to an
+        # endpoint, or part of it resolved to an endpoint expecting
+        # raw arguments; either way, we have a match
 
         if ep.raw_args:
-            # keep double slashes, etc
+            # keep double slashes
             args_arr = args.split('/')
         else:
+            # ignore double slashes
             args_arr = list(filter(None, args.split('/')))
 
+        nargs = len(args_arr)
         if ep.nargs == ARGS_ANY:
             pass
         elif ep.nargs == ARGS_REQUIRED:
             if not args_arr:
                 raise MissingArgsError
         elif ep.nargs == ARGS_OPTIONAL:
-            if len(args_arr) > 1:
-                raise ExtraArgsError('/'.join(args_arr[1:]))
-        elif len(args_arr) > ep.nargs:
-            raise ExtraArgsError('/'.join(
-                args_arr[ep.nargs:]))
-        elif len(args_arr) < ep.nargs:
-            raise MissingArgsError
+            if nargs > 1:
+                raise ExtraArgsError(nargs - 1, args)
+        elif nargs > ep.nargs:
+            raise ExtraArgsError(nargs - ep.nargs, args)
+        elif nargs < ep.nargs:
+            raise MissingArgsError(ep.nargs - nargs)
 
         if httpreq.command not in ep.allowed_methods:
             raise MethodNotAllowedError(ep.allowed_methods)

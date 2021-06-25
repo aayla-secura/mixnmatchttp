@@ -4,8 +4,9 @@ from copy import copy
 
 import loggers
 from mixnmatchttp.endpoints import Endpoint, ParsedEndpoint, \
-    ARGS_ANY, ARGS_OPTIONAL
-from mixnmatchttp.endpoints.exc import EndpointError, MethodNotAllowedError
+    ARGS_REQUIRED, ARGS_ANY, ARGS_OPTIONAL
+from mixnmatchttp.endpoints.exc import EndpointError, \
+    MethodNotAllowedError, ExtraArgsError, MissingArgsError, NotAnEndpointError
 from mixnmatchttp.types import DefaultAttrs
 
 class Test(unittest.TestCase):
@@ -67,6 +68,60 @@ class Test(unittest.TestCase):
                 'child': {},
                 '$raw_args': True,
             }))
+
+    def test_parse_nargs(self):
+        h = DefaultAttrs(
+            conf=DefaultAttrs(api_prefix=''),
+            do_default=lambda x: None,
+            command='GET',
+        )
+        e = Endpoint(
+            one={
+                '$nargs': 1,
+            },
+            any={
+                '$nargs': ARGS_ANY,
+            },
+            req={
+                '$nargs': ARGS_REQUIRED,
+            },
+            opt={
+                '$nargs': ARGS_OPTIONAL,
+            },
+        )
+
+        h.raw_pathname = '/one'
+        self.assertRaises(MissingArgsError, e.parse, h)
+        h.raw_pathname = '/one/foo'
+        e.parse(h)
+        h.raw_pathname = '/one/foo/bar'
+        self.assertRaises(ExtraArgsError, e.parse, h)
+
+        h.raw_pathname = '/any'
+        e.parse(h)
+        h.raw_pathname = '/any/foo'
+        e.parse(h)
+        h.raw_pathname = '/any/foo/bar'
+        e.parse(h)
+
+        h.raw_pathname = '/req'
+        self.assertRaises(MissingArgsError, e.parse, h)
+        h.raw_pathname = '/req/foo'
+        e.parse(h)
+        h.raw_pathname = '/req/foo/bar'
+        e.parse(h)
+
+        h.raw_pathname = '/opt'
+        e.parse(h)
+        h.raw_pathname = '/opt/foo'
+        e.parse(h)
+        h.raw_pathname = '/opt/foo/bar'
+        self.assertRaises(ExtraArgsError, e.parse, h)
+
+        h.raw_pathname = '/'
+        self.assertRaises(NotAnEndpointError, e.parse, h)
+        h.raw_pathname = '/bar'
+        self.assertRaises(NotAnEndpointError, e.parse, h)
 
     def test_parse_allowed_methods_a(self):
         path = '/foo'

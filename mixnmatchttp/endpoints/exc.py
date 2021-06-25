@@ -28,11 +28,18 @@ class MethodNotAllowedError(EndpointParseError):
 class MissingArgsError(EndpointParseError):
     '''Exception raised when a required argument is not given'''
 
-    def __init__(self):
-        super().__init__('Missing required argument.')
+    def __init__(self, nargs=None):
+        super().__init__(
+            '{n} missing required argument{suffix}.'.format(
+                n=nargs if nargs else 'At least one',
+                suffix='' if nargs is not None and nargs == 1 else 's'))
 
 class ExtraArgsError(EndpointParseError):
     '''Exception raised when extra arguments are given'''
 
-    def __init__(self, nargs):
-        super().__init__('Extra arguments: {}.'.format(nargs))
+    def __init__(self, nargs, all_args):
+        super().__init__(
+            '{n} extra argument{suffix}: {extra}.'.format(
+                n=nargs,
+                suffix='' if nargs == 1 else 's',
+                extra='/'.join(all_args.split('/')[-nargs:])))
