@@ -28,6 +28,7 @@ setup(
     install_requires=[
         'wrapt>=1',
         'awesomedict',
+        'bidict>=0.21.2',
     ],
     extras_require={
         'unix_pwd': ['passlib>=1.7.2'],

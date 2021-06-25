@@ -561,6 +561,7 @@ Redirects (with `307`) to any address given in the URL.
   * `kargs` -> `kwargs`
   * Use format strings instead of the format string method
   * More useful debugging messages
+  * Multiple variable endpoints for a single parent distinguished by a regex; key can be `/<regex>/`
 
 ## Possibly coming at some point
 
