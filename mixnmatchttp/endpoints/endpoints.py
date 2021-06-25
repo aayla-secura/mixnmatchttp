@@ -355,13 +355,15 @@ class Endpoint(DefaultDict):
         ep = self
         curr_path = ''
         pref = ''
+        suf = ''
+
         if path[0] == '/':
             pref = '/'
             path = path[1:]
-        suf = ''
         if path[-1] == '/':
             suf = '/'
             path = path[:-1]
+
         for p in path.split('/'):
             curr_path += '/' + p
             logger.debug(
@@ -375,8 +377,6 @@ class Endpoint(DefaultDict):
                 except KeyError:
                     return
             yield ep, pref + curr_path[1:] + suf
-
-        logger.debug('Final: {}'.format(pref + curr_path[1:] + suf))
 
     def get_from_path(self, path, httpreq=None):
         '''Returns an endpoint with the given path or None
@@ -441,6 +441,7 @@ class Endpoint(DefaultDict):
             logger.debug('{} is an endpoint'.format(ep_path))
             if ep.name == '*':
                 params[ep.varname] = ep_path.split('/')[-1]
+
             # ep_path contains parameters for variable name ep's
             # ep.to_path() doesn't
             try_path = ep.to_path().replace('/', '_')
@@ -470,9 +471,12 @@ class Endpoint(DefaultDict):
                 root = ep.to_path()
                 handler = curr_handler
 
-        # skip leading slash of sub
         if ep is not None:
-            sub = ep.to_path()[len(root):].lstrip('/')
+            sub = ep.to_path()[len(root):]
+            assert root == '/' or sub == '' or sub[0] == '/'
+            if sub[:1] == '/':
+                # skip leading slash of sub
+                sub = sub[1:]
 
         if ep_path and ep_path != path and not ep.raw_args:
             # there was an endpoint corresponding to part, but not
@@ -485,6 +489,13 @@ class Endpoint(DefaultDict):
 
     def __getattr__(self, name):
         return getattr(self._settings, name)
+
+    def __getitem__(self, name):
+        # TODO optional case-sensitive
+        return super().__getitem__(name.lower())
+
+    def __contains__(self, name):
+        return super().__getitem__(name.lower())
 
     def __update_single__(self, key, item, is_explicit):
         if not key:
@@ -521,7 +532,7 @@ class Endpoint(DefaultDict):
         logger.debug('Endpoint {id} ({name}) done'.format(
             id=item._id, name=key))
 
-        super().__update_single__(key, item, is_explicit)
+        super().__update_single__(key.lower(), item, is_explicit)
 
     def __copy__(self):
         clone = super().__copy__()

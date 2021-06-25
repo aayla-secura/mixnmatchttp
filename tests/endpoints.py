@@ -69,6 +69,16 @@ class Test(unittest.TestCase):
                 '$raw_args': True,
             }))
 
+    def test_get_from_path(self):
+        e = Endpoint(foo=dict(bar={}))
+        self.assertIs(e.get_from_path('/foo/bar'), e['foo']['bar'])
+        self.assertIs(e.get_from_path('/foo'), e['foo'])
+
+    def test_case_sensitive(self):
+        e = Endpoint(foo=dict(Bar={}))
+        self.assertIs(e.get_from_path('/foo/bar'), e['foo']['bar'])
+        self.assertIs(e.get_from_path('/FOo'), e['foo'])
+
     def test_parse_nargs(self):
         h = DefaultAttrs(
             conf=DefaultAttrs(api_prefix=''),

@@ -46,18 +46,24 @@ class _DefaultsBase:
             self.__update_single__(d, defaults[d], False)
 
     def __update_single__(self, name, value, is_explicit):
-        '''This is the only method that should modify __explicit__ or
+        '''This is the only method that should add to __explicit__ or
         __default__
-
-        This allows child classes to easily hook into any changes
-        to __explicit__ or __default__ and override that behaviour by
-        overriding this method alone
         '''
 
         if is_explicit:
             self.__explicit__[name] = value
         else:
             self.__default__[name] = value
+
+    def __delete_single__(self, name, is_explicit):
+        '''This is the only method that should remove from
+        __explicit__ or __default__
+        '''
+
+        if is_explicit:
+            del self.__explicit__[name]
+        else:
+            del self.__default__[name]
 
     def __eq__(self, other):
         if not isinstance(other, DefaultAttrs):
@@ -110,6 +116,9 @@ class DefaultAttrs(_DefaultsBase):
         else:
             self.__update_single__(name, value, True)
 
+    def __delattr__(self, name):
+        self.__delete_single__(name, True)
+
     def __getattr__(self, name):
         if name.startswith('__'):
             raise AttributeError(name)
@@ -128,6 +137,9 @@ class DefaultKeys(_DefaultsBase):
     def __setitem__(self, name, value):
         self.__update_single__(name, value, True)
 
+    def __delitem__(self, name):
+        self.__delete_single__(name, True)
+
     def __getitem__(self, name):
         try:
             return self.__explicit__[name]
@@ -143,6 +155,7 @@ class DefaultDict(DefaultKeys):
       setdefaults
       update
       copy
+      get
       keys
       values
       items

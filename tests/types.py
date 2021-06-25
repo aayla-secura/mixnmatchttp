@@ -68,6 +68,11 @@ class Test(unittest.TestCase):
         self.assertEqual(s['b'], 3)
         self.assertEqual(s['e'], 6)
 
+    def test_delete(self):
+        s = DefaultAttrDict(a=1, b=2)
+        del s['a']
+        self.assertNotIn('a', s)
+
     def test_iter(self):
         s = DefaultAttrDict(a=1)
         s.b = 2
