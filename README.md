@@ -526,46 +526,46 @@ Redirects (with `307`) to any address given in the URL.
 
 # Coming soon
 
-  [ ] Better templates
-  [ ] A configurable declarative base to use with `BaseAuthSQLAlchemyORMHTTPRequestHandler`
-  [ ] Command-line option and/or class attribute for paths that shouldn't be cached
-  [x] Command-line option for paths which need authentication (`_secrets`)
-  [ ] An option to completely disable access to certain files (a special value in `_secrets`)
-  [ ] Log rotation
-  [ ] MT-safe `CachingHTTPRequestHandler`
-  [x] Option for case-sensitivity of endpoints (and separately for variable endpoint names)
-  [x] Database storage of users and sessions
-  [ ] Variable regex endpoints
-  [ ] A configurable list of file extensions which should be served as attachment.
+  * [ ] Better templates
+  * [ ] A configurable declarative base to use with `BaseAuthSQLAlchemyORMHTTPRequestHandler`
+  * [ ] Command-line option and/or class attribute for paths that shouldn't be cached
+  * [x] Command-line option for paths which need authentication (`_secrets`)
+  * [ ] An option to completely disable access to certain files (a special value in `_secrets`)
+  * [ ] Log rotation
+  * [ ] MT-safe `CachingHTTPRequestHandler`
+  * [x] Option for case-sensitivity of endpoints (and separately for variable endpoint names)
+  * [x] Database storage of users and sessions
+  * [ ] Variable regex endpoints
+  * [ ] A configurable list of file extensions which should be served as attachment.
 
 ## Possibly coming at some point
 
-  [ ] Brute force protections and account lockout
-  [ ] CAPTHAs
-  [ ] Anti-CSRF
+  * [ ] Brute force protections and account lockout
+  * [ ] CAPTHAs
+  * [ ] Anti-CSRF
 
 # Internal TODO notes
 
-  [x] Smarter way of merging endpoints with parent's (remembering which ones were explicitly set, and which inherited)
-  [ ] Templates from files
-  [ ] Remove `_` prefix from class attributes
-  [ ] Do not save expanded env variables to config file
-  [ ] Test with nginx proxy setup (it was behaving weirdly, need to find if it's a bug here)
-  [ ] Add back `--no-multithread` option
-  [ ] Remove `methodhandler` and instead override one of the server or request handler methods called at the start of a request
-  [ ] Is it possible to catch any exception from a request handler (maybe in a request shutdown hook of the server class) and sent a 500 response?
-  [ ] Cmdline options to disable `request_log` and `logdir` if set in config
-  [ ] Move stuff from JWT class to `cryptoutils` module
-  [ ] Merge `_secrets` and `_can_create_users` with those of parent classes, like endpoints
-  [ ] `--add-users`: password input should not be displayed
-  [x] Fix path canonicalization for endpoints, .e.g `//login` does not match an endpoint
-  [ ] Default column for short value in `object_to_dict` should use the first primary key, not hardcoded `id`.
-  [ ] Logging conf for request line via command-line; also, custom format for it
-  [ ] Use of pollers in `send_headers`
-  [ ] `kargs` -> `kwargs` everywhere
-  [ ] Use format strings instead of the format string method
-  [ ] More useful debugging messages
-  [ ] Multiple variable endpoints for a single parent distinguished by a regex; key can be `/<regex>/`
+  * [x] Smarter way of merging endpoints with parent's (remembering which ones were explicitly set, and which inherited)
+  * [ ] Templates from files
+  * [ ] Remove `_` prefix from class attributes
+  * [ ] Do not save expanded env variables to config file
+  * [ ] Test with nginx proxy setup (it was behaving weirdly, need to find if it's a bug here)
+  * [ ] Add back `--no-multithread` option
+  * [ ] Remove `methodhandler` and instead override one of the server or request handler methods called at the start of a request
+  * [ ] Is it possible to catch any exception from a request handler (maybe in a request shutdown hook of the server class) and sent a 500 response?
+  * [ ] Cmdline options to disable `request_log` and `logdir` if set in config
+  * [ ] Move stuff from JWT class to `cryptoutils` module
+  * [ ] Merge `_secrets` and `_can_create_users` with those of parent classes, like endpoints
+  * [ ] `--add-users`: password input should not be displayed
+  * [x] Fix path canonicalization for endpoints, .e.g `//login` does not match an endpoint
+  * [ ] Default column for short value in `object_to_dict` should use the first primary key, not hardcoded `id`.
+  * [ ] Logging conf for request line via command-line; also, custom format for it
+  * [ ] Use of pollers in `send_headers`
+  * [ ] `kargs` -> `kwargs` everywhere
+  * [ ] Use format strings instead of the format string method
+  * [ ] More useful debugging messages
+  * [ ] Multiple variable endpoints for a single parent distinguished by a regex; key can be `/<regex>/`
 
 # Demos and source
 
