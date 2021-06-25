@@ -7,7 +7,7 @@ from mixnmatchttp.endpoints import Endpoint, ParsedEndpoint, \
     ARGS_REQUIRED, ARGS_ANY, ARGS_OPTIONAL
 from mixnmatchttp.endpoints.exc import EndpointError, \
     MethodNotAllowedError, ExtraArgsError, MissingArgsError, NotAnEndpointError
-from mixnmatchttp.types import DefaultAttrs
+from mixnmatchttp.conf.containers import DefaultAttrs
 
 class CSEndpoint(Endpoint):
     case_sensitive = True

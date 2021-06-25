@@ -1,7 +1,7 @@
 import logging
 import re
 
-from ... import endpoints
+from ...endpoints import Endpoint, ARGS_ANY
 from ...utils import param_dict
 from ..base import BaseHTTPRequestHandler
 
@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
-    endpoints = endpoints.Endpoint(
+    endpoints = Endpoint(
         goto={
             # call it as /goto?{params for this server}/{URI-decoded
             # address}; include the ? after /goto even if not giving
@@ -18,7 +18,7 @@ class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
             # would be consumed
             '$allowed_methods': {
                 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'},
-            '$nargs': endpoints.ARGS_ANY,
+            '$nargs': ARGS_ANY,
             '$raw_args': True,
         },
     )

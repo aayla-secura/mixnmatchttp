@@ -21,10 +21,10 @@ else:
         load_pem_private_key
     from cryptography.hazmat.primitives import serialization
 
-from ... import endpoints
+from ...endpoints import Endpoint
 from ...utils import is_str, param_dict, datetime_from_timestamp, \
     curr_timestamp, randhex, randstr, int_to_bytes
-from ..conf import Conf
+from ...conf import Conf
 from .api import BaseAuthHTTPRequestHandler, Session
 from .utils import cookie_expflag
 
@@ -169,7 +169,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         dec_key=None,
         jwks=None,
     )
-    endpoints = endpoints.Endpoint(
+    endpoints = Endpoint(
         authtoken={
             '$allowed_methods': {'POST'},
         },

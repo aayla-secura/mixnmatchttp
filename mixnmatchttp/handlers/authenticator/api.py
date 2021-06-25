@@ -14,8 +14,8 @@ except ImportError:
 
 from ...utils import is_str, is_seq_like, is_map_like, \
     datetime_to_timestamp, curr_timestamp, open_path
-from ..conf import Conf
-from ... import endpoints
+from ...conf import Conf
+from ...endpoints import Endpoint
 from ..base import BaseMeta, BaseHTTPRequestHandler
 from .utils import num_charsets
 from .exc import UserAlreadyExistsError, NoSuchUserError, \
@@ -353,7 +353,7 @@ class BaseAuthHTTPRequestHandler(
         prune_sessions_every=0,
     )
     __last_prune = curr_timestamp()
-    endpoints = endpoints.Endpoint(
+    endpoints = Endpoint(
         register={
             '$allowed_methods': {'POST'},
         },

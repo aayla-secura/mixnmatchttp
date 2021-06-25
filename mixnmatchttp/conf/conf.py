@@ -2,20 +2,16 @@ import logging
 import importlib
 from wrapt import ObjectProxy
 
-from ..types import DefaultAttrs, DefaultAttrDict
+from .containers import DefaultAttrs, DefaultAttrDict
+from .exc import ConfError, ConfRuntimeError, ConfTypeError
 
 
 logger = logging.getLogger(__name__)
+__all__ = [
+    'Conf',
+    'ConfItem',
+]
 
-
-class ConfError(Exception):
-    pass
-
-class ConfRuntimeError(ConfError, RuntimeError):
-    pass
-
-class ConfTypeError(ConfError, TypeError):
-    pass
 
 class _NotInitializedError(Exception):
     pass

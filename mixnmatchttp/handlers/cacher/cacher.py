@@ -2,7 +2,7 @@ import logging
 import uuid
 import mimetypes
 
-from ... import endpoints
+from ...endpoints import Endpoint, ARGS_OPTIONAL
 from ...cache import Cache
 from ...cache.exc import PageNotCachedError, PageClearedError, \
     CacheError
@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
     cache = Cache()
-    endpoints = endpoints.Endpoint(
+    endpoints = Endpoint(
         echo={
             '$allowed_methods': {'POST'},
         },
@@ -23,7 +23,7 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
             '$allowed_methods': {'GET', 'POST'},
             '$nargs': 1,
             '$clear': {
-                '$nargs': endpoints.ARGS_OPTIONAL,
+                '$nargs': ARGS_OPTIONAL,
             },
             'new': {},
         },

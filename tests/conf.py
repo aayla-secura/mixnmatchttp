@@ -2,8 +2,8 @@ import unittest
 import re
 
 import loggers
-from mixnmatchttp.handlers.conf import Conf, ConfItem, \
-    ConfError, ConfRuntimeError, ConfTypeError
+from mixnmatchttp.conf import Conf, ConfItem
+from mixnmatchttp.conf.exc import ConfError, ConfRuntimeError, ConfTypeError
 
 class TestConfItem(unittest.TestCase):
     def test_proxy(self):

@@ -3,7 +3,7 @@ import re
 from copy import copy
 
 import loggers
-from mixnmatchttp.types import DefaultAttrDict
+from mixnmatchttp.conf.containers import DefaultAttrDict
 
 class Test(unittest.TestCase):
     def test_attr_item(self):

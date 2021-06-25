@@ -14,7 +14,7 @@ import binascii
 from wrapt import decorator
 from string import Template
 
-from .conf import Conf, ConfItem
+from ..conf import Conf, ConfItem
 from ..endpoints import Endpoint
 from ..endpoints.exc import NotAnEndpointError, \
     MethodNotAllowedError, MissingArgsError, ExtraArgsError

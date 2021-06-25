@@ -5,7 +5,7 @@ from wrapt import ObjectProxy
 from bidict import bidict
 
 from ..utils import iter_abspath
-from ..types import DefaultDict, DefaultAttrs, DefaultAttrDict
+from ..conf.containers import DefaultDict, DefaultAttrs, DefaultAttrDict
 from .exc import EndpointError, NotAnEndpointError, \
     MissingArgsError, ExtraArgsError, MethodNotAllowedError
 
