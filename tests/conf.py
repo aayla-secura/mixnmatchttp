@@ -1,19 +1,14 @@
 import unittest
 import re
+from copy import copy
 
 import loggers
+from mixnmatchttp.utils import is_mergeable
 from mixnmatchttp.conf import Conf, ConfItem
 from mixnmatchttp.conf.exc import ConfError, ConfRuntimeError, ConfTypeError
 
-class MergeableConfItem(ConfItem):
-    __mergeable__ = True
-
-
-MergeableConfItem._self_class = MergeableConfItem
-
-class MergeableConf(Conf):
-    #  __attempt_merge__ = False
-    __item_type__ = MergeableConfItem
+class ConfItemB(ConfItem):
+    pass
 
 class TestConfItem(unittest.TestCase):
     def test_proxy(self):
@@ -26,6 +21,12 @@ class TestConfItem(unittest.TestCase):
         i.append(4)
         self.assertEqual(i, x)
         self.assertIn(4, x)
+
+    def test_copy(self):
+        i = ConfItemB(1)
+        c = copy(i)
+        self.assertIs(c.__proxyclass__.__name__, 'ConfItemB')
+        self.assertIs(c.__proxyclass__, ConfItemB)
 
     def test_settings_defaults(self):
         i = ConfItem(1)
@@ -55,14 +56,26 @@ class TestConfItem(unittest.TestCase):
                           'x', requires='nonexistent')
         ConfItem('x', requires=('future',))
 
+    def test_merge_a(self):
+        ci = ConfItem([1, 2])
+        cim = ConfItem([1, 2], mergeable=True)
+        self.assertFalse(is_mergeable(ci, inplace=True))
+        self.assertTrue(is_mergeable(cim, inplace=True))
+
+    def test_merge_b(self):
+        ci = ConfItem(1)
+        cim = ConfItem(1, mergeable=True)
+        self.assertFalse(is_mergeable(ci, inplace=True))
+        self.assertTrue(is_mergeable(cim, inplace=True))
+
     def test_merge_list(self):
         lista = [1, 2]
         listb = [1, 3]
         i = ConfItem(lista)
-        i.__update__(listb)
+        i.__merge__(listb)
         self.assertEqual(i, listb)
         i = ConfItem(lista, mergeable=True)
-        i.__update__(listb)
+        i.__merge__(listb)
         self.assertEqual(i, lista + listb)
 
     def test_merge_dict(self):
@@ -71,10 +84,10 @@ class TestConfItem(unittest.TestCase):
         dicu = dica.copy()
         dicu.update(dicb)
         i = ConfItem(dica)
-        i.__update__(dicb)
+        i.__merge__(dicb)
         self.assertEqual(i, dicb)
         i = ConfItem(dica, mergeable=True)
-        i.__update__(dicb)
+        i.__merge__(dicb)
         self.assertEqual(i, dicu)
 
 class TestConf(unittest.TestCase):
@@ -92,28 +105,6 @@ class TestConf(unittest.TestCase):
         c = Conf(a=1)
         c.update(a=2)
         self.assertEqual(c.a, 2)
-
-    def test_update_merge_by_default_a(self):
-        lista = [1, 2]
-        listb = [1, 3]
-        c = MergeableConf(a=lista.copy(),
-                          b=ConfItem(listb.copy()),
-                          c=1)
-        c.update(a=listb, b=lista, c=2)
-        self.assertEqual(c.a, lista + listb)
-        self.assertEqual(c.b, lista)
-        self.assertEqual(c.c, 3)
-
-    def test_update_merge_by_default_b(self):
-        lista = [1, 2]
-        listb = [1, 3]
-        c = Conf(a=lista.copy(),
-                 b=MergeableConfItem(listb.copy()),
-                 c=1)
-        c.update(a=listb, b=lista, c=2)
-        self.assertEqual(c.a, listb)
-        self.assertEqual(c.b, listb + lista)
-        self.assertEqual(c.c, 2)
 
     def test_add_merge(self):
         lista = [1, 2]

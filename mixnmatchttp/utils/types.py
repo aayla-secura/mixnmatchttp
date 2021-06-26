@@ -75,17 +75,23 @@ def is_map_like(val):
 def is_mergeable(val, inplace=True):
     '''True if value can be merged with another of its type'''
 
-    # __merge__ is a custom one used by us
-    return hasattr(val, '__merge__') \
-        or hasattr(val, 'update') \
-        or hasattr(val, 'extend') \
-        or hasattr(val, 'add') \
-        or hasattr(val, '__iadd__') \
-        or hasattr(val, '__ior__') \
-        or hasattr(val, '__setitem__') \
-        or not inplace and (
-            hasattr(val, '__add__')
-            or hasattr(val, '__or__'))
+    # __mergeable__ and __merge__ are custom used by us
+    try:
+        if val.__mergeable__:
+            return True
+        else:
+            return False
+    except AttributeError:
+        return hasattr(val, '__merge__') \
+            or hasattr(val, 'update') \
+            or hasattr(val, 'extend') \
+            or hasattr(val, 'add') \
+            or hasattr(val, '__iadd__') \
+            or hasattr(val, '__ior__') \
+            or hasattr(val, '__setitem__') \
+            or not inplace and (
+                hasattr(val, '__add__')
+                or hasattr(val, '__or__'))
 
 def to_bool(val):
     '''Converts val to a boolean. val can be numeric or a string

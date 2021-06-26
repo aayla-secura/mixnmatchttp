@@ -2,6 +2,7 @@ import logging
 import importlib
 from copy import copy, deepcopy
 from wrapt import ObjectProxy
+from wrapt.wrappers import _ObjectProxyMetaType
 
 from .containers import DefaultAttrs, DefaultAttrDict
 from .exc import ConfError, ConfRuntimeError, ConfTypeError
@@ -17,9 +18,15 @@ __all__ = [
 class _NotInitializedError(Exception):
     pass
 
-class ConfItem(ObjectProxy):
-    __mergeable__ = False
+class _ConfItemMeta(_ObjectProxyMetaType):
+    def __new__(cls, name, bases, attrs):
+        new = super().__new__(cls, name, bases, attrs)
+        # save the class of the proxyobject for later, since __class__
+        # is overriden by a property in ObjectProxy
+        new.__proxyclass__ = new
+        return new
 
+class ConfItem(ObjectProxy, metaclass=_ConfItemMeta):
     def __init__(self, value, /, **settings):
         '''Configuration item - a proxy for its value
 
@@ -29,10 +36,9 @@ class ConfItem(ObjectProxy):
 
         Accepted settings:
         - mergeable: whether the value is to be merged with its
-          previous one during an update (see __update__ method);
+          previous one during an update (see __merge__ method);
           this is valid only for sequences and mappings,
-          where concatenation/merging makes sense; default is the
-          class attribute __mergeable__ (False for ConfItem)
+          where concatenation/merging makes sense; default is False
         - allowed_types: a tuple of allowed types for this item; if
           the item is not an instance of any of them, a conversion is
           attempted for each of the types in turn (by calling its
@@ -47,7 +53,7 @@ class ConfItem(ObjectProxy):
 
         # cannot set any attributes before calling parent __init__
         self_settings = DefaultAttrs(dict(
-            mergeable=self.__mergeable__,
+            mergeable=False,
             allowed_types=(value.__class__,),
             transformer=None,
             requires=()), **settings)
@@ -56,16 +62,21 @@ class ConfItem(ObjectProxy):
             value = value.__wrapped__
         self.__init(value, self_settings)
 
+    @property
+    def __mergeable__(self):
+        return self._self_settings.mergeable
+
     def __copy__(self):
-        clone = self._self_class(  # XXX actual class
+        clone = self.__proxyclass__(
             copy(self.__wrapped__),
             **self._self_settings.__explicit__)
         return clone
 
     def __deepcopy__(self, memo=None):
-        clone = self._self_class(  # XXX
+        settings = deepcopy(self._self_settings)
+        clone = self.__proxyclass__(
             deepcopy(self.__wrapped__),
-            **self._self_settings.__explicit__)
+            **settings)
         return clone
 
     def __getattr__(self, attr):
@@ -81,12 +92,14 @@ class ConfItem(ObjectProxy):
     def __repr__(self):
         return str(self.__wrapped__)
 
-    def __update__(self, other):
+    def __merge__(self, other):
         self_settings = self._self_settings
 
         if isinstance(other, ConfItem):
             value = other.__wrapped__
-            other_settings = other._self_settings
+            #  other_settings = other._self_settings
+            other_settings = self._self_settings.__class__(
+                **other._self_settings.__explicit__)
         else:
             value = other
             other_settings = self._self_settings.__class__()
@@ -154,9 +167,6 @@ class ConfItem(ObjectProxy):
         self._self_settings = settings
 
 
-ConfItem._self_class = ConfItem
-
-
 class Conf(DefaultAttrDict):
     '''Holds ConfItems as attributes
 
@@ -168,22 +178,4 @@ class Conf(DefaultAttrDict):
     '''
 
     __item_type__ = ConfItem  # dictates whether it is mergeable
-    __attempt_merge__ = False
-
-    def __update_single__(self, attr, value, is_explicit):
-        try:
-            curr = self[attr]
-        except KeyError:
-            #  if not isinstance(value, ConfItem):
-            #      try:
-            #          value = ConfItem(value)
-            #      except ConfError as e:
-            #          raise ConfError(
-            #              'Error in config item {name}: {err!s}'.format(
-            #                  name=attr, err=e))
-
-            super().__update_single__(attr, value, is_explicit)
-
-        else:
-            logger.debug('Updating current conf item {}'.format(attr))
-            curr.__update__(value)
+    __attempt_merge__ = True

@@ -101,11 +101,11 @@ class _DefaultsBase:
             return True
 
         ##########
-        if self.__item_type__ is not None:
-            if not isinstance(value, self.__item_type__):
-                logger.debug('Converting item to {}'.format(
-                    self.__item_type__.__name__))
-                value = self.__item_type__(value)
+        if self.__item_type__ and \
+                not isinstance(value, self.__item_type__):
+            logger.debug('Converting item to {}'.format(
+                self.__item_type__.__name__))
+            value = self.__item_type__(value)
 
         curr = None
         try:
