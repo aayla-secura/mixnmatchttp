@@ -53,6 +53,8 @@ class ConfItem(ObjectProxy, metaclass=_ConfItemMeta):
 
         # cannot set any attributes before calling parent __init__
         self_settings = DefaultAttrs(dict(
+            # TODO option to merge just value, value and explicit
+            # settings or value and all settings
             mergeable=False,
             allowed_types=(value.__class__,),
             transformer=None,
@@ -97,9 +99,10 @@ class ConfItem(ObjectProxy, metaclass=_ConfItemMeta):
 
         if isinstance(other, ConfItem):
             value = other.__wrapped__
-            #  other_settings = other._self_settings
-            other_settings = self._self_settings.__class__(
-                **other._self_settings.__explicit__)
+            other_settings = other._self_settings
+            # or merge only explicit
+            #  other_settings = self._self_settings.__class__(
+            #      **other._self_settings.__explicit__)
         else:
             value = other
             other_settings = self._self_settings.__class__()
