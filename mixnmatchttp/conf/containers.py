@@ -1,4 +1,5 @@
 import logging
+from copy import copy, deepcopy
 
 from ..utils import merge, is_mergeable
 
@@ -102,6 +103,8 @@ class _DefaultsBase:
         ##########
         if self.__item_type__ is not None:
             if not isinstance(value, self.__item_type__):
+                logger.debug('Converting item to {}'.format(
+                    self.__item_type__.__name__))
                 value = self.__item_type__(value)
 
         curr = None
@@ -200,8 +203,14 @@ class _DefaultsBase:
 
     def __copy__(self):
         clone = self.__class__()
-        clone.__explicit__ = self.__explicit__.copy()
-        clone.__default__ = self.__default__.copy()
+        clone.__explicit__ = copy(self.__explicit__)
+        clone.__default__ = copy(self.__default__)
+        return clone
+
+    def __deepcopy__(self, memo=None):
+        clone = self.__class__()
+        clone.__explicit__ = deepcopy(self.__explicit__)
+        clone.__default__ = deepcopy(self.__default__)
         return clone
 
 class DefaultAttrs(_DefaultsBase):

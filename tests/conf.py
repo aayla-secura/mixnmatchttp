@@ -6,8 +6,10 @@ from mixnmatchttp.conf import Conf, ConfItem
 from mixnmatchttp.conf.exc import ConfError, ConfRuntimeError, ConfTypeError
 
 class MergeableConfItem(ConfItem):
-    #  __mergeable__ = True
-    pass
+    __mergeable__ = True
+
+
+MergeableConfItem._self_class = MergeableConfItem
 
 class MergeableConf(Conf):
     #  __attempt_merge__ = False
@@ -95,14 +97,14 @@ class TestConf(unittest.TestCase):
         lista = [1, 2]
         listb = [1, 3]
         c = MergeableConf(a=lista.copy(),
-                          b=ConfItem(listb.copy(), mergeable=False),
+                          b=ConfItem(listb.copy()),
                           c=1)
-        c.update(a=listb, b=listb, c=2)
-        #  self.assertEqual(c.a, lista + listb)
-        #  self.assertEqual(c.b, listb)
-        #  self.assertEqual(c.c, 2)
+        c.update(a=listb, b=lista, c=2)
+        self.assertEqual(c.a, lista + listb)
+        self.assertEqual(c.b, lista)
+        self.assertEqual(c.c, 3)
 
-    def xtest_update_merge_by_default_b(self):
+    def test_update_merge_by_default_b(self):
         lista = [1, 2]
         listb = [1, 3]
         c = Conf(a=lista.copy(),

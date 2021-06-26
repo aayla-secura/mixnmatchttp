@@ -1,5 +1,6 @@
 import logging
 import importlib
+from copy import copy, deepcopy
 from wrapt import ObjectProxy
 
 from .containers import DefaultAttrs, DefaultAttrDict
@@ -50,7 +51,22 @@ class ConfItem(ObjectProxy):
             allowed_types=(value.__class__,),
             transformer=None,
             requires=()), **settings)
+        if isinstance(value, ConfItem):
+            self_settings.__merge__(value._self_settings)
+            value = value.__wrapped__
         self.__init(value, self_settings)
+
+    def __copy__(self):
+        clone = self._self_class(  # XXX actual class
+            copy(self.__wrapped__),
+            **self._self_settings.__explicit__)
+        return clone
+
+    def __deepcopy__(self, memo=None):
+        clone = self._self_class(  # XXX
+            deepcopy(self.__wrapped__),
+            **self._self_settings.__explicit__)
+        return clone
 
     def __getattr__(self, attr):
         # overriding ObjectProxy's __getattr__ which raises ValueError
@@ -60,7 +76,7 @@ class ConfItem(ObjectProxy):
         if attr == '__wrapped__':
             raise _NotInitializedError(
                 'wrapper has not been initialised')
-        return getattr(self.__wrapped__, attr)
+        return super().__getattr__(attr)
 
     def __repr__(self):
         return str(self.__wrapped__)
@@ -118,10 +134,6 @@ class ConfItem(ObjectProxy):
         def merge(value):
             from copy import copy
             try:
-                try:
-                    copy(self.__wrapped__)
-                except NotImplementedError:
-                    print(f'{self.__wrapped__.__class__}')
                 return _merge(self.__wrapped__, value)
             except (TypeError, ValueError) as e:
                 raise ConfTypeError(e)
@@ -140,6 +152,10 @@ class ConfItem(ObjectProxy):
 
         super().__init__(value)
         self._self_settings = settings
+
+
+ConfItem._self_class = ConfItem
+
 
 class Conf(DefaultAttrDict):
     '''Holds ConfItems as attributes

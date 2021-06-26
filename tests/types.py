@@ -1,6 +1,6 @@
 import unittest
 import re
-from copy import copy
+from copy import copy, deepcopy
 
 import loggers
 from mixnmatchttp.conf.containers import DefaultAttrDict
@@ -59,6 +59,18 @@ class Test(unittest.TestCase):
         self.assertEqual(c, s)
         self.assertIn(3, c['c'])
         self.assertIn(3, s['c'])
+        c['a'] = 'a'
+        self.assertNotEqual(c, s)
+
+    def test_deepcopy(self):
+        s = DefaultAttrDict(dict(a=1, b=2))
+        s['c'] = [1, 2]
+        c = deepcopy(s)
+        self.assertEqual(c, s)
+        self.assertEqual(c['a'], 1)
+        c['c'].append(3)
+        self.assertIn(3, c['c'])
+        self.assertNotIn(3, s['c'])
         c['a'] = 'a'
         self.assertNotEqual(c, s)
 
