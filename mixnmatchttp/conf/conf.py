@@ -177,3 +177,9 @@ class Conf(DefaultAttrDict):
 
     __item_type__ = ConfItem  # dictates whether it is mergeable
     __attempt_merge__ = True
+
+    def __getattr__(self, name):
+        confitem = super().__getattr__(name)
+        if isinstance(confitem, ConfItem):
+            return confitem.__wrapped__
+        return confitem

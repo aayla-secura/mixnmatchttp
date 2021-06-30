@@ -53,9 +53,11 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
                              CachingHTTPRequestHandler,
                              ProxyingHTTPRequestHandler):
 
-    _secrets = ('secret', '/topsecret')
-    _userfile = 'test_users.txt'
-    _min_pwdlen = 3
+    conf = dict(
+        secrets=('secret', '/topsecret'),
+        userfile='test_users.txt',
+        pwd_min_len=3
+    )
     endpoints = Endpoint(
         dummylogin={},
         modtest={},
@@ -101,8 +103,8 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
 
     @endpoint_debug_handler
     def do_dummylogin(self, ep):
-        self.set_cookie()
-        self.send_response_goto()
+        self.new_session(None)
+        self.send_response_auth()
 
     @endpoint_debug_handler
     def do_modtest(self, ep):
