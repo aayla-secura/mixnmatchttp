@@ -520,11 +520,14 @@ class BaseAuthHTTPRequestHandler(
         try:
             secrets = OrderedDict(self.conf.secrets)
         except ValueError:
-            requested = self.pathname
+            requested = self.pathname  # match against path only
             secrets = OrderedDict([(
-                ('(^|/)'
-                 '{}'  # secrets joined in an OR
-                 '(/|$)'.format('|'.join(secrets))),
+                '{secrets}(/|$)'.format(
+                    secrets='|'.join(
+                        ['{pref}{secret}'.format(
+                            pref=('^' if s.startswith('/') else '/'),
+                            secret=s) for s in secrets]
+                    )),
                 ['*'])])
         if self.pathname != '{}/login'.format(self.conf.api_prefix) \
                 and self.pathname != '{}/logout'.format(
