@@ -4,6 +4,7 @@ demos/users
 build
 dist
 tmp
+tests/*.log
 **/__pycache__
 *.pyc
 *.egg-info
