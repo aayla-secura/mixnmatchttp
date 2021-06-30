@@ -220,19 +220,21 @@ class Endpoint(DefaultDict):
         a ParsedEndpoint initialized with the following attributes:
             httpreq: same as passed to this method
             handler: the selected httpreq's method;
-                the most specific handler for the endpoint's path and
-                request method is used, or do_default if none found.
-                E.g. for a GET to an endpoint /foo/bar/baz, first
-                do_GET_foo_bar_baz is looked for, then do_foo_bar_baz,
-                then do_GET_foo_bar, then do_foo_bar, then do_GET_foo,
-                then do_foo, finally do_default
-            root: longest path of the endpoint corresponding to
-                a defined handler
-            sub: rest of the path of the endpoint
-            args: array of everything following the endpoint's path
-                (/root/sub/) split on /
-            params: a dictionary of all parameters for the full path;
-                each key defaults to the parent's name
+                     the most specific handler for the endpoint's path
+                     and request method is used, or do_default if none
+                     found. E.g. for a GET to an endpoint
+                     /foo/bar/baz, first do_GET_foo_bar_baz is looked
+                     for, then do_foo_bar_baz, then do_GET_foo_bar,
+                     then do_foo_bar, then do_GET_foo, then do_foo,
+                     finally do_default
+            root:    longest path of the endpoint corresponding to
+                     a defined handler
+            sub:     rest of the path of the endpoint
+            args:    array of everything following the endpoint's path
+                     (/root/sub/) split on /
+            argstr:  args joined as a string
+            params:  a dictionary of all parameters for the full path;
+                     each key defaults to the parent's name
 
         For example if an endpoint /cache/new/static accepts
         arguments, and httpreq has a method do_cache, but not
@@ -559,15 +561,16 @@ class ParsedEndpoint(ObjectProxy):
     The following additional attributes are defined as given to the
     constructor:
         httpreq: the instance of BaseHTTPRequestHandler which it was
-            parsed from
+                 parsed from
         handler: the httpreq's method called 'do_{root}' or
-            'do_default'
-        root: longest path of the endpoint corresponding to a defined
-            handler
-        sub: rest of the path of the endpoint
-        args: array of everything following the endpoint's path
-            (/root/sub/) split on /
-        params: a dictionary of all parameters for the full path
+                 'do_default'
+        root:    longest path of the endpoint corresponding to a defined
+                 handler
+        sub:     rest of the path of the endpoint
+        args:    array of everything following the endpoint's path
+                 (/root/sub/) split on /
+        argstr:  args joined as a string
+        params:  a dictionary of all parameters for the full path
     '''
 
     def __init__(self, endpoint, httpreq, handler, root, sub,
@@ -582,6 +585,7 @@ class ParsedEndpoint(ObjectProxy):
         self.root = root
         self.sub = sub
         self.args = args
+        self.argstr = '/'.join(args)
         self.params = params
 
     def __repr__(self):

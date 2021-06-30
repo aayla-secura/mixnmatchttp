@@ -36,12 +36,12 @@ class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
         '''
 
         # check if path includes domain
-        if re.match('(https?:)?//[^/]', self.ep.args):
-            self.send_response_goto(code=307, url=self.ep.args)
+        if re.match('(https?:)?//[^/]', self.ep.argstr):
+            self.send_response_goto(code=307, url=self.ep.argstr)
             return
 
         def send_redir(host, proto='', pref='', **kwargs):
-            if self.ep.args[:1] == '/':
+            if self.ep.argstr[:1] == '/':
                 # relative to root => ignore prefix path
                 pref = ''
             elif pref[-1:] != '/':
@@ -50,7 +50,7 @@ class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
                 pref += '/'
             if proto and proto[-1] != ':':
                 proto += ':'
-            path = ''.join([proto, '//', host, pref, self.ep.args])
+            path = ''.join([proto, '//', host, pref, self.ep.argstr])
             logger.debug('Redirecting to {}'.format(path))
             self.send_response_goto(code=307, url=path)
 

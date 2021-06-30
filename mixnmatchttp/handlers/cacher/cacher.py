@@ -90,7 +90,7 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_cache_clear(self):
         '''Clears a cached page'''
 
-        name = self.ep.args
+        name = self.ep.argstr
         if not name:
             # empty name should clear all pages; cache.clear will only
             # clear all pages if name is None and not if it's ''
@@ -109,7 +109,7 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_cache(self):
         '''Saves or retrieves a cached page'''
 
-        name = self.ep.args
+        name = self.ep.argstr
         if self.command == 'GET':
             try:
                 page = self.cache.get(name)
