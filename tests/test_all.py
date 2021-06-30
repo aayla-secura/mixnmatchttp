@@ -41,13 +41,12 @@ from mixnmatchttp.endpoints import Endpoint, \
 
 @decorator
 def endpoint_debug_handler(handler, self, args, kwargs):
-    ep = args[0]
-    handler(ep)
+    handler()
     page = self.page_from_template(self.templates['testtemplate'],
                                    {'handler': handler.__name__,
-                                    'root': ep.root,
-                                    'sub': ep.sub,
-                                    'args': ep.args})
+                                    'root': self.ep.root,
+                                    'sub': self.ep.sub,
+                                    'args': self.ep.args})
     self.render(page)
 
 class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
@@ -103,12 +102,12 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
     )
 
     @endpoint_debug_handler
-    def do_dummylogin(self, ep):
+    def do_dummylogin(self):
         self.new_session(User('dummy'))
         self.send_response_auth()
 
     @endpoint_debug_handler
-    def do_modtest(self, ep):
+    def do_modtest(self):
         # modify endpoint, should affect only current request
         self.endpoints['test'] = {}
         self.endpoints['test'].nargs = 1
@@ -117,19 +116,19 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
         self.do_GET.__wrapped__()
 
     @endpoint_debug_handler
-    def do_default(self, ep):
+    def do_default(self):
         pass
 
     @endpoint_debug_handler
-    def do_deep(self, ep):
+    def do_deep(self):
         pass
 
     @endpoint_debug_handler
-    def do_deep_1_2_4(self, ep):
+    def do_deep_1_2_4(self):
         pass
 
     @endpoint_debug_handler
-    def do_deep_1_2_3_4(self, ep):
+    def do_deep_1_2_3_4(self):
         # this one should never be called
         raise NotImplementedError
 

@@ -104,7 +104,7 @@ def methodhandler(realhandler, self, args, kwargs):
             self.pathname[len(self.conf.api_prefix):]
         logger.debug('Calling endpoint handler, path is {}'.format(
             self.pathname))
-        self.ep.handler(self.ep, *args, **kwargs)
+        self.ep.handler(*args, **kwargs)
 
 
 ############################################################
