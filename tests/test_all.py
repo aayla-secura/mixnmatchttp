@@ -34,6 +34,7 @@ if __name__ == "__main__":
 from mixnmatchttp.handlers import BaseHTTPRequestHandler, \
     AuthCookieHTTPRequestHandler, CachingHTTPRequestHandler, \
     ProxyingHTTPRequestHandler, methodhandler
+from mixnmatchttp.handlers.authenticator.api import User
 from mixnmatchttp.servers import ThreadingHTTPServer
 from mixnmatchttp.endpoints import Endpoint, \
     ARGS_OPTIONAL, ARGS_REQUIRED, ARGS_ANY
@@ -103,7 +104,7 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
 
     @endpoint_debug_handler
     def do_dummylogin(self, ep):
-        self.new_session(None)
+        self.new_session(User('dummy'))
         self.send_response_auth()
 
     @endpoint_debug_handler
