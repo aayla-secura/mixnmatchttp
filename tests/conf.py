@@ -25,8 +25,7 @@ class TestConfItem(unittest.TestCase):
     def test_copy(self):
         i = ConfItemB(1)
         c = copy(i)
-        self.assertIs(c.__proxyclass__.__name__, 'ConfItemB')
-        self.assertIs(c.__proxyclass__, ConfItemB)
+        self.assertIs(type(c), ConfItemB)
 
     def test_settings_defaults(self):
         i = ConfItem(1)

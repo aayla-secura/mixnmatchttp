@@ -150,7 +150,7 @@ class App:
                 help=('PEM file containing the private key for the '
                       'server certificate.'))
 
-        if self.proto == 'http' and auth_type:
+        if self.proto == 'http' and self.auth_type:
             self.parser_groups['auth'] = \
                 self.parser.add_argument_group(
                 'Authentication options')
@@ -538,7 +538,7 @@ class App:
 
         #### Create the new request handler class
         attrs = {'send_custom_headers': send_custom_headers}
-        if self.auth_type is not None:
+        if self.auth_type is not None:  # XXX why is_SSL depends on auth_type
             attrs.update({
                 'is_SSL': self.conf.ssl,
                 'pwd_type': self.conf.userfile_hash_type})

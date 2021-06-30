@@ -1,0 +1,176 @@
+import logging
+import re
+import sys
+import argparse
+from wrapt import decorator
+from http.server import HTTPServer
+
+class DebugStreamHandler(logging.StreamHandler):
+    def emit(self, record):
+        if not record.levelno == logging.DEBUG:
+            return
+        super().emit(record)
+
+
+logger = logging.getLogger('Test HTTP Server')
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(add_help=False)
+
+    parser.add_argument(
+        '-d', '--debug', dest='loglevel',
+        default=logging.INFO, action='store_const',
+        const=logging.DEBUG)
+    args, sys.argv[1:] = parser.parse_known_args()
+
+    hnOUT = logging.StreamHandler(sys.stdout)
+    hnOUT.setLevel(logging.INFO)
+    hnDBG = DebugStreamHandler(sys.stderr)
+    hnDBG.setLevel(logging.DEBUG)
+    logging.basicConfig(
+        level=args.loglevel,
+        format='%(name)s [%(threadName)s]: %(message)s',
+        handlers=[hnOUT, hnDBG])
+
+from mixnmatchttp.handlers import BaseHTTPRequestHandler, \
+    AuthCookieHTTPRequestHandler, CachingHTTPRequestHandler, \
+    ProxyingHTTPRequestHandler, methodhandler
+from mixnmatchttp.servers import ThreadingHTTPServer
+from mixnmatchttp.endpoints import Endpoint, \
+    ARGS_OPTIONAL, ARGS_REQUIRED, ARGS_ANY
+
+@decorator
+def endpoint_debug_handler(handler, self, args, kwargs):
+    ep = args[0]
+    handler(ep)
+    page = self.page_from_template(self.templates['testtemplate'],
+                                   {'handler': handler.__name__,
+                                    'root': ep.root,
+                                    'sub': ep.sub,
+                                    'args': ep.args})
+    self.render(page)
+
+class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
+                             CachingHTTPRequestHandler,
+                             ProxyingHTTPRequestHandler):
+
+    _secrets = ('secret', '/topsecret')
+    _userfile = 'test_users.txt'
+    _min_pwdlen = 3
+    endpoints = Endpoint(
+        dummylogin={},
+        modtest={},
+        test={
+            'post_one': Endpoint(
+                {  # test passing an Endpoint instance
+                    '$nargs': 1,
+                    '$allowed_methods': {'POST'},
+                }),
+            'get_opt': {
+                '$nargs': ARGS_OPTIONAL,
+            },
+            'get_req': {
+                '$nargs': ARGS_REQUIRED,
+            },
+            'get_any': {
+                '$nargs': ARGS_ANY,
+            },
+        },
+        deep={
+            '1': {
+                '2': Endpoint({
+                    '3': Endpoint(),
+                    '4': {},
+                }),
+            },
+        },
+    )
+    template_pages = dict(
+        testpage={
+            'data': '$BODY',
+            'type': 'text/plain'
+        },
+    )
+    templates = dict(
+        testtemplate={
+            'fields': {
+                'BODY': 'This is $handler for $root @ $sub ($args)',
+            },
+            'page': 'testpage'
+        },
+    )
+
+    @endpoint_debug_handler
+    def do_dummylogin(self, ep):
+        self.set_cookie()
+        self.send_response_goto()
+
+    @endpoint_debug_handler
+    def do_modtest(self, ep):
+        # modify endpoint, should affect only current request
+        self.endpoints['test'] = {}
+        self.endpoints['test'].nargs = 1
+        # set a header just for this request
+        self.save_header('X-Mod', 'Test')
+        self.do_GET.__wrapped__()
+
+    @endpoint_debug_handler
+    def do_default(self, ep):
+        pass
+
+    @endpoint_debug_handler
+    def do_deep(self, ep):
+        pass
+
+    @endpoint_debug_handler
+    def do_deep_1_2_4(self, ep):
+        pass
+
+    @endpoint_debug_handler
+    def do_deep_1_2_3_4(self, ep):
+        # this one should never be called
+        raise NotImplementedError
+
+    def denied(self):
+        '''Deny access to /forbidden'''
+        if re.match('^/forbidden(/|$)', self.pathname):
+            # return args are passed to
+            # BaseHTTPRequestHandler.send_error in that order; both
+            # messages are optional
+            return (403, None, 'Access denied')
+        return super().denied()
+
+    def no_cache(self):
+        '''Only allow caching of scripts'''
+
+        return (not self.pathname.endswith('.js')) or super().no_cache()
+
+    @methodhandler
+    def do_GET(self):
+        page = self.page_from_template(self.templates['testtemplate'],
+                                       {'handler': 'do_GET'})
+        self.render(page)
+
+    def send_custom_headers(self):
+        self.send_header('X-Foo', 'Foo')
+
+
+if __name__ == "__main__":
+    from mixnmatchttp.app import App
+    webapp = App(
+        TestHTTPRequestHandler,
+        #  name='waikato',
+        #  description='The Waikator Cybersecurity challenge!',
+        #  support_ssl=False,
+        #  support_cors=False,
+        #  support_daemon=False,
+        auth_type='cookie')
+    webapp.run()
+
+    #  srv_cls = HTTPServer
+    #  if args.multithread:
+    #      srv_cls = ThreadingHTTPServer
+    #  httpd = srv_cls((args.address, args.port), TestHTTPRequestHandler)
+    #  try:
+    #      httpd.serve_forever()
+    #  except KeyboardInterrupt:
+    #      httpd.server_close()

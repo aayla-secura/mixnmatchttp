@@ -6,6 +6,7 @@ from wrapt.wrappers import _ObjectProxyMetaType
 
 from .containers import DefaultAttrs, DefaultAttrDict
 from .exc import ConfError, ConfRuntimeError, ConfTypeError
+from ..utils import merge
 
 
 logger = logging.getLogger(__name__)
@@ -18,15 +19,7 @@ __all__ = [
 class _NotInitializedError(Exception):
     pass
 
-class _ConfItemMeta(_ObjectProxyMetaType):
-    def __new__(cls, name, bases, attrs):
-        new = super().__new__(cls, name, bases, attrs)
-        # save the class of the proxyobject for later, since __class__
-        # is overriden by a property in ObjectProxy
-        new.__proxyclass__ = new
-        return new
-
-class ConfItem(ObjectProxy, metaclass=_ConfItemMeta):
+class ConfItem(ObjectProxy):
     def __init__(self, value, /, **settings):
         '''Configuration item - a proxy for its value
 
@@ -44,7 +37,7 @@ class ConfItem(ObjectProxy, metaclass=_ConfItemMeta):
           attempted for each of the types in turn (by calling its
           constructor with the item), and the first successful
           conversion is used, otherwise an error is raised;
-          default is (<type(value)>,)
+          default is (<value.__class__>,)
         - transformer: a callable that takes the value and returns
           a new value; this is done after conversion to allowed_types
         - requires: a list of modules which are required by
@@ -69,14 +62,17 @@ class ConfItem(ObjectProxy, metaclass=_ConfItemMeta):
         return self._self_settings.mergeable
 
     def __copy__(self):
-        clone = self.__proxyclass__(
+        # type(self) returns the real type, e.g. ConfItem, whereas
+        # self.__class__ returns the class of the object to which we
+        # proxy
+        clone = type(self)(
             copy(self.__wrapped__),
             **self._self_settings.__explicit__)
         return clone
 
     def __deepcopy__(self, memo=None):
         settings = deepcopy(self._self_settings)
-        clone = self.__proxyclass__(
+        clone = type(self)(
             deepcopy(self.__wrapped__),
             **settings)
         return clone
@@ -118,7 +114,6 @@ class ConfItem(ObjectProxy, metaclass=_ConfItemMeta):
         return True
 
     def __init(self, value, settings):
-        from ..utils import merge as _merge
 
         def conv_type(value):
             if isinstance(value, settings.allowed_types):
@@ -147,10 +142,10 @@ class ConfItem(ObjectProxy, metaclass=_ConfItemMeta):
             except (TypeError, ValueError) as e:
                 raise ConfTypeError(e)
 
-        def merge(value):
+        def merge_with_current(value):
             from copy import copy
             try:
-                return _merge(self.__wrapped__, value)
+                return merge(self.__wrapped__, value)
             except (TypeError, ValueError) as e:
                 raise ConfTypeError(e)
 
@@ -164,7 +159,7 @@ class ConfItem(ObjectProxy, metaclass=_ConfItemMeta):
         check_modules()
 
         if settings.mergeable and self.__initialized:
-            value = merge(value)
+            value = merge_with_current(value)
 
         super().__init__(value)
         self._self_settings = settings

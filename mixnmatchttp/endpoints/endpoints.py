@@ -4,7 +4,7 @@ from copy import copy
 from wrapt import ObjectProxy
 from bidict import bidict
 
-from ..utils import iter_abspath, to_natint
+from ..utils import iter_abspath, to_natint, startswith
 from ..conf.containers import DefaultDict, DefaultAttrs, DefaultAttrDict
 from .exc import EndpointError, NotAnEndpointError, \
     MissingArgsError, ExtraArgsError, MethodNotAllowedError
@@ -138,11 +138,11 @@ class Endpoint(DefaultDict):
 
     An endpoint's name can be a '*', in which case it is treated as
     variable. It will match anything and the actual match will be
-    available in a dictionary attribute of the parsed endpoint (which
-    is passed to the endpoint handler); see the documentation on
-    Endpoint.parse. The dictionary key defaults to the parent's name,
-    but can be overridden with the '$varname' attribute (useful for
-    consecutive variable endpoints). For example:
+    available in a dictionary attribute of the parsed endpoint; see
+    the documentation on Endpoint.parse. The dictionary key defaults
+    to the parent's name, but can be overridden with the '$varname'
+    attribute (useful for consecutive variable endpoints). For
+    example:
         endpoints = endpoints.Endpoints(
                 person={
                     '$allowed_methods': {'GET', 'POST'},
@@ -153,9 +153,9 @@ class Endpoint(DefaultDict):
                 )
     will look for a method do_{METHOD}_person or do_person (a variable
     path component is discarded when selecting a handler name).
-    The endpoint passed to the handler will have
-    <endpoint>.params['username'] set to the matched path component,
-    e.g. john if /person/john has been requested.
+    The endpoint will have <endpoint>.params['username'] set to the
+    matched path component, e.g. john if /person/john has been
+    requested.
 
     The Endpoint class attribite, case_sensitive, dictates whether
     path and handler name matching is case-sensitive. Note that
@@ -262,7 +262,7 @@ class Endpoint(DefaultDict):
             raise ValueError(
                 'Path for endpoint parsing must begin with a /')
         if httpreq.conf.api_prefix and \
-                not path.startswith(httpreq.conf.api_prefix):
+                not startswith(path, httpreq.conf.api_prefix):
             raise NotAnEndpointError(path)
         path = path[len(httpreq.conf.api_prefix):]
 

@@ -2,6 +2,7 @@ import logging
 import os
 import string
 import random
+from wrapt import ObjectProxy
 
 from .types import str_to_hex, str_remove_chars
 
@@ -10,6 +11,7 @@ logger = logging.getLogger(__name__)
 __all__ = [
     'randhex',
     'randstr',
+    'startswith',
 ]
 
 
@@ -46,3 +48,10 @@ def randstr(size,
     if skip:
         alphabet = str_remove_chars(alphabet, skip)
     return ''.join([random.choice(alphabet) for i in range(size)])
+
+def startswith(instr, pref):
+    '''Like str.startswith but it correctly handles ObjectProxy's'''
+
+    if isinstance(pref, ObjectProxy):
+        return instr.startswith(pref.__wrapped__)
+    return instr.startswith(pref)

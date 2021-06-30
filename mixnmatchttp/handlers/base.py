@@ -15,10 +15,11 @@ from wrapt import decorator
 from string import Template
 
 from ..conf import Conf, ConfItem
+from ..conf.containers import DefaultDict
 from ..endpoints import Endpoint
 from ..endpoints.exc import NotAnEndpointError, \
     MethodNotAllowedError, MissingArgsError, ExtraArgsError
-from ..utils import is_seq_like, abspath, param_dict
+from ..utils import is_seq_like, abspath, param_dict, startswith
 from .exc import DecodingError, UnsupportedOperationError
 
 
@@ -103,7 +104,7 @@ def methodhandler(realhandler, self, args, kwargs):
             self.pathname[len(self.conf.api_prefix):]
         logger.debug('Calling endpoint handler, path is {}'.format(
             self.pathname))
-        self.ep.handler(*args, **kwargs)
+        self.ep.handler(self.ep, *args, **kwargs)
 
 
 ############################################################
@@ -122,8 +123,8 @@ class BaseMeta(type):
         # ones, which combines the corresponding attribute of all parents
         attr_types = {
             'endpoints': Endpoint,
-            # XXX  'template_pages': dict,
-            #  'templates': dict,
+            'template_pages': DefaultDict,
+            'templates': DefaultDict,
             'conf': Conf,
         }
         for attr, rcls in attr_types.items():
@@ -147,7 +148,7 @@ class BaseHTTPRequestHandler(
     conf = Conf(
         enable_directory_listing=False,
         path_prefix=ConfItem('', transformer=lambda s: s.rstrip('/')),
-        api_prefix=ConfItem('/api', transformer=lambda s: s.rstrip('/')),
+        api_prefix=ConfItem('', transformer=lambda s: s.rstrip('/')),
         api_is_JSON=True,
         send_software_info=False,
     )
@@ -743,7 +744,7 @@ class BaseHTTPRequestHandler(
     def send_error(self, code, message=None, explain=None):
         '''Calls parent's send_error with the correct signature'''
 
-        if self.path.startswith(self.conf.api_prefix) \
+        if startswith(self.path, self.conf.api_prefix) \
                 and self.conf.api_is_JSON:
             # TODO customize the error parameter name
             self.save_param('error', explain)
