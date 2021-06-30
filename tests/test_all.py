@@ -55,7 +55,6 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
 
     conf = dict(
         secrets=('secret', '/topsecret'),
-        userfile='test_users.txt',
         pwd_min_len=3
     )
     endpoints = Endpoint(

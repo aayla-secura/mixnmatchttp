@@ -547,6 +547,7 @@ Redirects (with `307`) to any address given in the URL.
 # Internal TODO notes
 
   * [x] Smarter way of merging endpoints with parent's (remembering which ones were explicitly set, and which inherited)
+  * [ ] Setting a new value for a cookie shouldn't send duplicate headers, but we should still be able to send multiple cookies
   * [ ] Templates from files
   * [ ] Remove `_` prefix from class attributes
   * [ ] Do not save expanded env variables to config file

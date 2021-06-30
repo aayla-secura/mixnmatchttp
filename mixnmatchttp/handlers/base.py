@@ -683,7 +683,7 @@ class BaseHTTPRequestHandler(
             logger.debug('Errors decoding base64 data')
             return data.decode('utf-8', errors='backslashreplace')
 
-    def save_header(self, header, value, append=True):
+    def save_header(self, header, value, append=False):
         '''Saves a header to be sent at the end
 
         end_headers will send those.

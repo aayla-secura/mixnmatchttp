@@ -400,7 +400,6 @@ class BaseAuthHTTPRequestHandler(
     def unset_session(self, session):
         '''Should ensure the token is cleared client-side
 
-        session is guaranteed to exist
         Child class should implement
         '''
 
@@ -602,6 +601,7 @@ class BaseAuthHTTPRequestHandler(
         session = self.find_session(self.get_current_token())
         if session is None:
             logger.debug('No session')
+            self.unset_session(session)
             return None
         if session.has_expired():
             logger.debug('Session {} has expired'.format(
@@ -617,9 +617,8 @@ class BaseAuthHTTPRequestHandler(
         '''Invalidates the session server-side'''
 
         session = self.get_current_session()
-        if session is None or session.token is None:
-            return
-        self.rm_session(session)
+        if session is not None and session.token is not None:
+            self.rm_session(session)
         self.unset_session(session)
 
     def new_session(self, user):
