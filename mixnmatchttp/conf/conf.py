@@ -5,7 +5,8 @@ from wrapt import ObjectProxy
 from wrapt.wrappers import _ObjectProxyMetaType
 
 from .containers import DefaultAttrs, DefaultAttrDict
-from .exc import ConfError, ConfRuntimeError, ConfTypeError
+from .exc import ConfError, ConfRuntimeError, \
+    ConfTypeError, ConfValueError
 from ..utils import merge
 
 
@@ -32,6 +33,8 @@ class ConfItem(ObjectProxy):
           previous one during an update (see __merge__ method);
           this is valid only for sequences and mappings,
           where concatenation/merging makes sense; default is False
+        - allowed_values: a list of allowed values. Default is None,
+          i.e. no restriction.
         - allowed_types: a tuple of allowed types for this item; if
           the item is not an instance of any of them, a conversion is
           attempted for each of the types in turn (by calling its
@@ -49,6 +52,7 @@ class ConfItem(ObjectProxy):
             # TODO option to merge just value, value and explicit
             # settings or value and all settings
             mergeable=False,
+            allowed_values=None,
             allowed_types=(value.__class__,),
             transformer=None,
             requires=()), **settings)
@@ -150,6 +154,10 @@ class ConfItem(ObjectProxy):
                 raise ConfTypeError(e)
 
         ##########
+        if settings.allowed_values is not None \
+                and value not in settings.allowed_values:
+            raise ConfValueError('{v} is an invalid value'.format(v=value))
+
         if settings.allowed_types:
             value = conv_type(value)
 

@@ -1,4 +1,5 @@
 import logging
+import re
 import os
 import string
 import random
@@ -12,6 +13,7 @@ __all__ = [
     'randhex',
     'randstr',
     'startswith',
+    'num_charsets',
 ]
 
 
@@ -55,3 +57,14 @@ def startswith(instr, pref):
     if isinstance(pref, ObjectProxy):
         return instr.startswith(pref.__wrapped__)
     return instr.startswith(pref)
+
+def num_charsets(arg):
+    '''Returns the number of character sets in arg'''
+
+    charsets = ['a-z', 'A-Z', '0-9']
+    charsets += ['^{}'.format(''.join(charsets))]
+    num = 0
+    for c in charsets:
+        if re.search('[{}]'.format(c), arg):
+            num += 1
+    return num

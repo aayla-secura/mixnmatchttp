@@ -155,7 +155,7 @@ class BaseHTTPRequestHandler(
         send_software_info=False,
     )
     pollers = {}
-    endpoints = {}
+    endpoints = Endpoint()
 
     def __init__(self, *args, **kwargs):
         logger.debug('INIT for {}'.format(self))

@@ -198,6 +198,7 @@ class App:
                 help=('The passwords in userfile are hashed. This is '
                       'the default, but can be used to override '
                       'configuration file setting.'))
+            # XXX why do we need userfile-hashed/plain as well?
             self.parser_groups['auth'].add_argument(
                 '--hash-type', dest='userfile_hash_type', nargs='?',
                 const=None, default=None,
@@ -538,13 +539,12 @@ class App:
 
         #### Create the new request handler class
         attrs = {'send_custom_headers': send_custom_headers}
-        if self.auth_type is not None:  # XXX why is_SSL depends on auth_type
-            attrs.update({
-                'is_SSL': self.conf.ssl,
-                'pwd_type': self.conf.userfile_hash_type})
         self.reqhandler = type(
             '{}Custom'.format(self.reqhandler.__name__),
             (self.reqhandler, object), attrs)
+        if self.auth_type is not None:
+            self.reqhandler.conf.password.hash_type = \
+                self.conf.userfile_hash_type
 
         #### Read users from stdin
         if self.conf.add_users:

@@ -6,3 +6,6 @@ class ConfRuntimeError(ConfError, RuntimeError):
 
 class ConfTypeError(ConfError, TypeError):
     pass
+
+class ConfValueError(ConfError, ValueError):
+    pass

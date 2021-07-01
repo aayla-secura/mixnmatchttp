@@ -5,7 +5,8 @@ from copy import copy
 import loggers
 from mixnmatchttp.utils import is_mergeable
 from mixnmatchttp.conf import Conf, ConfItem
-from mixnmatchttp.conf.exc import ConfError, ConfRuntimeError, ConfTypeError
+from mixnmatchttp.conf.exc import ConfError, ConfRuntimeError, \
+    ConfTypeError, ConfValueError
 
 class ConfItemB(ConfItem):
     pass
@@ -34,6 +35,10 @@ class TestConfItem(unittest.TestCase):
         i = ConfItem(1, allowed_types=(int, float))
         self.assertEqual(i._self_settings.allowed_types,
                          (int, float))
+
+    def test_value_check(self):
+        self.assertRaises(ConfValueError, ConfItem,
+                          'x', allowed_values=['a', 'b'])
 
     def test_type_conv(self):
         self.assertRaises(ConfTypeError, ConfItem,

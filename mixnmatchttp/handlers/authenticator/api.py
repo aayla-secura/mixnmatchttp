@@ -13,11 +13,11 @@ except ImportError:
     pass
 
 from ...utils import is_str, is_seq_like, is_map_like, \
-    datetime_to_timestamp, curr_timestamp, open_path
-from ...conf import Conf
+    datetime_to_timestamp, curr_timestamp, open_path, \
+    num_charsets
+from ...conf import Conf, ConfItem
 from ...endpoints import Endpoint
 from ..base import BaseMeta, BaseHTTPRequestHandler
-from .utils import num_charsets
 from .exc import UserAlreadyExistsError, NoSuchUserError, \
     InvalidUsernameError, BadPasswordError
 
@@ -131,7 +131,6 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
     '''
 
     def __new__(cls, name, bases, attrs):
-        attrs['_supported_hashes'] = []
         new_class = super().__new__(cls, name, bases, attrs)
         pwd_types = [None]
         prefT = '_transform_password_'
@@ -143,90 +142,8 @@ class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
                 if hasattr(new_class, '{}{}'.format(prefV, ptype)):
                     pwd_types.append(ptype)
         super().__setattr__(new_class, '_supported_hashes', pwd_types)
-        for key, value in attrs.items():
-            new_val = new_class.__check_attr(key, value)
-            if new_val is not value:
-                setattr(new_class, key, new_val)
+
         return new_class
-
-    def __setattr__(self, key, value):
-        new_val = self.__check_attr(key, value)
-        # super() doesn't work here in python 2, see:
-        # https://github.com/PythonCharmers/python-future/issues/267
-        super(BaseAuthHTTPRequestHandlerMeta, self).__setattr__(
-            key, new_val)
-
-    def __check_attr(cls, key, value):
-        def is_none(val):
-            return val is None
-
-        def is_one_of(val, sequence):
-            return val in sequence
-
-        def is_any_true(val, checkers):
-            for c in checkers:
-                if c(val):
-                    return True
-            return False
-
-        transformer = {
-            'can_create_users': OrderedDict,
-        }
-        # XXX set as conf
-        requirements = {
-            'JSON_params': (is_any_true, [is_none, is_seq_like]),
-            'pwd_type': (is_one_of, cls._supported_hashes),
-            'secrets': (is_any_true, [is_seq_like, is_map_like]),
-            'can_create_users': (is_any_true, [is_map_like]),
-            'pwd_min_len': (isinstance, int),
-            'pwd_min_charsets': (isinstance, int),
-            'is_SSL': (isinstance, bool),
-            'cookie_name': (is_any_true, [is_str]),
-            'cookie_len': (isinstance, int),
-            'cookie_lifetime': (isinstance, (int, type(None))),
-            'SameSite': (is_one_of, [None, 'lax', 'strict']),
-            'jwt_lifetime': (isinstance, int),
-            'send_new_refresh_token': (isinstance, bool),
-            'refresh_token_lifetime': (isinstance, int),
-            'refresh_token_len': (isinstance, int),
-        }
-
-        if key in transformer:
-            try:
-                value = transformer[key](value)
-            except (ValueError, TypeError):
-                raise TypeError('{} cannot be converted to {}'.format(
-                    key, transformer[key].__name__))
-        if key in requirements:
-            checker, req = requirements[key]
-            if not checker(value, req):
-                raise TypeError('{} must be {}{}'.format(
-                    key,
-                    'one of ' if isinstance(req, list) else '',
-                    req))
-        if key == 'pwd_type':
-            if value is not None and value.endswith('crypt'):
-                try:
-                    unix_hash
-                except NameError:
-                    raise ImportError(
-                        'The passlib module is required for '
-                        'unix hashes (*crypt)')
-                if value == 'bcrypt':
-                    try:
-                        import bcrypt
-                    except ImportError:
-                        raise ImportError(
-                            'The bcrypt module is required for '
-                            'bcrypt hashes')
-                elif value == 'scrypt':
-                    try:
-                        import scrypt
-                    except ImportError:
-                        raise ImportError(
-                            'The scrypt module is required '
-                            'for scrypt hashes')
-        return value
 
 class BaseAuthHTTPRequestHandler(
         BaseHTTPRequestHandler,
@@ -322,11 +239,13 @@ class BaseAuthHTTPRequestHandler(
           'admin': ['admin'],   # admins can create other admins
       }
       Default can_create_users is {None: [None]}, i.e. self-register.
-    - pwd_min_len: Minimum length of passwords. Default is 10.
-    - pwd_min_charsets: Minimum number of character sets in
-      passwords. Default is 3.
-    - pwd_type: the type (usually hash algorithm) to store passwords
-      in. Supported values are:
+    - password.min_len: Minimum length of passwords.
+      Default is 10.
+    - password.min_charsets: Minimum number of character sets
+      in passwords. Default is 3.
+    - password.hash_type: the type (usually hash algorithm) to
+      store passwords in. If None, passwords are stored as plaintext.
+      Otherwise, supported values are:
         unsalted ones:
           md5, sha1, sha256, sha512
         salted ones (UNIX passwords):
@@ -343,13 +262,18 @@ class BaseAuthHTTPRequestHandler(
       expired either way, and if it is, it remove it.
     '''
 
+    _supported_hashes = [None]  # to be updated by Meta class
     conf = Conf(
-        JSON_params=None,
-        secrets=[],
-        can_create_users={None: [None]},
-        pwd_min_len=10,
-        pwd_min_charsets=3,
-        pwd_type=None,
+        JSON_params=ConfItem(None, allowed_types=(list, type(None))),
+        secrets=ConfItem([], allowed_types=(OrderedDict, list)),
+        can_create_users=OrderedDict({None: [None]}),
+        password=ConfItem(
+            Conf(
+                min_len=10,
+                min_charsets=3,
+                hash_type=ConfItem(None, allowed_values=_supported_hashes)
+            ),
+            mergeable=True),
         prune_sessions_every=0,
     )
     __last_prune = curr_timestamp()
@@ -642,9 +566,9 @@ class BaseAuthHTTPRequestHandler(
           - If roles is given, it is comma-separated
           - Neither username, nor password can be empty.
         - If plaintext is True, then the password is checked against
-          the policy and hashed according to the pwd_type class
-          attribute; otherwise it is saved as is (the hashing
-          algorithm must correspond to pwd_type)
+          the policy and hashed according to the password.hash_type
+          class attribute; otherwise it is saved as is (the hashing
+          algorithm must correspond to password.hash_type)
         '''
 
         def process_line(line):
@@ -680,9 +604,9 @@ class BaseAuthHTTPRequestHandler(
         '''Creates a user with the given password and roles
 
         - If plaintext is True, then the password is checked against
-          the policy and hashed according to the pwd_type class
-          attribute; otherwise it is saved as is (the hashing
-          algorithm must correspond to pwd_type)
+          the policy and hashed according to the password.hash_type
+          class attribute; otherwise it is saved as is (the hashing
+          algorithm must correspond to password.hash_type)
         Returns the new user.
         '''
 
@@ -705,9 +629,9 @@ class BaseAuthHTTPRequestHandler(
 
         - user_or_username is an instance of User or a string
         - If plaintext is True, then the password is checked against
-          the policy and hashed according to the pwd_type class
-          attribute; otherwise it is saved as is (the hashing
-          algorithm must correspond to pwd_type)
+          the policy and hashed according to the password.hash_type
+          class attribute; otherwise it is saved as is (the hashing
+          algorithm must correspond to password.hash_type)
         '''
 
         user = user_or_username
@@ -744,26 +668,28 @@ class BaseAuthHTTPRequestHandler(
     def verify_password(cls, user, password):
         '''Returns True or False if user's password is as given
 
-        Uses the algorithm is given in pwd_type (class attribute)
+        Uses the algorithm is given in password.hash_type (class
+        attribute)
         '''
 
-        if cls.conf.pwd_type is None:
+        if cls.conf.password.hash_type is None:
             return user.password == password
         verifier = getattr(
-            cls, '_verify_password_{}'.format(cls.conf.pwd_type))
+            cls, '_verify_password_{}'.format(cls.conf.password.hash_type))
         return verifier(plain=password, hashed=user.password)
 
     @classmethod
     def transform_password(cls, password):
         '''Returns the password hashed according to the setting
 
-        Uses the algorithm is given in pwd_type (class attribute)
+        Uses the algorithm is given in password.hash_type (class attribute)
         '''
 
-        if cls.conf.pwd_type is None:
+        if cls.conf.password.hash_type is None:
             return password
         transformer = getattr(
-            cls, '_transform_password_{}'.format(cls.conf.pwd_type))
+            cls, '_transform_password_{}'.format(
+                cls.conf.password.hash_type))
         return transformer(password)
 
     @staticmethod
@@ -855,8 +781,8 @@ class BaseAuthHTTPRequestHandler(
         '''Returns True or False if password conforms to policy'''
 
         return (password is not None
-                and len(password) >= cls.conf.pwd_min_len
-                and num_charsets(password) >= cls.conf.pwd_min_charsets)
+                and len(password) >= cls.conf.password.min_len
+                and num_charsets(password) >= cls.conf.password.min_charsets)
 
     def do_register(self):
         '''Creates a new user

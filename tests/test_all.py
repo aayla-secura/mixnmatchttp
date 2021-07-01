@@ -38,6 +38,7 @@ from mixnmatchttp.handlers.authenticator.api import User
 from mixnmatchttp.servers import ThreadingHTTPServer
 from mixnmatchttp.endpoints import Endpoint, \
     ARGS_OPTIONAL, ARGS_REQUIRED, ARGS_ANY
+from mixnmatchttp.conf import Conf
 
 @decorator
 def endpoint_debug_handler(handler, self, args, kwargs):
@@ -55,9 +56,10 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
 
     conf = dict(
         secrets=('secret', '/topsecret'),
-        pwd_min_len=3,
-        pwd_min_charsets=1
-    )
+        password=Conf(
+            min_len=3,
+            min_charsets=1
+        ))
     endpoints = Endpoint(
         dummylogin={},
         cookie={},
