@@ -21,7 +21,7 @@ else:
         load_pem_private_key
     from cryptography.hazmat.primitives import serialization
 
-from ...dicts import CaseInsensitiveDict
+from ...dicts import CaseInsensitiveOrderedDict
 from ...endpoints import Endpoint
 from ...utils import is_str, param_dict, datetime_from_timestamp, \
     curr_timestamp, randhex, randstr, int_to_bytes
@@ -57,7 +57,7 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         cookie_name='SESSION',
         cookie_len=20,
         cookie_lifetime=None,
-        cookie_flags=CaseInsensitiveDict()
+        cookie_flags=CaseInsensitiveOrderedDict()
     )
 
     def get_current_token(self):

@@ -122,8 +122,9 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
 
     @endpoint_debug_handler
     def do_cookie(self):
-        # TODO test
         self.save_cookie('foo', 'bar')
+        self.save_cookie('Foo', 'bar')
+        self.save_cookie('bar', 'bar')
 
     @endpoint_debug_handler
     def do_deep(self):

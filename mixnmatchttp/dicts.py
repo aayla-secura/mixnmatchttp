@@ -1,14 +1,16 @@
 import logging
-from collections import MutableMapping, Mapping
+from collections import MutableMapping, Mapping, OrderedDict
+
+# TODO test it
 
 
 logger = logging.getLogger(__name__)
 __all__ = [
-    'CaseInsensitiveDict',
+    'CaseInsensitiveOrderedDict',
 ]
 
 
-class CaseInsensitiveDict(MutableMapping):
+class CaseInsensitiveOrderedDict(MutableMapping):
     '''Case-insensitive dictionary
 
     Based on requests.structures.CaseInsensitiveDict (thanks!)
@@ -19,7 +21,7 @@ class CaseInsensitiveDict(MutableMapping):
     '''
 
     def __init__(self, data=None, /, **kwargs):
-        self._store = dict()
+        self._store = OrderedDict()
         if data is None:
             data = {}
         self.update(data, **kwargs)
@@ -43,7 +45,7 @@ class CaseInsensitiveDict(MutableMapping):
 
     def __eq__(self, other):
         if isinstance(other, Mapping):
-            other = CaseInsensitiveDict(other)
+            other = self.__class__(other)
         else:
             return NotImplemented
         # Compare insensitively
@@ -53,7 +55,7 @@ class CaseInsensitiveDict(MutableMapping):
         return self._store[key.lower()][0]
 
     def copy(self):
-        return CaseInsensitiveDict(self._store.values())
+        return self.__class__(self._store.values())
 
     def __repr__(self):
         return '{}({})'.format(

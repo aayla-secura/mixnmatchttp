@@ -14,7 +14,7 @@ import binascii
 from wrapt import decorator
 from string import Template
 
-from ..dicts import CaseInsensitiveDict
+from ..dicts import CaseInsensitiveOrderedDict
 from ..cookie import Cookie
 from ..conf import Conf, ConfItem
 from ..conf.containers import DefaultDict
@@ -166,8 +166,7 @@ class BaseHTTPRequestHandler(
         self.__body = None
         self.__ctype = None
         self.__params = None
-        # XXX headers should be ordered dicts
-        self.__headers_to_send = CaseInsensitiveDict()
+        self.__headers_to_send = CaseInsensitiveOrderedDict()
         self.__params_to_send = {}
         super().__init__(*args, **kwargs)
 
