@@ -55,8 +55,8 @@ class App:
                  db_bases={},
                  user_conf_key='user_conf',
                  log_fmt=(
-                     '[%(asctime)s] %(name)s '
-                     '(%(threadName)s @ %(thread)d): %(message)s')):
+                     '%(levelname)-8s [%(asctime)s] %(name)s: '
+                     '%(message)s')):
         '''TODO
 
         reqhandler will be replaced
@@ -324,13 +324,13 @@ class App:
             action=AppendUniqueArgAction,
             default=[], metavar='PACKAGE [FILENAME]',
             help=('Enable logging output for the given package. '
-                  'FILENAME will be stored in --logdir if given '
-                  '(otherwise ignored and output goes to the '
-                  'console). Default is <PACKAGE>.log. Only INFO '
-                  'level messages go in FILENAME, WARNING and ERROR '
-                  'go to error.log (or stderr if no --logdir). '
-                  'Note that printing of request lines to '
-                  'access.log (or stderr) is always enabled. '
+                  'FILENAME will be stored in --logdir. If --logdir '
+                  'is not given, then FILENAME is ignored and '
+                  'output goes to the console). Default is '
+                  '<PACKAGE>.log. Only INFO level messages go in '
+                  'FILENAME. WARNING and above go to error.log '
+                  'and stderr. Note that printing of request lines '
+                  'to access.log (or stderr) is always enabled. '
                   'This option can be given multiple times.'))
         self.parser_groups['server'].add_argument(
             '--request-log', dest='request_log', nargs='?',
@@ -344,7 +344,10 @@ class App:
             help=('Enable debugging output for the given package. '
                   'FILENAME defaults to debug.log. Note that this '
                   'option is not saved in the configuration file. '
-                  'Otherwise the behaviour is similar as --log.'))
+                  'Otherwise the behaviour is similar to --log.'))
+        self.parser_groups['server'].add_argument(
+            '--color', dest='use_color', default=False,
+            action='store_true', help='Use colorful log')
 
     def add_argument(self,
                      *args,
@@ -633,17 +636,19 @@ class App:
 
         #### Setup logging
         log_dest = {
-            'REQUEST': [],
+            'TRACE': [],
             'DEBUG': self.conf.debug_log,
             'INFO': self.conf.log,
-            'ERROR': self.conf.log}
-        log_dest['INFO'].append([__name__, 'event.log'])
+            'WARNING': [(x[0], None, 'error.log') for x in self.conf.log]
+        }
+        log_dest['INFO'].append((__name__, 'event.log'))
         if self.conf.request_log is not None:
-            log_dest['REQUEST'].append(
-                [MY_PKG_NAME, self.conf.request_log])
+            log_dest['TRACE'].append(
+                (MY_PKG_NAME, self.conf.request_log))
         self.loggers = get_loggers(log_dest,
                                    logdir=self.conf.logdir,
-                                   fmt=self.log_fmt)
+                                   fmt=self.log_fmt,
+                                   color=self.conf.use_color)
 
         #### Connect to the databases
         # This has to be done after daemonization because the sockets

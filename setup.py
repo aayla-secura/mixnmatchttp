@@ -31,6 +31,7 @@ setup(
         'bidict>=0.21.2',
     ],
     extras_require={
+        'color': ['colorlog>=5.0.1'],
         'unix_pwd': ['passlib>=1.7.2'],
         'scrypt': ['passlib>=1.7.2', 'scrypt>=0.8.3'],
         'bcrypt': ['passlib>=1.7.2', 'bcrypt>=3.1.4'],

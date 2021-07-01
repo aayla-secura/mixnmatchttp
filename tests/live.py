@@ -25,11 +25,7 @@ if __name__ == "__main__":
         {
             'DEBUG': [['mixnmatchttp']]
             if args.loglevel is logging.DEBUG else [],
-            'INFO': [['mixnmatchttp']],
-            'ERROR': [['mixnmatchttp']]},
-        fmt=(
-            '[%(asctime)s] %(name)s '
-            '(%(threadName)s @ %(thread)d): %(message)s'))
+            'INFO': [['mixnmatchttp']]}, color=True)
 
 from mixnmatchttp.handlers import BaseHTTPRequestHandler, \
     AuthCookieHTTPRequestHandler, CachingHTTPRequestHandler, \
