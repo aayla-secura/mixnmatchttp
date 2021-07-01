@@ -155,8 +155,9 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
 
     @methodhandler
     def do_GET(self):
-        page = self.page_from_template(self.templates['testtemplate'],
-                                       {'handler': 'do_GET'})
+        page = self.page_from_template(
+            self.templates['testtemplate'],
+            {'handler': 'do_GET'})
         self.render(page)
 
     def send_custom_headers(self):
@@ -167,19 +168,8 @@ if __name__ == "__main__":
     from mixnmatchttp.app import App
     webapp = App(
         TestHTTPRequestHandler,
-        #  name='waikato',
-        #  description='The Waikator Cybersecurity challenge!',
-        #  support_ssl=False,
-        #  support_cors=False,
-        #  support_daemon=False,
+        support_ssl=False,
+        support_cors=False,
+        support_daemon=False,
         auth_type='cookie')
     webapp.run()
-
-    #  srv_cls = HTTPServer
-    #  if args.multithread:
-    #      srv_cls = ThreadingHTTPServer
-    #  httpd = srv_cls((args.address, args.port), TestHTTPRequestHandler)
-    #  try:
-    #      httpd.serve_forever()
-    #  except KeyboardInterrupt:
-    #      httpd.server_close()
