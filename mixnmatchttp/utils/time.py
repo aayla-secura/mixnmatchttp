@@ -1,7 +1,9 @@
 import logging
+import re
 
 from datetime import datetime, tzinfo, timedelta
 from datetime import timezone
+from dateutil.parser import parse as parse_date
 
 
 UTCTimeZone = timezone.utc
@@ -144,23 +146,33 @@ def datetime_to_str(dtime, datefmt='%a, %d %b %Y %H:%M:%S {{TZ}}'):
 
     tzname = dtime.tzname()
     if tzname is None:
-        datefmt = datefmt.replace(' {{TZ}}', '').replace('{{TZ}}', '')
+        datefmt = re.sub('{{TZ}} +| +{{TZ}}|{{TZ}}', '', datefmt)
     else:
         datefmt = datefmt.replace('{{TZ}}', tzname)
     return dtime.strftime(datefmt)
 
 def datetime_from_str(dstr,
-                      datefmt='%d %b %Y %H:%M:%S',
+                      datefmt=None,  # '%d %b %Y %H:%M:%S',
                       #  to_utc=True,
                       from_utc=False):
     '''Returns a datetime object from the given string
 
-    - If from_utc is True it assumes the time is in UTC
-      (otherwise in the local timezone)
+    - datefmt is the input format used to parse the date; if None,
+      then it is guessed
+    - If from_utc is True it assumes the time is in UTC, instead of
+      local timezone. If datefmt is None and the timezone is
+      explicitly given in the string, then this argument is ignored
+      and the timezone is guessed from the string
     '''
 
-    tz = UTCTimeZone if from_utc else LocalTimeZone
-    dtime = datetime.strptime(dstr, datefmt).replace(tzinfo=tz)
+    if datefmt is None:
+        dtime = parse_date(dstr)
+    else:
+        dtime = datetime.strptime(dstr, datefmt)
+
+    if dtime.tzinfo is None:
+        tz = UTCTimeZone if from_utc else LocalTimeZone
+        dtime = dtime.replace(tzinfo=tz)
     #  if to_utc:
     #      pass  # XXX TODO
     return dtime

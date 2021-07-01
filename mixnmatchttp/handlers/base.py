@@ -14,6 +14,8 @@ import binascii
 from wrapt import decorator
 from string import Template
 
+from ..dicts import CaseInsensitiveDict
+from ..cookie import Cookie
 from ..conf import Conf, ConfItem
 from ..conf.containers import DefaultDict
 from ..endpoints import Endpoint
@@ -164,7 +166,8 @@ class BaseHTTPRequestHandler(
         self.__body = None
         self.__ctype = None
         self.__params = None
-        self.__headers_to_send = {}
+        # XXX headers should be ordered dicts
+        self.__headers_to_send = CaseInsensitiveDict()
         self.__params_to_send = {}
         super().__init__(*args, **kwargs)
 
@@ -684,19 +687,41 @@ class BaseHTTPRequestHandler(
             return data.decode('utf-8', errors='backslashreplace')
 
     def save_header(self, header, value, append=False):
-        '''Saves a header to be sent at the end
+        '''Saves a header to be sent by end_headers
 
-        end_headers will send those.
         - If append is True (default) a duplicate header may be added,
-          common with Set-Cookie. Otherwise the given header replaces
-          any currently saved ones by that name.
+          common with Content-Security-Policy for example. Otherwise
+          the given header replaces any currently saved ones by that name.
+        For cookies, use save_cookie instead.
         '''
 
         new = []
+        if header.lower() == 'set-cookie':
+            return self.save_cookie(*value.split('=', maxsplit=1))
         if append:
             new = self.__headers_to_send.get(header, [])
         new.append(value)
         self.__headers_to_send[header] = new
+
+    def save_cookie(self, *args, **kargs):
+        '''Saves a Set-Cookie header to be sent by end_headers
+
+        It overrides any previously saved cookies with that name.
+        '''
+
+        if len(args) == 1 and not kargs:
+            if isinstance(args[0], Cookie):
+                cookie = args[0]
+            else:
+                cookie = Cookie.parse(args[0])
+        else:
+            cookie = Cookie(*args, **kargs)
+
+        new = list(filter(
+            lambda c: c.name.lower() != cookie.name.lower(),
+            self.__headers_to_send.get('Set-Cookie', [])))
+        new.append(cookie)
+        self.__headers_to_send['Set-Cookie'] = new
 
     def saved_headers(self):
         '''Returns the saved headers'''

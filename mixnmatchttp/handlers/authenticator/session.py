@@ -21,12 +21,12 @@ else:
         load_pem_private_key
     from cryptography.hazmat.primitives import serialization
 
+from ...dicts import CaseInsensitiveDict
 from ...endpoints import Endpoint
 from ...utils import is_str, param_dict, datetime_from_timestamp, \
     curr_timestamp, randhex, randstr, int_to_bytes
 from ...conf import Conf
 from .api import BaseAuthHTTPRequestHandler, Session
-from .utils import cookie_expflag
 
 
 logger = logging.getLogger(__name__)
@@ -57,7 +57,7 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         cookie_name='SESSION',
         cookie_len=20,
         cookie_lifetime=None,
-        SameSite=None,
+        cookie_flags=CaseInsensitiveDict()
     )
 
     def get_current_token(self):
@@ -75,27 +75,16 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     def set_session(self, session):
         '''Saves the cookie to be sent with this response'''
 
-        flags = '{}{}HttpOnly; '.format(
-            'Secure; ' if self.conf.is_SSL else '',
-            'SameSite={}; '.format(self.conf.SameSite)
-            if self.conf.SameSite is not None else '')
-        cookie = \
-            '{name}={value}; path={path}; {expiry}{flags}'.format(
-                name=self.conf.cookie_name,
-                path=self.conf.cookie_path,
-                value=session.token,
-                expiry=cookie_expflag(session.expiry),
-                flags=flags)
-        self.save_header('Set-Cookie', cookie)
+        self.save_cookie(
+            self.conf.cookie_name,
+            session.token,
+            Expires=session.expiry,
+            **self.conf.cookie_flags)
 
     def unset_session(self, session):
         '''Sets an empty cookie to be sent with this response'''
 
-        cookie = '{name}=; path={path}; {expiry}'.format(
-            name=self.conf.cookie_name,
-            path=self.conf.cookie_path,
-            expiry=cookie_expflag(0))
-        self.save_header('Set-Cookie', cookie)
+        self.save_cookie(self.conf.cookie_name, **self.conf.cookie_flags)
 
     @classmethod
     def generate_session(cls, user):

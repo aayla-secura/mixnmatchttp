@@ -61,10 +61,10 @@ class _DefaultsBase:
             self.__update__(**other)
 
     def __update__(self, defaults={}, /, **explicit):
-        for e in explicit:
-            self.__update_single__(e, explicit[e], True)
         for d in defaults:
             self.__update_single__(d, defaults[d], False)
+        for e in explicit:
+            self.__update_single__(e, explicit[e], True)
 
     def __get_single__(self, name, is_explicit):
         '''This is the only method that should retrieve items
@@ -109,7 +109,7 @@ class _DefaultsBase:
 
         curr = None
         try:
-            # update is_explicit to True/False if it was None
+            # set is_explicit to True/False if it was None
             curr, is_explicit = \
                 self.__get_single__(name, is_explicit)
         except KeyError:

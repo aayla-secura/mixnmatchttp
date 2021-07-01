@@ -60,6 +60,7 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
     )
     endpoints = Endpoint(
         dummylogin={},
+        cookie={},
         modtest={},
         test={
             'post_one': Endpoint(
@@ -118,6 +119,11 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
     @endpoint_debug_handler
     def do_default(self):
         pass
+
+    @endpoint_debug_handler
+    def do_cookie(self):
+        # TODO test
+        self.save_cookie('foo', 'bar')
 
     @endpoint_debug_handler
     def do_deep(self):

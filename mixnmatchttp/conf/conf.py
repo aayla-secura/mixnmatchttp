@@ -166,17 +166,24 @@ class ConfItem(ObjectProxy):
 
 
 class Conf(DefaultAttrDict):
-    '''Holds ConfItems as attributes
+    '''Holds ConfItems as attributes or keys
 
     Reassigning an item will merge it with the current one (the newly
     assigned item takes precedence):
         - any settings not explicitly given in the new item will
           inherit its parent
         - if the value can be merged with the parent, it will be
+
+    Getting an item as an attribute will return the actual value,
+    whereas getting an item as key will return the ConfItem proxy to
+    the value.
     '''
 
-    __item_type__ = ConfItem  # dictates whether it is mergeable
+    __item_type__ = ConfItem  # each one dictates if it's mergeable
     __attempt_merge__ = True
+
+    # TODO all settings of a default item should be applied to current
+    # ones
 
     def __getattr__(self, name):
         confitem = super().__getattr__(name)
