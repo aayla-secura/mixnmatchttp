@@ -191,12 +191,6 @@ class Endpoint(DefaultDict):
         self.parent = None
         super().__update__(**init)
 
-        logger.debug(
-            'Endpoint {id} ({name}): list of subpoints {sub}'.format(
-                id=self._id,
-                name=self.name,
-                sub=self.children))
-
         if self.raw_args and \
                 self.nargs not in [ARGS_ANY, ARGS_REQUIRED]:
             logger.warning(('Endpoint {} requires raw '
@@ -271,7 +265,6 @@ class Endpoint(DefaultDict):
         # we don't yet know if the endpoint wants the arguments raw or
         # canonicalized. So we check each absolute segment; if it's an
         # endpoint remember it, check next
-        logger.debug('Checking if endpoint takes raw arguments')
 
         # defaults
         ep = self  # if path is / the for loop won't run
@@ -281,14 +274,12 @@ class Endpoint(DefaultDict):
         params = {}
 
         for curr_path, curr_args in iter_abspath(path):
-            logger.debug(
-                'Current abspath segment: {}'.format(curr_path))
             curr_ep, curr_handler, curr_root, \
                 curr_sub, curr_params = \
                 self._select_handler(curr_path, httpreq)
 
             if curr_ep is None:
-                logger.debug('No match on this level')
+                logger.debug('No match on level {}'.format(curr_path))
                 continue
 
             ep = curr_ep
@@ -298,9 +289,9 @@ class Endpoint(DefaultDict):
             args = curr_args
             params = curr_params
             logger.debug(
-                ('Match on this level: root: {}, sub: {}, '
+                ('Match on level {}: root: {}, sub: {}, '
                  'args: {}, params: {}').format(
-                     root, sub, args, params))
+                     curr_path, root, sub, args, params))
 
             if ep.raw_args:
                 logger.debug(
@@ -360,7 +351,6 @@ class Endpoint(DefaultDict):
         path must be canonical (no double //, no ./ or ../).
         '''
 
-        logger.debug('Getting endpoints from path {}'.format(path))
         ep = self
         curr_path = ''
         pref = ''
@@ -375,9 +365,6 @@ class Endpoint(DefaultDict):
 
         for p in path.split('/'):
             curr_path += '/' + p
-            logger.debug(
-                'Current list of subpoints: {}; trying {}'.format(
-                    ep.children, p))
             try:
                 ep = ep[p]
             except KeyError:
@@ -394,7 +381,6 @@ class Endpoint(DefaultDict):
         '''
 
         for ep, ep_path in self.iter_path(path):
-            logger.debug('{} is an endpoint'.format(ep_path))
             if ep_path == path:
                 return ep
 
@@ -447,7 +433,6 @@ class Endpoint(DefaultDict):
         params = {}
         logger.debug('Iterating over path {}'.format(path))
         for ep, ep_path in self.iter_path(path):
-            logger.debug('{} is an endpoint'.format(ep_path))
             if ep.name == '*':
                 params[ep.varname] = ep_path.split('/')[-1]
 
@@ -514,22 +499,22 @@ class Endpoint(DefaultDict):
             raise ValueError('Endpoint name must be non-empty')
 
         if key[0] == '$':
-            logger.debug(
-                'Endpoint {id} ({name}): {key} = {val}{comment}'.format(
-                    id=self._id,
-                    name=self.name,
-                    key=key[1:],
-                    val=item,
-                    comment="" if is_explicit else " (default)"))
+            #  logger.debug(
+            #      'Endpoint {id} ({name}): {key} = {val}{comment}'.format(
+            #          id=self._id,
+            #          name=self.name,
+            #          key=key[1:],
+            #          val=item,
+            #          comment="" if is_explicit else " (default)"))
             self._settings.__update_single__(
                 key[1:], item, is_explicit)
             return
 
-        logger.debug(
-            'Endpoint {id} ({name}): creating child "{child}"'.format(
-                id=self._id,
-                name=self.name,
-                child=key))
+        #  logger.debug(
+        #      'Endpoint {id} ({name}): creating child "{child}"'.format(
+        #          id=self._id,
+        #          name=self.name,
+        #          child=key))
         if isinstance(item, Endpoint):
             item = copy(item)
             item._settings.name = key
@@ -541,8 +526,6 @@ class Endpoint(DefaultDict):
         # parent's name
         if key == '*':
             item.__update_single__('$varname', self.name, False)
-        logger.debug('Endpoint {id} ({name}) done'.format(
-            id=item._id, name=key))
 
         if not item.case_sensitive:
             key = key.lower()

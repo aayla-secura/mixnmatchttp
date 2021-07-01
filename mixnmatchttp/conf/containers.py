@@ -103,8 +103,6 @@ class _DefaultsBase:
         ##########
         if self.__item_type__ and \
                 not isinstance(value, self.__item_type__):
-            logger.debug('Converting item to {}'.format(
-                self.__item_type__.__name__))
             value = self.__item_type__(value)
 
         curr = None

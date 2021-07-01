@@ -37,8 +37,8 @@ def methodhandler(realhandler, self, args, kwargs):
     Calls the endpoint's handler or the HTTP method handler
     '''
 
-    logger.debug('INIT for method handler')
-    logger.debug('Path is {}'.format(self.path))
+    logger.debug(
+        'INIT for method handler; path is {}'.format(self.path))
 
     # split query from pathname and decode them
     # take only the first set of parameters (i.e. everything
@@ -83,14 +83,14 @@ def methodhandler(realhandler, self, args, kwargs):
     try:
         self.ep = self.endpoints.parse(self)
     except NotAnEndpointError as e:
-        logger.debug('{}'.format(str(e)))
+        logger.debug(str(e))
         self._BaseHTTPRequestHandler__pathname = \
             self.pathname[len(self.conf.path_prefix):]
         logger.debug('Calling normal handler, path is {}'.format(
             self.pathname))
         realhandler(*args, **kwargs)
     except MethodNotAllowedError as e:
-        logger.debug('{}'.format(str(e)))
+        logger.debug(str(e))
         self.save_header('Allow', ','.join(e.allowed_methods))
         if self.command == 'OPTIONS':
             logger.debug('Doing OPTIONS')
@@ -98,7 +98,7 @@ def methodhandler(realhandler, self, args, kwargs):
         else:
             self.send_error(405)
     except (MissingArgsError, ExtraArgsError) as e:
-        logger.debug('{}'.format(str(e)))
+        logger.debug(str(e))
         self.send_error(400, explain=str(e))
     else:
         # strip the prefix before calling handler
@@ -119,8 +119,6 @@ class BaseMeta(type):
     def __new__(cls, name, bases, attributes):
         new_class = super().__new__(cls, name, bases, attributes)
 
-        logger.debug('New class {}; bases: {}'.format(
-            name, [b.__name__ for b in bases]))
         # every child gets it's own class attribute for the following
         # ones, which combines the corresponding attribute of all parents
         attr_types = {
@@ -158,7 +156,6 @@ class BaseHTTPRequestHandler(
     endpoints = Endpoint()
 
     def __init__(self, *args, **kwargs):
-        logger.debug('INIT for {}'.format(self))
         self.__pathname = ''
         self.__raw_pathname = ''
         self.__query = dict()
@@ -283,7 +280,6 @@ class BaseHTTPRequestHandler(
         post_data defaults to the request body
         '''
 
-        logger.debug('Loading parameters from form body')
         if post_data is None:
             post_data = self.body
         req_params = param_dict(post_data, itemsep='&',
@@ -300,7 +296,6 @@ class BaseHTTPRequestHandler(
         post_data defaults to the request body
         '''
 
-        logger.debug('Loading parameters from JSON body')
         if post_data is None:
             post_data = self.body
         try:
@@ -598,7 +593,6 @@ class BaseHTTPRequestHandler(
         try:
             page['data'] = page['data'].encode('utf-8')
         except UnicodeEncodeError:
-            logger.debug('Errors encoding page body')
             page['data'] = page['data'].encode(
                 'utf-8', errors='backslashreplace')
 
@@ -610,7 +604,6 @@ class BaseHTTPRequestHandler(
         methodhandler calls this and it cannot be called again
         '''
 
-        logger.debug('Decoding body')
         if not self.__can_read_body:
             raise UnsupportedOperationError
 
@@ -682,7 +675,6 @@ class BaseHTTPRequestHandler(
         try:
             return data.decode('utf-8')
         except UnicodeDecodeError:
-            logger.debug('Errors decoding base64 data')
             return data.decode('utf-8', errors='backslashreplace')
 
     def save_header(self, header, value, append=False):
