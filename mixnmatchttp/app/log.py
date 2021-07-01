@@ -49,13 +49,13 @@ class RequestDebugStreamHandler(StreamHandler):
 
 
 def get_loggers(destinations_map, logdir=None, fmt=None):
-    def unpack_dest(pkg, *files):
-        return pkg, files
-
     log_formatter = None
     if fmt is not None:
         log_formatter = logging.Formatter(
             fmt=fmt, datefmt='%d/%b/%Y %H:%M:%S')
+        dbglog_formatter = logging.Formatter(
+            fmt='[%(filename)s, %(lineno)d] {}'.format(fmt),
+            datefmt='%d/%b/%Y %H:%M:%S')
     loggers = {}
     seen = []
     logger_classes = {
@@ -67,12 +67,14 @@ def get_loggers(destinations_map, logdir=None, fmt=None):
 
     for level, destinations in destinations_map.items():
         for dest in destinations:
-            pkg, files = unpack_dest(*dest)
+            pkg, *files = dest
             if not files:
                 files = [None]
+
             for filename in files:
                 streamHandler, fileHandler, def_filename = \
                     logger_classes[level]
+
                 if logdir is None:
                     if '{}.{}'.format(pkg, level) in seen:
                         # doesn't make sense to add duplicate loggers
@@ -81,6 +83,7 @@ def get_loggers(destinations_map, logdir=None, fmt=None):
                     handler = streamHandler(
                         sys.stderr
                         if level == 'ERROR' else sys.stdout)
+
                 else:
                     if filename is None:
                         filename = def_filename
@@ -92,11 +95,17 @@ def get_loggers(destinations_map, logdir=None, fmt=None):
                         filename = '{}.log'.format(pkg)
                     handler = fileHandler('{}/{}'.format(
                         logdir, filename))
+
                 if log_formatter is not None:
-                    handler.setFormatter(log_formatter)
+                    if level == 'DEBUG':
+                        handler.setFormatter(dbglog_formatter)
+                    else:
+                        handler.setFormatter(log_formatter)
+
                 logger = logging.getLogger(pkg)
                 logger.addHandler(handler)
                 logger.setLevel(logging.TRACE)  # the handler filters
                 loggers[pkg] = logger
                 seen.append('{}.{}'.format(pkg, level))
+
     return loggers
