@@ -32,7 +32,7 @@ except ImportError:
     pass  # optional
 from .utils import AppendUniqueArgAction, exit, read_line, \
     make_dirs, ensure_exists
-from .log import get_loggers
+from ..log import get_loggers
 from .exc import ArgumentValueError
 
 
@@ -320,27 +320,28 @@ class App:
                       'Default is to print print all output to '
                       'the console.'))
         self.parser_groups['server'].add_argument(
-            '--log', dest='log', nargs='+',
-            action=AppendUniqueArgAction,
-            default=[], metavar='PACKAGE [FILENAME]',
-            help=('Enable logging output for the given package. '
-                  'FILENAME will be stored in --logdir. If --logdir '
-                  'is not given, then FILENAME is ignored and '
-                  'output goes to the console). Default is '
-                  '<PACKAGE>.log. Only INFO level messages go in '
-                  'FILENAME. WARNING and above go to error.log '
-                  'and stderr. Note that printing of request lines '
-                  'to access.log (or stderr) is always enabled. '
-                  'This option can be given multiple times.'))
+            '--log', dest='log', nargs='*',
+            action=AppendUniqueArgAction, default=[],
+            metavar='[PACKAGE [FILENAME]]',
+            help=('Enable logging output for the given package '
+                  '(or all if omitted). FILENAME will be stored in '
+                  '--logdir. If --logdir is not given, then '
+                  'FILENAME is ignored and output goes to the '
+                  'console). Default is <PACKAGE>.log. Only INFO '
+                  'level messages go in FILENAME. WARNING and above '
+                  'go to error.log and stderr. Note that printing '
+                  'of request lines to access.log (or stderr) is '
+                  'always enabled. This option can be given '
+                  'multiple times.'))
         self.parser_groups['server'].add_argument(
             '--request-log', dest='request_log', nargs='?',
             const='request.log', metavar='[FILENAME]',
             help=('Enable logging of full requests. FILENAME '
                   'defaults to request.log if not given.'))
         self.parser_groups['server'].add_argument(
-            '--debug-log', dest='debug_log', nargs='+',
-            action=AppendUniqueArgAction,
-            default=[], metavar='PACKAGE [FILENAME]',
+            '--debug-log', dest='debug_log', nargs='*',
+            action=AppendUniqueArgAction, default=[],
+            metavar='[PACKAGE [FILENAME]]',
             help=('Enable debugging output for the given package. '
                   'FILENAME defaults to debug.log. Note that this '
                   'option is not saved in the configuration file. '

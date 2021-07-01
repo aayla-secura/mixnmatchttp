@@ -13,7 +13,7 @@ class DebugStreamHandler(logging.StreamHandler):
 
 
 if __name__ == "__main__":
-    from mixnmatchttp.app.log import get_loggers
+    from mixnmatchttp.log import get_loggers
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument(
         '-d', '--debug', dest='loglevel',
@@ -21,11 +21,11 @@ if __name__ == "__main__":
         const=logging.DEBUG)
     args, sys.argv[1:] = parser.parse_known_args()
 
-    get_loggers(
-        {
-            'DEBUG': [['mixnmatchttp']]
-            if args.loglevel is logging.DEBUG else [],
-            'INFO': [['mixnmatchttp']]}, color=True)
+    #  get_loggers(
+    #      {
+    #          'DEBUG': [['mixnmatchttp']]
+    #          if args.loglevel is logging.DEBUG else [],
+    #          'INFO': [['mixnmatchttp']]}, color=True)
 
 from mixnmatchttp.handlers import BaseHTTPRequestHandler, \
     AuthCookieHTTPRequestHandler, CachingHTTPRequestHandler, \

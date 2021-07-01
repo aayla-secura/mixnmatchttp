@@ -1,4 +1,4 @@
-from mixnmatchttp.app.log import get_loggers
+from mixnmatchttp.log import get_loggers
 
 logger = get_loggers(
     {
