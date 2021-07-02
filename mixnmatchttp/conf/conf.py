@@ -34,13 +34,18 @@ class ConfItem(ObjectProxy):
         - merge_settings: whether the settings are to be merged with
           the previous ones during an update; default is True
         - allowed_values: a list of allowed values. Default is None,
-          i.e. no restriction.
+          i.e. no restriction. An empty list also places no
+          restriction.
         - allowed_types: a tuple of allowed types for this item; if
           the item is not an instance of any of them, a conversion is
           attempted for each of the types in turn (by calling its
           constructor with the item), and the first successful
           conversion is used, otherwise an error is raised;
-          default is (<value.__class__>,)
+          default is None, which is equivalent to
+          (<value.__class__>,), i.e. no conversion is done the first
+          time, but subsequent updates require the same type.
+          If an empty list is given instead, there is no restriction,
+          no conversion and no check done during update.
         - transformer: a callable that takes the value and returns
           a new value; this is done after conversion to allowed_types
         - requires: a callable which is passed the final value as
@@ -53,7 +58,7 @@ class ConfItem(ObjectProxy):
             merge_value=False,
             merge_settings=True,
             allowed_values=None,
-            allowed_types=(value.__class__,),
+            allowed_types=None,
             transformer=None,
             requires=None), **settings)
         if isinstance(value, ConfItem):
@@ -152,11 +157,13 @@ class ConfItem(ObjectProxy):
         if self.__initialized and self._self_settings.merge_settings:
             settings = self._self_settings + settings
 
-        if settings.allowed_values is not None \
+        if settings.allowed_values \
                 and value not in settings.allowed_values:
             raise ConfValueError(
                 '{v} is an invalid value'.format(v=value))
 
+        if settings.allowed_types is None:
+            settings.allowed_types = (value.__class__,)
         if settings.allowed_types:
             value = conv_type(value)
 

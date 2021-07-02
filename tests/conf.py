@@ -37,19 +37,39 @@ class TestConfItem(unittest.TestCase):
         self.assertEqual(i._self_settings.allowed_types,
                          (int, float))
 
-    def test_value_check(self):
+    def test_value_check_a(self):
         self.assertRaises(ConfValueError, ConfItem,
                           'x', allowed_values=['a', 'b'])
 
-    def test_type_conv(self):
+    def test_type_conv_a(self):
         self.assertRaises(ConfTypeError, ConfItem,
                           'x', allowed_types=(int,))
         self.assertRaises(ConfTypeError, ConfItem,
                           None, allowed_types=(int,))
+
+    def test_type_conv_b(self):
         i = ConfItem(1.5, allowed_types=(int,))
         self.assertEqual(i, 1)
         i = ConfItem(1, allowed_types=(str,))
         self.assertEqual(i, "1")
+
+    def test_type_conv_c(self):
+        i = ConfItem(1)
+        self.assertRaises(ConfTypeError, i.__merge__, 'a')
+
+    def test_type_conv_d(self):
+        i = ConfItem(1, allowed_types=None)
+        self.assertRaises(ConfTypeError, i.__merge__, 'a')
+
+    def test_type_conv_e(self):
+        i = ConfItem('a')
+        i.__merge__(1)
+        self.assertEqual(i, '1')
+
+    def test_type_conv_f(self):
+        i = ConfItem('a', allowed_types=[])
+        i.__merge__(1)
+        self.assertEqual(i, 1)
 
     def test_transform(self):
         i = ConfItem('foo/bar/', transformer=lambda x: x.replace(
