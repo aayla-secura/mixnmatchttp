@@ -14,30 +14,34 @@ from .handlers import CritFileHandler, CritStreamHandler, \
     RequestDebugStreamHandler
 
 
-class LogDestStorage:
+class LogHandlerStorage:
     def __init__(self):
-        self._seen = {None: set()}
+        self._store = {'.': {}}
 
-    def add(self, pkg, level, dest):
-        seen = self._get_seen(pkg)
-        seen.add((level, dest))
+    def add(self, handler, pkg, level, dest):
+        store = self._get_store(pkg)
+        store[(level, dest)] = handler
 
-    def _get_seen(self, pkg):
-        seen = self._seen
+    def _get_store(self, pkg):
+        store = self._store
         for p in pkg.split('.'):
-            seen.setdefault(p, {None: set()})
-            seen = seen[p]
-        return seen[None]
+            store.setdefault(p, {'.': {}})
+            store = store[p]
+        return store['.']
 
-    def contains(self, pkg, level, dest):
+    def get(self, pkg, level, dest):
         curr_pkg = pkg
         while True:
-            seen = self._get_seen(curr_pkg)
-            if (level, dest) in seen:
-                return True
-            curr_pkg = '.'.join(curr_pkg.split('.')[:-1])
-            if not curr_pkg:
-                return False
+            store = self._get_store(curr_pkg)
+            try:
+                return store[(level, dest)]
+            except KeyError:
+                curr_pkg = '.'.join(curr_pkg.split('.')[:-1])
+                if not curr_pkg:
+                    return
+
+    def __str__(self):
+        return str(self._store)
 
 
 def get_formatter(level, fmt, datefmt, color):
@@ -64,11 +68,11 @@ def get_formatter(level, fmt, datefmt, color):
         return logging.Formatter(fmt=fmt, datefmt=datefmt)
 
 def _get_handler_dec(func):
-    seen = LogDestStorage()
-    return partial(func, seen)
+    store = LogHandlerStorage()
+    return partial(func, store)
 
 @_get_handler_dec
-def get_handler(seen, pkg, level, logdir, filename):
+def get_handler(store, pkg, level, logdir, filename):
     targets = dict(
         TRACE=dict(
             stream_hn=RequestDebugStreamHandler,
@@ -89,7 +93,6 @@ def get_handler(seen, pkg, level, logdir, filename):
             stream_hn=CritStreamHandler,
             file_hn=CritFileHandler))
 
-    handler = None
     try:
         conf = targets[level]
     except KeyError:
@@ -101,16 +104,19 @@ def get_handler(seen, pkg, level, logdir, filename):
         dest = '{}/{}'.format(logdir, filename)
 
     l_id = (pkg, level, dest)
-    if seen.contains(*l_id):
+    handler = store.get(*l_id)
+    if handler is not None:
         # doesn't make sense to add duplicate loggers
         return
-    seen.add(*l_id)
 
     if dest is None:
         # logging to console
-        return conf['stream_hn'](
+        handler = conf['stream_hn'](
             sys.stderr if level in [
                 'ERROR', 'WARNING', 'CRITICAL'] else sys.stdout)
 
     else:
-        return conf['file_hn'](dest)
+        handler = conf['file_hn'](dest)
+
+    store.add(handler, *l_id)
+    return handler

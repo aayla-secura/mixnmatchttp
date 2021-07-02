@@ -70,20 +70,17 @@ def get_loggers(
                 files = ['{}.log'.format(pkg if pkg else 'all')]
 
             for filename in files:
-                handler = get_handler(pkg, level, logdir, filename)
-                if handler is None:
-                    # has already been added
-                    continue
-
-                lf = get_formatter(
-                    level, fmt if level != 'DEBUG' else dbgfmt,
-                    datefmt, color)
-                if lf is not None:
-                    handler.setFormatter(lf)
-
                 logger = logging.getLogger(pkg)
-                logger.addHandler(handler)
                 logger.setLevel(logging.TRACE)  # the handler filters
                 loggers[pkg] = logger
+
+                handler = get_handler(pkg, level, logdir, filename)
+                if handler is not None:
+                    lf = get_formatter(
+                        level, fmt if level != 'DEBUG' else dbgfmt,
+                        datefmt, color)
+                    if lf is not None:
+                        handler.setFormatter(lf)
+                    logger.addHandler(handler)
 
     return loggers
