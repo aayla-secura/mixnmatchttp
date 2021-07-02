@@ -300,7 +300,7 @@ class BaseAuthHTTPRequestHandler(
                     requires=_required_hashing_modules
                 ),
             ),
-            mergeable=True),
+            merge_value=True),
         prune_sessions_every=ConfItem(
             0, allowed_types=(int, type(None))),
     )

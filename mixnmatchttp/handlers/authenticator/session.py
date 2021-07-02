@@ -59,7 +59,7 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
                 lifetime=None,
                 flags=CaseInsensitiveOrderedDict()
             ),
-            mergeable=True))
+            merge_value=True))
 
     def get_current_token(self):
         '''Returns the session cookie'''
@@ -157,14 +157,14 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
                 enc_key=ConfItem(None, allowed_types=(str, type(None))),
                 dec_key=ConfItem(None, allowed_types=(str, type(None)))
             ),
-            mergeable=True),
+            merge_value=True),
         refresh_token=ConfItem(
             Conf(
                 always_send=True,
                 lifetime=1440,
                 length=100
             ),
-            mergeable=True),
+            merge_value=True),
         enable_JWKS=False,
         jwks=None
     )

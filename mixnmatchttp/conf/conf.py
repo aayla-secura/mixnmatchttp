@@ -50,9 +50,8 @@ class ConfItem(ObjectProxy):
 
         # cannot set any attributes before calling parent __init__
         self_settings = DefaultAttrs(dict(
-            # TODO option to merge just value, value and explicit
-            # settings or value and all settings
-            mergeable=False,
+            merge_value=False,
+            merge_settings=True,
             allowed_values=None,
             allowed_types=(value.__class__,),
             transformer=None,
@@ -97,7 +96,9 @@ class ConfItem(ObjectProxy):
             settings = other._self_settings
         else:
             value = other
-            settings = self._self_settings.__class__()
+            settings = self._self_settings.__class__(
+                self._self_settings.__default__
+            )
 
         self.__init(value, settings)
 
@@ -148,12 +149,13 @@ class ConfItem(ObjectProxy):
                 raise ConfTypeError(e)
 
         ##########
-        if self.__initialized:
+        if self.__initialized and self._self_settings.merge_settings:
             settings = self._self_settings + settings
 
         if settings.allowed_values is not None \
                 and value not in settings.allowed_values:
-            raise ConfValueError('{v} is an invalid value'.format(v=value))
+            raise ConfValueError(
+                '{v} is an invalid value'.format(v=value))
 
         if settings.allowed_types:
             value = conv_type(value)
@@ -163,7 +165,7 @@ class ConfItem(ObjectProxy):
 
         check_modules(value)
 
-        if settings.mergeable and self.__initialized:
+        if settings.merge_value and self.__initialized:
             value = merge_with_current(value)
 
         super().__init__(value)

@@ -49,10 +49,10 @@ class _DefaultsBase:
     __item_type__ = None
     __attempt_merge__ = False
 
-    def __init__(self, defaults={}, /, **explicit):
+    def __init__(self, default={}, /, **explicit):
         self.__explicit__ = self.__container_type__()
         self.__default__ = self.__container_type__()
-        self.__update__(defaults, **explicit)
+        self.__update__(default, **explicit)
 
     def __merge__(self, other):
         if isinstance(other, _DefaultsBase):
@@ -60,9 +60,9 @@ class _DefaultsBase:
         else:
             self.__update__(**other)
 
-    def __update__(self, defaults={}, /, **explicit):
-        for d in defaults:
-            self.__update_single__(d, defaults[d], False)
+    def __update__(self, default={}, /, **explicit):
+        for d in default:
+            self.__update_single__(d, default[d], False)
         for e in explicit:
             self.__update_single__(e, explicit[e], True)
 
@@ -295,13 +295,13 @@ class DefaultDict(DefaultKeys):
                  'positional argument'))
         if isinstance(arg, DefaultAttrs):
             explicit = arg.__explicit__
-            defaults = arg.__default__
+            default = arg.__default__
         else:
             other = arg or kargs
             explicit = self.__explicit__.__class__(other)
-            defaults = self.__default__.__class__()
+            default = self.__default__.__class__()
 
-        self.__update__(defaults, **explicit)
+        self.__update__(default, **explicit)
 
     def get(self, *args, **kargs):
         pass  # TODO

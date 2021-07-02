@@ -29,7 +29,9 @@ class TestConfItem(unittest.TestCase):
 
     def test_settings_defaults(self):
         i = ConfItem(1)
-        self.assertEqual(i._self_settings.mergeable, False)
+        self.assertEqual(i._self_settings.merge_value, False)
+        self.assertEqual(i._self_settings.merge_settings, True)
+        self.assertEqual(i._self_settings.allowed_values, None)
         self.assertEqual(i._self_settings.allowed_types, (int,))
         i = ConfItem(1, allowed_types=(int, float))
         self.assertEqual(i._self_settings.allowed_types,
@@ -60,15 +62,21 @@ class TestConfItem(unittest.TestCase):
             'x', requires=lambda x: ('nonexistent',))
         ConfItem('x', requires=lambda x: ('future',))
 
-    def test_merge_settings(self):
+    def test_merge_settings_a(self):
         i = ConfItem(1, allowed_values=[1, 2, 3])
         i.__merge__(2)
         self.assertEqual(i, 2)
         self.assertEqual(i._self_settings.allowed_values, [1, 2, 3])
         self.assertRaises(ValueError, i.__merge__, 4)
 
+    def test_merge_settings_b(self):
+        i = ConfItem(1, merge_settings=False, allowed_values=[1, 2, 3])
+        i.__merge__(2)
+        self.assertEqual(i, 2)
+        self.assertEqual(i._self_settings.allowed_values, None)
+
     def test_merge_int(self):
-        i = ConfItem(1, mergeable=True)
+        i = ConfItem(1, merge_value=True)
         i.__merge__(2)
         self.assertEqual(i, 3)
 
@@ -78,7 +86,7 @@ class TestConfItem(unittest.TestCase):
         i = ConfItem(lista)
         i.__merge__(listb)
         self.assertEqual(i, listb)
-        i = ConfItem(lista, mergeable=True)
+        i = ConfItem(lista, merge_value=True)
         i.__merge__(listb)
         self.assertEqual(i, lista + listb)
 
@@ -90,7 +98,7 @@ class TestConfItem(unittest.TestCase):
         i = ConfItem(dica)
         i.__merge__(dicb)
         self.assertEqual(i, dicb)
-        i = ConfItem(dica, mergeable=True)
+        i = ConfItem(dica, merge_value=True)
         i.__merge__(dicb)
         self.assertEqual(i, dicu)
 
@@ -98,7 +106,7 @@ class TestConf(unittest.TestCase):
     def test_update_merge_a(self):
         lista = [1, 2]
         listb = [1, 3]
-        c = Conf(a=ConfItem(lista.copy(), mergeable=True),
+        c = Conf(a=ConfItem(lista.copy(), merge_value=True),
                  b=listb.copy(), c=1)
         c.update(a=listb, b=listb, c=2)
         self.assertEqual(c.a, lista + listb)
@@ -125,12 +133,12 @@ class TestConf(unittest.TestCase):
     def test_add_merge(self):
         lista = [1, 2]
         listb = [1, 3]
-        c = Conf(a=ConfItem(lista.copy(), mergeable=True),
+        c = Conf(a=ConfItem(lista.copy(), merge_value=True),
                  b=listb.copy())
         c.a += listb
         c.b += lista
         # unexpected but logical and inevitable consequence of
-        # mergeable is that += doubles the item
+        # merge_value is that += doubles the item
         self.assertEqual(c.a, lista + listb + lista + listb)
         self.assertEqual(c.b, listb + lista)
 
