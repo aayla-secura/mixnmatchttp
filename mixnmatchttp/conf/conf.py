@@ -20,6 +20,18 @@ __all__ = [
 class _NotInitializedError(Exception):
     pass
 
+class ConfItemSettings(DefaultAttrs):
+    def __init__(self, default={}, /, **explicit):
+        our_default = dict(
+            merge_value=False,
+            merge_settings=True,
+            allowed_values=None,
+            allowed_types=None,
+            transformer=None,
+            requires=None)
+        our_default.update(default)
+        super().__init__(our_default, **explicit)
+
 class ConfItem(ObjectProxy):
     def __init__(self, value, /, **settings):
         '''Configuration item - a proxy for its value
@@ -54,13 +66,7 @@ class ConfItem(ObjectProxy):
         '''
 
         # cannot set any attributes before calling parent __init__
-        self_settings = DefaultAttrs(dict(
-            merge_value=False,
-            merge_settings=True,
-            allowed_values=None,
-            allowed_types=None,
-            transformer=None,
-            requires=None), **settings)
+        self_settings = ConfItemSettings(**settings)
         if isinstance(value, ConfItem):
             self_settings.__merge__(value._self_settings)
             value = value.__wrapped__
@@ -101,9 +107,7 @@ class ConfItem(ObjectProxy):
             settings = other._self_settings
         else:
             value = other
-            settings = self._self_settings.__class__(
-                self._self_settings.__default__
-            )
+            settings = self._self_settings.__class__()
 
         self.__init(value, settings)
 
