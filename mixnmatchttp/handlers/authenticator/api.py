@@ -297,8 +297,7 @@ class BaseAuthHTTPRequestHandler(
                 hash_type=ConfItem(
                     None,
                     allowed_values=[None],  # updated in Meta class
-                    requires=_required_hashing_modules,
-                    mergeable=True,
+                    requires=_required_hashing_modules
                 ),
             ),
             mergeable=True),

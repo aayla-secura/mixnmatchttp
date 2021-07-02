@@ -3,7 +3,6 @@ import re
 from copy import copy
 
 import loggers
-from mixnmatchttp.utils import is_mergeable
 from mixnmatchttp.conf import Conf, ConfItem
 from mixnmatchttp.conf.exc import ConfError, ConfRuntimeError, \
     ConfTypeError, ConfValueError
@@ -61,17 +60,17 @@ class TestConfItem(unittest.TestCase):
             'x', requires=lambda x: ('nonexistent',))
         ConfItem('x', requires=lambda x: ('future',))
 
-    def test_merge_a(self):
-        ci = ConfItem([1, 2])
-        cim = ConfItem([1, 2], mergeable=True)
-        self.assertFalse(is_mergeable(ci, inplace=True))
-        self.assertTrue(is_mergeable(cim, inplace=True))
+    def test_merge_settings(self):
+        i = ConfItem(1, allowed_values=[1, 2, 3])
+        i.__merge__(2)
+        self.assertEqual(i, 2)
+        self.assertEqual(i._self_settings.allowed_values, [1, 2, 3])
+        self.assertRaises(ValueError, i.__merge__, 4)
 
-    def test_merge_b(self):
-        ci = ConfItem(1)
-        cim = ConfItem(1, mergeable=True)
-        self.assertFalse(is_mergeable(ci, inplace=True))
-        self.assertTrue(is_mergeable(cim, inplace=True))
+    def test_merge_int(self):
+        i = ConfItem(1, mergeable=True)
+        i.__merge__(2)
+        self.assertEqual(i, 3)
 
     def test_merge_list(self):
         lista = [1, 2]
@@ -100,7 +99,7 @@ class TestConf(unittest.TestCase):
         lista = [1, 2]
         listb = [1, 3]
         c = Conf(a=ConfItem(lista.copy(), mergeable=True),
-                 b=listb.copy())
+                 b=listb.copy(), c=1)
         c.update(a=listb, b=listb, c=2)
         self.assertEqual(c.a, lista + listb)
         self.assertEqual(c.b, listb)

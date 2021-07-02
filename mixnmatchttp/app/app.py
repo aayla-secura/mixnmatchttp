@@ -480,13 +480,13 @@ class App:
             settings = json.loads(content)
         except JSONDecodeError as e:
             exit('Invalid configuration file: {}'.format(e))
-        self.conf._update(settings)
+        self.conf.update(settings)
 
     def save_config(self, conffile):
         '''TODO'''
 
         f = open(conffile, 'w')
-        json.dump(self.conf._to_dict(), f, indent=2)
+        json.dump(self.conf.to_dict(), f, indent=2)
         f.close()
 
     def run(self):
@@ -834,14 +834,13 @@ class Conf(argparse.Namespace):
     def __init__(self, skip=[], settings={}):
         self._skip = copy(skip)
         self._skip.extend(['_skip', '_error_on_missing'])
-        self._update(settings)
+        self.update(settings)
 
-    def _update(self, settings):
+    def update(self, settings):
         for k, v in settings.items():
             setattr(self, k, v)
 
-    # TODO, change this to __repr__ and __str__
-    def _to_dict(self):
+    def to_dict(self):
         return {k: v for k, v in self.__dict__.items()
                 if k not in self._skip}
 

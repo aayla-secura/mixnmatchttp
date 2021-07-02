@@ -62,10 +62,6 @@ class ConfItem(ObjectProxy):
             value = value.__wrapped__
         self.__init(value, self_settings)
 
-    @property
-    def __mergeable__(self):
-        return self._self_settings.mergeable
-
     def __copy__(self):
         # type(self) returns the real type, e.g. ConfItem, whereas
         # self.__class__ returns the class of the object to which we
@@ -173,8 +169,12 @@ class ConfItem(ObjectProxy):
             value = merge_with_current(value)
 
         super().__init__(value)
-        self._self_settings = settings
-
+        try:
+            self._self_settings
+        except AttributeError:
+            self._self_settings = settings
+        else:
+            self._self_settings.__merge__(settings)
 
 class Conf(DefaultAttrDict):
     '''Holds ConfItems as attributes or keys
