@@ -25,6 +25,23 @@ from .exc import UserAlreadyExistsError, NoSuchUserError, \
 logger = logging.getLogger(__name__)
 
 
+def _required_hashing_modules(htype):
+    req = []
+    if htype in [
+            'bcrypt',
+            'md5_crypt',
+            'scrypt',
+            'sha1_crypt',
+            'sha256_crypt',
+            'sha512_crypt']:
+        req.append('passlib')
+    if htype == 'bcrypt':
+        req.append('bcrypt')
+    if htype == 'scrypt':
+        req.append('scrypt')
+    return req
+
+
 class ReadOnlyDict:
     def __contains__(self, key):
         return self._dict_data.__contains__(key)
@@ -124,24 +141,31 @@ class Session(ReadOnlyDict):
         return expiry <= curr_timestamp(to_utc=True)
 
 class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
-    '''Metaclass for BaseAuthHTTPRequestHandler
-
-    Check the validity of class attributes and ensures the required
-    password hashing modules are present.
-    '''
+    '''Metaclass for BaseAuthHTTPRequestHandler'''
 
     def __new__(cls, name, bases, attrs):
         new_class = super().__new__(cls, name, bases, attrs)
-        pwd_types = [None]
+        new_class.supported_hashes = [None]
         prefT = '_transform_password_'
         prefV = '_verify_password_'
+
         for m in dir(new_class):
             if callable(getattr(new_class, m)) \
                     and m.startswith(prefT):
+                # there is a _transform_password method for ptype
                 ptype = m[len(prefT):]
-                if hasattr(new_class, '{}{}'.format(prefV, ptype)):
-                    pwd_types.append(ptype)
-        super().__setattr__(new_class, '_supported_hashes', pwd_types)
+                try:
+                    vp = getattr(new_class, '{}{}'.format(prefV, ptype))
+                except AttributeError:
+                    continue
+
+                if callable(vp):
+                    # there is also a _verify_password method for ptype
+                    new_class.supported_hashes.append(ptype)
+
+        new_class.conf.password[
+            'hash_type']._self_settings.allowed_values = \
+            new_class.supported_hashes
 
         return new_class
 
@@ -262,7 +286,6 @@ class BaseAuthHTTPRequestHandler(
       expired either way, and if it is, it remove it.
     '''
 
-    _supported_hashes = [None]  # to be updated by Meta class
     conf = Conf(
         JSON_params=ConfItem(None, allowed_types=(list, type(None))),
         secrets=ConfItem([], allowed_types=(OrderedDict, list)),
@@ -271,10 +294,16 @@ class BaseAuthHTTPRequestHandler(
             Conf(
                 min_len=10,
                 min_charsets=3,
-                hash_type=ConfItem(None, allowed_values=_supported_hashes)
+                hash_type=ConfItem(
+                    None,
+                    allowed_values=[None],  # updated in Meta class
+                    requires=_required_hashing_modules,
+                    mergeable=True,
+                ),
             ),
             mergeable=True),
-        prune_sessions_every=0,
+        prune_sessions_every=ConfItem(
+            0, allowed_types=(int, type(None))),
     )
     __last_prune = curr_timestamp()
     endpoints = Endpoint(
@@ -655,14 +684,20 @@ class BaseAuthHTTPRequestHandler(
         '''
 
         username = self.get_param('username')
-        password = self.get_param('password')
+        if username is None:
+            return
         user = self.find_user(username)
+
+        password = self.get_param('password')
+        if password is None:
+            password = ''
+
         if user is None:
             logger.debug('No such user {}'.format(username))
-            return None
+            return
         if self.verify_password(user, password):
             return user
-        return None
+        return
 
     @classmethod
     def verify_password(cls, user, password):

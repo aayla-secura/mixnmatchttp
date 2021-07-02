@@ -567,6 +567,9 @@ Redirects (with `307`) to any address given in the URL.
   * [ ] Use format strings instead of the format string method
   * [ ] More useful debugging messages
   * [ ] Multiple variable endpoints for a single parent distinguished by a regex; key can be `/<regex>/`
+  * [ ] `return None` -> `return`
+  * [ ] Remove `__all__` and instead rename all non-public names to start with `_`
+  * [ ] Check if jwt and sql modules are required
 
 # Demos and source
 

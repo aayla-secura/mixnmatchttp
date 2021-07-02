@@ -43,8 +43,9 @@ class ConfItem(ObjectProxy):
           default is (<value.__class__>,)
         - transformer: a callable that takes the value and returns
           a new value; this is done after conversion to allowed_types
-        - requires: a list of modules which are required by
-          this item; default is ()
+        - requires: a callable which is passed the final value as
+          a single argument and must return a list of modules which
+          are required by this item; default is None
         '''
 
         # cannot set any attributes before calling parent __init__
@@ -55,7 +56,7 @@ class ConfItem(ObjectProxy):
             allowed_values=None,
             allowed_types=(value.__class__,),
             transformer=None,
-            requires=()), **settings)
+            requires=None), **settings)
         if isinstance(value, ConfItem):
             self_settings.__merge__(value._self_settings)
             value = value.__wrapped__
@@ -133,8 +134,10 @@ class ConfItem(ObjectProxy):
                     type=value.__class__.__name__,
                     allowed_types=settings.allowed_types))
 
-        def check_modules():
-            for m in settings.requires:
+        def check_modules(value):
+            if settings.requires is None:
+                return
+            for m in settings.requires(value):
                 if importlib.util.find_spec(m) is None:
                     raise ConfRuntimeError(
                         'module {module} is required'.format(module=m))
@@ -164,7 +167,7 @@ class ConfItem(ObjectProxy):
         if settings.transformer is not None:
             value = transform(value)
 
-        check_modules()
+        check_modules(value)
 
         if settings.mergeable and self.__initialized:
             value = merge_with_current(value)

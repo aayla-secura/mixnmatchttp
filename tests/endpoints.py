@@ -33,7 +33,7 @@ class Test(unittest.TestCase):
         )
         if parse:
             e = ParsedEndpoint(
-                e, None, None, None, None, None, None)
+                e, None, None, None, None, [], None)
 
         self.assertEqual(e.disabled, False)
         self.assertEqual(e.raw_args, False)

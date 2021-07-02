@@ -56,9 +56,10 @@ class TestConfItem(unittest.TestCase):
         self.assertEqual(i, 'foo_bar_')
 
     def test_module_check(self):
-        self.assertRaises(ConfRuntimeError, ConfItem,
-                          'x', requires='nonexistent')
-        ConfItem('x', requires=('future',))
+        self.assertRaises(
+            ConfRuntimeError, ConfItem,
+            'x', requires=lambda x: ('nonexistent',))
+        ConfItem('x', requires=lambda x: ('future',))
 
     def test_merge_a(self):
         ci = ConfItem([1, 2])

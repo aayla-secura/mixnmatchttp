@@ -189,24 +189,23 @@ class App:
                       '--userfile-plain determines if the passwords '
                       'are hashed before written to the --userfile.'))
             self.parser_groups['auth'].add_argument(
+                '--userfile-hashed', dest='userfile_hashed',
+                default=True, action='store_true',
+                help=('The passwords in userfile are already hashed '
+                      'with the algorithm given by --hash-type. '
+                      'This is the default, but can be used to '
+                      'override configuration file setting.'))
+            self.parser_groups['auth'].add_argument(
                 '--userfile-plain', dest='userfile_hashed',
-                default=True, action='store_false',
+                action='store_false',
                 help='The passwords in userfile are in cleartext.')
             self.parser_groups['auth'].add_argument(
-                '--userfile-hashed', dest='userfile_hashed',
-                action='store_true',
-                help=('The passwords in userfile are hashed. This is '
-                      'the default, but can be used to override '
-                      'configuration file setting.'))
-            # XXX why do we need userfile-hashed/plain as well?
-            self.parser_groups['auth'].add_argument(
                 '--hash-type', dest='userfile_hash_type', nargs='?',
-                const=None, default=None,
-                choices=reqhandler._supported_hashes,
+                const=None, default='scrypt',
+                choices=reqhandler.supported_hashes,
                 help=('The hashing algorithm to use. Specifying this '
-                      'option without an argument overrides the one '
-                      'in the configuration file and resets the '
-                      'hashing to none (plaintext).'))
+                      'option without an argument sets the hashing '
+                      'to none (plaintext).'))
 
         if self.proto == 'http' and support_cors:
             self.parser_groups['cors'] = \
@@ -409,6 +408,7 @@ class App:
 
         self.conf = Conf(skip=self._no_conf_items)
         args = self.parser.parse_args()
+
         #### Load/save/update config file
         if args.config is not None:
             try:
@@ -565,7 +565,7 @@ class App:
             if self.conf.userfile_hash_type is not None \
                     and self.conf.userfile_hashed:
                 # we need to hash the passwords here, since userfile
-                # may already contain existing hashes
+                # already contains existing hashes
                 transformer = getattr(
                     self.reqhandler,
                     '_transform_password_{}'.format(
