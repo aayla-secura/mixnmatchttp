@@ -547,17 +547,17 @@ Redirects (with `307`) to any address given in the URL.
 # Internal TODO notes
 
   * [x] Smarter way of merging endpoints with parent's (remembering which ones were explicitly set, and which inherited)
-  * [ ] Setting a new value for a cookie shouldn't send duplicate headers, but we should still be able to send multiple cookies
+  * [x] Setting a new value for a cookie shouldn't send duplicate headers, but we should still be able to send multiple cookies
   * [ ] Templates from files
-  * [ ] Remove `_` prefix from class attributes
+  * [x] Remove `_` prefix from class attributes
   * [ ] Do not save expanded env variables to config file
   * [ ] Test with nginx proxy setup (it was behaving weirdly, need to find if it's a bug here)
-  * [ ] Add back `--no-multithread` option
+  * [x] Add back `--no-multithread` option
   * [ ] Remove `methodhandler` and instead override one of the server or request handler methods called at the start of a request
   * [ ] Is it possible to catch any exception from a request handler (maybe in a request shutdown hook of the server class) and sent a 500 response?
-  * [ ] Cmdline options to disable `request_log` and `logdir` if set in config
+  * [x] Cmdline options to disable `request_log` and `logdir` if set in config
   * [ ] Move stuff from JWT class to `cryptoutils` module
-  * [ ] Merge `_secrets` and `_can_create_users` with those of parent classes, like endpoints
+  * [x] Merge `_secrets` and `_can_create_users` with those of parent classes, like endpoints
   * [ ] `--add-users`: password input should not be displayed
   * [x] Fix path canonicalization for endpoints, .e.g `//login` does not match an endpoint
   * [ ] Default column for short value in `object_to_dict` should use the first primary key, not hardcoded `id`.

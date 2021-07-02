@@ -3,7 +3,6 @@ import re
 import sys
 import argparse
 from wrapt import decorator
-from http.server import HTTPServer
 
 class DebugStreamHandler(logging.StreamHandler):
     def emit(self, record):
@@ -35,7 +34,6 @@ from mixnmatchttp.handlers import BaseHTTPRequestHandler, \
     AuthCookieHTTPRequestHandler, CachingHTTPRequestHandler, \
     ProxyingHTTPRequestHandler, methodhandler
 from mixnmatchttp.handlers.authenticator.api import User
-from mixnmatchttp.servers import ThreadingHTTPServer
 from mixnmatchttp.endpoints import Endpoint, \
     ARGS_OPTIONAL, ARGS_REQUIRED, ARGS_ANY
 from mixnmatchttp.conf import Conf

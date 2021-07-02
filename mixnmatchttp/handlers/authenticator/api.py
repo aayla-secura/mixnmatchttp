@@ -288,7 +288,10 @@ class BaseAuthHTTPRequestHandler(
 
     conf = Conf(
         JSON_params=ConfItem(None, allowed_types=(list, type(None))),
-        secrets=ConfItem([], allowed_types=(OrderedDict, list)),
+        secrets=ConfItem(
+            [],
+            merge_value=True,
+            allowed_types=(OrderedDict, list)),
         can_create_users=OrderedDict({None: [None]}),
         password=ConfItem(
             Conf(

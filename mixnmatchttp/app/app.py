@@ -23,7 +23,7 @@ try:
 except ImportError:
     pass
 
-from ..servers import ThreadingHTTPServer
+from ..servers import ThreadingHTTPServer, HTTPServer
 from ..utils import randstr, is_str
 try:
     from ..db import DBConnection, is_base, parse_db_url
@@ -91,6 +91,7 @@ class App:
         self._no_conf_items = ['action',
                                'config',
                                'save_config',
+                               'request_log',
                                'debug_log',
                                'add_users']
         self._custom_checks = {}
@@ -138,7 +139,8 @@ class App:
                 '-s', '--ssl', dest='ssl', default=False,
                 action='store_true', help='Use SSL.')
             self.parser_groups['ssl'].add_argument(
-                '--no-ssl', dest='ssl', action='store_false',
+                '--no-ssl', dest='ssl', default=False,
+                action='store_false',
                 help=("Don't use SSL. This is the default, but can "
                       "be used to override configuration file "
                       "setting."))
@@ -197,7 +199,7 @@ class App:
                       'override configuration file setting.'))
             self.parser_groups['auth'].add_argument(
                 '--userfile-plain', dest='userfile_hashed',
-                action='store_false',
+                default=True, action='store_false',
                 help='The passwords in userfile are in cleartext.')
             self.parser_groups['auth'].add_argument(
                 '--hash-type', dest='userfile_hash_type', nargs='?',
@@ -215,7 +217,8 @@ class App:
                 default=False, action='store_true',
                 help='Enable CORS support.')
             self.parser_groups['cors'].add_argument(
-                '--disable-cors', dest='cors', action='store_false',
+                '--disable-cors', dest='cors',
+                default=False, action='store_false',
                 help=('Disable CORS support. This is the default, '
                       'but can be used to override configuration '
                       'file setting.'))
@@ -250,7 +253,7 @@ class App:
                 help='Allow sending credentials with CORS requests')
             self.parser_groups['cors'].add_argument(
                 '--disallow-credentials', dest='cors_creds',
-                action='store_false',
+                default=False, action='store_false',
                 help=('Do not allow sending credentials with CORS '
                       'requests. This is the default, but can be '
                       'used to override configuration file setting.'))
@@ -274,8 +277,71 @@ class App:
                 default=[], metavar='Header: Value', nargs='*',
                 help='Additional headers to include in the response.')
 
+        self.parser_groups['logging'] = self.parser.add_argument_group(
+            'Logging options')
+        if support_daemon:
+            self.parser_groups['logging'].add_argument(
+                '-l', '--logdir', dest='logdir', nargs='?',
+                metavar='DIR', const=None,
+                help=('Directory that will hold the log files. '
+                      'Default when running in daemon mode is '
+                      '/var/log/{}. Default in foreground mode is '
+                      'to print print all output to the console.'
+                      'Specifying this option without an argument '
+                      'sets it none (logging to console only).'
+                      ).format(self.name))
+        else:
+            self.parser_groups['logging'].add_argument(
+                '-l', '--logdir', dest='logdir', nargs='?',
+                metavar='DIR', const=None,
+                help=('Directory that will hold the log files. '
+                      'Default is to print print all output to '
+                      'the console. Specifying this option without '
+                      'an argument sets it back to the default of '
+                      'none (logging to console only).'))
+        self.parser_groups['logging'].add_argument(
+            '--log', dest='log', nargs='*',
+            action=AppendUniqueArgAction, default=[],
+            metavar='[PACKAGE [FILENAME]]',
+            help=('Enable logging output for the given package '
+                  '(or all if omitted). FILENAME will be stored in '
+                  '--logdir. If --logdir is not given, then '
+                  'FILENAME is ignored and output goes to the '
+                  'console). Default is <PACKAGE>.log. Only INFO '
+                  'level messages go in FILENAME. WARNING and above '
+                  'go to error.log and stderr. Note that printing '
+                  'of request lines to access.log (or stderr) is '
+                  'always enabled. This option can be given '
+                  'multiple times.'))
+        self.parser_groups['logging'].add_argument(
+            '--request-log', dest='request_log', nargs='?',
+            const='request.log', metavar='[FILENAME]',
+            help=('Enable logging of full requests. FILENAME '
+                  'defaults to request.log if not given. This '
+                  'option is not saved in the configuration file.'))
+        self.parser_groups['logging'].add_argument(
+            '--debug-log', dest='debug_log', nargs='*',
+            action=AppendUniqueArgAction, default=[],
+            metavar='[PACKAGE [FILENAME]]',
+            help=('Enable debugging output for the given package. '
+                  'FILENAME defaults to debug.log. Note that this '
+                  'option is not saved in the configuration file. '
+                  'Otherwise the behaviour is similar to --log.'))
+        self.parser_groups['logging'].add_argument(
+            '--color', dest='use_color', default=False,
+            action='store_true', help='Use colorful log')
+
         self.parser_groups['server'] = self.parser.add_argument_group(
-            'Logging and process options')
+            'Server options')
+        self.parser_groups['server'].add_argument(
+            '--multithread', dest='multithread',
+            default=True, action='store_true',
+            help=('Run in multi-thread mode. This is the default, '
+                  'but can be used to override configuration file '
+                  'setting.'))
+        self.parser_groups['server'].add_argument(
+            '--no-multithread', dest='multithread', default=True,
+            action='store_false', help='Run in single-thread mode.')
         if support_daemon:
             self.parser_groups['server'].add_argument(
                 '-P', '--pidfile', dest='pidfile', metavar='FILE',
@@ -287,7 +353,7 @@ class App:
                 help='Run as a daemon.')
             self.parser_groups['server'].add_argument(
                 '-f', '--foreground', dest='daemonize',
-                action='store_false',
+                default=False, action='store_false',
                 help=('Run in foreground. This is the default, '
                       'but can be used to override configuration '
                       'file setting.'))
@@ -304,50 +370,6 @@ class App:
             default='/var/www/html' if self.proto == 'http' else '/',
             help=('Directory to serve files from. '
                   'Current working directory will be changed to it.'))
-        if support_daemon:
-            self.parser_groups['server'].add_argument(
-                '-l', '--logdir', dest='logdir', metavar='DIR',
-                help=('Directory that will hold the log files. '
-                      'Default when running in daemon mode is '
-                      '/var/log/{}. Default in foreground mode is '
-                      'to print print all output to the console.'
-                      ).format(self.name))
-        else:
-            self.parser_groups['server'].add_argument(
-                '-l', '--logdir', dest='logdir', metavar='DIR',
-                help=('Directory that will hold the log files. '
-                      'Default is to print print all output to '
-                      'the console.'))
-        self.parser_groups['server'].add_argument(
-            '--log', dest='log', nargs='*',
-            action=AppendUniqueArgAction, default=[],
-            metavar='[PACKAGE [FILENAME]]',
-            help=('Enable logging output for the given package '
-                  '(or all if omitted). FILENAME will be stored in '
-                  '--logdir. If --logdir is not given, then '
-                  'FILENAME is ignored and output goes to the '
-                  'console). Default is <PACKAGE>.log. Only INFO '
-                  'level messages go in FILENAME. WARNING and above '
-                  'go to error.log and stderr. Note that printing '
-                  'of request lines to access.log (or stderr) is '
-                  'always enabled. This option can be given '
-                  'multiple times.'))
-        self.parser_groups['server'].add_argument(
-            '--request-log', dest='request_log', nargs='?',
-            const='request.log', metavar='[FILENAME]',
-            help=('Enable logging of full requests. FILENAME '
-                  'defaults to request.log if not given.'))
-        self.parser_groups['server'].add_argument(
-            '--debug-log', dest='debug_log', nargs='*',
-            action=AppendUniqueArgAction, default=[],
-            metavar='[PACKAGE [FILENAME]]',
-            help=('Enable debugging output for the given package. '
-                  'FILENAME defaults to debug.log. Note that this '
-                  'option is not saved in the configuration file. '
-                  'Otherwise the behaviour is similar to --log.'))
-        self.parser_groups['server'].add_argument(
-            '--color', dest='use_color', default=False,
-            action='store_true', help='Use colorful log')
 
     def add_argument(self,
                      *args,
@@ -679,9 +701,10 @@ class App:
         # This has to be done after daemonization because it binds to
         # the listening port at creation time
         if self.server_cls is None:
-            self.server_cls = type(
-                'ThreadingHTTPServer',
-                (ThreadingHTTPServer, object), {})
+            if self.conf.multithread:
+                self.server_cls = ThreadingHTTPServer
+            else:
+                self.server_cls = HTTPServer
         if self.user_conf_key is not None:
             setattr(self.server_cls, self.user_conf_key, self.conf)
         self.server = self.server_cls(
