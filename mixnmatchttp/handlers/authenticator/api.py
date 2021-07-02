@@ -685,7 +685,7 @@ class BaseAuthHTTPRequestHandler(
 
         username = self.get_param('username')
         if username is None:
-            return
+            return None
         user = self.find_user(username)
 
         password = self.get_param('password')
@@ -694,10 +694,9 @@ class BaseAuthHTTPRequestHandler(
 
         if user is None:
             logger.debug('No such user {}'.format(username))
-            return
+            return None
         if self.verify_password(user, password):
             return user
-        return
 
     @classmethod
     def verify_password(cls, user, password):

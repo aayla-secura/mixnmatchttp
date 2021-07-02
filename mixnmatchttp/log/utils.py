@@ -38,7 +38,7 @@ class LogHandlerStorage:
             except KeyError:
                 curr_pkg = '.'.join(curr_pkg.split('.')[:-1])
                 if not curr_pkg:
-                    return
+                    return None
 
     def __str__(self):
         return str(self._store)
@@ -107,7 +107,7 @@ def get_handler(store, pkg, level, logdir, filename):
     handler = store.get(*l_id)
     if handler is not None:
         # doesn't make sense to add duplicate loggers
-        return
+        return None
 
     if dest is None:
         # logging to console
