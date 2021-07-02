@@ -1,8 +1,6 @@
 import logging
 from collections import MutableMapping, Mapping, OrderedDict
 
-# TODO test it
-
 
 logger = logging.getLogger(__name__)
 __all__ = [

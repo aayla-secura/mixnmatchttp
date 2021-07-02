@@ -11,15 +11,3 @@ class _TraceLogger(_logging.Logger):
 _logging.setLoggerClass(_TraceLogger)
 _logger = _logging.getLogger(__name__)
 _logger.addHandler(_NullHandler())
-
-
-#  from . import handlers
-#  from . import servers
-#  from .app import App
-
-
-__all__ = [
-    'handlers',
-    'servers',
-    'App',
-]

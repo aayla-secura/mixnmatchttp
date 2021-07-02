@@ -8,10 +8,11 @@ from .conf import ConfItem
 from .conf.containers import DefaultAttrs, DefaultAttrKeys
 from .utils import datetime_from_timestamp, datetime_from_str, datetime_to_str
 
-# TODO test it
-
 
 logger = logging.getLogger(__name__)
+__all__ = [
+    'Cookie',
+]
 
 
 class Expiry:

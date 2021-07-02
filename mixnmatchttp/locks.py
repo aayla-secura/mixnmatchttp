@@ -5,6 +5,11 @@ from functools import wraps
 
 
 logger = logging.getLogger(__name__)
+__all__ = [
+    'LockTimeoutError',
+    'ContextDecorator',
+    'named_lock',
+]
 
 
 class LockTimeoutError(Exception):

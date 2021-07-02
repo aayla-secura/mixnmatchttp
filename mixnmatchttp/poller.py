@@ -1,7 +1,14 @@
+import logging
 import threading
 
 from .utils import datetime_from_timestamp
 from uuid import uuid4 as uuid
+
+
+logger = logging.getLogger(__name__)
+__all__ = [
+    'Poller',
+]
 
 
 class Poller:
