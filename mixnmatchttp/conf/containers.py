@@ -95,7 +95,7 @@ class _DefaultsBase:
         '''
 
         def attempt_merge(curr):
-            if not is_mergeable(curr):
+            if not is_mergeable(curr, inplace=True):
                 return False
             merge(curr, value, inplace=True)
             return True

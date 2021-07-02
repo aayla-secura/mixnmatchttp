@@ -169,12 +169,7 @@ class ConfItem(ObjectProxy):
             value = merge_with_current(value)
 
         super().__init__(value)
-        try:
-            self._self_settings
-        except AttributeError:
-            self._self_settings = settings
-        else:
-            self._self_settings.__merge__(settings)
+        self._self_settings = settings
 
 class Conf(DefaultAttrDict):
     '''Holds ConfItems as attributes or keys
@@ -190,11 +185,8 @@ class Conf(DefaultAttrDict):
     the value.
     '''
 
-    __item_type__ = ConfItem  # each one dictates if it's mergeable
+    __item_type__ = ConfItem
     __attempt_merge__ = True
-
-    # TODO all settings of a default item should be applied to current
-    # ones
 
     def __getattr__(self, name):
         confitem = super().__getattr__(name)

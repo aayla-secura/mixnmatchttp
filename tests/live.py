@@ -54,7 +54,7 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
                              CachingHTTPRequestHandler,
                              ProxyingHTTPRequestHandler):
 
-    conf = dict(
+    conf = Conf(
         secrets=('secret', '/topsecret'),
         password=Conf(
             min_len=3,

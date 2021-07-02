@@ -110,6 +110,18 @@ class TestConf(unittest.TestCase):
         c.update(a=2)
         self.assertEqual(c.a, 2)
 
+    def test_update_merge_c(self):
+        c = Conf(a=1, b=ConfItem(2))
+        c.update(Conf(a=3))
+        self.assertEqual(c.a, 3)
+        self.assertEqual(c.b, 2)
+
+    def test_setattr(self):
+        c = Conf(a=ConfItem(Conf(a=1, b=ConfItem(2))))
+        c.a.a = 3
+        self.assertEqual(c.a.a, 3)
+        self.assertEqual(c.a.b, 2)
+
     def test_add_merge(self):
         lista = [1, 2]
         listb = [1, 3]
