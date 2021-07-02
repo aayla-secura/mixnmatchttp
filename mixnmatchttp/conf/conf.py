@@ -29,10 +29,10 @@ class ConfItem(ObjectProxy):
         and what other checks are done to make sure it's valid.
 
         Accepted settings:
-        - mergeable: whether the value is to be merged with its
-          previous one during an update (see __merge__ method);
-          this is valid only for sequences and mappings,
-          where concatenation/merging makes sense; default is False
+        - merge_value: whether the value is to be merged with its
+          previous one during an update; default is False
+        - merge_settings: whether the settings are to be merged with
+          the previous ones during an update; default is True
         - allowed_values: a list of allowed values. Default is None,
           i.e. no restriction.
         - allowed_types: a tuple of allowed types for this item; if
@@ -92,19 +92,14 @@ class ConfItem(ObjectProxy):
         return str(self.__wrapped__)
 
     def __merge__(self, other):
-        self_settings = self._self_settings
-
         if isinstance(other, ConfItem):
             value = other.__wrapped__
-            other_settings = other._self_settings
-            # or merge only explicit
-            #  other_settings = self._self_settings.__class__(
-            #      **other._self_settings.__explicit__)
+            settings = other._self_settings
         else:
             value = other
-            other_settings = self._self_settings.__class__()
+            settings = self._self_settings.__class__()
 
-        self.__init(value, self_settings + other_settings)
+        self.__init(value, settings)
 
     @property
     def __initialized(self):
@@ -153,6 +148,9 @@ class ConfItem(ObjectProxy):
                 raise ConfTypeError(e)
 
         ##########
+        if self.__initialized:
+            settings = self._self_settings + settings
+
         if settings.allowed_values is not None \
                 and value not in settings.allowed_values:
             raise ConfValueError('{v} is an invalid value'.format(v=value))
