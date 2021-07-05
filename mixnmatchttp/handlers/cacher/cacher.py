@@ -46,6 +46,9 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
         elif self.ctype == 'application/x-www-form-urlencoded':
             data_decoder = self.url_data
             type_decoder = self.url_data
+        elif self.ctype is None:
+            raise DecodingError('No "type" parameter present!')
+            return
         else:
             raise DecodingError(
                 'Unknown Content-Type: {}'.format(self.ctype))

@@ -113,20 +113,14 @@ function test_proxy {
 ############################################################
 function test_cache {
   log INFO "-------------------- CACHE TESTS --------------------"
-  req -eh "^HTTP/1\.[01] 500" \
-    -eb "This page has not been cached yet" \
+  req -eh "^HTTP/1\.[01] 500" -eb "This page has not been cached yet" \
     GET /cache/"${SESSION}" # SESSION will do as it's re-generated each time the script is run
-  req -eh "^HTTP/1\.[01] 400" \
-    -eb "Cannot load parameters from request" \
+  req -eh "^HTTP/1\.[01] 400" -eb "No \\\\\"type\\\\\" parameter present" \
     -f POST /cache/"${SESSION}"
-  req -eh "^HTTP/1\.[01] 400" \
-    -eb "Cannot load parameters from request" \
-    -f POST /echo
-  req -eh "^HTTP/1\.[01] 400" \
-    -eb "No \"data\" parameter present" \
+  req -eh "^HTTP/1\.[01] 400" -eb "No \\\\\"type\\\\\" parameter present" -f POST /echo
+  req -eh "^HTTP/1\.[01] 400" -eb "No \\\\\"data\\\\\" parameter present" \
     -f POST /cache/"${SESSION}" type="text/plain"
-  req -eh "^HTTP/1\.[01] 400" \
-    -eb "No \"data\" parameter present" \
+  req -eh "^HTTP/1\.[01] 400" -eb "No \\\\\"data\\\\\" parameter present" \
     -f POST /echo type="text/plain"
 
   req -eh "^HTTP/1\.[01] 204" \
