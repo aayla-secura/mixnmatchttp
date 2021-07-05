@@ -93,11 +93,11 @@ function test_auth {
 ############################################################
 function test_proxy {
   log INFO "-------------------- PROXY TESTS --------------------"
-  req -eh "^HTTP/1\.[01] 200" GET /goto/foo # no host given
-  req -eh "^HTTP/1\.[01] 200" GET /goto//foo # no host given
+  req -eh "^HTTP/1\.[01] 20[04]" GET /goto/foo # no host given
+  req -eh "^HTTP/1\.[01] 20[04]" GET /goto//foo # no host given
   req -i -eh "^Location: *//foo" GET /goto///foo
-  req -eh "^HTTP/1\.[01] 200" GET /goto/foo # no host given
-  req -eh "^HTTP/1\.[01] 200" GET /goto/foo 'Referer: foobar' # invalid Referer
+  req -eh "^HTTP/1\.[01] 20[04]" GET /goto/foo # no host given
+  req -eh "^HTTP/1\.[01] 20[04]" GET /goto/foo 'Referer: foobar' # invalid Referer
   req -i -eh "^Location: *//foobar/foo" GET /goto/foo 'Referer: //foobar'
   req -i -eh "^Location: *//foobar/bar/foo" GET /goto/foo 'Referer: //foobar/bar'
   req -i -eh "^Location: *//foobar/foo" GET /goto//foo 'Referer: //foobar/bar'
@@ -106,6 +106,7 @@ function test_proxy {
   req -i -eh "^Location: *//foobar/foo" GET /goto/foo 'Origin: //foobar'
   req -i -eh "^Location: *//foobar/foo" GET /goto/foo 'X-Forwarded-Host: foobar'
   req -i -eh "^Location: *//foobar/foo" GET /goto/foo 'X-Forwarded-For: foobar'
+  req -i -eh "^Location: *//foobar/foo" GET /goto/foo 'Forwarded: host=foobar'
   req -i -eh "^Location: *//foobar/../foo" GET /goto/../foo 'Referer: //foobar'
 }
 
@@ -113,19 +114,19 @@ function test_proxy {
 function test_cache {
   log INFO "-------------------- CACHE TESTS --------------------"
   req -eh "^HTTP/1\.[01] 500" \
-    -3eb "Error code explanation: 500 - This page has not been cached yet" \
+    -eb "This page has not been cached yet" \
     GET /cache/"${SESSION}" # SESSION will do as it's re-generated each time the script is run
   req -eh "^HTTP/1\.[01] 400" \
-    -3eb "Error code explanation: 400 - Cannot load parameters from request" \
+    -eb "Cannot load parameters from request" \
     -f POST /cache/"${SESSION}"
   req -eh "^HTTP/1\.[01] 400" \
-    -3eb "Error code explanation: 400 - Cannot load parameters from request" \
+    -eb "Cannot load parameters from request" \
     -f POST /echo
   req -eh "^HTTP/1\.[01] 400" \
-    -3eb "Error code explanation: 400 - No \"data\" parameter present" \
+    -eb "No \"data\" parameter present" \
     -f POST /cache/"${SESSION}" type="text/plain"
   req -eh "^HTTP/1\.[01] 400" \
-    -3eb "Error code explanation: 400 - No \"data\" parameter present" \
+    -eb "No \"data\" parameter present" \
     -f POST /echo type="text/plain"
 
   req -eh "^HTTP/1\.[01] 204" \
@@ -136,7 +137,7 @@ function test_cache {
     -f POST /echo data=foo type="text/foo"
 
   req -eh "^HTTP/1\.[01] 500" \
-    -3eb "Error code explanation: 500 - Cannot overwrite page, choose a different name" \
+    -eb "Cannot overwrite page, choose a different name" \
     -f POST /cache/"${SESSION}" data=bar type="text/foo"
   req -eb "foo" \
     GET /cache/"${SESSION}" # data should not have been overwritten
@@ -148,37 +149,25 @@ function test_cache {
   req -i -eh "^Content-Type: *text/html" \
     -f POST /echo data=foo type="text/html"
   req -eh "^HTTP/1\.[01] 400" \
-    -3eb "Error code explanation: 400 - Cannot Base64 decode request data" \
+    -eb "Cannot Base64 decode request data" \
     POST /echo data=foo type="text/html" # send it as JSON, but not encoded
 }
 
 ############################################################
 function test_endpoints {
   log INFO "-------------------- MISC ENDPOINTS TESTS --------------------"
-  req -eh "^HTTP/1\.[01] 404" \
-    -3eb "Error code explanation: 404 - Extra arguments: foo" \
-    GET /test/foo
-  req -eh "^HTTP/1\.[01] 404" \
-    -3eb "Error code explanation: 404 - Missing required argument" \
-    POST /test/post_one
-  req -eh "^HTTP/1\.[01] 404" \
-    -3eb "Error code explanation: 404 - Extra arguments: bar" \
-    POST /test/post_one/foo/bar
-  req -eh "^HTTP/1\.[01] 404" \
-    -3eb "Error code explanation: 404 - Missing required argument" \
-    GET /test/get_req
-  req -eh "^HTTP/1\.[01] 404" \
-    -3eb "Error code explanation: 404 - Missing required argument" \
-    GET /test/get_req/
-  req -eh "^HTTP/1\.[01] 404" \
-    -3eb "Error code explanation: 404 - Extra arguments: bar" \
-    GET /test/get_opt/foo/bar
+  req -eh "^HTTP/1\.[01] 404" -eb "Extra arguments: foo" GET /test/foo
+  req -eh "^HTTP/1\.[01] 404" -eb "Missing required argument" POST /test/post_one
+  req -eh "^HTTP/1\.[01] 404" -eb "Extra arguments: bar" POST /test/post_one/foo/bar
+  req -eh "^HTTP/1\.[01] 404" -eb "Missing required argument" GET /test/get_req
+  req -eh "^HTTP/1\.[01] 404" -eb "Missing required argument" GET /test/get_req/
+  req -eh "^HTTP/1\.[01] 404" -eb "Extra arguments: bar" GET /test/get_opt/foo/bar
 
   req -i -eh "^HTTP/1\.[01] 405" -eh "^Allow:" \
-    -3eb "Error code explanation: 405 - Specified method is invalid for this resource" \
+    -eb "Specified method is invalid for this resource" \
     GET /test/post_one/foo
   req -i -eh "^HTTP/1\.[01] 405" -eh "^Allow:" \
-    -3eb "Error code explanation: 405 - Specified method is invalid for this resource" \
+    -eb "Specified method is invalid for this resource" \
     POST /test/get_opt/foo
   req -i -eh "^HTTP/1\.[01] 200" -eh "^Content-Length: *0" -eh "^Allow:" \
     OPTIONS /test/post_one/foo
@@ -204,7 +193,7 @@ function test_endpoints {
   req -i -eh "^X-Mod: *Test" \
     GET /modtest # modifies the default subpoint for /test to require 1 arg
   req -eh "^HTTP/1\.[01] 404" \
-    -3eb "Error code explanation: 404 - Extra arguments: foo" \
+    -eb "Extra arguments: foo" \
     GET /test/foo # should not take effect, i.e. it should still accept no args as before
 }
 
@@ -237,29 +226,45 @@ function print {
   echo -ne "${!color}${msg}${ANSI_RESET}"
 }
 
+function quote {
+  local -a a
+  local q="'"
+  for i in "$@"; do
+    if [[ "$i" =~ []$'\t\n'\ \"\'*\&\<\>\$\(\)[] ]] ; then
+      a+=("'${i//${q}/${q}\\${q}${q}}'")
+    else
+      a+=("$i")
+    fi
+  done
+  echo "${a[*]}"
+}
+
 function log {
-  local level="${1}" msg="${2}" spaces="     "
-  print "${level}" "${level}: ${spaces:0:$((7 - ${#level}))}${msg}\n"
+  local level="${1}" spaces="     "
+  shift
+  local -a msg=("$@")
+  for m in "${msg[@]}"; do
+    print "${level}" "${level}: ${spaces:0:$((7 - ${#level}))}${m}\n"
+  done
 }
 
 function req {
   local ignorecase=0 expected_hb="" expected_h="" expected_b="" \
     unexpected_hb="" unexpected_h="" unexpected_b="" \
-    httpargs=() pathset=0 sesstype="--session-read-only" printtype
+    httpargs=() pathset=0 sesstype="--session-read-only"
   while [[ $# -gt 0 ]] ; do
     case "$1" in
-      -e|-eh|-eb|-u|-uh|-ub|-2e|-2eh|-2eb|-2u|-2uh|-2ub|-3e|-3eh|-3eb|-3u|-3uh|-3ub)
+      -e|-eh|-eb|-u|-uh|-ub)
         # match regex $2 in whole response (-e), headers only (-eh) or body only (-eb)
         # must not match regex $2 in whole response (-u), headers only (-uh) or body only (-ub)
         opt="${1:1}"
         matchtype="${opt:0:1}"
         [[ "${matchtype}" == "e" ]] && matchtype="" || matchtype="un"
-        currprinttype="${opt:1}"
-        [[ -z "${currprinttype}" ]] && currprinttype="hb"
-        currvar_n="${matchtype}expected_${currprinttype}"
+        currsearchloc="${opt:1}"
+        [[ -z "${currsearchloc}" ]] && currsearchloc="hb"
+        currvar_n="${matchtype}expected_${currsearchloc}"
         log DEBUG "Adding '$2' to ${currvar_n}"
         typeset "${currvar_n}=${!currvar_n:+${!currvar_n}\n}$2"
-        printtype="${printtype/${currprinttype}/}${currprinttype}"
         shift
         ;;
       -i)
@@ -283,13 +288,20 @@ function req {
     esac
     shift
   done
+  httpargs=(--print=hb "${sesstype}" "${SESSION}" --path-as-is "${httpargs[@]}")
+
   log DEBUG "----------"
-  log INFO "http --print="${printtype}" "${sesstype}" '${SESSION}' ${httpargs[*]}"
-  log DEBUG "Looking for the following lines in the response:\nHEADERS:\n${expected_h}\nBODY:\n${expected_b}\nANY:\n${expected_hb}"
-  resp=$(http --print=hb "${sesstype}" "${SESSION}" "${httpargs[@]}")
-  log DEBUG "${resp}"
+  log INFO "http $(quote "${httpargs[@]}")"
+  log DEBUG "Looking for the following lines in the response:" \
+    "HEADERS:\n${expected_h}" \
+    "BODY:\n${expected_b}" \
+    "ANY:\n${expected_hb}"
+  resp=$(http "${httpargs[@]}")
+  log DEBUG "Got:\n${resp}"
+
   matchres=$(echo -n "${resp}" | awk \
     -v IGNORECASE="${ignorecase}" \
+    -v debug="$(( ${VERBOSITY} >= ${DEBUG} ))" \
     -v exp_hb="${expected_hb//\\/\\\\}" \
     -v exp_h="${expected_h//\\/\\\\}" \
     -v exp_b="${expected_b//\\/\\\\}" \
@@ -297,6 +309,11 @@ function req {
     -v unexp_h="${unexpected_h//\\/\\\\}" \
     -v unexp_b="${unexpected_b//\\/\\\\}" \
     '
+function dbg(msg) {
+  return  # TODO fix
+  if (debug) { print "DEBUG: " msg }
+}
+
 BEGIN {
   split(exp_hb, exp_hb_arr, "\\\\n")
   split(exp_h, exp_h_arr, "\\\\n")
@@ -304,57 +321,57 @@ BEGIN {
   split(unexp_hb, unexp_hb_arr, "\\\\n")
   split(unexp_h, unexp_h_arr, "\\\\n")
   split(unexp_b, unexp_b_arr, "\\\\n")
-  # for (e in exp_hb_arr) { print "XXX " e " " exp_hb_arr[e] }
-  # for (e in exp_h_arr) { print "XXX " e " " exp_h_arr[e] }
-  # for (e in exp_b_arr) { print "XXX " e " " exp_b_arr[e] }
-  # for (e in unexp_hb_arr) { print "XXX un" e " " unexp_hb_arr[e] }
-  # for (e in unexp_h_arr) { print "XXX un" e " " unexp_h_arr[e] }
-  # for (e in unexp_b_arr) { print "XXX un" e " " unexp_b_arr[e] }
+  for (e in exp_hb_arr) { dbg(e " " exp_hb_arr[e]) }
+  for (e in exp_h_arr) { dbg(e " " exp_h_arr[e]) }
+  for (e in exp_b_arr) { dbg(e " " exp_b_arr[e]) }
+  for (e in unexp_hb_arr) { dbg("un" e " " unexp_hb_arr[e]) }
+  for (e in unexp_h_arr) { dbg("un" e " " unexp_h_arr[e]) }
+  for (e in unexp_b_arr) { dbg("un" e " " unexp_b_arr[e]) }
   delete unexp[0] # declare unexp as an array
 }
 /^\r$/ { inside_body=1 }
 {
   for (e in exp_hb_arr) {
-    # print "XXX matching " $0 " against " exp_hb_arr[e]
+    dbg("matching " $0 " against " exp_hb_arr[e])
     if ($0 ~ exp_hb_arr[e]) {
-      # print "XXX match!"
+      dbg("match!")
       delete exp_hb_arr[e]
     }
   }
   for (e in unexp_hb_arr) {
-    # print "XXX neg matching " $0 " against " unexp_hb_arr[e]
+    dbg("neg matching " $0 " against " unexp_hb_arr[e])
     if ($0 ~ unexp_hb_arr[e]) {
-      # print "XXX match!"
+      dbg("match!")
       unexp[length(unexp)+1]=unexp_hb_arr[e]
     }
   }
   if (inside_body) {
     for (e in exp_b_arr) {
-      # print "XXX matching " $0 " against " exp_b_arr[e]
+      dbg("matching " $0 " against " exp_b_arr[e])
       if ($0 ~ exp_b_arr[e]) {
-        # print "XXX match!"
+        dbg("match!")
         delete exp_b_arr[e]
       }
     }
     for (e in unexp_b_arr) {
-      # print "XXX neg matching " $0 " against " unexp_b_arr[e]
+      dbg("neg matching " $0 " against " unexp_b_arr[e])
       if ($0 ~ unexp_b_arr[e]) {
-        # print "XXX match!"
+        dbg("match!")
         unexp[length(unexp)+1]=unexp_b_arr[e]
       }
     }
   } else {
     for (e in exp_h_arr) {
-      # print "XXX matching " $0 " against " exp_h_arr[e]
+      dbg("matching " $0 " against " exp_h_arr[e])
       if ($0 ~ exp_h_arr[e]) {
-        # print "XXX match!"
+        dbg("match!")
         delete exp_h_arr[e]
       }
     }
     for (e in unexp_h_arr) {
-      # print "XXX neg matching " $0 " against " unexp_h_arr[e]
+      dbg("neg matching " $0 " against " unexp_h_arr[e])
       if ($0 ~ unexp_h_arr[e]) {
-        # print "XXX match!"
+        dbg("match!")
         unexp[length(unexp)+1]=unexp_h_arr[e]
       }
     }
@@ -369,10 +386,9 @@ END {
 }')
 
   if [[ $? -ne 0 ]] ; then
-    log WARNING "Unexpected response to '${httpargs[*]}':\n${matchres}"
-    # exit 2
+    log WARNING "Unexpected response to http $(quote "${httpargs[@]}"):" \
+      "${matchres}"
   fi
-  # log DEBUG "XXX ${matchres}"
 }
 
 function join {
