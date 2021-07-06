@@ -1,7 +1,7 @@
 import logging
 from copy import copy, deepcopy
 
-from .utils import merge, is_mergeable
+from ..utils import merge, is_mergeable
 
 
 logger = logging.getLogger(__name__)

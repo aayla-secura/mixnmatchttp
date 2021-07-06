@@ -14,7 +14,7 @@ import binascii
 from wrapt import decorator
 from string import Template
 
-from ..dicts import CaseInsensitiveOrderedDict
+from ..containers import CaseInsensitiveOrderedDict
 from ..cookie import Cookie
 from ..conf import Conf, ConfItem
 from ..containers import DefaultDict

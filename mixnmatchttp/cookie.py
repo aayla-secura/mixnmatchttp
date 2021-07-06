@@ -3,7 +3,7 @@ import re
 from datetime import datetime
 from copy import copy
 
-from .dicts import CaseInsensitiveOrderedDict
+from .containers import CaseInsensitiveOrderedDict
 from .conf import ConfItem
 from .conf.exc import ConfError
 from .containers import DefaultAttrs, DefaultAttrKeys

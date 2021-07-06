@@ -21,7 +21,7 @@ else:
         load_pem_private_key
     from cryptography.hazmat.primitives import serialization
 
-from ...dicts import CaseInsensitiveOrderedDict
+from ...containers import CaseInsensitiveOrderedDict
 from ...endpoints import Endpoint
 from ...utils import is_str, param_dict, datetime_from_timestamp, \
     curr_timestamp, randhex, randstr, int_to_bytes
