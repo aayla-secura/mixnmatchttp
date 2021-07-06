@@ -1,4 +1,5 @@
 import logging
+from copy import deepcopy
 import re
 import sys
 import argparse
@@ -37,6 +38,16 @@ from mixnmatchttp.handlers.authenticator.api import User
 from mixnmatchttp.endpoints import Endpoint, \
     ARGS_OPTIONAL, ARGS_REQUIRED, ARGS_ANY
 from mixnmatchttp.conf import Conf
+
+
+deep_ep = Endpoint({  # test assigning to multiple parents
+    '1': {
+        '2': Endpoint({
+            '3': Endpoint(),
+            '4': {},
+        }),
+    },
+})
 
 @decorator
 def endpoint_debug_handler(handler, self, args, kwargs):
@@ -78,14 +89,8 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
                 '$nargs': ARGS_ANY,
             },
         },
-        deep={
-            '1': {
-                '2': Endpoint({
-                    '3': Endpoint(),
-                    '4': {},
-                }),
-            },
-        },
+        deep=deepcopy(deep_ep),
+        deepdup=deepcopy(deep_ep),
     )
     template_pages = dict(
         testpage={
@@ -128,6 +133,10 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
 
     @endpoint_debug_handler
     def do_deep(self):
+        pass
+
+    @endpoint_debug_handler
+    def do_deepdup(self):
         pass
 
     @endpoint_debug_handler

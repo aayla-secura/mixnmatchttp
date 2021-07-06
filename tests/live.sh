@@ -167,11 +167,19 @@ function test_endpoints {
     OPTIONS /test/post_one/foo
 
   req -eb "This is do_GET for / @  \(\[\]\)" GET /
+
   req -eb "This is do_deep for /deep @  \(\[\]\)" GET /deep/
   req -eb "This is do_deep for /deep @ 1 \(\[\]\)" GET /deep/1
   req -eb "This is do_deep for /deep @ 1/2 \(\[\]\)" GET /deep/1/2
   req -eb "This is do_deep for /deep @ 1/2/3 \(\[\]\)" GET /deep/1/2/3
   req -eb "This is do_deep_1_2_4 for /deep/1/2/4 @  \(\[\]\)" GET /deep/1/2/4
+
+  req -eb "This is do_deepdup for /deepdup @  \(\[\]\)" GET /deepdup/
+  req -eb "This is do_deepdup for /deepdup @ 1 \(\[\]\)" GET /deepdup/1
+  req -eb "This is do_deepdup for /deepdup @ 1/2 \(\[\]\)" GET /deepdup/1/2
+  req -eb "This is do_deepdup for /deepdup @ 1/2/3 \(\[\]\)" GET /deepdup/1/2/3
+  req -eb "This is do_deepdup for /deepdup/1/2/4 @  \(\[\]\)" GET /deepdup/1/2/4
+
   req -eb "This is do_default for / @ test \(\[\]\)" GET /test/
   req -eb "This is do_default for / @ test \(\[\]\)" GET /a/../test/
   req -eb "This is do_default for / @ test \(\[\]\)" GET /test/a/../

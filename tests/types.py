@@ -3,7 +3,7 @@ import re
 from copy import copy, deepcopy
 
 import loggers
-from mixnmatchttp.conf.containers import DefaultAttrDict
+from mixnmatchttp.containers import DefaultAttrDict
 
 class Mergeable(DefaultAttrDict):
     __attempt_merge__ = True
