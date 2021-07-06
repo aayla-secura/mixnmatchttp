@@ -5,6 +5,7 @@ from copy import copy
 
 from .dicts import CaseInsensitiveOrderedDict
 from .conf import ConfItem
+from .conf.exc import ConfError
 from .containers import DefaultAttrs, DefaultAttrKeys
 from .utils import datetime_from_timestamp, datetime_from_str, datetime_to_str
 
@@ -89,7 +90,11 @@ class CookieAttrs(DefaultAttrKeys):
                     return
 
             ci = copy(ci)
-            ci.__merge__(value)
+            try:
+                ci.__merge__(value)
+            except ConfError as e:
+                raise ValueError('{} is not a valid {} value'.format(
+                    value, name))
 
         else:
             # defaults should be set by us only, not checking
@@ -134,8 +139,10 @@ class Cookie(DefaultAttrs):
     __container_type__ = CookieAttrs
 
     def __init__(self, name, value='', /, **kwargs):
-        object.__setattr__(self, 'name', name)
-        object.__setattr__(self, 'value', value)
+        object.__setattr__(self, 'name', str(name))
+        if not self.name:
+            raise ValueError('Cookie name is required')
+        object.__setattr__(self, 'value', str(value))
         super().__init__(**kwargs)
 
     @property
