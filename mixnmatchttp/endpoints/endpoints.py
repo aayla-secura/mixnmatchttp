@@ -499,13 +499,13 @@ class Endpoint(DefaultDict):
             raise ValueError('Endpoint name must be non-empty')
 
         if key[0] == '$':
-            #  logger.debug(
-            #      'Endpoint {id} ({name}): {key} = {val}{comment}'.format(
-            #          id=self._id,
-            #          name=self.name,
-            #          key=key[1:],
-            #          val=item,
-            #          comment="" if is_explicit else " (default)"))
+            logger.debug(
+                'Endpoint {id} ({name}): {key} = {val}{comment}'.format(
+                    id=self._id,
+                    name=self.name,
+                    key=key[1:],
+                    val=item,
+                    comment="" if is_explicit else " (default)"))
             self._settings.__update_single__(
                 key[1:], item, is_explicit)
             return

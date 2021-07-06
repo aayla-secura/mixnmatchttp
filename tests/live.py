@@ -157,7 +157,9 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
     def do_GET(self):
         page = self.page_from_template(
             self.templates['testtemplate'],
-            {'handler': 'do_GET'})
+            {'handler': 'do_GET',
+             'root': self.pathname,
+             'args': []})
         self.render(page)
 
     def send_custom_headers(self):

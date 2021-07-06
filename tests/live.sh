@@ -40,7 +40,7 @@ function test_auth {
   req -eh "^HTTP/1\.[01] 200" GET /foo/topsecret/ # /topsecret is not relative
 
   req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" GET /dummylogin
-  req -eb "This is do_GET for  @  \(\)" GET /secret/
+  req -eb "This is do_GET for /secret @  \(\[\]\)" GET /secret/
 
   req -i -eh "^Set-Cookie: *SESSION=[^\w]" \
     GET /logout # should clear the session on the server, but not in client,
@@ -48,7 +48,7 @@ function test_auth {
   req -eh "^HTTP/1\.[01] 401" GET /secret/ # old cookie, should be invalid
 
   req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" GET /dummylogin # re-login
-  req -eb "This is do_GET for  @  \(\)" GET /secret/
+  req -eb "This is do_GET for /secret @  \(\[\]\)" GET /secret/
   req -i -eh "^Set-Cookie: *SESSION=[a-f0-9]" \
     GET /dummylogin # re-login should clear the old cookie (set above) do not
                     # remember the new one
@@ -72,10 +72,10 @@ function test_auth {
 
   req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" \
     POST /login username=foo password=bar
-  req -eb "This is do_GET for  @  \(\)" GET /secret/
+  req -eb "This is do_GET for /secret @  \(\[\]\)" GET /secret/
   req -i -w -eh "^Set-Cookie: *SESSION=[a-f0-9]" -f \
     POST /login username=foo password=bar
-  req -eb "This is do_GET for  @  \(\)" GET /secret/
+  req -eb "This is do_GET for /secret @  \(\[\]\)" GET /secret/
 
   req -w -eh "^HTTP/1\.[01] 401" \
     POST /changepwd username=foo new_password=barbaz
@@ -150,39 +150,39 @@ function test_cache {
 ############################################################
 function test_endpoints {
   log INFO "-------------------- MISC ENDPOINTS TESTS --------------------"
-  req -eh "^HTTP/1\.[01] 404" -eb "Extra arguments: foo" GET /test/foo
-  req -eh "^HTTP/1\.[01] 404" -eb "Missing required argument" POST /test/post_one
-  req -eh "^HTTP/1\.[01] 404" -eb "Extra arguments: bar" POST /test/post_one/foo/bar
-  req -eh "^HTTP/1\.[01] 404" -eb "Missing required argument" GET /test/get_req
-  req -eh "^HTTP/1\.[01] 404" -eb "Missing required argument" GET /test/get_req/
-  req -eh "^HTTP/1\.[01] 404" -eb "Extra arguments: bar" GET /test/get_opt/foo/bar
+  req -eh "^HTTP/1\.[01] 400" -eb "1 extra argument: foo" GET /test/foo
+  req -eh "^HTTP/1\.[01] 400" -eb "1 missing required argument" POST /test/post_one
+  req -eh "^HTTP/1\.[01] 400" -eb "1 extra argument: bar" POST /test/post_one/foo/bar
+  req -eh "^HTTP/1\.[01] 400" -eb "At least one missing required arguments" \
+    GET /test/get_req
+  req -eh "^HTTP/1\.[01] 400" -eb "At least one missing required arguments" \
+    GET /test/get_req/
+  req -eh "^HTTP/1\.[01] 400" -eb "1 extra argument: bar" GET /test/get_opt/foo/bar
 
   req -i -eh "^HTTP/1\.[01] 405" -eh "^Allow:" \
-    -eb "Specified method is invalid for this resource" \
     GET /test/post_one/foo
   req -i -eh "^HTTP/1\.[01] 405" -eh "^Allow:" \
-    -eb "Specified method is invalid for this resource" \
     POST /test/get_opt/foo
-  req -i -eh "^HTTP/1\.[01] 200" -eh "^Content-Length: *0" -eh "^Allow:" \
+  req -i -eh "^HTTP/1\.[01] 20[04]" -eh "^Content-Length: *0" -eh "^Allow:" \
     OPTIONS /test/post_one/foo
 
-  req -eb "This is do_GET for  @  \(\)" GET /
-  req -eb "This is do_deep for /deep @  \(\)" GET /deep/
-  req -eb "This is do_deep for /deep @ 1 \(\)" GET /deep/1
-  req -eb "This is do_deep for /deep @ 1/2 \(\)" GET /deep/1/2
-  req -eb "This is do_deep for /deep @ 1/2/3 \(\)" GET /deep/1/2/3
-  req -eb "This is do_deep_1_2_4 for /deep/1/2/4 @  \(\)" GET /deep/1/2/4
-  req -eb "This is do_default for  @ test \(\)" GET /test/
-  req -eb "This is do_default for  @ test \(\)" GET /a/../test/
-  req -eb "This is do_default for  @ test \(\)" GET /test/a/../
-  req -eb "This is do_default for  @ test/post_one \(foo\)" POST /test/post_one/foo
-  req -eb "This is do_default for  @ test/post_one \(foo\)" POST /test/post_one/a/../foo
-  req -eb "This is do_default for  @ test/get_opt \(\)" GET /test/get_opt
-  req -eb "This is do_default for  @ test/get_opt \(\)" GET /test/get_opt/
-  req -eb "This is do_default for  @ test/get_opt \(foo\)" GET /test/get_opt/foo
-  req -eb "This is do_default for  @ test/get_any \(\)" GET /test/get_any/
-  req -eb "This is do_default for  @ test/get_any \(foo/bar/baz\)" GET /test/get_any/foo/bar/baz
-  req -eb "This is do_default for  @ test/get_req \(foo/bar/baz\)" GET /test/get_req/foo/bar/baz
+  req -eb "This is do_GET for / @  \(\[\]\)" GET /
+  req -eb "This is do_deep for /deep @  \(\[\]\)" GET /deep/
+  req -eb "This is do_deep for /deep @ 1 \(\[\]\)" GET /deep/1
+  req -eb "This is do_deep for /deep @ 1/2 \(\[\]\)" GET /deep/1/2
+  req -eb "This is do_deep for /deep @ 1/2/3 \(\[\]\)" GET /deep/1/2/3
+  req -eb "This is do_deep_1_2_4 for /deep/1/2/4 @  \(\[\]\)" GET /deep/1/2/4
+  req -eb "This is do_default for / @ test \(\[\]\)" GET /test/
+  req -eb "This is do_default for / @ test \(\[\]\)" GET /a/../test/
+  req -eb "This is do_default for / @ test \(\[\]\)" GET /test/a/../
+  req -eb "This is do_default for / @ test/post_one \(foo\)" POST /test/post_one/foo
+  req -eb "This is do_default for / @ test/post_one \(foo\)" POST /test/post_one/a/../foo
+  req -eb "This is do_default for / @ test/get_opt \(\[\]\)" GET /test/get_opt
+  req -eb "This is do_default for / @ test/get_opt \(\[\]\)" GET /test/get_opt/
+  req -eb "This is do_default for / @ test/get_opt \(foo\)" GET /test/get_opt/foo
+  req -eb "This is do_default for / @ test/get_any \(\[\]\)" GET /test/get_any/
+  req -eb "This is do_default for / @ test/get_any \(foo/bar/baz\)" GET /test/get_any/foo/bar/baz
+  req -eb "This is do_default for / @ test/get_req \(foo/bar/baz\)" GET /test/get_req/foo/bar/baz
 
   req -i -eh "^X-Mod: *Test" \
     GET /modtest # modifies the default subpoint for /test to require 1 arg
@@ -194,8 +194,8 @@ function test_endpoints {
 ############################################################
 function test_templates {
   log INFO "-------------------- TEMPLATES TESTS --------------------"
-  req -eb "This is do_default for  @ test \(\)" GET /test/
-  req -eb "This is do_GET for  @  \(\)" GET /foo/
+  req -eb "This is do_default for / @ test \(\[\]\)" GET /test/
+  req -eb "This is do_GET for /foo @  \(\[\]\)" GET /foo/
 }
 
 ############################################################
@@ -205,9 +205,9 @@ function test_misc {
   req -i -eh "^Cache-Control: *no-cache, *no-store, *must-revalidate" GET /foo
   req -i -uh "^Cache-Control: *no-cache, *no-store, *must-revalidate" GET /foo.js
 
-  req -eb "This is do_default for  @ test \(\)" GET //test/
-  req -eb "This is do_default for  @ test \(\)" GET /foo/../test/
-  req -eb "This is do_default for  @ test \(\)" GET /foo%2f../test/
+  req -eb "This is do_default for  @ test \(\[\]\)" GET //test/
+  req -eb "This is do_default for  @ test \(\[\]\)" GET /foo/../test/
+  req -eb "This is do_default for  @ test \(\[\]\)" GET /foo%2f../test/
   req -i -eh "^Location: *//foo\?bar" GET /foo%2f%2e.%2fgoto%2f//foo%3fbar?baz
 }
 
