@@ -451,7 +451,7 @@ class Endpoint(DefaultDict):
                     curr_handler = getattr(
                         httpreq, 'do{}'.format(try_path))
                 except AttributeError:
-                    logger.debug('No handler do{} for {}'.format(
+                    logger.debug('No generic handler do{} for {}'.format(
                         try_path, ep_path))
                 else:
                     logger.debug(
@@ -522,6 +522,12 @@ class Endpoint(DefaultDict):
             item = self.__class__(item, **{'$name': key})
 
         item.parent = self
+        logger.debug(
+            'Endpoint {id} ({name}): parent = {pid} ({pname})'.format(
+                id=item._id,
+                name=item.name,
+                pid=item.parent._id,
+                pname=item.parent.name))
         # For variable endpoints, set the default varname to the
         # parent's name
         if key == '*':
