@@ -1,6 +1,5 @@
 import logging
 import re
-from copy import copy
 from wrapt import ObjectProxy
 from bidict import bidict
 
@@ -91,8 +90,14 @@ class Endpoint(DefaultDict):
                 )
     Any dictionary keys starting with $ correspond to an attribute
     (without the $). All other keys become subpoints of the parent;
-    their value should be either another Endpoint (in which case it is
-    copied), or a plain dictionary to be converted to an Endpoint.
+    their value should be either another Endpoint, or a plain
+    dictionary to be converted to an Endpoint.
+
+    Note that a single Endpoint instance should never be assigned to
+    multiple parents unless they have been deepcopied! A copy is not
+    done when simply assigning an Endpoint as a child for performance
+    reasons, but if this same endpoint is to be assigned to multiple
+    parents, you need to manually deepcopy it.
 
     Recognized attributes for endpoints (keys starting with $):
         disabled:        <bool>; whether the endpoint can be called;
@@ -516,7 +521,6 @@ class Endpoint(DefaultDict):
         #          name=self.name,
         #          child=key))
         if isinstance(item, Endpoint):
-            item = copy(item)
             item._settings.name = key
         else:
             item = self.__class__(item, **{'$name': key})
@@ -542,6 +546,24 @@ class Endpoint(DefaultDict):
         clone._id = '{:x}'.format(id(clone))
         clone._settings = self._settings.__copy__()
         clone.parent = self.parent
+        return clone
+
+    def __deepcopy__(self, memo=None):
+        def rec_set_parent(ep):
+            for c in ep.__explicit__:
+                child = ep.__get_single__(c, True)[0]
+                child.parent = ep
+                rec_set_parent(child)
+            for c in ep.__default__:
+                child = ep.__get_single__(c, False)[0]
+                child.parent = ep
+                rec_set_parent(child)
+
+        clone = super().__deepcopy__()
+        clone._id = '{:x}'.format(id(clone))
+        clone._settings = self._settings.__deepcopy__()
+        clone.parent = self.parent
+        rec_set_parent(clone)
         return clone
 
 class ParsedEndpoint(ObjectProxy):

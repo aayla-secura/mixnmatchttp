@@ -1,13 +1,13 @@
 import unittest
 import re
-from copy import copy
+from copy import copy, deepcopy
 
 import loggers
 from mixnmatchttp.endpoints import Endpoint, ParsedEndpoint, \
     ARGS_REQUIRED, ARGS_ANY, ARGS_OPTIONAL
 from mixnmatchttp.endpoints.exc import EndpointError, \
     MethodNotAllowedError, ExtraArgsError, MissingArgsError, NotAnEndpointError
-from mixnmatchttp.conf.containers import DefaultAttrs
+from mixnmatchttp.containers import DefaultAttrs
 
 class CSEndpoint(Endpoint):
     case_sensitive = True
@@ -54,16 +54,35 @@ class Test(unittest.TestCase):
     def test_settings_parsed(self):
         self._test_settings(True)
 
-    def test_copy(self):
+    def test_copy_a(self):
         e = Endpoint(
             foo={
                 '$raw_args': True,
             })
         c = copy(e)
-        self.assertIs(e.parent, c.parent)
+        self.assertEqual(e, c)
         self.assertEqual(e._settings, c._settings)
         self.assertIsNot(e._settings, c._settings)
         self.assertNotEqual(e._id, c._id)
+
+    def test_copy_b(self):
+        e = Endpoint(
+            foo=Endpoint(
+                bar={}
+            ))
+        c = copy(e)
+        self.assertIs(e['foo'], c['foo'])
+        self.assertIs(e['foo'].parent, e)
+
+    def test_deepcopy(self):
+        e = Endpoint(
+            foo=Endpoint(
+                bar={}
+            ))
+        c = deepcopy(e)
+        self.assertIsNot(e['foo'], c['foo'])
+        self.assertIs(e['foo'].parent, e)
+        self.assertIs(c['foo'].parent, c)
 
     def test_checks(self):
         self.assertRaises(EndpointError, Endpoint, dict(

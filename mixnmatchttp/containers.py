@@ -1,7 +1,7 @@
 import logging
 from copy import copy, deepcopy
 
-from ..utils import merge, is_mergeable
+from .utils import merge, is_mergeable
 
 
 logger = logging.getLogger(__name__)
@@ -164,7 +164,7 @@ class _DefaultsBase:
             _deldef(True)
 
     def __eq__(self, other):
-        if not isinstance(other, DefaultAttrs):
+        if not isinstance(other, _DefaultsBase):
             return False
         return self.__explicit__ == other.__explicit__ and \
             self.__default__ == other.__default__
