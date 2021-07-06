@@ -4,7 +4,7 @@ from copy import copy, deepcopy
 
 import loggers
 from mixnmatchttp.endpoints import Endpoint, ParsedEndpoint, \
-    ARGS_REQUIRED, ARGS_ANY, ARGS_OPTIONAL
+    EndpointArgs, ARGS_REQUIRED, ARGS_ANY, ARGS_OPTIONAL
 from mixnmatchttp.endpoints.exc import EndpointError, \
     MethodNotAllowedError, ExtraArgsError, MissingArgsError, NotAnEndpointError
 from mixnmatchttp.containers import DefaultAttrs
@@ -379,6 +379,28 @@ class Test(unittest.TestCase):
         ep = e.parse(h)
         self.assertEqual(ep.handler.__name__, hnc.__name__)
         self.assertIs(ep.handler, hnc)
+
+    def test_args(self):
+        ARGS_ONE = EndpointArgs(1)
+        ARGS_NONE = EndpointArgs(0)
+        self.assertRaises(
+            MissingArgsError, ARGS_REQUIRED.validate, [])
+        self.assertRaises(
+            MissingArgsError, ARGS_ONE.validate, [])
+        self.assertRaises(
+            ExtraArgsError, ARGS_ONE.validate, ['a', 'b'])
+        self.assertRaises(
+            ExtraArgsError, ARGS_NONE.validate, ['a'])
+        self.assertRaises(
+            ExtraArgsError, ARGS_OPTIONAL.validate, ['a', 'b'])
+        ARGS_OPTIONAL.validate(['a'])
+        ARGS_OPTIONAL.validate([])
+        ARGS_REQUIRED.validate(['a'])
+        ARGS_REQUIRED.validate(['a', 'b'])
+        ARGS_ANY.validate([])
+        ARGS_ANY.validate(['a', 'b'])
+        ARGS_ONE.validate(['a'])
+        ARGS_NONE.validate([])
 
 
 if __name__ == '__main__':

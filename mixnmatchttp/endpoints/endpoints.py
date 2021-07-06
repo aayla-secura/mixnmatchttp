@@ -14,6 +14,7 @@ __all__ = [
     'ARGS_OPTIONAL',
     'ARGS_ANY',
     'ARGS_REQUIRED',
+    'EndpointArgs',
     'Endpoint',
     'ParsedEndpoint',
 ]
@@ -21,32 +22,52 @@ __all__ = [
 
 class EndpointArgs:
     _special = bidict(
-        optional='?',  # 0 or 1
         any='*',       # any number
-        required='+'  # 1 or more
+        optional='?',  # 0 or 1
+        required='+'   # 1 or more
     )
 
     def __init__(self, num):
         try:
-            self.value = to_natint(num)
+            self._value = to_natint(num)
         except ValueError:
             if num in self._special:
-                self.value = num
+                self._value = num
             elif num in self._special.inverse:
-                self.value = self._special.inverse[num]
+                self._value = self._special.inverse[num]
             else:
                 raise ValueError(
                     ('{} is not a valid self.valueber of '
                      'endpoint numuments').format(num))
 
     def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, self.value)
+        return '{}({})'.format(self.__class__.__name__, self._value)
 
     def __str__(self):
-        return str(self.value)
+        return str(self._value)
 
-    def parse(self, num):
-        pass  # TODO
+    def validate(self, args):
+        if self._value in self._special:
+            getattr(self, '_validate_{}'.format(self._value))(args)
+        else:
+            # it's an integer
+            nargs = len(args)
+            if nargs > self._value:
+                raise ExtraArgsError(args[self._value - nargs:])
+            elif nargs < self._value:
+                raise MissingArgsError(self._value - nargs)
+
+    def _validate_any(self, args):
+        pass
+
+    def _validate_optional(self, args):
+        nargs = len(args)
+        if nargs > 1:
+            raise ExtraArgsError(args[1:])
+
+    def _validate_required(self, args):
+        if not args:
+            raise MissingArgsError
 
 class EndpointSettings(DefaultAttrs):
     def __init__(self):
@@ -69,6 +90,9 @@ class EndpointSettings(DefaultAttrs):
         if name == 'name':
             # it must be a child, update default disabled
             self.__update_single__('disabled', False, False)
+        if name == 'nargs':
+            if not isinstance(value, EndpointArgs):
+                value = EndpointArgs(value)
 
         super().__update_single__(name, value, is_explicit)
 
@@ -321,19 +345,7 @@ class Endpoint(DefaultDict):
             # ignore double slashes
             args_arr = list(filter(None, args.split('/')))
 
-        nargs = len(args_arr)
-        if ep.nargs == ARGS_ANY:
-            pass
-        elif ep.nargs == ARGS_REQUIRED:
-            if not args_arr:
-                raise MissingArgsError
-        elif ep.nargs == ARGS_OPTIONAL:
-            if nargs > 1:
-                raise ExtraArgsError(nargs - 1, args)
-        elif nargs > ep.nargs:
-            raise ExtraArgsError(nargs - ep.nargs, args)
-        elif nargs < ep.nargs:
-            raise MissingArgsError(ep.nargs - nargs)
+        ep.nargs.validate(args_arr)
 
         if httpreq.command not in ep.allowed_methods:
             raise MethodNotAllowedError(ep.allowed_methods)
@@ -603,10 +615,6 @@ class ParsedEndpoint(ObjectProxy):
         return self.__wrapped__.__repr__()
 
 
-ARGS_OPTIONAL = '?'
-ARGS_ANY = '*'
-ARGS_REQUIRED = '+'
-# TODO
-#  ARGS_OPTIONAL = EndpointArgs('?')
-#  ARGS_ANY = EndpointArgs('*')
-#  ARGS_REQUIRED = EndpointArgs('+')
+ARGS_OPTIONAL = EndpointArgs('optional')
+ARGS_ANY = EndpointArgs('any')
+ARGS_REQUIRED = EndpointArgs('required')

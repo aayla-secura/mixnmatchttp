@@ -108,16 +108,24 @@ def to_bool(val):
 def to_natint(val, base=0):
     '''Convert val to an integer and requires it to be >=0'''
 
-    new = int(val, base=base)
+    if is_str(val):
+        new = int(val, base=base)
+    else:
+        new = int(val)
     if new < 0:
         raise ValueError('{} is negative'.format(val))
+    return new
 
 def to_posint(val, base=0):
     '''Convert val to an integer and requires it to be >0'''
 
-    new = int(val, base=base)
+    if is_str(val):
+        new = int(val, base=base)
+    else:
+        new = int(val)
     if new <= 0:
         raise ValueError('{} is not positive'.format(val))
+    return new
 
 def str_remove_chars(s, skip):
     return s.translate(str.maketrans(dict.fromkeys(skip)))

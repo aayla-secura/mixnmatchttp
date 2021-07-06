@@ -37,9 +37,10 @@ class MissingArgsError(EndpointParseError):
 class ExtraArgsError(EndpointParseError):
     '''Exception raised when extra arguments are given'''
 
-    def __init__(self, nargs, all_args):
+    def __init__(self, extra_args):
+        nargs = len(extra_args)
         super().__init__(
             '{n} extra argument{suffix}: {extra}.'.format(
                 n=nargs,
                 suffix='' if nargs == 1 else 's',
-                extra='/'.join(all_args.split('/')[-nargs:])))
+                extra='/'.join(extra_args)))
