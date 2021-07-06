@@ -363,7 +363,9 @@ class App:
             help=('Specify log colors. Give this option once for '
                   'every level, e.g. --log-colors DEBUG blue '
                   '--log-colors INFO bold. Use "reset" to clear '
-                  'a default color. See doc on colorlog'))
+                  'a default color. See doc on colorlog. In '
+                  'addition, you can also use the "inverse" color '
+                  'name.'))
         self.parser_groups['logging'].add_argument(
             '--secondary-log-colors', dest='secondary_log_colors',
             action=UpdateSecondaryLogColor, nargs=3,
@@ -380,7 +382,8 @@ class App:
             help=('Specify log colors. Give this option once for '
                   'every level, e.g. --secondary-log-colors level '
                   'DEBUG blue --secondary-log-colors message INFO '
-                  'reset. See doc on colorlog'))
+                  'reset. The default defines the "reset" prefix. '
+                  'See doc on colorlog'))
         self.parser_groups['logging'].add_argument(
             '--log-fmt', dest='log_fmt',
             default='%(levelname)-8s [%(asctime)s] %(name)s: %(message)s',
