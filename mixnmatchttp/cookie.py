@@ -133,10 +133,10 @@ class CookieAttrs(DefaultAttrKeys):
 class Cookie(DefaultAttrs):
     __container_type__ = CookieAttrs
 
-    def __init__(self, name, value='', /, **kargs):
+    def __init__(self, name, value='', /, **kwargs):
         object.__setattr__(self, 'name', name)
         object.__setattr__(self, 'value', value)
-        super().__init__(**kargs)
+        super().__init__(**kwargs)
 
     @property
     def attributes(self):

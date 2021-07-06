@@ -15,14 +15,14 @@ from .dbapi import DBBase
 logger = logging.getLogger(__name__)
 
 
-def json_serializer(obj, **kargs):
+def json_serializer(obj, **kwargs):
     '''Supports mapper classes and dict-like objects
 
-    - kargs are passed to object_to_dict
+    - kwargs are passed to object_to_dict
     '''
 
     if is_mapper(obj.__class__):
-        return object_to_dict(obj, **kargs)
+        return object_to_dict(obj, **kwargs)
     elif is_map_like(obj):
         return dict(obj)
     elif isinstance(obj, datetime):
@@ -122,7 +122,7 @@ def needs_db_error_response_handling(base):
 
     return _decorator
 
-def needs_db(base, reraise=False, close_at_end=False, **kargs):
+def needs_db(base, reraise=False, close_at_end=False, **session_kwargs):
     '''Passes a session of base to the wrapped method
 
     - The session is commited but not closed, unless close_at_end is
@@ -136,7 +136,7 @@ def needs_db(base, reraise=False, close_at_end=False, **kargs):
         dconn = DBConnection.get(base)
         with dconn.session_context(
                 reraise=reraise,
-                close_at_end=close_at_end, **kargs) as db:
+                close_at_end=close_at_end, **session_kwargs) as db:
             return wrapped(db, *args, **kwargs)
 
     return _decorator

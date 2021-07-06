@@ -59,7 +59,7 @@ class BaseAuthInMemoryHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         return u
 
     @classmethod
-    def update_user(cls, user, **kargs):
+    def update_user(cls, user, **kwargs):
         '''Does nothing'''
 
         pass

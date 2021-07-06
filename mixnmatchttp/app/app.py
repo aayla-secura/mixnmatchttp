@@ -378,7 +378,7 @@ class App:
                      check=None,
                      required=False,
                      no_save=False,
-                     **kargs):
+                     **kwargs):
         '''TODO
 
         - check can be 'file', 'dir' or a callable which takes one
@@ -405,7 +405,7 @@ class App:
         if no_save:
             self._no_conf_items.append(dest)
 
-        parser.add_argument(*args, **kargs)
+        parser.add_argument(*args, **kwargs)
         if required or check is not None:
             if check == 'file':
                 check_f = partial(ensure_exists, is_file=True)
@@ -679,13 +679,13 @@ class App:
         for n, d in self.db_bases.items():
             base = d['base']
             url = getattr(self.conf, '{}_dburl'.format(n))
-            session_kargs = d.get('session_args', {})
-            engine_kargs = d.get('engine_args', {})
+            session_kwargs = d.get('session_args', {})
+            engine_kwargs = d.get('engine_args', {})
             cache = d.get('cache', False)
             DBConnection(base,
                          url,
-                         session_kargs=session_kargs,
-                         engine_kargs=engine_kargs)
+                         session_kwargs=session_kwargs,
+                         engine_kwargs=engine_kwargs)
             if cache:  # ETag support
                 self.reqhandler.enable_client_cache(n, base)
 

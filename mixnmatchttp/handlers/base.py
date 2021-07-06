@@ -710,19 +710,19 @@ class BaseHTTPRequestHandler(
         new.append(value)
         self.__headers_to_send[header] = new
 
-    def save_cookie(self, *args, **kargs):
+    def save_cookie(self, *args, **kwargs):
         '''Saves a Set-Cookie header to be sent by end_headers
 
         It overrides any previously saved cookies with that name.
         '''
 
-        if len(args) == 1 and not kargs:
+        if len(args) == 1 and not kwargs:
             if isinstance(args[0], Cookie):
                 cookie = args[0]
             else:
                 cookie = Cookie.parse(args[0])
         else:
-            cookie = Cookie(*args, **kargs)
+            cookie = Cookie(*args, **kwargs)
 
         new = list(filter(
             lambda c: c.name.lower() != cookie.name.lower(),
@@ -804,13 +804,13 @@ class BaseHTTPRequestHandler(
         self.log_message(
             '"{}" {!s} {!s}', self.requestline, code, size)
 
-    def log_error(self, fmt, *args, **kargs):
-        self._log_message(logging.ERROR, fmt, *args, **kargs)
+    def log_error(self, fmt, *args, **kwargs):
+        self._log_message(logging.ERROR, fmt, *args, **kwargs)
 
-    def log_message(self, fmt, *args, **kargs):
-        self._log_message(logging.INFO, fmt, *args, **kargs)
+    def log_message(self, fmt, *args, **kwargs):
+        self._log_message(logging.INFO, fmt, *args, **kwargs)
 
-    def _log_message(self, level, fmt, *args, **kargs):
+    def _log_message(self, level, fmt, *args, **kwargs):
         '''Uses the logger'''
 
         logger.log(
@@ -818,7 +818,7 @@ class BaseHTTPRequestHandler(
             '{addr} - - [{date}] {rest}'.format(
                 addr=self.address_string(),
                 date=self.log_date_time_string(),
-                rest=fmt.format(*args, **kargs)))
+                rest=fmt.format(*args, **kwargs)))
 
     def do_default(self):
         '''Default handler for endpoints'''

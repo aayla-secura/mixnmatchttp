@@ -173,14 +173,14 @@ class Endpoint(DefaultDict):
 
     case_sensitive = False
 
-    def __init__(self, arg=None, /, **kargs):
+    def __init__(self, arg=None, /, **kwargs):
         '''Keyword arguments take precedence'''
 
-        if arg and kargs:
+        if arg and kwargs:
             init = arg.copy()
-            init.update(kargs)
+            init.update(kwargs)
         else:
-            init = arg or kargs
+            init = arg or kwargs
 
         self._id = '{:x}'.format(id(self))
         self._settings = EndpointSettings()

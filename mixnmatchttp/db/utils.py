@@ -34,8 +34,8 @@ class DBConnection:
     def __init__(self,
                  base,
                  url,
-                 session_kargs={},
-                 engine_kargs={}):
+                 session_kwargs={},
+                 engine_kwargs={}):
         '''Binds the session maker and base, and creates the inspector
 
         Also clears the current maps and checks the database for
@@ -57,13 +57,13 @@ class DBConnection:
         self.__base = base
         engine = self._get_engine(url)
         if engine is None:
-            engine = self._create_engine(url, engine_kargs)
+            engine = self._create_engine(url, engine_kwargs)
         self.__instances[engine] = self
         self.__engine = engine
         self.__session = scoped_session(sessionmaker(
-            bind=engine, **session_kargs))
+            bind=engine, **session_kwargs))
         self.__base.metadata.bind = engine
-        self._create_db(engine_kargs)
+        self._create_db(engine_kwargs)
         self._ensure_is_sane()
         self.__inspector = Inspector.from_engine(engine)
         self.__maps = {}
@@ -206,7 +206,7 @@ class DBConnection:
         logger.debug('uniq_column_sets for {} = {}'.format(
             tbl, uniq_column_sets))
 
-    def _create_db(self, engine_kargs):
+    def _create_db(self, engine_kwargs):
         exists = False
         dbname = self.engine.url.database
         if self.url.startswith('sqlite'):
@@ -216,7 +216,7 @@ class DBConnection:
             baseurl = self.url
             if dbname:
                 baseurl = baseurl.replace('/{}'.format(dbname), '')
-            engine = create_engine(baseurl, **engine_kargs)
+            engine = create_engine(baseurl, **engine_kwargs)
             insp = Inspector.from_engine(engine)
             if dbname in insp.get_schema_names():
                 exists = True
@@ -237,8 +237,8 @@ class DBConnection:
                 return e
         return None
 
-    def _create_engine(self, url, engine_kargs):
-        engine = create_engine(url, **engine_kargs)
+    def _create_engine(self, url, engine_kwargs):
+        engine = create_engine(url, **engine_kwargs)
         return engine
 
     def _ensure_is_sane(self):
@@ -261,11 +261,11 @@ class DBConnection:
                         reraise=True,
                         commit_at_end=True,
                         close_at_end=True,
-                        **kargs):
+                        **kwargs):
         '''Creates a context with an open SQLAlchemy session.'''
 
         session = self.session()
-        for k, v in kargs.items():
+        for k, v in kwargs.items():
             setattr(session, k, v)
         try:
             yield session
@@ -643,7 +643,7 @@ def object_from_dict(db, cls, dic,
         db.add(obj)
     return obj
 
-def bulk_objects_from_dicts(db, cls, dics, **kargs):
+def bulk_objects_from_dicts(db, cls, dics, **kwargs):
     '''Creates or updates objects from a list of dictionaries
 
     Keyword arguments are same as object_from_dict
@@ -651,7 +651,7 @@ def bulk_objects_from_dicts(db, cls, dics, **kargs):
 
     result = []
     for dic in dics:
-        obj = object_from_dict(db, cls, dic, **kargs)
+        obj = object_from_dict(db, cls, dic, **kwargs)
         result.append(obj)
     return result
 

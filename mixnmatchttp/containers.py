@@ -276,11 +276,11 @@ class DefaultDict(DefaultKeys):
 
         self.__update_single__(key, value, False)
 
-    def setdefaults(self, **kargs):
-        for k in kargs:
-            self.setdefault(k, kargs[k])
+    def setdefaults(self, **kwargs):
+        for k in kwargs:
+            self.setdefault(k, kwargs[k])
 
-    def update(self, arg=None, /, **kargs):
+    def update(self, arg=None, /, **kwargs):
         '''Updates the explicitly set and default items
 
         arg can be a regular dictionary (in which case it updates
@@ -289,7 +289,7 @@ class DefaultDict(DefaultKeys):
         explicitly set items).
         '''
 
-        if arg and kargs:
+        if arg and kwargs:
             raise ValueError(
                 ('Keyword arguments cannot be used with a '
                  'positional argument'))
@@ -297,19 +297,19 @@ class DefaultDict(DefaultKeys):
             explicit = arg.__explicit__
             default = arg.__default__
         else:
-            other = arg or kargs
+            other = arg or kwargs
             explicit = self.__explicit__.__class__(other)
             default = self.__default__.__class__()
 
         self.__update__(default, **explicit)
 
-    def get(self, *args, **kargs):
+    def get(self, *args, **kwargs):
         pass  # TODO
 
-    def pop(self, *args, **kargs):
+    def pop(self, *args, **kwargs):
         pass  # TODO
 
-    def popitem(self, *args, **kargs):
+    def popitem(self, *args, **kwargs):
         pass  # TODO
 
     def clear(self):

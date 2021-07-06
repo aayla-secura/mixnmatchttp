@@ -174,11 +174,11 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         },
     )
 
-    def __init__(self, *args, **kargs):
+    def __init__(self, *args, **kwargs):
         if self.conf.JWT.enc_key is None \
                 or self.conf.JWT.dec_key is None:
             raise RuntimeError('JWT key not set')
-        super().__init__(*args, **kargs)
+        super().__init__(*args, **kwargs)
 
     @classmethod
     def set_JWT_keys(cls,

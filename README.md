@@ -555,12 +555,12 @@ Redirects (with `307`) to any address given in the URL.
   * [x] Merge `_secrets` and `_can_create_users` with those of parent classes, like endpoints
   * [x] Fix path canonicalization for endpoints, .e.g `//login` does not match an endpoint
   * [x] More useful debugging messages
+  * [x] `kargs` -> `kwargs` everywhere
   * [ ] Catch any exception from a request handler (maybe in a request shutdown hook of the server class) and send a 500 response
   * [ ] Templates from files
   * [ ] Do not save expanded env variables to config file
   * [ ] `--add-users`: password input should not be displayed
   * [ ] Multiple variable endpoints for a single parent distinguished by a regex; key can be `/<regex>/`
-  * [ ] `kargs` -> `kwargs` everywhere
   * [ ] Use format strings instead of the format string method
 
   * [ ] Default column for short value in `object_to_dict` should use the first primary key, not hardcoded `id`.
