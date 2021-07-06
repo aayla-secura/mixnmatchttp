@@ -556,7 +556,7 @@ Redirects (with `307`) to any address given in the URL.
   * [x] Fix path canonicalization for endpoints, .e.g `//login` does not match an endpoint
   * [x] More useful debugging messages
   * [x] `kargs` -> `kwargs` everywhere
-  * [ ] Catch any exception from a request handler (maybe in a request shutdown hook of the server class) and send a 500 response
+  * [x] Catch any exception from a request handler (maybe in a request shutdown hook of the server class) and send a 500 response
   * [ ] Templates from files
   * [ ] Do not save expanded env variables to config file
   * [ ] `--add-users`: password input should not be displayed

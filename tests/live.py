@@ -91,6 +91,7 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
         },
         deep=deepcopy(deep_ep),
         deepdup=deepcopy(deep_ep),
+        err={},
     )
     template_pages = dict(
         testpage={
@@ -124,6 +125,10 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
     @endpoint_debug_handler
     def do_default(self):
         pass
+
+    @endpoint_debug_handler
+    def do_err(self):
+        raise RuntimeError('foo')
 
     @endpoint_debug_handler
     def do_cookie(self):
@@ -171,12 +176,7 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
         self.render(page)
 
     def do_TRACE(self):
-        page = self.page_from_template(
-            self.templates['testtemplate'],
-            {'handler': 'do_TRACE',
-             'root': self.pathname,
-             'args': []})
-        self.render(page)
+        raise RuntimeError  # test
 
     def send_custom_headers(self):
         self.send_header('X-Foo', 'Foo')

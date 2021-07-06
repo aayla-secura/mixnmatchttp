@@ -37,6 +37,12 @@ def methodhandler(realhandler, self, args, kwargs):
     Calls the endpoint's handler or the HTTP method handler
     '''
 
+    def call_handler(handler=realhandler):
+        try:
+            handler(*args, **kwargs)
+        except Exception as e:
+            self.send_error(500, explain=str(e))
+
     logger.debug(
         'INIT for method handler; path is {}'.format(self.path))
 
@@ -88,13 +94,13 @@ def methodhandler(realhandler, self, args, kwargs):
             self.pathname[len(self.conf.path_prefix):]
         logger.debug('Calling normal handler, path is {}'.format(
             self.pathname))
-        realhandler(*args, **kwargs)
+        call_handler()
     except MethodNotAllowedError as e:
         logger.debug(str(e))
         self.save_header('Allow', ','.join(e.allowed_methods))
         if self.command == 'OPTIONS':
             logger.debug('Doing OPTIONS')
-            realhandler(*args, **kwargs)
+            call_handler()
         else:
             self.send_error(405)
     except (MissingArgsError, ExtraArgsError) as e:
@@ -106,7 +112,7 @@ def methodhandler(realhandler, self, args, kwargs):
             self.pathname[len(self.conf.api_prefix):]
         logger.debug('Calling endpoint handler, path is {}'.format(
             self.pathname))
-        self.ep.handler(*args, **kwargs)
+        call_handler(self.ep.handler)
 
 
 ############################################################
