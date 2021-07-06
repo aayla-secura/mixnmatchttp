@@ -26,7 +26,7 @@ PROMPT=-1   # always print
 VERBOSITY=2 # max level printed
 
 SESSION=$(xxd -p -l 10 </dev/urandom)
-HOST='http://localhost:58080'
+HOST='http://localhost'
 TESTS_ALL=(auth proxy cache endpoints templates misc)
 
 ############################################################
@@ -415,6 +415,12 @@ Options:
 
 Implemented tests:
 $(sed -E -n 's/^(function )?test_([a-zA-Z0-9_]+).*/\2/p' "${BASH_SOURCE[0]}" )
+
+Run the server with
+  python live.py -r . -p <port_number> --userfile test_users.txt --userfile-plain --hash-type
+Then run tests with
+  ${BASH_SOURCE[0]} -H http://localhost:<port_number>
+replacing <port_number> as chosen
 EOF
 
 exit 1
