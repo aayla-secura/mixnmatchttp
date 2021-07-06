@@ -178,25 +178,24 @@ function test_endpoints {
   req -eb "This is do_deepdup for /deepdup @ 1 \(\[\]\)" GET /deepdup/1
   req -eb "This is do_deepdup for /deepdup @ 1/2 \(\[\]\)" GET /deepdup/1/2
   req -eb "This is do_deepdup for /deepdup @ 1/2/3 \(\[\]\)" GET /deepdup/1/2/3
-  req -eb "This is do_deepdup for /deepdup/1/2/4 @  \(\[\]\)" GET /deepdup/1/2/4
+  req -eb "This is do_deepdup for /deepdup @ 1/2/4 \(\[\]\)" GET /deepdup/1/2/4
 
   req -eb "This is do_default for / @ test \(\[\]\)" GET /test/
   req -eb "This is do_default for / @ test \(\[\]\)" GET /a/../test/
   req -eb "This is do_default for / @ test \(\[\]\)" GET /test/a/../
-  req -eb "This is do_default for / @ test/post_one \(foo\)" POST /test/post_one/foo
-  req -eb "This is do_default for / @ test/post_one \(foo\)" POST /test/post_one/a/../foo
+  req -eb "This is do_default for / @ test/post_one \(\['foo'\]\)" POST /test/post_one/foo
+  req -eb "This is do_default for / @ test/post_one \(\['foo'\]\)" POST /test/post_one/a/../foo
   req -eb "This is do_default for / @ test/get_opt \(\[\]\)" GET /test/get_opt
   req -eb "This is do_default for / @ test/get_opt \(\[\]\)" GET /test/get_opt/
-  req -eb "This is do_default for / @ test/get_opt \(foo\)" GET /test/get_opt/foo
+  req -eb "This is do_default for / @ test/get_opt \(\['foo'\]\)" GET /test/get_opt/foo
   req -eb "This is do_default for / @ test/get_any \(\[\]\)" GET /test/get_any/
-  req -eb "This is do_default for / @ test/get_any \(foo/bar/baz\)" GET /test/get_any/foo/bar/baz
-  req -eb "This is do_default for / @ test/get_req \(foo/bar/baz\)" GET /test/get_req/foo/bar/baz
+  req -eb "This is do_default for / @ test/get_any \(\['foo', *'bar', *'baz'\]\)" GET /test/get_any/foo/bar/baz
+  req -eb "This is do_default for / @ test/get_req \(\['foo', *'bar', *'baz'\]\)" GET /test/get_req/foo/bar/baz
 
-  req -i -eh "^X-Mod: *Test" \
-    GET /modtest # modifies the default subpoint for /test to require 1 arg
-  req -eh "^HTTP/1\.[01] 404" \
-    -eb "Extra arguments: foo" \
-    GET /test/foo # should not take effect, i.e. it should still accept no args as before
+  # req -i -eh "^X-Mod: *Test" \
+  #   GET /modtest # modifies the default subpoint for /test to require 1 arg
+  # req -eh "^HTTP/1\.[01] 404" -eb "Extra arguments: foo" \
+  #   GET /test/foo # should not take effect, i.e. it should still accept no args as before
 }
 
 ############################################################
@@ -213,9 +212,9 @@ function test_misc {
   req -i -eh "^Cache-Control: *no-cache, *no-store, *must-revalidate" GET /foo
   req -i -uh "^Cache-Control: *no-cache, *no-store, *must-revalidate" GET /foo.js
 
-  req -eb "This is do_default for  @ test \(\[\]\)" GET //test/
-  req -eb "This is do_default for  @ test \(\[\]\)" GET /foo/../test/
-  req -eb "This is do_default for  @ test \(\[\]\)" GET /foo%2f../test/
+  req -eb "This is do_default for / @ test \(\[\]\)" GET //test/
+  req -eb "This is do_default for / @ test \(\[\]\)" GET /foo/../test/
+  req -eb "This is do_default for / @ test \(\[\]\)" GET /foo%2f../test/
   req -i -eh "^Location: *//foo\?bar" GET /foo%2f%2e.%2fgoto%2f//foo%3fbar?baz
 }
 

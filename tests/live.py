@@ -72,7 +72,7 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
     endpoints = Endpoint(
         dummylogin={},
         cookie={},
-        modtest={},
+        #  modtest={},
         test={
             'post_one': Endpoint(
                 {  # test passing an Endpoint instance
@@ -112,15 +112,15 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
         self.new_session(User('dummy'))
         self.send_response_auth()
 
-    @endpoint_debug_handler
-    def do_modtest(self):
+    #  @endpoint_debug_handler
+    #  def do_modtest(self):
         # modify endpoint, should affect only current request
-        self.endpoints['test'] = {}
-        self.endpoints['test'].nargs = 1
+    #      self.endpoints['test'] = {}
+    #      self.endpoints['test'].nargs = 1
         # set a header just for this request
-        self.save_header('X-Mod', 'Test')
-        self.do_GET.__wrapped__()
-
+    #      self.save_header('X-Mod', 'Test')
+    #      self.do_GET.__wrapped__()
+    #
     @endpoint_debug_handler
     def do_default(self):
         pass
