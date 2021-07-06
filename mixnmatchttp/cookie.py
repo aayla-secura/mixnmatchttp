@@ -5,7 +5,7 @@ from copy import copy
 
 from .dicts import CaseInsensitiveOrderedDict
 from .conf import ConfItem
-from .conf.containers import DefaultAttrs, DefaultAttrKeys
+from .containers import DefaultAttrs, DefaultAttrKeys
 from .utils import datetime_from_timestamp, datetime_from_str, datetime_to_str
 
 

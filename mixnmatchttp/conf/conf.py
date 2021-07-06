@@ -4,7 +4,7 @@ from copy import copy, deepcopy
 from wrapt import ObjectProxy
 from wrapt.wrappers import _ObjectProxyMetaType
 
-from .containers import DefaultAttrs, DefaultAttrDict
+from ..containers import DefaultAttrs, DefaultAttrDict
 from .exc import ConfError, ConfRuntimeError, \
     ConfTypeError, ConfValueError
 from ..utils import merge

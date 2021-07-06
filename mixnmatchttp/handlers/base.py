@@ -17,7 +17,7 @@ from string import Template
 from ..dicts import CaseInsensitiveOrderedDict
 from ..cookie import Cookie
 from ..conf import Conf, ConfItem
-from ..conf.containers import DefaultDict
+from ..containers import DefaultDict
 from ..endpoints import Endpoint
 from ..endpoints.exc import NotAnEndpointError, \
     MethodNotAllowedError, MissingArgsError, ExtraArgsError
