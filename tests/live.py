@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
 from mixnmatchttp.handlers import BaseHTTPRequestHandler, \
     AuthCookieHTTPRequestHandler, CachingHTTPRequestHandler, \
-    ProxyingHTTPRequestHandler, methodhandler
+    ProxyingHTTPRequestHandler
 from mixnmatchttp.handlers.authenticator.api import User
 from mixnmatchttp.endpoints import Endpoint, \
     ARGS_OPTIONAL, ARGS_REQUIRED, ARGS_ANY
@@ -162,11 +162,18 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
 
         return (not self.pathname.endswith('.js')) or super().no_cache()
 
-    @methodhandler
     def do_GET(self):
         page = self.page_from_template(
             self.templates['testtemplate'],
             {'handler': 'do_GET',
+             'root': self.pathname,
+             'args': []})
+        self.render(page)
+
+    def do_TRACE(self):
+        page = self.page_from_template(
+            self.templates['testtemplate'],
+            {'handler': 'do_TRACE',
              'root': self.pathname,
              'args': []})
         self.render(page)

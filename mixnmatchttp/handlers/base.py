@@ -119,6 +119,22 @@ class BaseMeta(type):
     def __new__(cls, name, bases, attributes):
         new_class = super().__new__(cls, name, bases, attributes)
 
+        # wrap method handlers
+        for m in ['HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE',
+                  'TRACE', 'OPTIONS']:
+            try:
+                h = getattr(new_class, 'do_{}'.format(m))
+            except AttributeError:
+                continue
+
+            try:
+                # if we've already wrapped it, get the original one
+                h = h.__wrapped__
+            except AttributeError:
+                pass
+
+            setattr(new_class, 'do_{}'.format(m), methodhandler(h))
+
         # every child gets it's own class attribute for the following
         # ones, which combines the corresponding attribute of all parents
         attr_types = {
@@ -809,7 +825,6 @@ class BaseHTTPRequestHandler(
 
         self.send_response_default()
 
-    @methodhandler
     def do_GET(self):
         '''Decorated by methodhandler'''
 
@@ -822,19 +837,16 @@ class BaseHTTPRequestHandler(
             else:
                 self.send_error(403)
 
-    @methodhandler
     def do_POST(self):
         '''Decorated by methodhandler'''
 
         self.send_error(405)
 
-    @methodhandler
     def do_HEAD(self):
         '''Decorated by methodhandler'''
 
         super().do_HEAD()
 
-    @methodhandler
     def do_OPTIONS(self):
         '''Decorated by methodhandler'''
 

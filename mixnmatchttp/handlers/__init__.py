@@ -1,4 +1,4 @@
-from .base import BaseHTTPRequestHandler, methodhandler
+from .base import BaseHTTPRequestHandler
 from .authenticator import AuthCookieHTTPRequestHandler, \
     AuthJWTHTTPRequestHandler
 try:
