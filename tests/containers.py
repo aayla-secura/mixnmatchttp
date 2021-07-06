@@ -3,7 +3,7 @@ import re
 from copy import copy, deepcopy
 
 import loggers
-from mixnmatchttp.containers import DefaultAttrDict
+from mixnmatchttp.containers import DefaultAttrDict, CaseInsensitiveOrderedDict
 
 class Mergeable(DefaultAttrDict):
     __attempt_merge__ = True
@@ -11,7 +11,15 @@ class Mergeable(DefaultAttrDict):
 class HoldsList(DefaultAttrDict):
     __item_type__ = list
 
-class Test(unittest.TestCase):
+class TestDicts(unittest.TestCase):
+    def test(self):
+        d = CaseInsensitiveOrderedDict(FoO='bar')
+        self.assertEqual(str(d), "{'FoO': 'bar'}")
+        self.assertIn('fOo', d)
+        self.assertEqual(d['fOo'], 'bar')
+        self.assertEqual(d.getkey('fOo'), 'FoO')
+
+class TestDefaults(unittest.TestCase):
     def test_attr_item(self):
         s = DefaultAttrDict(dict(a=1, b=2), c=3)
         s.d = 4
