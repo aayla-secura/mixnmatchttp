@@ -30,8 +30,9 @@ try:
     from ..handlers.authenticator.dbapi import DBBase
 except ImportError:
     pass  # optional
-from .utils import AppendUniqueArgAction, exit, read_line, \
-    make_dirs, ensure_exists
+from .utils import \
+    AppendUniqueArgAction, UpdateLogColor, UpdateSecondaryLogColor, \
+    exit, read_line, make_dirs, ensure_exists
 from ..log import get_loggers
 from .exc import ArgumentValueError
 
@@ -40,26 +41,46 @@ MY_PKG_NAME = __name__.split('.')[0]
 
 
 class App:
-    '''TODO'''
+    '''Wrapper with configuration and daemon support for servers'''
 
     def __init__(self,
                  reqhandler,
                  name=None,
+                 description='',
                  server_cls=None,
                  proto='http',
-                 description='',
+                 support_daemon=False,
                  support_ssl=True,
                  support_cors=True,
-                 support_daemon=False,
                  auth_type='cookie',
                  db_bases={},
-                 user_conf_key='user_conf',
-                 log_fmt=(
-                     '%(levelname)-8s [%(asctime)s] %(name)s: '
-                     '%(message)s')):
-        '''TODO
+                 user_conf_key='user_conf'):
+        '''
 
-        reqhandler will be replaced
+        - reqhandler: the request handler class; it will be replaced
+          by a new class of its type with appropirately updated
+          attributes
+        - name: the name of the server; used only for choosing default
+          file/directory names
+        - description: a description for the server; used only in the
+          help message
+        - server_cls: the server class; default is a multi-threaded or
+          single-threaded class depending on the --multithread
+          command-line option
+        - proto: the protocol that the server talks via; selecting
+          'http' enables various HTTP-specific configuration options
+        - support_daemon: enable damon configuration
+        - support_ssl: enable SSL configuration
+        - support_cors: enable CORS configuration (only valid with
+          http protocol)
+        - auth_type: the authentication type to use; selecting 'JWT'
+          enables extra configuration; selecting None disables all
+          authentication-related configuration
+        - db_bases:
+        - user_conf_key: if this is not None, the user configuration
+          collected from command-line options (including defaults)
+          will be accessible as this attribute for both the server and
+          request handler classes
         '''
 
         if db_bases:
@@ -99,11 +120,10 @@ class App:
         self.reqhandler = reqhandler
         self.name = name
         self.server_cls = server_cls
-        self.proto = proto
-        self.auth_type = auth_type
+        self.proto = proto.lower()
+        self.auth_type = auth_type.lower()
         self.db_bases = db_bases
         self.user_conf_key = user_conf_key
-        self.log_fmt = log_fmt
 
         if self.name is None:
             if self.proto == 'http':
@@ -330,6 +350,51 @@ class App:
         self.parser_groups['logging'].add_argument(
             '--color', dest='use_color', default=False,
             action='store_true', help='Use colorful log')
+        self.parser_groups['logging'].add_argument(
+            '--log-colors', dest='log_colors',
+            action=UpdateLogColor, nargs=2,
+            default={
+                'DEBUG': 'blue',
+                'INFO': 'bold',
+                'WARNING': 'purple',
+                'ERROR': 'bold,red',
+                'CRITICAL': 'bold,fg_white,bg_red',
+            },
+            help=('Specify log colors. Give this option once for '
+                  'every level, e.g. --log-colors DEBUG blue '
+                  '--log-colors INFO bold. Use "reset" to clear '
+                  'a default color. See doc on colorlog'))
+        self.parser_groups['logging'].add_argument(
+            '--secondary-log-colors', dest='secondary_log_colors',
+            action=UpdateSecondaryLogColor, nargs=3,
+            default={
+                'reset': {
+                    'TRACE': 'reset',
+                    'DEBUG': 'reset',
+                    'INFO': 'reset',
+                    'WARNING': 'reset',
+                    'ERROR': 'reset',
+                    'CRITICAL': 'reset',
+                },
+            },
+            help=('Specify log colors. Give this option once for '
+                  'every level, e.g. --secondary-log-colors level '
+                  'DEBUG blue --secondary-log-colors message INFO '
+                  'reset. See doc on colorlog'))
+        self.parser_groups['logging'].add_argument(
+            '--log-fmt', dest='log_fmt',
+            default='%(levelname)-8s [%(asctime)s] %(name)s: %(message)s',
+            help=('Log format to use. If --color is given, then you '
+                  'can make use for log colors, e.g. %%(log_color)s '
+                  'or %%(message_log_color)s'))
+        self.parser_groups['logging'].add_argument(
+            '--log-dbgfmt', dest='log_dbgfmt',
+            default=('%(levelname)-8s [%(asctime)s] %(name)s:'
+                     '%(funcName)s@%(lineno)d : %(message)s'),
+            help='Log format to use for debugging messages. ')
+        self.parser_groups['logging'].add_argument(
+            '--log-datefmt', dest='log_datefmt', default='%d %b %Y %H:%M:%S',
+            help='Log date format to use.')
 
         self.parser_groups['server'] = self.parser.add_argument_group(
             'Server options')
@@ -379,7 +444,7 @@ class App:
                      required=False,
                      no_save=False,
                      **kwargs):
-        '''TODO
+        '''Add a command-line argument to the app
 
         - check can be 'file', 'dir' or a callable which takes one
           argument (the value) and can raise ArgumentValueError.
@@ -423,7 +488,10 @@ class App:
                 'check': check_f}
 
     def configure(self):
-        '''TODO'''
+        '''Prepare for running
+
+        Loads/saves configuration file and does preliminary checks.
+        '''
 
         if self._is_configured:
             raise RuntimeError("'configure' can be called only once.")
@@ -491,7 +559,7 @@ class App:
         self._is_configured = True
 
     def update_config(self, conffile):
-        '''TODO'''
+        '''Updates current config with that in config file'''
 
         with open(conffile, 'r') as f:
             content_raw = f.read()
@@ -505,14 +573,14 @@ class App:
         self.conf.update(settings)
 
     def save_config(self, conffile):
-        '''TODO'''
+        '''Writes current config to config file'''
 
         f = open(conffile, 'w')
         json.dump(self.conf.to_dict(), f, indent=2)
         f.close()
 
     def run(self):
-        '''TODO'''
+        '''Starts the server'''
 
         if not self._is_configured:
             self.configure()
@@ -662,7 +730,7 @@ class App:
             'TRACE': [],
             'DEBUG': self.conf.debug_log,
             'INFO': self.conf.log,
-            'WARNING': [(x[0], None, 'error.log') for x in self.conf.log]
+            'WARNING': [('', None, 'error.log')]
         }
         log_dest['INFO'].append((__name__, 'event.log'))
         if self.conf.request_log is not None:
@@ -670,8 +738,18 @@ class App:
                 (MY_PKG_NAME, self.conf.request_log))
         self.loggers = get_loggers(log_dest,
                                    logdir=self.conf.logdir,
-                                   fmt=self.log_fmt,
-                                   color=self.conf.use_color)
+                                   fmt=self.conf.log_fmt,
+                                   dbgfmt=(
+                                       self.conf.log_fmt if
+                                       self.conf.log_dbgfmt is None
+                                       else self.conf.log_dbgfmt),
+                                   datefmt=self.conf.log_datefmt,
+                                   log_colors=(
+                                       self.conf.log_colors if
+                                       self.conf.use_color else {}),
+                                   secondary_log_colors=(
+                                       self.conf.secondary_log_colors if
+                                       self.conf.use_color else {}))
 
         #### Connect to the databases
         # This has to be done after daemonization because the sockets

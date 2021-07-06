@@ -8,10 +8,29 @@ class AppendUniqueArgAction(argparse.Action):
         try:
             curr = getattr(namespace, self.dest)
         except AttributeError:
-            setattr(namespace, self.dest, values)
+            setattr(namespace, self.dest, [values])
         else:
             if values not in curr:
                 curr.append(values)
+
+class UpdateLogColor(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        try:
+            curr = getattr(namespace, self.dest)
+        except AttributeError:
+            curr = {}
+            setattr(namespace, self.dest, curr)
+        self._update_log_color(curr, values)
+
+    def _update_log_color(self, curr_colors, new):
+        level, color = new
+        curr_colors[level] = color
+
+class UpdateSecondaryLogColor(UpdateLogColor):
+    def _update_log_color(self, curr_colors, new):
+        pref, level, color = new
+        curr_colors.setdefault(pref, {})
+        curr_colors[pref][level] = color
 
 
 def exit(error, rc=None):

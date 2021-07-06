@@ -1,22 +1,24 @@
 import sys
 import logging
 
-from .utils import get_handler, get_formatter
+from .utils import get_handler, get_formatter, rm_handler, \
+    get_destinations
 
 
 __all__ = [
-    'get_loggers'
+    'get_loggers',
+    'clear_loggers',
 ]
 
 
 def get_loggers(
         destinations_map,
-        color=True,
         logdir=None,
-        fmt='%(levelname)-8s [%(asctime)s] %(name)s: %(message)s',
-        dbgfmt=('%(levelname)-8s [%(asctime)s] %(name)s:'
-                '%(funcName)s@%(lineno)d : %(message)s'),
-        datefmt='%d/%b/%Y %H:%M:%S'):
+        fmt='%(message)s',
+        dbgfmt=None,
+        datefmt=None,
+        log_colors={},
+        secondary_log_colors={}):
     '''Sets up loggers for given packages and levels.
 
     destinations_map is a dictionary where the keys are one of the
@@ -45,42 +47,81 @@ def get_loggers(
     INFO will go to info.log and DEBUG to stdout and TRACE to
     mixnmatchttp.log.
 
-    If color is True, then log is colorful.
+    If log_colors or secondary_log_colors are given, then log is
+    colorful. See doc on colorlog for their format.
     '''
 
     loggers = {}
+    if dbgfmt is None:
+        dbgfmt = fmt
+    _destinations_map = get_destinations(
+        destinations_map, complete=True)
 
-    destinations_map = destinations_map.copy()
-    _highest_dest = None
-    for _lvl in [
-            'TRACE', 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']:
-        try:
-            _highest_dest = destinations_map[_lvl]
-        except KeyError:
-            if _highest_dest is None:
-                continue
-            destinations_map[_lvl] = _highest_dest
-
-    for level, destinations in destinations_map.items():
-        for dest in destinations:
-            if not dest:
-                dest = ['']
-            pkg, *files = dest
-            if not files:
-                files = ['{}.log'.format(pkg if pkg else 'all')]
-
+    for level, destinations in _destinations_map.items():
+        for pkg, files in destinations:
             for filename in files:
                 logger = logging.getLogger(pkg)
                 logger.setLevel(logging.TRACE)  # the handler filters
                 loggers[pkg] = logger
 
-                handler = get_handler(pkg, level, logdir, filename)
-                if handler is not None:
-                    lf = get_formatter(
-                        level, fmt if level != 'DEBUG' else dbgfmt,
-                        datefmt, color)
-                    if lf is not None:
-                        handler.setFormatter(lf)
-                    logger.addHandler(handler)
+                handler = get_handler(
+                    pkg, level, logdir=logdir, filename=filename)
+                if handler is None:
+                    continue
+
+                lf = get_formatter(
+                    level,
+                    fmt=fmt if level != 'DEBUG' else dbgfmt,
+                    datefmt=datefmt,
+                    log_colors=log_colors,
+                    secondary_log_colors=secondary_log_colors)
+                if lf is not None:
+                    handler.setFormatter(lf)
+                logger.addHandler(handler)
 
     return loggers
+
+def clear_loggers(loggers, destinations_map=None, logdir=None):
+    '''Remove specified handlers from loggers
+
+    If destinations_map is None, then all handlers are removed.
+    Otherwise only those handlers in destinations_map are removed.
+    Loggers are never removed, but they may not have any handlers
+    after this call.
+    '''
+
+    def _clear_all_loggers():
+        for logger in loggers.values():
+            for handler in logger.handlers.copy():
+                if handler.name is None:
+                    # not set by us
+                    continue
+                logger.removeHandler(handler)
+                rm_handler(handler)
+
+    if destinations_map is None:
+        _clear_all_loggers()
+        return
+
+    _destinations_map = get_destinations(
+        destinations_map, complete=False)
+    for level, destinations in _destinations_map.items():
+        for pkg, files in destinations:
+            for filename in files:
+                try:
+                    logger = loggers[pkg]
+                except KeyError:
+                    continue
+
+                handler = get_handler(
+                    pkg,
+                    level,
+                    logdir=logdir,
+                    filename=filename,
+                    existing=True)
+                if handler is None:
+                    continue
+
+                rm_handler(
+                    pkg, level, logdir=logdir, filename=filename)
+                logger.removeHandler(handler)

@@ -13,23 +13,19 @@ class DebugStreamHandler(logging.StreamHandler):
 
 
 if __name__ == "__main__":
-    from mixnmatchttp.log import get_loggers
+    from mixnmatchttp.log import get_loggers, clear_loggers
     parser = argparse.ArgumentParser(add_help=False)
-    parser.add_argument(
-        '--color', dest='use_color', default=False,
-        action='store_true', help='Use colorful log')
     parser.add_argument(
         '-d', '--debug', dest='loglevel',
         default=logging.INFO, action='store_const',
         const=logging.DEBUG)
     args, sys.argv[1:] = parser.parse_known_args()
 
-    get_loggers(
-        {
-            'DEBUG': [('mixnmatchttp', None)]
-            if args.loglevel is logging.DEBUG else [],
-            'INFO': [('mixnmatchttp', None)]
-        }, color=args.use_color)
+    loggers = get_loggers({
+        'DEBUG': [('mixnmatchttp', None)]
+        if args.loglevel is logging.DEBUG else [],
+        'INFO': [('mixnmatchttp', None)]
+    })
 
 from mixnmatchttp.handlers import BaseHTTPRequestHandler, \
     AuthCookieHTTPRequestHandler, CachingHTTPRequestHandler, \
@@ -183,6 +179,7 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
 
 
 if __name__ == "__main__":
+    clear_loggers(loggers)
     from mixnmatchttp.app import App
     webapp = App(
         TestHTTPRequestHandler,

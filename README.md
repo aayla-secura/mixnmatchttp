@@ -557,6 +557,7 @@ Redirects (with `307`) to any address given in the URL.
   * [x] More useful debugging messages
   * [x] `kargs` -> `kwargs` everywhere
   * [x] Catch any exception from a request handler (maybe in a request shutdown hook of the server class) and send a 500 response
+  * [x] Logging conf for request line via command-line; also, custom format for it
   * [ ] Templates from files
   * [ ] Do not save expanded env variables to config file
   * [ ] `--add-users`: password input should not be displayed
@@ -566,7 +567,6 @@ Redirects (with `307`) to any address given in the URL.
   * [ ] Default column for short value in `object_to_dict` should use the first primary key, not hardcoded `id`.
   * [ ] Check if jwt and sql modules are required
   * [ ] Use of pollers in `send_headers`
-  * [ ] Logging conf for request line via command-line; also, custom format for it
   * [ ] Move stuff from JWT class to `cryptoutils` module
   * [ ] Test with nginx proxy setup (it was behaving weirdly, need to find if it's a bug here)
 
