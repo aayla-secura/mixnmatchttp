@@ -10,7 +10,7 @@ UTCTimeZone = timezone.utc
 LocalTimeZone = datetime.now(tz=timezone.utc).astimezone().tzinfo
 logger = logging.getLogger(__name__)
 __all__ = [
-    'is_time_like',
+    'is_timestamp_like',
     'curr_timestamp',
     'datetime_to_timestamp',
     'datetime_from_timestamp',
@@ -20,7 +20,7 @@ __all__ = [
 ]
 
 
-def is_time_like(val,
+def is_timestamp_like(val,
                  years_ahead=10,
                  months_ahead=0,
                  days_ahead=0,

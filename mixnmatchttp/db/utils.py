@@ -16,11 +16,24 @@ from sqlalchemy.orm.util import class_mapper
 from .exc import ObjectConversionError, ObjectNotFoundError, \
     ObjectExistsError, ServerDBError, MetadataMistmatchError
 from .is_db_sane import is_db_sane
-from ..utils import is_seq_like, is_map_like, is_time_like, \
+from ..utils import is_seq_like, is_map_like, is_timestamp_like, \
     date_from_timestamp
 
 
 logger = logging.getLogger(__name__)
+__all__ = [
+    'DBConnection',
+    'is_base',
+    'is_mapper',
+    'parse_db_url',
+    'filter_results',
+    'object_to_dict',
+    'object_from_dict',
+    'bulk_objects_from_dicts',
+    'delete_from_dict',
+    'update_from_dict',
+    'bulk_update_from_dicts',
+]
 
 
 class DBConnection:
@@ -421,7 +434,7 @@ def _object_to_dict(obj,
                 result.append(v)
                 first = False
             return result
-        elif convert_timestamp is not None and is_time_like(val) \
+        elif convert_timestamp is not None and is_timestamp_like(val) \
                 and re.search('time|date', key, re.IGNORECASE):
             return convert_timestamp(val)
         elif is_mapper(val.__class__):
