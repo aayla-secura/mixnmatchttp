@@ -29,6 +29,7 @@ setup(
         'wrapt>=1',
         'awesomedict',
         'bidict>=0.21.2',
+        'pyyaml>=5.4.1',
     ],
     extras_require={
         'color': ['colorlog>=5.0.1'],
