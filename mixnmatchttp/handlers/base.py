@@ -12,11 +12,11 @@ from json import JSONDecodeError
 import base64
 import binascii
 from wrapt import decorator
-from string import Template
 
 from ..containers import CaseInsensitiveOrderedDict
 from ..cookie import Cookie
 from ..conf import Conf, ConfItem
+from ..templates import Templates, TemplatePage
 from ..containers import DefaultDict
 from ..endpoints import Endpoint
 from ..endpoints.exc import NotAnEndpointError, \
@@ -42,6 +42,7 @@ def methodhandler(realhandler, self, args, kwargs):
             handler(*args, **kwargs)
         except Exception as e:
             self.send_error(500, explain=str(e))
+            raise
 
     logger.debug(
         'INIT for method handler; path is {}'.format(self.path))
@@ -145,8 +146,7 @@ class BaseMeta(type):
         # ones, which combines the corresponding attribute of all parents
         attr_types = {
             'endpoints': Endpoint,
-            'template_pages': DefaultDict,
-            'templates': DefaultDict,
+            'templates': Templates,
             'conf': Conf,
         }
         for attr, rcls in attr_types.items():
@@ -469,18 +469,16 @@ class BaseHTTPRequestHandler(
     def render(self, page, code=200, message=None, headers={}):
         '''Renders a page
 
-        page: a dictionary with the following items:
-            - data: the content of the page
-            - type: the content type
+        page: a TemplatePage instance
         headers: additional headers to send
         '''
 
         self.send_response(code, message=None)
-        self.send_header('Content-Type', page['type'])
-        self.send_header('Content-Length', len(page['data']))
+        self.send_header('Content-Type', page.type)
+        self.send_header('Content-Length', len(page.data))
         self.send_headers(headers)
         self.end_headers()
-        self.write(page['data'])
+        self.write(page.data)
 
     def write(self, data):
         if not isinstance(data, bytes):
@@ -576,49 +574,23 @@ class BaseHTTPRequestHandler(
         if _obj is None:
             _obj = self.__params_to_send
         self.render(
-            {
+            TemplatePage({
                 'data': json.dumps(_obj,
                                    default=serializer,
-                                   indent=indent).encode('utf-8'),
-                'type': 'application/json'},
+                                   indent=indent),
+                'type': 'application/json'}),
             code=code,
             message=message,
             headers=headers)
 
-    def page_from_template(self, template, dynfields={}):
-        '''Returns a page from the given template'''
+    def page_from_template(self, template, **fields):
+        '''Returns a page from the given template
 
-        try:
-            page = self.template_pages[template['page']].copy()
-        except KeyError:
-            logger.debug('Using default template page')
-            page = self.template_pages['default'].copy()
+        Fields are substituted with the keyword arguments given
+        (unspecified fields are removed).
+        '''
 
-        try:
-            fields = template['fields']
-        except KeyError:
-            logger.debug('No fields for template')
-            fields = {}
-
-        page['data'] = Template(page['data']).safe_substitute(fields)
-
-        # it's allowed to have the same field in the template as well
-        # as in the page's field values (e.g. fields['BODY'] also has
-        # '$BODY' in there. The second one will be replaced with the
-        # value from dynfields; so don't coalesce fields and dynfields
-        # together
-        page['data'] = Template(
-            page['data']).safe_substitute(dynfields)
-
-        # remove unused fields and encode
-        page['data'] = re.sub('\$[a-zA-Z0-9_]+', '', page['data'])
-        try:
-            page['data'] = page['data'].encode('utf-8')
-        except UnicodeEncodeError:
-            page['data'] = page['data'].encode(
-                'utf-8', errors='backslashreplace')
-
-        return page
+        return self.templates[template].substitute(**fields).encode()
 
     def __read_body(self):
         '''Sets __body to the body data

@@ -7,6 +7,7 @@ from collections.abc import Iterable, Mapping, \
 
 logger = logging.getLogger(__name__)
 __all__ = [
+    'DefaultRepr',
     'is_mutable',
     'is_bool_like',
     'is_str',
@@ -27,6 +28,18 @@ __all__ = [
     'param_dict',
     'merge',
 ]
+
+
+class DefaultRepr:
+    def __repr__(self):
+        return '{cls}({val})'.format(
+            cls=self.__class__.__name__,
+            val=self.__str__())
+
+    def __str__(self):
+        '''This should be overridden in children'''
+
+        raise NotImplementedError
 
 
 def is_mutable(val):

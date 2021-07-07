@@ -3,7 +3,7 @@ import re
 from wrapt import ObjectProxy
 from bidict import bidict
 
-from ..utils import iter_abspath, to_natint, startswith
+from ..utils import DefaultRepr, iter_abspath, to_natint, startswith
 from ..containers import DefaultDict, DefaultAttrs, DefaultAttrDict
 from .exc import EndpointError, NotAnEndpointError, \
     MissingArgsError, ExtraArgsError, MethodNotAllowedError
@@ -20,7 +20,7 @@ __all__ = [
 ]
 
 
-class EndpointArgs:
+class EndpointArgs(DefaultRepr):
     _special = bidict(
         any='*',       # any number
         optional='?',  # 0 or 1
@@ -39,9 +39,6 @@ class EndpointArgs:
                 raise ValueError(
                     ('{} is not a valid self.valueber of '
                      'endpoint numuments').format(num))
-
-    def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, self._value)
 
     def __str__(self):
         return str(self._value)

@@ -48,11 +48,11 @@ deep_ep = Endpoint({  # test assigning to multiple parents
 @decorator
 def endpoint_debug_handler(handler, self, args, kwargs):
     handler()
-    page = self.page_from_template(self.templates['testtemplate'],
-                                   {'handler': handler.__name__,
-                                    'root': self.ep.root,
-                                    'sub': self.ep.sub,
-                                    'args': self.ep.args})
+    page = self.page_from_template('testtemplate',
+                                   handler=handler.__name__,
+                                   root=self.ep.root,
+                                   sub=self.ep.sub,
+                                   args=self.ep.args)
     self.render(page)
 
 class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
@@ -89,18 +89,10 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
         deepdup=deepcopy(deep_ep),
         err={},
     )
-    template_pages = dict(
-        testpage={
-            'data': '$BODY',
-            'type': 'text/plain'
-        },
-    )
     templates = dict(
         testtemplate={
-            'fields': {
-                'BODY': 'This is $handler for $root @ $sub ($args)',
-            },
-            'page': 'testpage'
+            'data': 'This is $handler for $root @ $sub ($args)',
+            'type': 'text/plain'
         },
     )
 
@@ -165,10 +157,10 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
 
     def do_GET(self):
         page = self.page_from_template(
-            self.templates['testtemplate'],
-            {'handler': 'do_GET',
-             'root': self.pathname,
-             'args': []})
+            'testtemplate',
+            handler='do_GET',
+            root=self.pathname,
+            args=[])
         self.render(page)
 
     def do_TRACE(self):

@@ -3,6 +3,7 @@ import uuid
 import mimetypes
 
 from ...endpoints import Endpoint, ARGS_OPTIONAL
+from ...templates import TemplatePage
 from ...cache import Cache
 from ...cache.exc import PageNotCachedError, PageClearedError, \
     CacheError
@@ -78,7 +79,7 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
                 'utf-8', errors='backslashreplace')
         logger.debug('Decoded body: {}'.format(body))
 
-        return {'data': body, 'type': page_ctype}
+        return TemplatePage({'data': body, 'type': page_ctype})
 
     def do_echo(self):
         '''Decodes the request and returns it as the response body'''
@@ -104,10 +105,9 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_cache_new(self):
         '''Generates a new UUID'''
 
-        self.render({
-            'data': '{}'.format(
-                uuid.uuid4()).encode('utf-8'),
-            'type': 'text/plain'})
+        self.render(TemplatePage({
+            'data': str(uuid.uuid4()),
+            'type': 'text/plain'}))
 
     def do_cache(self):
         '''Saves or retrieves a cached page'''

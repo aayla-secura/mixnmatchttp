@@ -20,19 +20,17 @@ class Cache:
         '''Saves the page to the cache
 
         name is the alphanumeric identifier
-        page is a dictionary with the following items:
-            - data: the content of the page
-            - type: the content type
+        page is a TemplatePage
         '''
 
-        if self.size + len(page['data']) > self.max_size:
+        if self.size + len(page.data) > self.max_size:
             raise CacheMemoryError
         try:
             self.__pages[name]
         except KeyError:
             logger.debug('Caching page "{}"'.format(name))
             self.__pages[name] = page
-            self.__size += len(page['data'])
+            self.__size += len(page.data)
             logger.debug('Cache size is: {}'.format(self.size))
         else:
             raise CacheOverwriteError
@@ -66,7 +64,7 @@ class Cache:
 
         for key in to_clear:
             if self.__pages[key] is not None:
-                self.__size -= len(self.__pages[key]['data'])
+                self.__size -= len(self.__pages[key].data)
             self.__pages[key] = None
 
         logger.debug('Cache size is: {}'.format(self.size))

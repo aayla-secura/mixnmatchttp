@@ -7,7 +7,8 @@ from .containers import CaseInsensitiveOrderedDict
 from .conf import ConfItem
 from .conf.exc import ConfError
 from .containers import DefaultAttrs, DefaultAttrKeys
-from .utils import datetime_from_timestamp, datetime_from_str, datetime_to_str
+from .utils import DefaultRepr, datetime_from_timestamp, \
+    datetime_from_str, datetime_to_str
 
 
 logger = logging.getLogger(__name__)
@@ -16,7 +17,7 @@ __all__ = [
 ]
 
 
-class Expiry:
+class Expiry(DefaultRepr):
     def __init__(self, value):
         if isinstance(value, datetime):
             self.value = value
@@ -29,12 +30,7 @@ class Expiry:
         return datetime_to_str(
             self.value, datefmt='%a, %d %b %Y %H:%M:%S {{TZ}}')
 
-    def __repr__(self):
-        return '{cls}({val})'.format(
-            cls=self.__class__.__name__,
-            val=self.__str__())
-
-class SameSite:
+class SameSite(DefaultRepr):
     def __init__(self, value):
         allowed = ['None', 'Lax', 'Strict']
         value = str(value).capitalize()
@@ -45,11 +41,6 @@ class SameSite:
 
     def __str__(self):
         return self.value
-
-    def __repr__(self):
-        return '{cls}({val})'.format(
-            cls=self.__class__.__name__,
-            val=self.__str__())
 
 class CookieAttrs(DefaultAttrKeys):
     __container_type__ = CaseInsensitiveOrderedDict
@@ -135,7 +126,7 @@ class CookieAttrs(DefaultAttrKeys):
                 pass
         return result
 
-class Cookie(DefaultAttrs):
+class Cookie(DefaultRepr, DefaultAttrs):
     __container_type__ = CookieAttrs
 
     def __init__(self, name, value='', /, **kwargs):
@@ -155,11 +146,6 @@ class Cookie(DefaultAttrs):
             value=self.value,
             sep='; ' if self.attributes else '',
             attrs=self.attributes)
-
-    def __repr__(self):
-        return '{cls}({val})'.format(
-            cls=self.__class__.__name__,
-            val=self.__str__())
 
     @classmethod
     def parse(cls, value):

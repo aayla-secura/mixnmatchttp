@@ -1,6 +1,8 @@
 import logging
 from collections import MutableMapping, Mapping, OrderedDict
 
+from ..utils import DefaultRepr
+
 
 logger = logging.getLogger(__name__)
 __all__ = [
@@ -8,7 +10,7 @@ __all__ = [
 ]
 
 
-class CaseInsensitiveOrderedDict(MutableMapping):
+class CaseInsensitiveOrderedDict(DefaultRepr, MutableMapping):
     '''Case-insensitive dictionary
 
     Based on requests.structures.CaseInsensitiveDict (thanks!)
@@ -54,11 +56,6 @@ class CaseInsensitiveOrderedDict(MutableMapping):
 
     def copy(self):
         return self.__class__(self._store.values())
-
-    def __repr__(self):
-        return '{}({})'.format(
-            self.__class__.__name__,
-            self.__str__())
 
     def __str__(self):
         return str(dict(self.items()))
