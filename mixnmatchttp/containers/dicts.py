@@ -1,7 +1,7 @@
 import logging
-from collections import MutableMapping, Mapping, OrderedDict
+from collections import MutableMapping, OrderedDict
 
-from ..utils import DefaultRepr
+from ..utils import DefaultRepr, is_map_like
 
 
 logger = logging.getLogger(__name__)
@@ -21,7 +21,7 @@ class CaseInsensitiveOrderedDict(DefaultRepr, MutableMapping):
     '''
 
     def __init__(self, data=None, /, **kwargs):
-        self._store = OrderedDict()
+        self.__data__ = OrderedDict()
         if data is None:
             data = {}
         self.update(data, **kwargs)
@@ -29,22 +29,22 @@ class CaseInsensitiveOrderedDict(DefaultRepr, MutableMapping):
     def __setitem__(self, key, value):
         # Use the lowercased key for lookups, but store the actual
         # key alongside the value.
-        self._store[key.lower()] = (key, value)
+        self.__data__[key.lower()] = (key, value)
 
     def __getitem__(self, key):
-        return self._store[key.lower()][1]
+        return self.__data__[key.lower()][1]
 
     def __delitem__(self, key):
-        del self._store[key.lower()]
+        del self.__data__[key.lower()]
 
     def __iter__(self):
-        return (casedkey for casedkey, mappedvalue in self._store.values())
+        return (casedkey for casedkey, mappedvalue in self.__data__.values())
 
     def __len__(self):
-        return len(self._store)
+        return len(self.__data__)
 
     def __eq__(self, other):
-        if isinstance(other, Mapping):
+        if is_map_like(other):
             other = self.__class__(other)
         else:
             return NotImplemented
@@ -52,10 +52,10 @@ class CaseInsensitiveOrderedDict(DefaultRepr, MutableMapping):
         return dict(self.lower_items()) == dict(other.lower_items())
 
     def getkey(self, key):
-        return self._store[key.lower()][0]
+        return self.__data__[key.lower()][0]
 
     def copy(self):
-        return self.__class__(self._store.values())
+        return self.__class__(self.__data__.values())
 
     def __str__(self):
         return str(dict(self.items()))
