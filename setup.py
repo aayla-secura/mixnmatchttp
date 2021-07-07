@@ -30,6 +30,7 @@ setup(
         'awesomedict',
         'bidict>=0.21.2',
         'pyyaml>=5.4.1',
+        'ansicolors>=1.1.8',
     ],
     extras_require={
         'color': ['colorlog>=5.0.1'],

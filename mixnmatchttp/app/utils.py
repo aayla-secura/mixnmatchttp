@@ -2,6 +2,9 @@ import os
 import sys
 import errno
 import argparse
+from getpass import getpass
+from colors import color as ansi_color
+
 
 class AppendUniqueArgAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
@@ -48,10 +51,30 @@ def exit(error, rc=None):
     out.write('{}\n'.format(error))
     sys.exit(rc)
 
-def read_line(prompt):
-    sys.stdout.write('{}: '.format(prompt))
+def read_line(prompt=None):
+    if prompt:
+        sys.stdout.write('{}: '.format(prompt))
     sys.stdout.flush()
     return sys.stdin.readline().rstrip('\r\n')
+
+def read_password(
+        prompt='Password',
+        prompt_again='Confirm password',
+        prompt_failed='Passwords did not match, enter again'):
+    if prompt:
+        prompt = '{}: '.format(prompt)
+    if prompt_again:
+        prompt_again = '{}: '.format(prompt_again)
+    pwd = getpass(prompt)
+    if not pwd:
+        return
+    pwd_again = getpass(prompt_again)
+    if pwd != pwd_again:
+        return read_password(prompt=prompt_failed)
+    return pwd
+
+def hide(text, color='gray'):
+    return ansi_color(text, fg=color, bg=color)
 
 def make_dirs(path, is_file=False, mode=0o755):
     if path is None:

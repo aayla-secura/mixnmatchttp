@@ -28,7 +28,7 @@ except ImportError:
     pass  # optional
 from .utils import \
     AppendUniqueArgAction, UpdateLogColor, UpdateSecondaryLogColor, \
-    exit, read_line, make_dirs, ensure_exists
+    exit, read_line, read_password, make_dirs, ensure_exists, hide
 from ..log import get_loggers
 from .exc import ArgumentValueError
 from .conf import Conf
@@ -657,10 +657,12 @@ class App:
                 username = read_line('Enter username (blank to quit)')
                 if not username:
                     break
-                raw_password = read_line(
+                echo_password = False
+                raw_password = read_password(
                     'Enter password (blank for random)')
                 roles = read_line('Enter comma-separated roles')
                 if not raw_password:
+                    echo_password = True
                     raw_password = randstr(16, skip=':')
                 if transformer is not None:
                     password = transformer(raw_password)
@@ -668,9 +670,13 @@ class App:
                     password = raw_password
                 self.conf.userfile.write(
                     '{}:{}:{}\n'.format(username, password, roles))
-                sys.stdout.write(
-                    'Created user {} with password {}\n'.format(
-                        username, raw_password))
+                if echo_password:
+                    sys.stdout.write(
+                        'Created user {} with password {}\n'.format(
+                            username, hide(raw_password)))
+                else:
+                    sys.stdout.write(
+                        'Created user {}\n'.format(username))
             self.conf.userfile.close()
             # close the file, so load_users_from_file can start
             # reading it from the start
