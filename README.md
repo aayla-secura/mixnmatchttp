@@ -560,9 +560,13 @@ Redirects (with `307`) to any address given in the URL.
   * [x] Logging conf for request line via command-line; also, custom format for it
   * [x] Do not save expanded env variables to config file
   * [x] `--add-users`: password input should not be displayed
+  * [ ] Check `If-Not-Modified-Since` in `send_file`
   * [ ] Templates from files
+  * [ ] Poller container
   * [ ] Multiple variable endpoints for a single parent distinguished by a regex; key can be `/<regex>/`
   * [ ] Use format strings instead of the format string method
+  * [ ] Use `__{name}__` instead of `_{name}` for private attributes
+  * [ ] Custom template var format (e.g. `%%var%%`, etc)
 
   * [ ] Default column for short value in `object_to_dict` should use the first primary key, not hardcoded `id`.
   * [ ] Check if jwt and sql modules are required
