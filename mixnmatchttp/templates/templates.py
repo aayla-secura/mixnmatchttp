@@ -16,6 +16,13 @@ __all__ = [
 
 class TemplatePage:
     def __init__(self, obj):
+        '''A template page of a specific type
+
+        obj: a dictionary with the following keys:
+        - data: the literal content
+        - type: the Content-Type of the page
+        '''
+
         try:
             self.data = obj['data']
             self.type = obj['type']
