@@ -500,6 +500,7 @@ class App:
             raise RuntimeError("'configure' can be called only once.")
 
         self.conf = Conf(skip=self._no_conf_items)
+        # need to do this to get --config and --save-config
         args = self.parser.parse_args()
 
         #### Load/save/update config file
@@ -509,8 +510,9 @@ class App:
             except FileNotFoundError as e:
                 if not args.save_config:
                     exit(e)
-        # update without overriding values loaded from the conf file
-        # with non-explicitly set values (defaults)
+        # update config with the one from the command-line without
+        # overriding values loaded from the conf file with
+        # non-explicitly set values (defaults)
         self.parser.parse_args(namespace=self.conf)
         # do not raise AttributeError but return None for command-line
         # options which are not supported
@@ -519,6 +521,7 @@ class App:
         if self.action is None:
             self.action = 'start'
         if self.conf.save_config:
+            # update the config file
             if self.conf.config is None:
                 exit('--save-config requires --config.')
             self.save_config(self.conf.config)
