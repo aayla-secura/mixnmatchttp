@@ -7,7 +7,7 @@ from .containers import CaseInsensitiveOrderedDict
 from .conf import ConfItem
 from .conf.exc import ConfError
 from .containers import DefaultAttrs, DefaultAttrKeys
-from .utils import DefaultRepr, datetime_from_timestamp, \
+from .utils import ReprFromStr, datetime_from_timestamp, \
     datetime_from_str, datetime_to_str
 
 
@@ -17,7 +17,7 @@ __all__ = [
 ]
 
 
-class Expiry(DefaultRepr):
+class Expiry(ReprFromStr):
     def __init__(self, value):
         if isinstance(value, datetime):
             self.value = value
@@ -30,7 +30,7 @@ class Expiry(DefaultRepr):
         return datetime_to_str(
             self.value, datefmt='%a, %d %b %Y %H:%M:%S {{TZ}}')
 
-class SameSite(DefaultRepr):
+class SameSite(ReprFromStr):
     def __init__(self, value):
         allowed = ['None', 'Lax', 'Strict']
         value = str(value).capitalize()
@@ -126,7 +126,7 @@ class CookieAttrs(DefaultAttrKeys):
                 pass
         return result
 
-class Cookie(DefaultRepr, DefaultAttrs):
+class Cookie(ReprFromStr, DefaultAttrs):
     __container_type__ = CookieAttrs
 
     def __init__(self, name, value='', /, **kwargs):

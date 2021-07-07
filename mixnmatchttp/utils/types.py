@@ -7,7 +7,7 @@ from collections.abc import Iterable, Mapping, \
 
 logger = logging.getLogger(__name__)
 __all__ = [
-    'DefaultRepr',
+    'ReprFromStr',
     'is_mutable',
     'is_bool_like',
     'is_str',
@@ -30,7 +30,7 @@ __all__ = [
 ]
 
 
-class DefaultRepr:
+class ReprFromStr:
     def __repr__(self):
         return '{cls}({val})'.format(
             cls=self.__class__.__name__,

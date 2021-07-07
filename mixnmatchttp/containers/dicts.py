@@ -1,7 +1,7 @@
 import logging
 from collections import MutableMapping, OrderedDict
 
-from ..utils import DefaultRepr, is_map_like
+from ..utils import ReprFromStr, is_map_like
 
 
 logger = logging.getLogger(__name__)
@@ -10,7 +10,7 @@ __all__ = [
 ]
 
 
-class CaseInsensitiveOrderedDict(DefaultRepr, MutableMapping):
+class CaseInsensitiveOrderedDict(ReprFromStr, MutableMapping):
     '''Case-insensitive dictionary
 
     Based on requests.structures.CaseInsensitiveDict (thanks!)

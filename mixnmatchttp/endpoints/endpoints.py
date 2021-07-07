@@ -3,7 +3,7 @@ import re
 from wrapt import ObjectProxy
 from bidict import bidict
 
-from ..utils import DefaultRepr, iter_abspath, to_natint, startswith
+from ..utils import ReprFromStr, iter_abspath, to_natint, startswith
 from ..containers import DefaultDict, DefaultAttrs, DefaultAttrDict
 from .exc import EndpointError, NotAnEndpointError, \
     MissingArgsError, ExtraArgsError, MethodNotAllowedError
@@ -20,7 +20,7 @@ __all__ = [
 ]
 
 
-class EndpointArgs(DefaultRepr):
+class EndpointArgs(ReprFromStr):
     _special = bidict(
         any='*',       # any number
         optional='?',  # 0 or 1

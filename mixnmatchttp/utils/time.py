@@ -21,13 +21,13 @@ __all__ = [
 
 
 def is_timestamp_like(val,
-                 years_ahead=10,
-                 months_ahead=0,
-                 days_ahead=0,
-                 hours_ahead=0,
-                 minutes_ahead=0,
-                 seconds_ahead=0,
-                 microseconds_ahead=0):
+                      years_ahead=10,
+                      months_ahead=0,
+                      days_ahead=0,
+                      hours_ahead=0,
+                      minutes_ahead=0,
+                      seconds_ahead=0,
+                      microseconds_ahead=0):
     '''True if val is like a timestamp
 
     I.e. if non-negative number up to the current timestamp + the

@@ -16,7 +16,7 @@ from wrapt import decorator
 from ..containers import CaseInsensitiveOrderedDict
 from ..cookie import Cookie
 from ..conf import Conf, ConfItem
-from ..templates import TemplateContainer, Template
+from ..templates import TemplateContainer, Template, TemplateDirectory
 from ..containers import DefaultDict
 from ..endpoints import Endpoint
 from ..endpoints.exc import NotAnEndpointError, \
@@ -41,7 +41,10 @@ def methodhandler(realhandler, self, args, kwargs):
         try:
             handler(*args, **kwargs)
         except Exception as e:
-            self.send_error(500, explain=str(e))
+            if self.verbose_errors:
+                self.send_error(500, explain=str(e))
+            else:
+                self.send_error(500)
             raise
 
     logger.debug(
@@ -173,6 +176,7 @@ class BaseHTTPRequestHandler(
         api_prefix=ConfItem('', transformer=lambda s: s.rstrip('/')),
         api_is_JSON=True,
         send_software_info=False,
+        verbose_errors=False,
     )
     pollers = {}
     endpoints = Endpoint()
@@ -585,14 +589,20 @@ class BaseHTTPRequestHandler(
             message=message,
             headers=headers)
 
-    def page_from_template(self, template, **fields):
+    def page_from_template(self, template, entry=None, /, **fields):
         '''Returns a page from the given template
 
         Fields are substituted with the keyword arguments given
         (unspecified fields are removed).
         '''
 
-        return self.templates[template].substitute(**fields).encode()
+        t = self.templates[template]
+        if entry is not None:
+            if not isinstance(t, TemplateDirectory):
+                raise TypeError(
+                    '{} is not a template directory'.format(template))
+            t = t[entry]
+        return t.substitute(**fields).encode()
 
     def __read_body(self):
         '''Sets __body to the body data
