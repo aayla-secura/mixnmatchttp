@@ -28,7 +28,7 @@ class Cache:
         try:
             self.__pages[name]
         except KeyError:
-            logger.debug('Caching page "{}"'.format(name))
+            logger.debug("Caching page '{}'".format(name))
             self.__pages[name] = page
             self.__size += len(page.data)
             logger.debug('Cache size is: {}'.format(self.size))
@@ -36,7 +36,7 @@ class Cache:
             raise CacheOverwriteError
 
     def get(self, name):
-        logger.debug('Trying to get page "{}"'.format(name))
+        logger.debug("Trying to get page '{}'".format(name))
         try:
             page = self.__pages[name]
         except KeyError:

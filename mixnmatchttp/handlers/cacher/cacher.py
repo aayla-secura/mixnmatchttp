@@ -48,7 +48,7 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
             data_decoder = self.url_data
             type_decoder = self.url_data
         elif self.ctype is None:
-            raise DecodingError('No "type" parameter present!')
+            raise DecodingError("No 'type' parameter present!")
             return
         else:
             raise DecodingError(
@@ -58,7 +58,7 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
         try:
             body_enc = self.params['data']
         except KeyError:
-            raise DecodingError('No "data" parameter present!')
+            raise DecodingError("No 'data' parameter present!")
         logger.debug('Encoded body: {}'.format(body_enc))
 
         try:

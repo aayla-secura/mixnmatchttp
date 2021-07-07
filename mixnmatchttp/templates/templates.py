@@ -37,7 +37,7 @@ class Template:
 
         for i in ['data', 'type']:
             if not is_str(obj[i]):
-                raise TemplateError('"{}" should be a string'.format(i))
+                raise TemplateError("'{}' should be a string".format(i))
 
     def substitute(self, **fields):
         fields = AwesomeDict(fields).set_defaults({'.*': ''})
@@ -69,7 +69,7 @@ class Template:
 class TemplateContainer(DefaultDict):
     __item_type__ = Template
 
-class TemplateFile:
+class TemplateFile(Template):
     pass
 
 class TemplateDirectory(DefaultDict):

@@ -782,7 +782,7 @@ class BaseHTTPRequestHandler(
         if isinstance(code, http.HTTPStatus):
             code = code.value
         self.log_message(
-            '"{}" {!s} {!s}', self.requestline, code, size)
+            "'{}' {!s} {!s}", self.requestline, code, size)
 
     def log_error(self, fmt, *args, **kwargs):
         self._log_message(logging.ERROR, fmt, *args, **kwargs)

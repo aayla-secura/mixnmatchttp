@@ -347,8 +347,8 @@ class Endpoint(DefaultDict):
         if httpreq.command not in ep.allowed_methods:
             raise MethodNotAllowedError(ep.allowed_methods)
 
-        logger.debug(('API call: "{}", root: {}, sub: {}, '
-                      '{} args: {}, params: {}').format(
+        logger.debug(("API call: '{}', root: {}, sub: {}, "
+                      "{} args: {}, params: {}").format(
                           ep.name, root, sub,
                           len(args_arr), args, params))
         return ParsedEndpoint(ep,
@@ -525,7 +525,7 @@ class Endpoint(DefaultDict):
             return
 
         #  logger.debug(
-        #      'Endpoint {id} ({name}): creating child "{child}"'.format(
+        #      "Endpoint {id} ({name}): creating child '{child}'".format(
         #          id=self._id,
         #          name=self.name,
         #          child=key))

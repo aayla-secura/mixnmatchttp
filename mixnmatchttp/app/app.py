@@ -176,16 +176,16 @@ class App:
             if auth_type == 'jwt':
                 self.parser_groups['auth'].add_argument(
                     '--jwt-key', dest='jwt_key', metavar='PASSWORD',
-                    help=('A password to use for symmetric signing '
-                          'of JWT or a passphrase used to decrypt '
-                          'the private key (for asymmetric '
-                          'algorithms). If none is given and the '
-                          'algorithm is symmetric, then a random '
-                          'one is generated (meaning all JWT keys '
-                          'become invalid upon restart). If none is '
-                          'given and the algorithm is asymmetric, '
-                          'the key must be decrypted. If "-" is '
-                          'supplied, then it is read from stdin.'))
+                    help=("A password to use for symmetric signing "
+                          "of JWT or a passphrase used to decrypt "
+                          "the private key (for asymmetric "
+                          "algorithms). If none is given and the "
+                          "algorithm is symmetric, then a random "
+                          "one is generated (meaning all JWT keys "
+                          "become invalid upon restart). If none is "
+                          "given and the algorithm is asymmetric, "
+                          "the key must be decrypted. If '-' is "
+                          "supplied, then it is read from stdin."))
                 self.parser_groups['auth'].add_argument(
                     '--jwt-priv-key', dest='jwt_priv_key',
                     help=('A private PEM key for use with asymmetric '
@@ -357,12 +357,12 @@ class App:
                 'ERROR': 'bold,red',
                 'CRITICAL': 'bold,fg_white,bg_red',
             },
-            help=('Specify log colors. Give this option once for '
-                  'every level, e.g. --log-colors DEBUG blue '
-                  '--log-colors INFO bold. Use "reset" to clear '
-                  'a default color. See doc on colorlog. In '
-                  'addition, you can also use the "inverse" color '
-                  'name.'))
+            help=("Specify log colors. Give this option once for "
+                  "every level, e.g. --log-colors DEBUG blue "
+                  "--log-colors INFO bold. Use 'reset' to clear "
+                  "a default color. See doc on colorlog. In "
+                  "addition, you can also use the 'inverse' color "
+                  "name."))
         self.parser_groups['logging'].add_argument(
             '--secondary-log-colors', dest='secondary_log_colors',
             action=UpdateSecondaryLogColor, nargs=3,
@@ -376,11 +376,11 @@ class App:
                     'CRITICAL': 'reset',
                 },
             },
-            help=('Specify log colors. Give this option once for '
-                  'every level, e.g. --secondary-log-colors level '
-                  'DEBUG blue --secondary-log-colors message INFO '
-                  'reset. The default defines the "reset" prefix. '
-                  'See doc on colorlog'))
+            help=("Specify log colors. Give this option once for "
+                  "every level, e.g. --secondary-log-colors level "
+                  "DEBUG blue --secondary-log-colors message INFO "
+                  "reset. The default defines the 'reset' prefix. "
+                  "See doc on colorlog"))
         self.parser_groups['logging'].add_argument(
             '--log-fmt', dest='log_fmt',
             default='%(levelname)-8s [%(asctime)s] %(name)s: %(message)s',
