@@ -8,8 +8,12 @@ from mixnmatchttp.containers import DefaultAttrDict, CaseInsensitiveOrderedDict
 class Mergeable(DefaultAttrDict):
     __attempt_merge__ = True
 
-class HoldsList(DefaultAttrDict):
-    __item_type__ = list
+class HoldsSet(DefaultAttrDict):
+    __item_type__ = set
+
+class Double(DefaultAttrDict):
+    __item_type__ = int
+    __transformer__ = lambda x: x * 2
 
 class TestDicts(unittest.TestCase):
     def test(self):
@@ -131,6 +135,15 @@ class TestDefaults(unittest.TestCase):
         self.assertEqual(u.z, 5)
         s += p
         self.assertEqual(s, u)
+
+    def test_conv_a(self):
+        s = HoldsSet(a=[1, 2, 1, 3])
+        self.assertEqual(s.a, set(1, 2, 3))
+
+    def test_conv_b(self):
+        s = Double(a='1', b=1.1)
+        self.assertEqual(s.a, 2)
+        self.assertEqual(s.b, 2)
 
     def test_public(self):
         dicta = dict(a=1)

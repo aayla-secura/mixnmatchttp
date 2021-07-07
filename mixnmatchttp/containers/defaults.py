@@ -41,12 +41,17 @@ class _DefaultsBase:
     If the class attribute __item_type__ is not None, then items are
     converted to __item_type__.
 
+    If the class attribute __transformer__ is not None, then items are
+    passed to that callable after type conversion to __item_type__.
+    The function should return the value to be used.
+
     If the class attribute __attempt_merge__ is True, then setting
     a new value for an existing item attempts to merge them (if
     applicable).
     '''
     __container_type__ = dict
     __item_type__ = None
+    __transformer__ = None
     __attempt_merge__ = False
 
     def __init__(self, default={}, /, **explicit):
@@ -104,6 +109,9 @@ class _DefaultsBase:
         if self.__item_type__ and \
                 not isinstance(value, self.__item_type__):
             value = self.__item_type__(value)
+
+        if self.__transformer__ is not None:
+            value = self.__transformer__(value)
 
         curr = None
         try:
