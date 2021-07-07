@@ -558,8 +558,8 @@ Redirects (with `307`) to any address given in the URL.
   * [x] `kargs` -> `kwargs` everywhere
   * [x] Catch any exception from a request handler (maybe in a request shutdown hook of the server class) and send a 500 response
   * [x] Logging conf for request line via command-line; also, custom format for it
+  * [x] Do not save expanded env variables to config file
   * [ ] Templates from files
-  * [ ] Do not save expanded env variables to config file
   * [ ] `--add-users`: password input should not be displayed
   * [ ] Multiple variable endpoints for a single parent distinguished by a regex; key can be `/<regex>/`
   * [ ] Use format strings instead of the format string method

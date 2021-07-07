@@ -11,10 +11,6 @@ from time import sleep
 import tempfile
 from copy import copy
 import argparse
-from string import Template
-import json
-from json import JSONDecodeError
-from awesomedict import AwesomeDict
 
 # optional features
 try:
@@ -35,6 +31,7 @@ from .utils import \
     exit, read_line, make_dirs, ensure_exists
 from ..log import get_loggers
 from .exc import ArgumentValueError
+from .conf import Conf
 
 
 MY_PKG_NAME = __name__.split('.')[0]
@@ -428,7 +425,8 @@ class App:
         self.parser_groups['server'].add_argument(
             '-c', '--config', dest='config', metavar='FILE',
             help=('Configuration file. Command-line options take '
-                  'precedence.'))
+                  'precedence. The format is YAML. Use --save-config '
+                  'to create the file.'))
         self.parser_groups['server'].add_argument(
             '--save-config', dest='save_config',
             default=False, action='store_true',
@@ -499,7 +497,7 @@ class App:
         if self._is_configured:
             raise RuntimeError("'configure' can be called only once.")
 
-        self.conf = Conf(skip=self._no_conf_items)
+        self.conf = Conf(hidden=self._no_conf_items)
         # need to do this to get --config and --save-config
         args = self.parser.parse_args()
 
@@ -516,7 +514,7 @@ class App:
         self.parser.parse_args(namespace=self.conf)
         # do not raise AttributeError but return None for command-line
         # options which are not supported
-        self.conf._error_on_missing = False
+        self.conf.__error_on_missing__ = False
         self.action = self.conf.action
         if self.action is None:
             self.action = 'start'
@@ -567,23 +565,12 @@ class App:
     def update_config(self, conffile):
         '''Updates current config with that in config file'''
 
-        with open(conffile, 'r') as f:
-            content_raw = f.read()
-        # return an empty value for missing env variables
-        env = AwesomeDict(os.environ).set_defaults({'.*': ''})
-        content = Template(content_raw).substitute(env)
-        try:
-            settings = json.loads(content)
-        except JSONDecodeError as e:
-            exit('Invalid configuration file: {}'.format(e))
-        self.conf.update(settings)
+        self.conf.read(conffile)
 
     def save_config(self, conffile):
         '''Writes current config to config file'''
 
-        f = open(conffile, 'w')
-        json.dump(self.conf.to_dict(), f, indent=2)
-        f.close()
+        self.conf.write(conffile, raw=True)
 
     def run(self):
         '''Starts the server'''
@@ -934,26 +921,3 @@ class App:
                 return False
             return True
         return False
-
-class Conf(argparse.Namespace):
-    _error_on_missing = True
-
-    def __init__(self, skip=[], settings={}):
-        self._skip = copy(skip)
-        self._skip.extend(['_skip', '_error_on_missing'])
-        self.update(settings)
-
-    def update(self, settings):
-        for k, v in settings.items():
-            setattr(self, k, v)
-
-    def to_dict(self):
-        return {k: v for k, v in self.__dict__.items()
-                if k not in self._skip}
-
-    def __getattr__(self, key):
-        if self._error_on_missing or key.startswith('_'):
-            raise AttributeError(
-                "'{}' object has no attribute '{}'".format(
-                    type(self), key))
-        return None
