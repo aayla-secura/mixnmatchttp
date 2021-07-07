@@ -9,12 +9,14 @@ from .exc import TemplateError
 
 logger = logging.getLogger(__name__)
 __all__ = [
-    'Templates',
-    'TemplatePage',
+    'TemplateContainer',
+    'Template',
+    'TemplateDirectory',
+    'TemplateFile',
 ]
 
 
-class TemplatePage:
+class Template:
     def __init__(self, obj):
         '''A template page of a specific type
 
@@ -64,5 +66,11 @@ class TemplatePage:
     def __str__(self):
         return self.data
 
-class Templates(DefaultDict):
-    __item_type__ = TemplatePage
+class TemplateContainer(DefaultDict):
+    __item_type__ = Template
+
+class TemplateFile:
+    pass
+
+class TemplateDirectory(DefaultDict):
+    pass

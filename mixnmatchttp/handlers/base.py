@@ -16,7 +16,7 @@ from wrapt import decorator
 from ..containers import CaseInsensitiveOrderedDict
 from ..cookie import Cookie
 from ..conf import Conf, ConfItem
-from ..templates import Templates, TemplatePage
+from ..templates import TemplateContainer, Template
 from ..containers import DefaultDict
 from ..endpoints import Endpoint
 from ..endpoints.exc import NotAnEndpointError, \
@@ -146,7 +146,7 @@ class BaseMeta(type):
         # ones, which combines the corresponding attribute of all parents
         attr_types = {
             'endpoints': Endpoint,
-            'templates': Templates,
+            'templates': TemplateContainer,
             'conf': Conf,
         }
         for attr, rcls in attr_types.items():
@@ -469,10 +469,12 @@ class BaseHTTPRequestHandler(
     def render(self, page, code=200, message=None, headers={}):
         '''Renders a page
 
-        page: a TemplatePage instance
+        page: a Template instance
         headers: additional headers to send
         '''
 
+        if not isinstance(page, Template):
+            page = Template(page)
         self.send_response(code, message=None)
         self.send_header('Content-Type', page.type)
         self.send_header('Content-Length', len(page.data))
@@ -574,7 +576,7 @@ class BaseHTTPRequestHandler(
         if _obj is None:
             _obj = self.__params_to_send
         self.render(
-            TemplatePage({
+            Template({
                 'data': json.dumps(_obj,
                                    default=serializer,
                                    indent=indent),

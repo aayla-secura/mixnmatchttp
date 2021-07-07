@@ -20,7 +20,7 @@ class Cache:
         '''Saves the page to the cache
 
         name is the alphanumeric identifier
-        page is a TemplatePage
+        page is a Template
         '''
 
         if self.size + len(page.data) > self.max_size:
