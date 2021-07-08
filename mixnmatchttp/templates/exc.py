@@ -1,2 +1,0 @@
-class TemplateError(Exception):
-    pass

@@ -41,9 +41,9 @@ class _DefaultsBase:
     If the class attribute __item_type__ is not None, then items are
     converted to __item_type__.
 
-    If the class attribute __transformer__ is not None, then items are
-    passed to that callable after type conversion to __item_type__.
-    The function should return the value to be used.
+    The __transform__ method is called with each item after type
+    conversion to __item_type__. The method should return the value to
+    be used.
 
     If the class attribute __attempt_merge__ is True, then setting
     a new value for an existing item attempts to merge them (if
@@ -51,7 +51,6 @@ class _DefaultsBase:
     '''
     __container_type__ = dict
     __item_type__ = None
-    __transformer__ = None
     __attempt_merge__ = False
 
     def __init__(self, default={}, /, **explicit):
@@ -70,6 +69,9 @@ class _DefaultsBase:
             self.__update_single__(d, default[d], False)
         for e in explicit:
             self.__update_single__(e, explicit[e], True)
+
+    def __transform__(self, value):
+        return value
 
     def __get_single__(self, name, is_explicit):
         '''This is the only method that should retrieve items
@@ -110,8 +112,7 @@ class _DefaultsBase:
                 not isinstance(value, self.__item_type__):
             value = self.__item_type__(value)
 
-        if self.__transformer__ is not None:
-            value = self.__transformer__(value)
+        value = self.__transform__(value)
 
         curr = None
         try:

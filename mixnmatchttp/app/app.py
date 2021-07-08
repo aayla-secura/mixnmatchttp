@@ -705,7 +705,7 @@ class App:
 
     def _start(self):
         if self.conf.logdir is not None:
-            self.access_log = open('{}/{}'.format(
+            self.access_log = open(os.path.join(
                 self.conf.logdir, 'access.log'), 'ab')
 
         #### Daemonize

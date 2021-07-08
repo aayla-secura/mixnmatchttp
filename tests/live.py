@@ -48,7 +48,7 @@ deep_ep = Endpoint({  # test assigning to multiple parents
 @decorator
 def endpoint_debug_handler(handler, self, args, kwargs):
     handler()
-    page = self.page_from_template('testtemplate',
+    page = self.page_from_template('handler',
                                    handler=handler.__name__,
                                    root=self.ep.root,
                                    sub=self.ep.sub,
@@ -60,6 +60,8 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
                              ProxyingHTTPRequestHandler):
 
     conf = Conf(
+        verbose_errors=True,
+        send_software_info=True,
         secrets=('secret', '/topsecret'),
         password=Conf(
             min_len=3,
@@ -68,6 +70,7 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
     endpoints = Endpoint(
         dummylogin={},
         cookie={},
+        file={},
         #  modtest={},
         test={
             'post_one': Endpoint(
@@ -90,10 +93,11 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
         err={},
     )
     templates = dict(
-        testtemplate={
+        handler={
             'data': 'This is $handler for $root @ $sub ($args)',
-            'type': 'text/plain'
+            'mimetype': 'text/plain'
         },
+        dir='templates',
     )
 
     @endpoint_debug_handler
@@ -123,6 +127,14 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
         self.save_cookie('foo', 'bar')
         self.save_cookie('Foo', 'bar')
         self.save_cookie('bar', 'bar')
+
+    @endpoint_debug_handler
+    def do_file(self):
+        page = self.page_from_template(
+            'dir', 'foo.html',
+            title='This is Foo',
+            body='FOO')
+        self.render(page)
 
     @endpoint_debug_handler
     def do_deep(self):
@@ -157,7 +169,7 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
 
     def do_GET(self):
         page = self.page_from_template(
-            'testtemplate',
+            'handler',
             handler='do_GET',
             root=self.pathname,
             args=[])

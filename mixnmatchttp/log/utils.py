@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 import re
 from functools import partial
@@ -123,7 +124,7 @@ def _log_id_from_multi(pkg, level, logdir, filename):
     if logdir is None or filename is None:
         dest = None
     else:
-        dest = '{}/{}'.format(logdir, filename)
+        dest = os.path.join(logdir, filename)
 
     return (pkg, level, dest), dest
 

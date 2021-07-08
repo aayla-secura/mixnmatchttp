@@ -41,7 +41,7 @@ def methodhandler(realhandler, self, args, kwargs):
         try:
             handler(*args, **kwargs)
         except Exception as e:
-            if self.verbose_errors:
+            if self.conf.verbose_errors:
                 self.send_error(500, explain=str(e))
             else:
                 self.send_error(500)
@@ -477,10 +477,8 @@ class BaseHTTPRequestHandler(
         headers: additional headers to send
         '''
 
-        if not isinstance(page, Template):
-            page = Template(page)
         self.send_response(code, message=None)
-        self.send_header('Content-Type', page.type)
+        self.send_header('Content-Type', page.mimetype)
         self.send_header('Content-Length', len(page.data))
         self.send_headers(headers)
         self.end_headers()
@@ -580,11 +578,11 @@ class BaseHTTPRequestHandler(
         if _obj is None:
             _obj = self.__params_to_send
         self.render(
-            Template({
-                'data': json.dumps(_obj,
-                                   default=serializer,
-                                   indent=indent),
-                'type': 'application/json'}),
+            Template(
+                data=json.dumps(_obj,
+                                default=serializer,
+                                indent=indent),
+                mimetype='application/json'),
             code=code,
             message=message,
             headers=headers)
@@ -602,7 +600,12 @@ class BaseHTTPRequestHandler(
                 raise TypeError(
                     '{} is not a template directory'.format(template))
             t = t[entry]
-        return t.substitute(**fields).encode()
+        elif isinstance(t, TemplateDirectory):
+            raise TypeError(
+                '{} is a template directory, but no file given'.format(
+                    template))
+
+        return t.substitute_all(**fields).encode()
 
     def __read_body(self):
         '''Sets __body to the body data

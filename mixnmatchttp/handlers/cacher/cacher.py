@@ -35,9 +35,9 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
 
         It must contain the following parameters:
             - data: the content of the page
-            - type: the content type
+            - mimetype: the content type
 
-        Returns the same data/type Template but with a decoded
+        Returns a data/mimetype Template but with a decoded
         content
         '''
 
@@ -48,7 +48,7 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
             data_decoder = self.url_data
             type_decoder = self.url_data
         elif self.ctype is None:
-            raise DecodingError("No 'type' parameter present!")
+            raise DecodingError("No 'mimetype' parameter present!")
             return
         else:
             raise DecodingError(
@@ -63,9 +63,9 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
 
         try:
             page_ctype = type_decoder(
-                self.params['type']).split(';', 1)[0]
+                self.params['mimetype']).split(';', 1)[0]
             if page_ctype not in mimetypes.types_map.values():
-                raise ValueError('Unsupported Content-type')
+                raise ValueError('Unsupported Content-Type')
         except (KeyError, ValueError):
             page_ctype = 'text/plain'
         else:
@@ -79,7 +79,7 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
                 'utf-8', errors='backslashreplace')
         logger.debug('Decoded body: {}'.format(body))
 
-        return Template({'data': body, 'type': page_ctype})
+        return Template(data=body, mimetype=page_ctype)
 
     def do_echo(self):
         '''Decodes the request and returns it as the response body'''
@@ -105,9 +105,9 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_cache_new(self):
         '''Generates a new UUID'''
 
-        self.render(Template({
-            'data': str(uuid.uuid4()),
-            'type': 'text/plain'}))
+        self.render(Template(
+            data=str(uuid.uuid4()),
+            mimetype='text/plain'))
 
     def do_cache(self):
         '''Saves or retrieves a cached page'''

@@ -13,7 +13,9 @@ class HoldsSet(DefaultAttrDict):
 
 class Double(DefaultAttrDict):
     __item_type__ = int
-    __transformer__ = lambda x: x * 2
+
+    def __transform__(self, x):
+        return x * 2
 
 class TestDicts(unittest.TestCase):
     def test(self):
@@ -138,7 +140,7 @@ class TestDefaults(unittest.TestCase):
 
     def test_conv_a(self):
         s = HoldsSet(a=[1, 2, 1, 3])
-        self.assertEqual(s.a, set(1, 2, 3))
+        self.assertEqual(s.a, set([1, 2, 3]))
 
     def test_conv_b(self):
         s = Double(a='1', b=1.1)

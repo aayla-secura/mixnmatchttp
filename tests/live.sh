@@ -115,36 +115,36 @@ function test_cache {
   log INFO "-------------------- CACHE TESTS --------------------"
   req -eh "^HTTP/1\.[01] 500" -eb "This page has not been cached yet" \
     GET /cache/"${SESSION}" # SESSION will do as it's re-generated each time the script is run
-  req -eh "^HTTP/1\.[01] 400" -eb "No \\\\\"type\\\\\" parameter present" \
+  req -eh "^HTTP/1\.[01] 400" -eb "No 'mimetype' parameter present" \
     -f POST /cache/"${SESSION}"
-  req -eh "^HTTP/1\.[01] 400" -eb "No \\\\\"type\\\\\" parameter present" -f POST /echo
-  req -eh "^HTTP/1\.[01] 400" -eb "No \\\\\"data\\\\\" parameter present" \
-    -f POST /cache/"${SESSION}" type="text/plain"
-  req -eh "^HTTP/1\.[01] 400" -eb "No \\\\\"data\\\\\" parameter present" \
-    -f POST /echo type="text/plain"
+  req -eh "^HTTP/1\.[01] 400" -eb "No 'mimetype' parameter present" -f POST /echo
+  req -eh "^HTTP/1\.[01] 400" -eb "No 'data' parameter present" \
+    -f POST /cache/"${SESSION}" mimetype="text/plain"
+  req -eh "^HTTP/1\.[01] 400" -eb "No 'data' parameter present" \
+    -f POST /echo mimetype="text/plain"
 
   req -eh "^HTTP/1\.[01] 204" \
-    -f POST /cache/"${SESSION}" data=foo type="text/foo" # invalid type should default to text/plain
+    -f POST /cache/"${SESSION}" data=foo mimetype="text/foo" # invalid type should default to text/plain
   req -i -eh "^HTTP/1\.[01] 200" -eh "Content-Type: *text/plain" -eb "foo" \
     GET /cache/"${SESSION}"
   req -i -eh "^HTTP/1\.[01] 200" -eh "Content-Type: *text/plain" -eb "foo" \
-    -f POST /echo data=foo type="text/foo"
+    -f POST /echo data=foo mimetype="text/foo"
 
   req -eh "^HTTP/1\.[01] 500" \
     -eb "Cannot overwrite page, choose a different name" \
-    -f POST /cache/"${SESSION}" data=bar type="text/foo"
+    -f POST /cache/"${SESSION}" data=bar mimetype="text/foo"
   req -eb "foo" \
     GET /cache/"${SESSION}" # data should not have been overwritten
 
   req -eh "^HTTP/1\.[01] 204" \
-    -f POST /cache/"${SESSION}.2" data=foo type="text/html"
+    -f POST /cache/"${SESSION}.2" data=foo mimetype="text/html"
   req -i -eh "^Content-Type: *text/html" \
     GET /cache/"${SESSION}.2"
   req -i -eh "^Content-Type: *text/html" \
-    -f POST /echo data=foo type="text/html"
+    -f POST /echo data=foo mimetype="text/html"
   req -eh "^HTTP/1\.[01] 400" \
     -eb "Cannot Base64 decode request data" \
-    POST /echo data=foo type="text/html" # send it as JSON, but not encoded
+    POST /echo data=foo mimetype="text/html" # send it as JSON, but not encoded
 }
 
 ############################################################
@@ -203,6 +203,7 @@ function test_templates {
   log INFO "-------------------- TEMPLATES TESTS --------------------"
   req -eb "This is do_default for / @ test \(\[\]\)" GET /test/
   req -eb "This is do_GET for /foo @  \(\[\]\)" GET /foo/
+  req -eh "^Content-Type: *text/html" -eb "<title>This is Foo</title>" GET /file
 }
 
 ############################################################
