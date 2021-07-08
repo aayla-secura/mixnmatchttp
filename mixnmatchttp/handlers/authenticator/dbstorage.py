@@ -71,8 +71,8 @@ class BaseAuthSQLAlchemyORMHTTPRequestHandler(
         if expiry is not None and not isinstance(expiry, datetime):
             # SQLAlchemy loses information on the timezone, so we need
             # to create an object in the local timezone
-            expiry = datetime_from_timestamp(
-                expiry, to_utc=False, from_utc=True, relative=False)
+            # expiry is assumed to be a timestamp in local timezone already
+            expiry = datetime_from_timestamp(expiry)
         db.add(DBSession(user=user, token=token, expiry=expiry))
 
     @needs_db(DBBase)

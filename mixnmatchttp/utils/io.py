@@ -2,6 +2,8 @@ import logging
 import os
 from contextlib import contextmanager
 
+from .time import to_timestamp
+
 
 logger = logging.getLogger(__name__)
 __all__ = [
@@ -35,12 +37,16 @@ def read_file(path, mode='r'):
         logger.debug('Reading file {}'.format(filename))
         return fd.read()
 
-def is_modified_since(path, last_ts):
-    '''True if path's been modified since last_ts timestamp'''
+def is_modified_since(path, last_time):
+    '''True if path's been modified since last_time
+
+    last_time can be a string, integer, float or datetime; see
+    to_datetime
+    '''
 
     if hasattr(path, 'read'):
         fs = os.fstat(path)
     else:
         fs = os.stat(path)
 
-    return fs.st_mtime > last_ts
+    return fs.st_mtime > to_timestamp(last_time)

@@ -561,6 +561,7 @@ Redirects (with `307`) to any address given in the URL.
   * [x] Do not save expanded env variables to config file
   * [x] `--add-users`: password input should not be displayed
   * [x] Templates from files
+  * [x] Dates in GMT not UTC
   * [ ] Check `If-Not-Modified-Since` in `send_file`
   * [ ] Poller container
   * [ ] Multiple variable endpoints for a single parent distinguished by a regex; key can be `/<regex>/`

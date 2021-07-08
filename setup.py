@@ -27,6 +27,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         'wrapt>=1',
+        'pytz>=2021.1',
         'awesomedict',
         'bidict>=0.21.2',
         'pyyaml>=5.4.1',

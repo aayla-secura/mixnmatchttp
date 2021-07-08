@@ -123,8 +123,9 @@ class Session(ReadOnlyDict):
         '''
         - user should be an instance of User
         - expiry should be one of:
-        1) an int or float as UTC seconds since Unix epoch
-        2) datetime object
+          - an int or float as seconds since Unix epoch in local
+            timezone
+          - datetime object
         '''
 
         self.user = user
@@ -136,9 +137,8 @@ class Session(ReadOnlyDict):
         if expiry is None:
             return False
         if isinstance(expiry, datetime):
-            expiry = datetime_to_timestamp(
-                expiry, to_utc=True)
-        return expiry <= curr_timestamp(to_utc=True)
+            expiry = datetime_to_timestamp(expiry)
+        return expiry <= curr_timestamp()
 
 class BaseAuthHTTPRequestHandlerMeta(BaseMeta):
     '''Metaclass for BaseAuthHTTPRequestHandler'''

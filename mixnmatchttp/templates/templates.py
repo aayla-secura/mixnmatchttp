@@ -1,13 +1,12 @@
 import logging
 import os
-from time import time
 from awesomedict import AwesomeDict
 import mimetypes
 from string import Template as StringTemplate
 from collections import Mapping
 
 from ..containers import DefaultDict
-from ..utils import ReprFromStr, \
+from ..utils import ReprFromStr, curr_timestamp, \
     is_str, is_modified_since, read_file, is_map_like
 
 
@@ -138,7 +137,7 @@ class TemplateFile(TemplateBase):
 
     @data.setter
     def data(self, value):
-        self.__last_accessed__ = time()
+        self.__last_accessed__ = curr_timestamp()
         self.__data__ = value
 
 class TemplateDirectory(ReprFromStr, Mapping):

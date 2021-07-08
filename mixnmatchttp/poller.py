@@ -1,7 +1,7 @@
 import logging
 import threading
 
-from .utils import datetime_from_timestamp
+from .utils import curr_datetime
 from uuid import uuid4 as uuid
 
 
@@ -72,8 +72,7 @@ class Poller:
             self.__waiter.notify_all()
 
     def update(self):
-        self.__last_change = datetime_from_timestamp(
-            0, to_utc=False, relative=True)
+        self.__last_change = curr_datetime()
         self.__latest = str(uuid())
         with self.__waiter:
             self.__waiter.notify_all()

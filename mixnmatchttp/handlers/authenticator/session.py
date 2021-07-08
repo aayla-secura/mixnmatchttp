@@ -24,7 +24,7 @@ else:
 from ...containers import CaseInsensitiveOrderedDict
 from ...endpoints import Endpoint
 from ...utils import is_str, param_dict, datetime_from_timestamp, \
-    curr_timestamp, randhex, randstr, int_to_bytes
+    curr_datetime, randhex, randstr, int_to_bytes
 from ...conf import Conf, ConfItem
 from .api import BaseAuthHTTPRequestHandler, Session
 
@@ -94,7 +94,7 @@ class BaseAuthCookieHTTPRequestHandler(BaseAuthHTTPRequestHandler):
 
         expiry = cls.conf.cookie.lifetime
         if expiry is not None:
-            expiry += curr_timestamp(to_utc=True)
+            expiry += curr_datetime()
         return Session(
             token=randhex(cls.conf.cookie.length),
             user=user,
@@ -309,11 +309,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
         logger.debug('Found session for {}'.format(jwtok_d['sub']))
         return Session(token=None,
                        user=self.find_user(jwtok_d['sub']),
-                       expiry=datetime_from_timestamp(
-                           jwtok_d['exp'],
-                           relative=False,
-                           from_utc=False,
-                           to_utc=True))
+                       expiry=jwtok_d['exp'])
 
     def get_current_token(self):
         '''Returns the refresh token'''
@@ -339,8 +335,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
 
         token = randhex(cls.conf.refresh_token.length)
         expiry = datetime_from_timestamp(
-            cls.conf.refresh_token.lifetime * 60,
-            relative=True, to_utc=True)
+            cls.conf.refresh_token.lifetime * 60, relative=True)
         return Session(
             token=token,
             user=user,
@@ -348,9 +343,9 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
 
     @classmethod
     def _get_new_jwt(cls, user):
-        now = datetime_from_timestamp(0, relative=True, to_utc=True)
+        now = curr_datetime()
         exp = datetime_from_timestamp(
-            cls.conf.JWT.lifetime * 60, relative=True, to_utc=True)
+            cls.conf.JWT.lifetime * 60, relative=True)
         token_d = {
             'sub': user.username,
             'exp': exp,

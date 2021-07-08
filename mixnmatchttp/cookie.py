@@ -7,8 +7,7 @@ from .containers import CaseInsensitiveOrderedDict
 from .conf import ConfItem
 from .conf.exc import ConfError
 from .containers import DefaultAttrs, DefaultAttrKeys
-from .utils import ReprFromStr, datetime_from_timestamp, \
-    datetime_from_str, datetime_to_str
+from .utils import ReprFromStr, http_date, http_datetime
 
 
 logger = logging.getLogger(__name__)
@@ -19,16 +18,10 @@ __all__ = [
 
 class Expiry(ReprFromStr):
     def __init__(self, value):
-        if isinstance(value, datetime):
-            self.value = value
-        elif isinstance(value, int):
-            self.value = datetime_from_timestamp(value)
-        else:
-            self.value = datetime_from_str(value)
+        self.value = http_datetime(value)
 
     def __str__(self):
-        return datetime_to_str(
-            self.value, datefmt='%a, %d %b %Y %H:%M:%S {{TZ}}')
+        return http_date(self.value)
 
 class SameSite(ReprFromStr):
     def __init__(self, value):
