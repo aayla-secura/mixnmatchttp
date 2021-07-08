@@ -3,7 +3,6 @@ import http.server
 import re
 import os
 import errno
-from datetime import datetime
 import shutil
 import mimetypes
 import urllib
@@ -21,7 +20,8 @@ from ..containers import DefaultDict
 from ..endpoints import Endpoint
 from ..endpoints.exc import NotAnEndpointError, \
     MethodNotAllowedError, MissingArgsError, ExtraArgsError
-from ..utils import is_seq_like, abspath, param_dict, startswith
+from ..utils import is_seq_like, abspath, param_dict, startswith, \
+    http_date, is_modified_since
 from .exc import DecodingError, UnsupportedOperationError
 
 
@@ -522,16 +522,20 @@ class BaseHTTPRequestHandler(
             return
 
         fs = os.fstat(f.fileno())
+        last_time = self.headers.get('If-Not-Modified-Since')
+        if last_time is not None and \
+                not is_modified_since(path, last_time):
+            self.send_response(304)
+            f.close()
+            return
+
         self.send_response(200)
         ctype = mimetypes.guess_type(path)[0]
         if ctype is None:
             ctype = 'application/octet-stream'
         self.send_header('Content-Type', ctype)
         self.send_header('Content-Length', str(fs.st_size))
-        self.send_header(
-            'Last-Modified',
-            datetime.utcfromtimestamp(fs.st_mtime).strftime(
-                '%Y-%m-%d %H:%M:%S UTC'))
+        self.send_header('Last-Modified', http_date(fs.st_mtime))
         disposition = 'filename={}'.format(os.path.basename(f.name))
         if as_attachment:
             disposition = 'attachment; {}'.format(disposition)
