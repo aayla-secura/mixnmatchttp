@@ -220,6 +220,8 @@ function test_misc {
   req -eb "This is do_default for / @ test \(\[\]\)" GET /foo/../test/
   req -eb "This is do_default for / @ test \(\[\]\)" GET /foo%2f../test/
   req -i -eh "^Location: *//foo\?bar" GET /foo%2f%2e.%2fgoto%2f//foo%3fbar?baz
+
+  req -eh "^X-Bar: *Bar" GET /asldjiwedasldsa
 }
 
 ############################################################

@@ -46,6 +46,11 @@ deep_ep = Endpoint({  # test assigning to multiple parents
 })
 
 @decorator
+def foo(handler, self, args, kwargs):
+    self.save_header('X-Bar', 'Bar')
+    handler()
+
+@decorator
 def endpoint_debug_handler(handler, self, args, kwargs):
     handler()
     page = self.page_from_template('handler',
@@ -103,7 +108,6 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
         dir='templates',
     )
 
-    @endpoint_debug_handler
     def do_dummylogin(self):
         self.new_session(User('dummy'))
         self.send_response_auth()
@@ -122,7 +126,6 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
         self.save_cookie('Foo', 'bar')
         self.save_cookie('bar', 'bar')
 
-    @endpoint_debug_handler
     def do_template(self):
         page = self.page_from_template(
             'dir', 'foo.html',
@@ -164,6 +167,7 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
 
         return (not self.pathname.endswith('.js')) or super().no_cache()
 
+    @foo
     def do_GET(self):
         page = self.page_from_template(
             'handler',

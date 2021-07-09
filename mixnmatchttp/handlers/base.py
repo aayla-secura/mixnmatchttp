@@ -145,12 +145,6 @@ class BaseMeta(type):
             except AttributeError:
                 continue
 
-            try:
-                # if we've already wrapped it, get the original one
-                h = h.__wrapped__
-            except AttributeError:
-                pass
-
             setattr(new_class, 'do_{}'.format(m), methodhandler(h))
 
         # every child gets it's own class attribute for the following
