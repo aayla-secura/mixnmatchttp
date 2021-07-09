@@ -61,6 +61,7 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
 
     conf = Conf(
         verbose_errors=True,
+        enable_directory_listing=True,
         send_software_info=True,
         secrets=('secret', '/topsecret'),
         password=Conf(
@@ -70,8 +71,10 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
     endpoints = Endpoint(
         dummylogin={},
         cookie={},
-        file={},
-        #  modtest={},
+        template={},
+        files={
+            '$raw_args': True,
+        },
         test={
             'post_one': Endpoint(
                 {  # test passing an Endpoint instance
@@ -105,15 +108,6 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
         self.new_session(User('dummy'))
         self.send_response_auth()
 
-    #  @endpoint_debug_handler
-    #  def do_modtest(self):
-        # modify endpoint, should affect only current request
-    #      self.endpoints['test'] = {}
-    #      self.endpoints['test'].nargs = 1
-        # set a header just for this request
-    #      self.save_header('X-Mod', 'Test')
-    #      self.do_GET.__wrapped__()
-    #
     @endpoint_debug_handler
     def do_default(self):
         pass
@@ -129,12 +123,15 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
         self.save_cookie('bar', 'bar')
 
     @endpoint_debug_handler
-    def do_file(self):
+    def do_template(self):
         page = self.page_from_template(
             'dir', 'foo.html',
             title='This is Foo',
             body='FOO')
         self.render(page)
+
+    def do_files(self):
+        super().do_GET()
 
     @endpoint_debug_handler
     def do_deep(self):

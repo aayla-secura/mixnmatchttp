@@ -159,11 +159,11 @@ function test_endpoints {
     GET /test/get_req/
   req -eh "^HTTP/1\.[01] 400" -eb "1 extra argument: bar" GET /test/get_opt/foo/bar
 
-  req -i -eh "^HTTP/1\.[01] 405" -eh "^Allow:" \
+  req -i -eh "^HTTP/1\.[01] 405" -eh "^Allow: *POST" \
     GET /test/post_one/foo
-  req -i -eh "^HTTP/1\.[01] 405" -eh "^Allow:" \
+  req -i -eh "^HTTP/1\.[01] 405" -eh "^Allow: *(GET,HEAD|HEAD,GET)" \
     POST /test/get_opt/foo
-  req -i -eh "^HTTP/1\.[01] 20[04]" -eh "^Content-Length: *0" -eh "^Allow:" \
+  req -i -eh "^HTTP/1\.[01] 20[04]" -eh "^Content-Length: *0" -eh "^Allow: POST" \
     OPTIONS /test/post_one/foo
 
   req -eb "This is do_GET for / @  \(\[\]\)" GET /
@@ -192,10 +192,13 @@ function test_endpoints {
   req -eb "This is do_default for / @ test/get_any \(\['foo', *'bar', *'baz'\]\)" GET /test/get_any/foo/bar/baz
   req -eb "This is do_default for / @ test/get_req \(\['foo', *'bar', *'baz'\]\)" GET /test/get_req/foo/bar/baz
 
-  # req -i -eh "^X-Mod: *Test" \
-  #   GET /modtest # modifies the default subpoint for /test to require 1 arg
-  # req -eh "^HTTP/1\.[01] 404" -eb "Extra arguments: foo" \
-  #   GET /test/foo # should not take effect, i.e. it should still accept no args as before
+  req -eb "<h1>Directory listing for /files/</h1>" GET /files/
+  req -eh "Content-Type: application/octet-stream" \
+   -eh "Content-Disposition: filename=foo" -eb "^foo$" GET /files/foo
+  req -eh "Content-Type: text/plain" \
+   -eh "Content-Disposition: filename=foo.txt" -eb "^foo$" GET /files/foo.txt
+  req -eh "Content-Type: application/json" \
+   -eh "Content-Disposition: filename=foo.json" GET /files/foo.json
 }
 
 ############################################################
@@ -203,7 +206,7 @@ function test_templates {
   log INFO "-------------------- TEMPLATES TESTS --------------------"
   req -eb "This is do_default for / @ test \(\[\]\)" GET /test/
   req -eb "This is do_GET for /foo @  \(\[\]\)" GET /foo/
-  req -eh "^Content-Type: *text/html" -eb "<title>This is Foo</title>" GET /file
+  req -eh "^Content-Type: *text/html" -eb "<title>This is Foo</title>" GET /template
 }
 
 ############################################################

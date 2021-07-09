@@ -47,6 +47,12 @@ def methodhandler(realhandler, self, args, kwargs):
                 self.send_error(500)
             raise
 
+    ##########
+    if self._BaseHTTPRequestHandler__initialized:
+        logger.debug('INIT for method handler already called')
+        call_handler()
+        return
+
     logger.debug(
         'INIT for method handler; path is {}'.format(self.path))
 
@@ -83,6 +89,8 @@ def methodhandler(realhandler, self, args, kwargs):
         return
 
     self.show()
+    self._BaseHTTPRequestHandler__initialized = True
+
     # check if it's forbidden
     err = self.denied()
     if err is not None:
@@ -186,6 +194,7 @@ class BaseHTTPRequestHandler(
         self.__raw_pathname = ''
         self.__query = dict()
         self.__can_read_body = True
+        self.__initialized = False
         self.__body = None
         self.__ctype = None
         self.__params = None
@@ -823,7 +832,7 @@ class BaseHTTPRequestHandler(
         self.send_response_default()
 
     def do_GET(self):
-        '''Decorated by methodhandler'''
+        '''Sends a file or does direcotry listing'''
 
         try:
             self.send_file()
@@ -835,16 +844,16 @@ class BaseHTTPRequestHandler(
                 self.send_error(403)
 
     def do_POST(self):
-        '''Decorated by methodhandler'''
+        '''Not supported'''
 
         self.send_error(405)
 
     def do_HEAD(self):
-        '''Decorated by methodhandler'''
+        '''Calls default do_HEAD'''
 
         super().do_HEAD()
 
     def do_OPTIONS(self):
-        '''Decorated by methodhandler'''
+        '''Sends empty response'''
 
         self.send_response_empty()
