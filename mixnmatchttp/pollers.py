@@ -3,7 +3,9 @@ import threading
 from uuid import uuid4 as uuid
 from wrapt import decorator
 
-from .utils import curr_datetime, to_http_date, http_date_to_datetime
+from .utils import \
+    curr_datetime, to_http_date, http_date_to_timestamp, \
+    datetime_to_tz, to_timestamp
 from .containers import DefaultDict
 
 
@@ -22,25 +24,39 @@ def uses_poller(poller_name):
     def _decorator(wrapped, self, args, kwargs):
         poller = self.pollers[poller_name]
         if poller.type == 'time':
-            headers = ('If-Modified-Since', 'If-Unmodified-Since')
+            req_headers = {
+                'If-Modified-Since': True,
+                'If-Unmodified-Since': False}
+            resp_header = 'Last-Modified'
         else:
-            headers = ('If-None-Match', 'If-Match')
-        value = self.headers.get(headers[0])
-        accept_on_modified = True
-        if value is None:
-            value = self.headers.get(headers[1])
-            accept_on_modified = False
+            req_headers = {
+                'If-None-Match': True,
+                'If-Match': False}
+            resp_header = 'ETag'
+
+        self.save_header(resp_header, poller.latest)
+
+        value = None
+        for hdr, accept_on_modified in req_headers.items():
+            value = self.headers.get(hdr)
+            if value is not None:
+                logger.debug('Got {}: {}'.format(hdr, value))
+                break
 
         if value is not None:
             if self.command in ['GET', 'HEAD']:
                 code = 304
             else:
                 code = 412
-            is_modified_since = poller.is_modified_since(value)
-            if (is_modified_since and not accept_on_modified) or \
-                    (not is_modified_since and accept_on_modified):
-                self.send_response_empty(code)
-                return
+            try:
+                is_modified_since = poller.is_modified_since(value)
+            except ValueError:
+                pass
+            else:
+                if (is_modified_since and not accept_on_modified) or \
+                        (not is_modified_since and accept_on_modified):
+                    self.send_response_empty(code)
+                    return
 
         return wrapped(*args, **kwargs)
 
@@ -53,6 +69,8 @@ class PollerBase:
     def __init__(self, name=None):
         self.__waiter__ = threading.Condition(threading.Lock())
         self.__closed__ = False
+        if name is not None and not isinstance(name, str):
+            raise ValueError('Poller name must be a string')
         self.name = name
         if self.type is None:
             raise NotImplementedError(
@@ -136,7 +154,7 @@ class Poller(PollerBase):
     def is_modified_since(self, tag):
         return self.__latest__ != tag
 
-class TimePoller:
+class TimePoller(PollerBase):
     '''A poller for timestamps and waiters
 
     Can be used for client caching via If-Modified-Since or for event
@@ -151,7 +169,9 @@ class TimePoller:
         return to_http_date(curr_datetime())
 
     def is_modified_since(self, tag):
-        return self.__last_change__ > http_date_to_datetime(tag)
+        last_ts = int(to_timestamp(self.__last_change__))
+        tag_ts = int(http_date_to_timestamp(tag))
+        return last_ts > tag_ts
 
 class PollerContainer(DefaultDict):
     '''Transforms to Poller unless already a poller of some type'''
@@ -160,3 +180,9 @@ class PollerContainer(DefaultDict):
         if isinstance(value, PollerBase):
             return value
         return Poller(value)
+
+    def __update_single__(self, name, value, is_explicit):
+        super().__update_single__(name, value, is_explicit)
+        curr = self.__get_single__(name, is_explicit)[0]
+        if curr.name is None:
+            curr.name = name

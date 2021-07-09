@@ -568,6 +568,7 @@ Redirects (with `307`) to any address given in the URL.
   * [ ] Use format strings instead of the format string method
   * [ ] Use `__{name}__` instead of `_{name}` for private attributes
   * [ ] Custom template var format (e.g. `%%var%%`, etc)
+  * [ ] Handle disabled endpoints differently from not-an-endpoint
 
   * [ ] Default column for short value in `object_to_dict` should use the first primary key, not hardcoded `id`.
   * [ ] Check if jwt and sql modules are required

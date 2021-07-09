@@ -116,8 +116,9 @@ def curr_date(timezone=None, **kwargs):
     return datetime_to_str(curr_datetime(timezone=timezone), **kwargs)
 
 def datetime_to_timestamp(dtime):
-    '''Returns the timestamp (in seconds since epoch)'''
+    '''Returns the local timezone timestamp (in seconds since epoch)'''
 
+    dtime = datetime_to_tz(dtime, None)
     return float(dtime.strftime('%s')) + dtime.microsecond / 1000000
 
 def datetime_from_timestamp(ts,

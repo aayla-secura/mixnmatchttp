@@ -34,7 +34,8 @@ from mixnmatchttp.handlers.authenticator.api import User
 from mixnmatchttp.endpoints import Endpoint, \
     ARGS_OPTIONAL, ARGS_REQUIRED, ARGS_ANY
 from mixnmatchttp.conf import Conf
-from mixnmatchttp.pollers import Poller, TimePoller, uses_poller
+from mixnmatchttp.pollers import \
+    PollerContainer, Poller, TimePoller, uses_poller
 
 
 deep_ep = Endpoint({  # test assigning to multiple parents
@@ -79,7 +80,13 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
         cookie={},
         template={},
         poll={
-            'allow': {},
+            '$disabled': True,
+            'time': {
+                '$allow': {'GET', 'POST'},
+            },
+            'etag': {
+                '$allow': {'GET', 'POST'},
+            },
         },
         files={
             '$raw_args': True,
@@ -111,6 +118,10 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
         },
         dir='templates',
     )
+    pollers = PollerContainer(
+        time=TimePoller(),
+        tag=Poller(),
+    )
 
     def do_dummylogin(self):
         self.new_session(User('dummy'))
@@ -136,6 +147,22 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
             title='This is Foo',
             body='FOO')
         self.render(page)
+
+    @uses_poller('etag')
+    def do_GET_poll_etag(self):
+        self.send_response_empty(204)
+
+    @uses_poller('etag')
+    def do_POST_poll_etag(self):
+        self.pollers['etag'].update()
+
+    @uses_poller('time')
+    def do_GET_poll_time(self):
+        self.send_response_empty(204)
+
+    @uses_poller('time')
+    def do_POST_poll_time(self):
+        self.pollers['time'].update()
 
     def do_files(self):
         super().do_GET()

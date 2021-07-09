@@ -108,7 +108,7 @@ class _DefaultsBase:
             return True
 
         ##########
-        if self.__item_type__ and \
+        if self.__item_type__ is not None and \
                 not isinstance(value, self.__item_type__):
             value = self.__item_type__(value)
 
