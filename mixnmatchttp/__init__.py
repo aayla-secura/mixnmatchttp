@@ -2,6 +2,7 @@ import logging as _logging
 from logging import NullHandler as _NullHandler
 
 _logging.TRACE = 1
+_logging.addLevelName(_logging.TRACE, 'TRACE')
 class _TraceLogger(_logging.Logger):
     def trace(self, *args, **kwargs):
         return super(_TraceLogger, self).log(
