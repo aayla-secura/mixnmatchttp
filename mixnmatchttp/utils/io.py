@@ -49,4 +49,4 @@ def is_modified_since(path, last_time):
     else:
         fs = os.stat(path)
 
-    return fs.st_mtime > to_timestamp(last_time)
+    return int(fs.st_mtime) > int(to_timestamp(last_time))

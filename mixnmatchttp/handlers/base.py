@@ -534,7 +534,7 @@ class BaseHTTPRequestHandler(
         last_time = self.headers.get('If-Not-Modified-Since')
         if last_time is not None and \
                 not is_modified_since(path, last_time):
-            self.send_response(304)
+            self.send_response_empty(304)
             f.close()
             return
 
