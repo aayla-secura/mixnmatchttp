@@ -20,7 +20,7 @@ class Test(unittest.TestCase):
     def test_expires(self):
         c = Cookie('Foo', 'bar', Expires=0)
         self.assertEqual(
-            str(c), 'Foo=bar; Expires=Thu, 01 Jan 1970 00:00:00 UTC')
+            str(c), 'Foo=bar; Expires=Thu, 01 Jan 1970 00:00:00 GMT')
         c.expires = None
         self.assertEqual(str(c), 'Foo=bar')
 

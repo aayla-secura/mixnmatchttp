@@ -562,8 +562,8 @@ Redirects (with `307`) to any address given in the URL.
   * [x] `--add-users`: password input should not be displayed
   * [x] Templates from files
   * [x] Dates in GMT not UTC
-  * [ ] Check `If-Not-Modified-Since` in `send_file`
-  * [ ] Poller container
+  * [x] Check `If-Not-Modified-Since` in `send_file`
+  * [x] Poller container
   * [ ] Multiple variable endpoints for a single parent distinguished by a regex; key can be `/<regex>/`
   * [ ] Use format strings instead of the format string method
   * [ ] Use `__{name}__` instead of `_{name}` for private attributes

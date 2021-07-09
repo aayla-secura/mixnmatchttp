@@ -16,6 +16,7 @@ from ..containers import CaseInsensitiveOrderedDict
 from ..cookie import Cookie
 from ..conf import Conf, ConfItem
 from ..templates import TemplateContainer, Template, TemplateDirectory
+from ..pollers import PollerContainer
 from ..containers import DefaultDict
 from ..endpoints import Endpoint
 from ..endpoints.exc import NotAnEndpointError, \
@@ -150,6 +151,7 @@ class BaseMeta(type):
         # every child gets it's own class attribute for the following
         # ones, which combines the corresponding attribute of all parents
         attr_types = {
+            'pollers': PollerContainer,
             'endpoints': Endpoint,
             'templates': TemplateContainer,
             'conf': Conf,
@@ -180,7 +182,7 @@ class BaseHTTPRequestHandler(
         send_software_info=False,
         verbose_errors=False,
     )
-    pollers = {}
+    pollers = PollerContainer()
     endpoints = Endpoint()
 
     def __init__(self, *args, **kwargs):

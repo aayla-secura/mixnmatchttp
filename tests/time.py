@@ -17,7 +17,6 @@ class Test(unittest.TestCase):
         self.assertFalse(is_timestamp_like(-1))
         self.assertTrue(is_timestamp_like(0))
         self.assertTrue(is_timestamp_like(curr_timestamp()))
-        self.assertTrue(is_timestamp_like(curr_timestamp(to_ms=True)))
 
         # TODO
 

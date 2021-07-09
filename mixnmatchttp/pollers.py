@@ -1,13 +1,15 @@
 import logging
 import threading
+from uuid import uuid4 as uuid
 
 from .utils import curr_datetime
-from uuid import uuid4 as uuid
+from .containers import DefaultDict
 
 
 logger = logging.getLogger(__name__)
 __all__ = [
     'Poller',
+    'PollerContainer',
 ]
 
 
@@ -79,3 +81,6 @@ class Poller:
 
     def is_match(self, tag):
         return self.__latest == tag
+
+class PollerContainer(DefaultDict):
+    __item_type__ = Poller

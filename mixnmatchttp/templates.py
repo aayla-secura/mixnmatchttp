@@ -5,17 +5,17 @@ import mimetypes
 from string import Template as StringTemplate
 from collections import Mapping
 
-from ..containers import DefaultDict
-from ..utils import ReprFromStr, curr_timestamp, \
+from .containers import DefaultDict
+from .utils import ReprFromStr, curr_timestamp, \
     is_str, is_modified_since, read_file, is_map_like
 
 
 logger = logging.getLogger(__name__)
 __all__ = [
-    'TemplateContainer',
     'Template',
     'TemplateFile',
     'TemplateDirectory',
+    'TemplateContainer',
 ]
 
 
