@@ -170,7 +170,7 @@ class BaseAuthJWTHTTPRequestHandler(BaseAuthHTTPRequestHandler):
     )
     endpoints = Endpoint(
         authtoken={
-            '$allowed_methods': {'POST'},
+            '$allow': {'POST'},
         },
     )
 

@@ -34,6 +34,7 @@ from mixnmatchttp.handlers.authenticator.api import User
 from mixnmatchttp.endpoints import Endpoint, \
     ARGS_OPTIONAL, ARGS_REQUIRED, ARGS_ANY
 from mixnmatchttp.conf import Conf
+from mixnmatchttp.pollers import Poller, TimePoller, uses_poller
 
 
 deep_ep = Endpoint({  # test assigning to multiple parents
@@ -77,6 +78,9 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
         dummylogin={},
         cookie={},
         template={},
+        poll={
+            'allow': {},
+        },
         files={
             '$raw_args': True,
         },
@@ -84,7 +88,7 @@ class TestHTTPRequestHandler(AuthCookieHTTPRequestHandler,
             'post_one': Endpoint(
                 {  # test passing an Endpoint instance
                     '$nargs': 1,
-                    '$allowed_methods': {'POST'},
+                    '$allow': {'POST'},
                 }),
             'get_opt': {
                 '$nargs': ARGS_OPTIONAL,

@@ -70,21 +70,21 @@ class EndpointSettings(DefaultAttrs):
     def __init__(self):
         super().__init__(dict(
             name='',
-            disabled=True,  # False for children
-            nargs=0,        # ARGS_ANY if raw_args is True
-            allowed_methods={'GET', 'HEAD'},
+            disabled=True,          # defaults to False for children
+            nargs=EndpointArgs(0),  # defaults to ARGS_ANY if raw_args is True
+            allow={'GET', 'HEAD'},
             raw_args=False,
             varname='',
         ))
 
     def __update_single__(self, name, value, is_explicit):
-        if name == 'allowed_methods' and 'GET' in value:
+        if name == 'allow' and 'GET' in value:
             # it doesn't make sense to allow GET but not HEAD
             value |= {'HEAD'}
         if name == 'raw_args' and value is True:
             # update default nargs
             self.__update_single__('nargs', ARGS_ANY, False)
-        if name == 'name':
+        if name == 'name' and value:
             # it must be a child, update default disabled
             self.__update_single__('disabled', False, False)
         if name == 'nargs':
@@ -101,7 +101,7 @@ class Endpoint(DefaultDict):
     a dictionary. For example you can define the endpoints like so:
         endpoints = endpoints.Endpoints(
                 some_sub={
-                    '$allowed_methods': {'GET', 'POST'},
+                    '$allow': {'GET', 'POST'},
                     '$nargs': 1,
                     'some_sub_sub': {
                         '$nargs': endpoints.ARGS_ANY,
@@ -121,25 +121,23 @@ class Endpoint(DefaultDict):
     parents, you need to manually deepcopy it.
 
     Recognized attributes for endpoints (keys starting with $):
-        disabled:        <bool>; whether the endpoint can be called;
-                         defaults to True for the root, False
-                         otherwise
-        allowed_methods: <set>; which HTTP methods are allowed;
-                         defaults to {'GET'}
-        nargs:           <number>|ARGS_*; how many arguments are
-                         accepted after the full enpoint path;
-                         defaults to 0 if raw_args is False, otherwise
-                         to ARGS_ANY;
-                         special non-numerical values:
-                           ARGS_OPTIONAL is 0 or 1
-                           ARGS_ANY      is any number
-                           ARGS_REQUIRED is 1 or more
-        raw_args:        <bool>; whether to skip canonicalizing the
-                           arguments; defaults to False, e.g.
-                           foo/../bar -> bar
-        varname:         <string>; the name the variable component
-                         is to be saved as; only for wildcards;
-                         defaults to parent's name
+        disabled: <bool>; whether the endpoint can be called;
+                  defaults to True for the root, False otherwise
+        allow:    <set>; which HTTP methods are allowed;
+                  defaults to {'GET', 'HEAD'}
+        nargs:    <number>|ARGS_*; how many arguments are
+                  accepted after the full enpoint path;
+                  defaults to 0 if raw_args is False, otherwise
+                  to ARGS_ANY; special non-numerical values:
+                    ARGS_OPTIONAL is 0 or 1
+                    ARGS_ANY      is any number
+                    ARGS_REQUIRED is 1 or more
+        raw_args: <bool>; whether to skip canonicalizing the
+                  arguments; defaults to False, e.g.
+                  foo/../bar -> bar
+        varname:  <string>; the name the variable component is to be
+                  saved as; only for wildcards;
+                  defaults to parent's name
 
     All child endpoints are enabled by default. The root endpoint is
     disabled by default; if you want it enabled, either manually
@@ -171,7 +169,7 @@ class Endpoint(DefaultDict):
     example:
         endpoints = endpoints.Endpoints(
                 person={
-                    '$allowed_methods': {'GET', 'POST'},
+                    '$allow': {'GET', 'POST'},
                     '*': {
                         '$varname': 'username',
                         }
@@ -344,8 +342,8 @@ class Endpoint(DefaultDict):
 
         ep.nargs.validate(args_arr)
 
-        if httpreq.command not in ep.allowed_methods:
-            raise MethodNotAllowedError(ep.allowed_methods)
+        if httpreq.command not in ep.allow:
+            raise MethodNotAllowedError(ep.allow)
 
         logger.debug(("API call: '{}', root: {}, sub: {}, "
                       "{} args: {}, params: {}").format(

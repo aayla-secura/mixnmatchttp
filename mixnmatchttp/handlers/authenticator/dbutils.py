@@ -56,11 +56,13 @@ def needs_db_response_handling(base,
         dconn = DBConnection.get(base)
         with dconn.session_context(reraise=False) as db:
             # check if client cache is up to date
+            # XXX check If-Match too and also check for non-GET
+            # requests
             if poller is not None \
                     and (self.command == 'GET' or poll_any):
                 current = self.headers.get('If-None-Match')
                 if current is not None:
-                    if self.pollers[poller].is_match(
+                    if not self.pollers[poller].is_modified_since(
                             current.strip('"')):
                         self.send_response_empty(304)
                         return

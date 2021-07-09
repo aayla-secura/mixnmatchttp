@@ -19,15 +19,19 @@ class Test(unittest.TestCase):
                 'grandchildA': {
                     'foo': {},
                     '*': {},
+                    #  '$allow': ['GET'],
                 },
                 'grandchildB': {
                     '*': {'$varname': 'var'},
                     '$disabled': True,
                 },
-                '$allowed_methods': {'GET', 'POST'},
+                '$allow': {'GET', 'POST'},
             },
             raw={
                 '$raw_args': True,
+            },
+            foo={
+                #  '$allow': ['POST'],
             },
             **{'$disabled': False}
         )
@@ -41,11 +45,14 @@ class Test(unittest.TestCase):
         self.assertIn('grandchildA', e['child'])
         self.assertIn('grandchildB', e['child'])
         self.assertEqual(e['child']['grandchildA'].disabled, False)
+        self.assertEqual(e['child']['grandchildA'].allow,
+                         {'GET', 'HEAD'})
         self.assertEqual(e['child']['grandchildB'].disabled, True)
         self.assertEqual(e['child']['grandchildA']['*'].varname,
                          'grandchildA')
         self.assertEqual(e['child']['grandchildB']['*'].varname,
                          'var')
+        #  self.assertEqual(e['foo'].allow, {'POST'})
         self.assertEqual(e['raw'].nargs, ARGS_ANY)
 
     def test_settings(self):
@@ -174,7 +181,7 @@ class Test(unittest.TestCase):
         h.raw_pathname = '/bar'
         self.assertRaises(NotAnEndpointError, e.parse, h)
 
-    def test_parse_allowed_methods_a(self):
+    def test_parse_allow_a(self):
         path = '/foo'
         h = DefaultAttrs(
             raw_pathname=path,
@@ -185,7 +192,7 @@ class Test(unittest.TestCase):
         e = Endpoint(foo={})
         self.assertRaises(MethodNotAllowedError, e.parse, h)
 
-    def test_parse_allowed_methods_b(self):
+    def test_parse_allow_b(self):
         path = '/foo'
         h = DefaultAttrs(
             raw_pathname=path,
@@ -195,7 +202,7 @@ class Test(unittest.TestCase):
         )
         e = Endpoint(
             foo={
-                '$allowed_methods': {'POST'},
+                '$allow': {'POST'},
             })
         self.assertRaises(MethodNotAllowedError, e.parse, h)
 
@@ -359,7 +366,7 @@ class Test(unittest.TestCase):
                     docs={
                         '*': {
                             '$varname': 'docID',
-                            '$allowed_methods': 'POST',
+                            '$allow': 'POST',
                             '$nargs': ARGS_OPTIONAL,
                         }})})
 

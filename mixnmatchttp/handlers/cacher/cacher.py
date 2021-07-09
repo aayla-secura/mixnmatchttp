@@ -18,10 +18,10 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
     cache = Cache()
     endpoints = Endpoint(
         echo={
-            '$allowed_methods': {'POST'},
+            '$allow': {'POST'},
         },
         cache={
-            '$allowed_methods': {'GET', 'POST'},
+            '$allow': {'GET', 'POST'},
             '$nargs': 1,
             '$clear': {
                 '$nargs': ARGS_OPTIONAL,

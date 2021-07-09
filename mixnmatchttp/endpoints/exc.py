@@ -17,12 +17,12 @@ class NotAnEndpointError(EndpointParseError):
 class MethodNotAllowedError(EndpointParseError):
     '''Exception raised when the request method is not allowed
 
-    Will have an "allowed_methods" attribute containing a set of
+    Will have an "allow" attribute containing a set of
     allowed HTTP methods for this endpoint.
     '''
 
-    def __init__(self, allowed_methods):
-        self.allowed_methods = allowed_methods
+    def __init__(self, allow):
+        self.allow = allow
         super().__init__('Method not allowed')
 
 class MissingArgsError(EndpointParseError):

@@ -22,7 +22,7 @@ from ..endpoints import Endpoint
 from ..endpoints.exc import NotAnEndpointError, \
     MethodNotAllowedError, MissingArgsError, ExtraArgsError
 from ..utils import is_seq_like, abspath, param_dict, startswith, \
-    http_date, is_modified_since
+    to_http_date, is_modified_since
 from .exc import DecodingError, UnsupportedOperationError
 
 
@@ -110,7 +110,7 @@ def methodhandler(realhandler, self, args, kwargs):
         call_handler()
     except MethodNotAllowedError as e:
         logger.debug(str(e))
-        self.save_header('Allow', ','.join(e.allowed_methods))
+        self.save_header('Allow', ','.join(e.allow))
         if self.command == 'OPTIONS':
             logger.debug('Doing OPTIONS')
             call_handler()
@@ -540,7 +540,7 @@ class BaseHTTPRequestHandler(
             ctype = 'application/octet-stream'
         self.send_header('Content-Type', ctype)
         self.send_header('Content-Length', str(fs.st_size))
-        self.send_header('Last-Modified', http_date(fs.st_mtime))
+        self.send_header('Last-Modified', to_http_date(fs.st_mtime))
         disposition = 'filename={}'.format(os.path.basename(f.name))
         if as_attachment:
             disposition = 'attachment; {}'.format(disposition)

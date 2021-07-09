@@ -23,10 +23,14 @@ __all__ = [
     'datetime_to_tz',
     'date_to_timestamp',
     'date_from_timestamp',
+    'date_to_datetime',
+    'date_from_datetime',
+    'http_date_to_timestamp',
+    'http_date_to_datetime',
     'to_datetime',
     'to_timestamp',
-    'http_datetime',
-    'http_date',
+    'to_http_datetime',
+    'to_http_date',
 ]
 
 
@@ -176,14 +180,13 @@ def datetime_to_tz(dtime, timezone):
 
     return dtime.astimezone(tz=tz(timezone))
 
-def date_to_timestamp(dstr, datefmt=None, timezone=None):
+def date_to_timestamp(dstr, **kwargs):
     '''Converts the given date to a timestamp
 
-    - See datetime_from_str for the meaning of datefmt and timezone
+    All keyword arguments datetime_from_str are supported.
     '''
 
-    return datetime_to_timestamp(
-        datetime_from_str(dstr, datefmt=datefmt, timezone=timezone))
+    return datetime_to_timestamp(datetime_from_str(dstr, **kwargs))
 
 def date_from_timestamp(ts, **kwargs):
     '''Returns the date from a timestamp
@@ -200,6 +203,36 @@ def date_from_timestamp(ts, **kwargs):
 
     dtime = datetime_from_timestamp(ts, **kwargs)
     return datetime_to_str(dtime, **to_str_kwargs)
+
+def date_to_datetime(*args, **kwargs):
+    '''Alias for datetime_from_str'''
+
+    datetime_from_str(*args, **kwargs)
+
+def date_from_datetime(*args, **kwargs):
+    '''Alias for datetime_to_str'''
+
+    datetime_to_str(*args, **kwargs)
+
+
+def http_date_to_timestamp(dstr):
+    '''Converts an HTTP date to timestamp
+
+    Raises ValueError if the string does not match the format
+    '''
+
+    return datetime_to_timestamp(http_date_to_datetime(dstr))
+
+def http_date_to_datetime(dstr):
+    '''Converts an HTTP date to timestamp
+
+    Raises ValueError if the string does not match the format
+    '''
+
+    return datetime_from_str(
+        dstr,
+        datefmt='%a, %d %b %Y %H:%M:%S GMT',
+        timezone='GMT')
 
 def to_datetime(value):
     '''Converts the given value to a datetime
@@ -228,7 +261,7 @@ def to_timestamp(value):
     return datetime_to_timestamp(
         datetime_to_tz(to_datetime(value), None))
 
-def http_datetime(value):
+def to_http_datetime(value):
     '''Converts the given value to an HTTP datetime
 
     value can be a string, integer, float or datetime; see to_datetime
@@ -236,9 +269,9 @@ def http_datetime(value):
 
     return datetime_to_tz(to_datetime(value), 'GMT')
 
-def http_date(value):
+def to_http_date(value):
     '''Converts the given value to an HTTP date'''
 
     return datetime_to_str(
-        http_datetime(value),
+        to_http_datetime(value),
         datefmt='%a, %d %b %Y %H:%M:%S %Z')

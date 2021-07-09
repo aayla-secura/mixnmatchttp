@@ -27,7 +27,8 @@ class TemplateBase:
         self.mimetype = None
 
         if self.__keys__ is None:
-            raise NotImplementedError('This is a base class')
+            raise NotImplementedError(
+                '{} is a base class'.format(self.__class__.__name__))
 
         for key, required in self.__keys__.items():
             try:

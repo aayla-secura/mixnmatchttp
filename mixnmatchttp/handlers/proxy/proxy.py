@@ -16,8 +16,7 @@ class ProxyingHTTPRequestHandler(BaseHTTPRequestHandler):
             # address}; include the ? after /goto even if not giving
             # parameters, otherwise any parameters in the address
             # would be consumed
-            '$allowed_methods': {
-                'GET', 'POST', 'PUT', 'PATCH', 'DELETE'},
+            '$allow': {'GET', 'POST', 'PUT', 'PATCH', 'DELETE'},
             '$nargs': ARGS_ANY,
             '$raw_args': True,
         },

@@ -173,7 +173,7 @@ class BaseAuthSQLAlchemyORMHTTPRequestHandler(
                 cls.pollers[name].update()
                 session.info['is_clean'] = True
 
-        cls.pollers[name] = Poller()
+        cls.pollers[name] = Poller(name)
         DBConnection.get(base).listen(
             'before_flush', before_flush)
         DBConnection.get(base).listen(
