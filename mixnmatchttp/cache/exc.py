@@ -6,13 +6,13 @@ class PageNotCachedError(CacheError):
     '''Exception raised when a non-existent page is requested'''
 
     def __init__(self):
-        super().__init__('This page has not been cached yet.')
+        super().__init__('This page has not been cached yet')
 
 class PageClearedError(CacheError):
     '''Exception raised when a deleted page is requested'''
 
     def __init__(self):
-        super().__init__('This page has been cleared.')
+        super().__init__('This page has been cleared')
 
 class CacheMemoryError(CacheError):
     '''Exception raised when max data already stored in cache'''
