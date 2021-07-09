@@ -18,7 +18,7 @@ __all__ = [
 ]
 
 
-def uses_poller(poller_name):
+def uses_poller(poller_name, auto_update=False):
 
     @decorator
     def _decorator(wrapped, self, args, kwargs):
@@ -58,6 +58,8 @@ def uses_poller(poller_name):
                     self.send_response_empty(code)
                     return
 
+        if auto_update:
+            poller.update()
         return wrapped(*args, **kwargs)
 
     return _decorator

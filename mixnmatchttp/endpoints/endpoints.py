@@ -3,8 +3,9 @@ import re
 from wrapt import ObjectProxy
 from bidict import bidict
 
+from ..conf import ConfItem
 from ..utils import ReprFromStr, iter_abspath, to_natint, startswith
-from ..containers import DefaultDict, DefaultAttrs, DefaultAttrDict
+from ..containers import DefaultDict, DefaultAttrs
 from .exc import EndpointError, NotAnEndpointError, \
     MissingArgsError, ExtraArgsError, MethodNotAllowedError
 
@@ -67,6 +68,8 @@ class EndpointArgs(ReprFromStr):
             raise MissingArgsError
 
 class EndpointSettings(DefaultAttrs):
+    __item_type__ = ConfItem
+
     def __init__(self):
         super().__init__(dict(
             name='',
@@ -78,21 +81,23 @@ class EndpointSettings(DefaultAttrs):
         ))
 
     def __update_single__(self, name, value, is_explicit):
-        if name == 'allow' and 'GET' in value:
-            # it doesn't make sense to allow GET but not HEAD
-            value |= {'HEAD'}
+        if name == 'allow':
+            value = set(value)  # XXX
+            if 'GET' in value:
+                # it doesn't make sense to allow GET but not HEAD
+                value |= {'HEAD'}
+        if name == 'nargs':  # XXX
+            if not isinstance(value, EndpointArgs):
+                value = EndpointArgs(value)
+
+        super().__update_single__(name, value, is_explicit)
+
         if name == 'raw_args' and value is True:
             # update default nargs
             self.__update_single__('nargs', ARGS_ANY, False)
         if name == 'name' and value:
             # it must be a child, update default disabled
             self.__update_single__('disabled', False, False)
-        if name == 'nargs':
-            if not isinstance(value, EndpointArgs):
-                value = EndpointArgs(value)
-
-        super().__update_single__(name, value, is_explicit)
-
 
 class Endpoint(DefaultDict):
     '''API endpoints

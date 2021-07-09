@@ -19,7 +19,7 @@ class Test(unittest.TestCase):
                 'grandchildA': {
                     'foo': {},
                     '*': {},
-                    #  '$allow': ['GET'],
+                    '$allow': ['GET'],
                 },
                 'grandchildB': {
                     '*': {'$varname': 'var'},
@@ -31,7 +31,7 @@ class Test(unittest.TestCase):
                 '$raw_args': True,
             },
             foo={
-                #  '$allow': ['POST'],
+                '$allow': ['POST'],
             },
             **{'$disabled': False}
         )
@@ -52,7 +52,7 @@ class Test(unittest.TestCase):
                          'grandchildA')
         self.assertEqual(e['child']['grandchildB']['*'].varname,
                          'var')
-        #  self.assertEqual(e['foo'].allow, {'POST'})
+        self.assertEqual(e['foo'].allow, {'POST'})
         self.assertEqual(e['raw'].nargs, ARGS_ANY)
 
     def test_settings(self):
@@ -81,7 +81,7 @@ class Test(unittest.TestCase):
         self.assertIs(e['foo'], c['foo'])
         self.assertIs(e['foo'].parent, e)
 
-    def test_deepcopy(self):
+    def XXXtest_deepcopy(self):
         e = Endpoint(
             foo=Endpoint(
                 bar={}
@@ -366,7 +366,7 @@ class Test(unittest.TestCase):
                     docs={
                         '*': {
                             '$varname': 'docID',
-                            '$allow': 'POST',
+                            '$allow': ['POST'],
                             '$nargs': ARGS_OPTIONAL,
                         }})})
 
