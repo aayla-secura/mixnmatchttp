@@ -2,9 +2,12 @@ import logging
 import re
 from wrapt import ObjectProxy
 from bidict import bidict
+from copy import copy
 
 from ..conf import ConfItem
-from ..utils import ReprFromStr, iter_abspath, to_natint, startswith
+from ..conf.exc import ConfError
+from ..utils import ReprFromStr, merge, iter_abspath, \
+    to_natint, startswith
 from ..containers import DefaultDict, DefaultAttrs
 from .exc import EndpointError, NotAnEndpointError, \
     MissingArgsError, ExtraArgsError, MethodNotAllowedError
@@ -69,6 +72,7 @@ class EndpointArgs(ReprFromStr):
 
 class EndpointSettings(DefaultAttrs):
     __item_type__ = ConfItem
+    __attempt_merge__ = True
 
     def __init__(self):
         super().__init__(dict(
@@ -81,23 +85,38 @@ class EndpointSettings(DefaultAttrs):
         ))
 
     def __update_single__(self, name, value, is_explicit):
-        if name == 'allow':
-            value = set(value)  # XXX
-            if 'GET' in value:
-                # it doesn't make sense to allow GET but not HEAD
-                value |= {'HEAD'}
-        if name == 'nargs':  # XXX
-            if not isinstance(value, EndpointArgs):
-                value = EndpointArgs(value)
+        if is_explicit:
+            # Check if the key is present in the defaults and use
+            # its settings
+            try:
+                ci = self.__get_single__(name, False)[0]
+            except KeyError:
+                raise ValueError(
+                    '{} is not a valid endpoint setting'.format(name))
 
-        super().__update_single__(name, value, is_explicit)
+            ci = copy(ci)
+            try:
+                # will merge settings only
+                ci.__merge__(value)
+            except ConfError as e:
+                raise ValueError('{} is not a valid {} value'.format(
+                    value, name))
+
+            if name == 'allow':
+                if 'GET' in value:
+                    # it doesn't make sense to allow GET but not HEAD
+                    ci |= {'HEAD'}
+        else:
+            ci = value
+
+        super().__update_single__(name, ci, is_explicit)
 
         if name == 'raw_args' and value is True:
             # update default nargs
-            self.__update_single__('nargs', ARGS_ANY, False)
+            super().__update_single__('nargs', ARGS_ANY, False)
         if name == 'name' and value:
             # it must be a child, update default disabled
-            self.__update_single__('disabled', False, False)
+            super().__update_single__('disabled', False, False)
 
 class Endpoint(DefaultDict):
     '''API endpoints

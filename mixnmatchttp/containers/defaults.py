@@ -290,12 +290,20 @@ class DefaultDict(DefaultKeys):
             self.setdefault(k, kwargs[k])
 
     def update(self, arg=None, /, **kwargs):
-        '''Updates the explicitly set and default items
+        '''Updates items
 
-        arg can be a regular dictionary (in which case it updates
-        explicitly the object) or another DefaultKeys (in which
-        case defaults update defaults and explicitly set items update
-        explicitly set items).
+        arg can be a regular dictionary (in which case all given items
+        are taken to be explicit) or another DefaultKeys (in which case
+        its defaults are taken as defaults and its explicitly set
+        items are taken as explicit), i.e. if arg is DefaultKeys with
+        defaults a=1 and explicit b=2, then a=1 will be set as
+        a default and b=2 as explicit.
+
+        If any key is already present in the DefaultKeys object and is
+        mergeable, then it will be merged with the corresponding key
+        that updates it.
+        Explicit items can merge only with explicitly set ones and
+        default items can merge only with default ones.
         '''
 
         if arg and kwargs:

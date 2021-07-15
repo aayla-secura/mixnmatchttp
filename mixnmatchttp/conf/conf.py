@@ -76,16 +76,13 @@ class ConfItem(ObjectProxy):
         # type(self) returns the real type, e.g. ConfItem, whereas
         # self.__class__ returns the class of the object to which we
         # proxy
-        clone = type(self)(
-            copy(self.__wrapped__),
-            **self._self_settings.__explicit__)
+        clone = type(self)(copy(self.__wrapped__))
+        clone._self_settings = copy(self._self_settings)
         return clone
 
     def __deepcopy__(self, memo=None):
-        settings = deepcopy(self._self_settings)
-        clone = type(self)(
-            deepcopy(self.__wrapped__),
-            **settings)
+        clone = type(self)(deepcopy(self.__wrapped__))
+        clone._self_settings = deepcopy(self._self_settings)
         return clone
 
     def __getattr__(self, attr):

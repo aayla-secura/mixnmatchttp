@@ -97,7 +97,7 @@ class TestDefaults(unittest.TestCase):
         self.assertEqual(s.b, [1, 2, 3, 4, 5])
         self.assertEqual(s.c, [1, 2])
 
-    def test_update(self):
+    def test_update_a(self):
         s = DefaultAttrDict(a=1, c=3)
         p = DefaultAttrDict(a=2, d=4)
         s.setdefaults(b=2, d=5)
@@ -108,6 +108,21 @@ class TestDefaults(unittest.TestCase):
         self.assertEqual(s['d'], 4)
         self.assertEqual(s['b'], 3)
         self.assertEqual(s['e'], 6)
+
+    def test_update_b(self):
+        s = DefaultAttrDict(b=[1, 2])
+        p = DefaultAttrDict(a=[3, 4], c=1)
+        s.setdefaults(a=[1, 2])
+        p.setdefaults(b=[3, 4], d=2)
+        s.update(p)
+        self.assertEqual(s['a'], [3, 4])
+        self.assertEqual(s['b'], [1, 2])
+        self.assertEqual(s['c'], 1)
+        self.assertEqual(s['d'], 2)
+        self.assertIn('b', s)
+        self.assertIn('c', s)
+        self.assertIn('a', s)
+        self.assertNotIn('d', s)
 
     def test_delete(self):
         s = DefaultAttrDict(a=1, b=2)

@@ -23,7 +23,7 @@ class CachingHTTPRequestHandler(BaseHTTPRequestHandler):
         cache={
             '$allow': {'GET', 'POST'},
             '$nargs': 1,
-            '$clear': {
+            'clear': {
                 '$nargs': ARGS_OPTIONAL,
             },
             'new': {},

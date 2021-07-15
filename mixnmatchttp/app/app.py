@@ -525,6 +525,10 @@ class App:
             self.save_config(self.conf.config)
 
         #### Preliminary checks and directory creation
+        if not self.conf.address:
+            # it must be blank in the conf file or taken from an empty
+            # env var
+            exit('Bind address is missing')
         if self.conf.port is None:
             self.conf.port = 443 if self.conf.ssl else 80
         if self.conf.ssl:

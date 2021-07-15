@@ -58,6 +58,9 @@ class CookieAttrs(DefaultAttrKeys):
 
     def __update_single__(self, name, value, is_explicit):
         if is_explicit:
+            # Check if the flag is present in the defaults and use
+            # its settings as well as it's case (i.e. HttpOnly instead
+            # of httponly or HTTPOnly or etc)
             try:
                 ci = self.__get_single__(name, False)[0]
             except KeyError:
@@ -75,6 +78,7 @@ class CookieAttrs(DefaultAttrKeys):
 
             ci = copy(ci)
             try:
+                # will merge settings only
                 ci.__merge__(value)
             except ConfError as e:
                 raise ValueError('{} is not a valid {} value'.format(
