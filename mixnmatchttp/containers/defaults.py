@@ -49,6 +49,7 @@ class _DefaultsBase:
     a new value for an existing item attempts to merge them (if
     applicable).
     '''
+    # __container_type__ must implement __getitem__ and __setitem__
     __container_type__ = dict
     __item_type__ = None
     __attempt_merge__ = False
@@ -280,6 +281,9 @@ class DefaultDict(DefaultKeys):
       allitems
     '''
 
+    # __container_type__ must implement all dict methods; TODO
+    # workaround if not
+
     def setdefault(self, key, value):
         '''Does not set key explicitly unlike regular dict'''
 
@@ -320,26 +324,61 @@ class DefaultDict(DefaultKeys):
 
         self.__update__(default, **explicit)
 
-    def get(self, *args, **kwargs):
-        pass  # TODO
+    def get(self, name, default=None):
+        '''Returns an explicit or default item or the given default
 
-    def pop(self, *args, **kwargs):
-        pass  # TODO
+        KeyError is never raised, default is None if not given
+        '''
+
+        try:
+            return self.__getitem__(name)
+        except KeyError:
+            return default
+
+    def pop(self, name, **kwargs):
+        '''Pop an explicit item or return the given default
+
+        If no default is given, KeyError is raised
+        '''
+
+        def pop(name, /, default=None):
+            try:
+                value = self.__get_single__(name, True)[0]
+                self.__delete_single__(name, True)
+                return value, None
+            except KeyError as e:
+                return default, e
+
+        # validate that kwargs are correct, but distinguish an
+        # explicitly given default of None to none given
+        value, exc = pop(name, **kwargs)
+        if exc and not kwargs:
+            raise exc
+        return value
 
     def popitem(self, *args, **kwargs):
-        pass  # TODO
+        '''Pops explicit items in LIFO order'''
+
+        return self.__explicit__.popitem()
 
     def clear(self):
-        pass  # TODO
+        '''Clear explicit items'''
+
+        self.__explicit__.clear()
 
     def cleardefaults(self):
-        pass  # TODO
+        '''Clear default items'''
+
+        self.__default__.clear()
 
     def clearall(self):
-        pass  # TODO
+        '''Clear explicit and default items'''
 
-    def fromkeys(self):
-        pass  # TODO
+        self.__explicit__.clear()
+        self.__default__.clear()
+
+    def fromkeys(self, iterable, value=None):
+        return self.__class__(**dict.fromkeys(iterable, value))
 
     def copy(self):
         return self.__copy__()
