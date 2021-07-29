@@ -89,6 +89,8 @@ def str_trunc(s, size):
     return s[:size - 3] + suff
 
 def str_to_hex(s):
+    if not isinstance(s, bytes):
+        s = s.encode("utf-8")
     return s.hex()
 
 def hex_to_bytes(s):

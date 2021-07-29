@@ -49,13 +49,21 @@ class CaseInsensitiveOrderedDict(ReprFromStr, MutableMapping):
         else:
             return NotImplemented
         # Compare insensitively
-        return dict(self.lower_items()) == dict(other.lower_items())
+        return dict(self.__lower_items__()) == \
+            dict(other.__lower_items__())
 
     def getkey(self, key):
         return self.__data__[key.lower()][0]
 
     def copy(self):
         return self.__class__(self.__data__.values())
+
+    def __lower_items__(self):
+        return (
+            (lowerkey, keyval[1])
+            for (lowerkey, keyval)
+            in self.__data__.items()
+        )
 
     def __str__(self):
         return str(dict(self.items()))
